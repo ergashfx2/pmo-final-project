@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+ <div class="row">
+ <div class="col-3">
+
+ </div>
+     <div class="col-5" style="margin-top: 7%" >
+  <div class="card mt-4" style="width: 500px;height: 400px">
+    <div class="card-body login-card-body">
+      <p class="login-box-msg">Shaxsiy kabinetga kirish</p>
+
+      <form action="" method="post">
+          {% csrf_token %}
+        <div class="input-group mb-3" style="margin-top: 10%">
+            {{ form.username }}
+            <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-envelope"></span>
+            </div>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+            {{ form.password }}
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-lock"></span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <button type="submit" class="btn btn-primary btn-block">Kirish</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+     </div>
+ <div class="col-3">
+
+ </div>
+ </div>
+{% endblock content %}

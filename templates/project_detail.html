@@ -1,0 +1,180 @@
+{% extends 'base.html' %}
+{% load filters %}
+{% block content %}
+    <div class="container-fluid">
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        {% for pr in project %}
+                           <h1> <strong>{{ pr.project_name }}</strong> - loyihasi haqida batafsil ma'lumot</h1>
+                        {% endfor %}
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="content">
+
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Loyiha haqida</h3>
+
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 col-md-12 col-lg-8 order-2 order-md-1">
+                            <div class="row">
+                                <div class="col-12 col-sm-4">
+                                    <div class="info-box bg-light">
+                                        <div class="info-box-content">
+                                            <span class="info-box-text text-center text-muted">Loyiha budjeti</span>
+                                            {% for ph in project %}
+                                                <span class="info-box-number text-center text-muted mb-0">{{ ph.project_budget }}</span>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-4">
+                                    <div class="info-box bg-light">
+                                        <div class="info-box-content">
+                                            <span class="info-box-text text-center text-muted">Sarflangan pul</span>
+                                            {% for ph in project %}
+                                                <span class="info-box-number text-center text-muted mb-0">{{ ph.project_spent_money }}</span>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-4">
+                                    <div class="info-box bg-light">
+                                        <div class="info-box-content">
+                                            <span class="info-box-text text-center text-muted">Tugash vaqti</span>
+                                            {% for ph in project %}
+                                                <span class="info-box-number text-center text-muted mb-0">{{ ph.project_deadline | format_date }}</span>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                                  <div class="row mt-4">
+            <nav class="w-100">
+              <div class="nav nav-tabs" id="product-tab" role="tablist">
+                <a class="nav-item nav-link active" id="product-desc-tab" data-toggle="tab" href="#product-desc" role="tab" aria-controls="product-desc" aria-selected="true">Ma'lumot</a>
+                <a class="nav-item nav-link" id="product-comments-tab" data-toggle="tab" href="#product-comments" role="tab" aria-controls="product-comments" aria-selected="false">Izohlar</a>
+                <a class="nav-item nav-link" id="product-rating-tab" data-toggle="tab" href="#product-rating" role="tab" aria-controls="product-rating" aria-selected="false">Muammolar</a>
+              </div>
+            </nav>
+            <div class="tab-content p-3" id="nav-tabContent">
+              <div class="tab-pane fade show active" id="product-desc" role="tabpanel" aria-labelledby="product-desc-tab">
+                                                              {% for data in datas %}
+                                                <div class="timeline">
+                                                    <div class="time-label">
+                                                        <span class="bg-red">{{ data.phase }} {{ data.phase_done_percentage }}%</span>
+                                                    </div>
+                                                    <div>
+                                                        <div class="timeline-item" style="width: 100dvh;">
+                                                            {% for task in data.tasks %}
+                                                                {% generate_random 'collapse' as random_id %}
+                                                                {% with task.task_done_percentage|to_int as percentage %}
+                                                                    <div class="progress-bar d-block mb-2
+    {% if percentage == 100 %}
+        bg-success
+    {% elif percentage < 100 and percentage >= 50 %}
+        bg-warning
+    {% elif percentage < 50 and percentage >= 0 %}
+        bg-light
+    {% endif %}"
+                                                                         role="progressbar"
+                                                                         aria-valuenow="{{ percentage }}"
+                                                                         aria-valuemin="0"
+                                                                         aria-valuemax="100"
+                                                                         style="width: 100%;">
+                                                                        {{ task.task_name }} {{ percentage }}%
+                                                                    </div>
+                                                                {% endwith %}
+                                                            {% endfor %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            {% endfor %}
+              </div>
+              <div class="tab-pane fade" id="product-comments" role="tabpanel" aria-labelledby="product-comments-tab">
+                  {% for comment in comments %}
+                      <div class="card" style="padding: 30px;width: 100dvh">
+                      <h9>{{ comment.author.get_full_name }}</h9>
+                      <small>{{ comment.created_at }}</small>
+                      <p class="mt-4 text-lg">{{ comment.comment }}</p>
+
+                      </div>
+                  {% endfor %}
+              </div>
+              <div class="tab-pane fade" id="product-rating" role="tabpanel" aria-labelledby="product-rating-tab">
+                                {% for problem in problems %}
+                      <div class="card" style="padding: 30px;width: 100dvh">
+                      <h9>{{ problem.author.get_full_name }}</h9>
+                      <small>{{ problem.created_at }}</small>
+                      <p class="mt-4 text-lg">{{ problem.problem}}</p>
+
+                      </div>
+                  {% endfor %}
+              </div>
+            </div>
+          </div>
+
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-12 col-lg-4 order-1 order-md-2">
+                            {% for ph in project %}
+                                <h3 class="text-primary"><i class="fas fa-paint-brush"></i>{{ ph.project_name }} </h3>
+                                <p class="text-muted">{{ ph.project_description }}</p>
+                                <br>
+                                <div class="text-muted">
+                                    <p class="text-sm">Loyiha egasi
+                                        <b class="d-block">{{ ph.author.get_full_name }}</b>
+                                    </p>
+                                    <p class="text-sm">Loyiha kuratori
+                                        <b class="d-block">{{ ph.project_curator }}</b>
+                                    </p>
+                                </div>
+                            {% endfor %}
+                            <h5 class="mt-5 text-muted">Loyiha fayllari</h5>
+                            <ul class="list-unstyled">
+                                {% for doc in documents %}
+                                    <li>
+                                        <a href="" class="btn-link text-secondary" download="{{ doc.document }}"><i
+                                                class="fa-solid fa-link" style="margin-right: 2%"></i>
+                                            <embed href="{{ doc.document }}">
+                                            {{ doc.document }}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </section>
+    </div>
+{% endblock content %}

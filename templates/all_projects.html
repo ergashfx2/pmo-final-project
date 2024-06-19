@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% load filters %}
+    <section class="bg-light">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Loyihalar</h3>
+
+                <div class="card-tools mb-3">
+                    <i style="rotate: 90deg" id="filter-table" class="fa-solid fa-sliders btn btn-outline-dark"></i>
+
+                </div>
+
+                <div class="table-responsive">
+                    <div class="card grid-container mt-3" id="filter-container" style="display: none">
+                        <label class="grid-item">
+                            <input class="cols" name="project_name" type="checkbox"> Loyiha nomi
+                        </label>
+                        <label class="grid-item">
+                            <input class="cols" name="project_description" type="checkbox"> Loyiha haqida
+                        </label>
+                        <label class="grid-item">
+                            <input class="cols" name="project_department" type="checkbox"> Tashabbuskor departament
+                        </label>
+                        <label class="grid-item">
+                            <input class="cols" name="project_blog__blog_name" type="checkbox"> Blok
+                        </label>
+                        <label class="grid-item">
+                            <input class="cols" name="project_type" type="checkbox"> Loyiha turi
+                        </label>
+                        <label class="grid-item">
+                            <input class="cols" name="project_size" type="checkbox"> Masshtab
+                        </label>
+                        <label class="grid-item">
+                            <input class="cols" name="project_level" type="checkbox"> Muhimlilik darajasi
+                        </label>
+                        <label class="grid-item">
+                            <input class="cols" name="project_speed" type="checkbox"> Muddat darajasi
+                        </label>
+                        <label class="grid-item">
+                            <input class="cols" name="project_departments" type="checkbox"> Mas'ul departament(lar)
+                        </label>
+                        <label class="grid-item">
+                            <input class="cols" name="project_team" type="checkbox"> Mas'ul xodim(lar)
+                        </label>
+                        <label class="grid-item">
+                            <input class="cols" name="project_budget" type="checkbox"> Umumiy loyiha summasi
+                        </label>
+                        <label class="grid-item">
+                            <input class="cols" name="project_deadline" type="checkbox"> Taxminiy yakunlash sanasi
+                        </label>
+                        <label class="grid-item">
+                            <input class="cols" name="project_status" type="checkbox"> Loyiha statusi
+                        </label>
+                        <label class="grid-item">
+                            <input class="cols" name="project_curator" type="checkbox"> Strategiya departamentida
+                            biriktirilgan xodim
+                        </label>
+                        <label class="grid-item">
+                            <input class="cols" name="project_spent_money" type="checkbox"> Sarflangan xarajat
+                        </label>
+                        <button id="apply-changes" class="btn btn-primary">Qo'llash</button>
+                    </div>
+                    <table class="table table-striped" id="table-projects">
+                        <thead>
+                        <tr>
+                            <th class="text-center">№</th>
+                            <th class="text-center">Loyiha nomi</th>
+                            <th class="text-center">Loyiha haqida</th>
+                            <th class="text-center">Departamenti</th>
+                            <th class="text-center">Ma'sul xodim</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for project in projects %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td class="text-center">
+                                    <a href="{% url 'get-project' project.pk %}"
+                                       style="color: black">{{ project.project_name }}</a>
+                                </td>
+                                <td>{{ project.project_description }}</td>
+                                <td>{{ project.project_department }}</td>
+                                <td>{{ project.project_curator.get_full_name }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <script type="text/javascript">
+        var projects_s = {{ projects_serialized | safe }};
+    </script>
+    <script>
+        console.log(projects_s)
+        document.getElementById('filter-table').addEventListener('click', function () {
+            var filter = document.getElementById('filter-container');
+            if (filter.style.display === 'none') {
+                filter.style.display = 'block'
+            } else {
+                filter.style.display = 'none'
+            }
+        })
+        var cols = []
+        var colNames = []
+        var thead = ''
+        var tbody = ''
+        filters = document.querySelectorAll('.cols');
+        filters.forEach(value => {
+            value.addEventListener('change', function (e) {
+                var checked = e.target.checked
+                if (checked) {
+                    cols.push(value.parentNode.textContent.trim())
+                    colNames.push(value.name)
+                } else {
+                    cols = cols.filter(item => item !== value.parentNode.textContent.trim());
+                    colNames = colNames.filter(item => item !== value.name);
+                }
+            })
+        })
+
+        document.getElementById('apply-changes').addEventListener('click', function () {
+            document.getElementById('filter-container').style.display = 'none'
+            cols.forEach(col => {
+                thead += `<th>${col}</th>`
+            })
+            for (i = 0; i < projects_s.length; i++) {
+                var tds = ''
+                colNames.forEach(value => {
+                    tds += `<td><a href=${window.location.pathname.replace('all',projects_s[i].pk)} style="color:#000;">${projects_s[i].fields[value]}</a></td>`
+                })
+                tbody += `<tr>${tds}</tr>`
+            }
+
+
+            document.getElementById('table-projects').innerHTML = `<thead><tr>${thead}</tr></thead><tbody>${tbody}</tbody>`
+        })
+
+    </script>
+
+{% endblock content %}

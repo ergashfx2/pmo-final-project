@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+        <form method="post" action="" class="container bg-white" style="height: 40dvh;padding: 10%;padding-top: 5%">
+        {% csrf_token %}
+    {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Qo'shish</button>
+    </form>
+
+
+{% endblock content %}

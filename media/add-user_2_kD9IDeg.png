@@ -1,0 +1,449 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PMO system</title>
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <link rel="stylesheet" href="/static/plugins/fontawesome-free/css/all.min.css">
+    <link href="/static/fontawesomefree/css/fontawesome.css" rel="stylesheet">
+    <link href="/static/fontawesomefree/css/brands.css" rel="stylesheet" type="text/css">
+    <link href="/static/fontawesomefree/css/solid.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/static/dist/css/adminlte.min.css">
+</head>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <script>
+            var lists = JSON.parse('')
+            var token = '5iZ38RKlTjdcE6OCej7jlPd9sSnoGoKJ9GKSYPazolqvjPmNTfRDvCOStXDUQdXZ';
+        </script>
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+            </li>
+            <li class="nav-item d-none d-sm-inline-block">
+                <a href="/" class="nav-link">Home</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" data-widget="navbar-search" href="#" role="button">
+                    <i class="fas fa-search"></i>
+                </a>
+                <div class="navbar-search-block">
+                    <form class="form-inline">
+                        <div class="input-group input-group-sm">
+                            <input class="form-control form-control-navbar" type="search" placeholder="Search"
+                                   aria-label="Search">
+                            <div class="input-group-append">
+                                <button class="btn btn-navbar" type="submit">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                                <button class="btn btn-navbar" type="button" data-widget="navbar-search">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </li>
+
+            <li class="nav-item dropdown">
+                <a class="nav-link" data-toggle="dropdown" href="#">
+                    <i class="far fa-comments"></i>
+                    <span class="badge badge-danger navbar-badge">3</span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                    <a href="#" class="dropdown-item">
+                        <div class="media">
+                            <img src="/static/dist/img/user1-128x128.jp" alt="User Avatar"
+                                 class="img-size-50 mr-3 img-circle">
+                            <div class="media-body">
+                                <h3 class="dropdown-item-title">
+                                    Brad Diesel
+                                    <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
+                                </h3>
+                                <p class="text-sm">Call me whenever you can...</p>
+                                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
+                            </div>
+                        </div>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item">
+                        <div class="media">
+                            <img src="/static/dist/img/user8-128x128.jp" alt="User Avatar"
+                                 class="img-size-50 img-circle mr-3">
+                            <div class="media-body">
+                                <h3 class="dropdown-item-title">
+                                    John Pierce
+                                    <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span>
+                                </h3>
+                                <p class="text-sm">I got your message bro</p>
+                                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
+                            </div>
+                        </div>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item">
+                        <div class="media">
+                            <img src="/static/dist/img/user3-128x128.jp" alt="User Avatar"
+                                 class="img-size-50 img-circle mr-3">
+                            <div class="media-body">
+                                <h3 class="dropdown-item-title">
+                                    Nora Silvester
+                                    <span class="float-right text-sm text-warning"><i class="fas fa-star"></i></span>
+                                </h3>
+                                <p class="text-sm">The subject goes here</p>
+                                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
+                            </div>
+                        </div>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link" data-toggle="dropdown" href="#">
+                    <i class="far fa-bell"></i>
+                    <span class="badge badge-warning navbar-badge">15</span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                    <span class="dropdown-item dropdown-header">15 Notifications</span>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item">
+                        <i class="fas fa-envelope mr-2"></i> 4 new messages
+                        <span class="float-right text-muted text-sm">3 mins</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item">
+                        <i class="fas fa-users mr-2"></i> 8 friend requests
+                        <span class="float-right text-muted text-sm">12 hours</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item">
+                        <i class="fas fa-file mr-2"></i> 3 new reports
+                        <span class="float-right text-muted text-sm">2 days</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+                    <i class="fas fa-expand-arrows-alt"></i>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
+                    <i class="fas fa-th-large"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <a href="/" class="brand-link">
+            <img src="/static/dist/img/AdminLTELogo.png" alt="Logo"
+                 class="brand-image img-circle elevation-3" style="opacity: .8">
+            <span class="brand-text font-weight-light">PMO system</span>
+        </a>
+        <div class="sidebar">
+            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                <div class="image">
+                    
+                    <img src="/media/images/Robert_Downey_Jr._2012.jpg" class="img-circle elevation-2"
+                         alt="User Image">
+                    
+                </div>
+                <div class="info">
+                    <a href="/users/profile/" class="d-block">Abduvokhidov Ergashali</a>
+                </div>
+            </div>
+
+            <div class="form-inline">
+                <div class="input-group" data-widget="sidebar-search">
+                    <input class="form-control form-control-sidebar" type="search" placeholder="Search"
+                             aria-label="Search">
+                    <div class="input-group-append">
+                        <button class="btn btn-sidebar">
+                            <i class="fas fa-search fa-fw"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <nav class="mt-2">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                    data-accordion="false">
+                    <li class="nav-item">
+                        <a href="/users/profile/" class="nav-link">
+                            <i class="fa-solid fa-user" style="color: #fafafa;margin-right: 2%"></i>
+                            <p>
+                                Profil
+                            </p>
+                        </a>
+                    </li>
+                    
+                                        <li class="nav-item">
+                        <a href="/users/view/" class="nav-link">
+                            <i class="fa-solid fa-users" style="color: #fafafa;margin-right: 2%"></i>
+                            <p>
+                                Foydalanuvchilar
+                            </p>
+                        </a>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a href="/projects/all/" class="nav-link">
+                            <i class="fa-solid fa-file-invoice" style="color: #fafafa;margin-right: 2%"></i>
+                            <p>
+                                Barcha loyihalar
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/projects/my-projects/" class="nav-link">
+                            <i class="fa-solid fa-file-contract" style="color: #fafafa;margin-right: 2%"></i>
+                            <p>
+                                Mening loyihalarim
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fa-solid fa-briefcase" style="color: #fafafa;margin-right: 2%"></i>
+                            <p>
+                                Loyiha egasi
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fa-solid fa-square-poll-vertical" style="color: #fafafa;margin-right: 2%"></i>
+                            <p>
+                                Kvalifikatsiya
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fa-solid fa-building-columns" style="color: #fafafa;margin-right: 2%"></i>
+                            <p>
+                                Xarajatlar
+                            </p>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </aside>
+    <div class="content-wrapper">
+        
+    <div class="container-fluid">
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        
+                           <h1> <strong>Sayt yaratish</strong> - loyihasi haqida batafsil ma'lumot</h1>
+                        
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="/">Home</a></li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="content">
+
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Loyiha haqida</h3>
+
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 col-md-12 col-lg-8 order-2 order-md-1">
+                            <div class="row">
+                                <div class="col-12 col-sm-4">
+                                    <div class="info-box bg-light">
+                                        <div class="info-box-content">
+                                            <span class="info-box-text text-center text-muted">Loyiha budjeti</span>
+                                            
+                                                <span class="info-box-number text-center text-muted mb-0">100 000 000</span>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-4">
+                                    <div class="info-box bg-light">
+                                        <div class="info-box-content">
+                                            <span class="info-box-text text-center text-muted">Sarflangan pul</span>
+                                            
+                                                <span class="info-box-number text-center text-muted mb-0">32 000 000</span>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-4">
+                                    <div class="info-box bg-light">
+                                        <div class="info-box-content">
+                                            <span class="info-box-text text-center text-muted">Tugash vaqti</span>
+                                            
+                                                <span class="info-box-number text-center text-muted mb-0">20-Iyun 2024 yil</span>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            
+                                                <div class="timeline">
+                                                    <div class="time-label">
+                                                        <span class="bg-red">Logo qilish 75%</span>
+                                                    </div>
+                                                    <div>
+                                                        <div class="timeline-item">
+                                                            
+                                                                
+                                                                
+                                                                    <div class="progress-bar d-block mb-2
+    
+        bg-success
+    "
+                                                                         role="progressbar"
+                                                                         aria-valuenow="100"
+                                                                         aria-valuemin="0"
+                                                                         aria-valuemax="100"
+                                                                         style="width: 100%;height: 40px">
+                                                                        Grafik dizayner topish 100%
+                                                                    </div>
+                                                                
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            
+                                                <div class="timeline">
+                                                    <div class="time-label">
+                                                        <span class="bg-red">Front end qilish 25%</span>
+                                                    </div>
+                                                    <div>
+                                                        <div class="timeline-item">
+                                                            
+                                                                
+                                                                
+                                                                    <div class="progress-bar d-block mb-2
+    
+        bg-warning
+    "
+                                                                         role="progressbar"
+                                                                         aria-valuenow="50"
+                                                                         aria-valuemin="0"
+                                                                         aria-valuemax="100"
+                                                                         style="width: 100%;height: 40px">
+                                                                        Dasturchi yollash 50%
+                                                                    </div>
+                                                                
+                                                            
+                                                                
+                                                                
+                                                                    <div class="progress-bar d-block mb-2
+    
+        bg-danger
+    "
+                                                                         role="progressbar"
+                                                                         aria-valuenow="0"
+                                                                         aria-valuemin="0"
+                                                                         aria-valuemax="100"
+                                                                         style="width: 100%;height: 40px">
+                                                                        Dasturchiga pul berish 0%
+                                                                    </div>
+                                                                
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            
+
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-12 col-lg-4 order-1 order-md-2">
+                            
+                                <h3 class="text-primary"><i class="fas fa-paint-brush"></i>Sayt yaratish </h3>
+                                <p class="text-muted">Sayt yaratish</p>
+                                <br>
+                                <div class="text-muted">
+                                    <p class="text-sm">Loyiha egasi
+                                        <b class="d-block">Abduvokhidov Ergashali</b>
+                                    </p>
+                                    <p class="text-sm">Loyiha kuratori
+                                        <b class="d-block">Hasan</b>
+                                    </p>
+                                </div>
+                            
+                            <h5 class="mt-5 text-muted">Loyiha fayllari</h5>
+                            <ul class="list-unstyled">
+                                
+                                    <li>
+                                        <a href="" class="btn-link text-secondary" download="add-user.png"><i
+                                                class="fa-solid fa-link" style="margin-right: 2%"></i>
+                                            <embed href="add-user.png">
+                                            add-user.png
+                                        </a>
+                                    </li>
+                                
+                                    <li>
+                                        <a href="" class="btn-link text-secondary" download="Robert_Downey_Jr._2012.jpg"><i
+                                                class="fa-solid fa-link" style="margin-right: 2%"></i>
+                                            <embed href="Robert_Downey_Jr._2012.jpg">
+                                            Robert_Downey_Jr._2012.jpg
+                                        </a>
+                                    </li>
+                                
+                            </ul>
+                    </div>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+            </div>
+        </section>
+        <!-- /.content -->
+    </div>
+
+    </div>
+</div>
+<script src="/static/plugins/jquery/jquery.min.js"></script>
+<script src="/static/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/static/dist/js/adminlte.js"></script>
+<script src="/static/plugins/chart.js/Chart.min.js"></script>
+<script src="/static/dist/js/demo.js"></script>
+<script src="/static/dist/js/pages/dashboard3.js"></script>
+<script src="/static/static/js/script.js">
+</script>
+</body>
+</html>

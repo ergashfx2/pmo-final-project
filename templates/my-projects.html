@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% load filters %}
+    <section class="content bg-light">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Loyihalar</h3>
+
+                <div class="card-tools">
+                    <a href="{% url 'create-project' %}"> <i
+                            class="fa-solid fa-circle-plus btn btn-outline-dark"></i></a>
+                </div>
+            </div>
+            <div class="card-body p-0" style="overflow-x: auto">
+                <table class="table table-striped projects">
+                    <thead>
+                    <tr>
+                        <th scope="col">
+                            No
+                        </th>
+                        <th scope="col">
+                            Loyiha nomi
+                        </th>
+                        <th scope="col">
+                            Loyiha haqida
+                        </th>
+                        <th scope="col">
+                            Tashabbuskor departament
+                        </th>
+                                                                  <th scope="col">
+                            Summasi
+
+                        </th>
+                                                                                          <th scope="col" class="text-center">
+                            Biriktirilgan xodim
+
+                        </th>
+                        <th scope="col" class="text-center">
+                            Holati
+                        </th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for project in projects %}
+                        <tr>
+                            <td>
+                                {{ forloop.counter }}
+                            </td>
+                            <td>
+                                <a href="{% url 'get-project' project.pk %}" style="color: black">
+                                    {{ project.project_name }}
+                                </a>
+                            </td>
+                            <td>
+                                {{ project.project_description }}
+                            </td>
+                            <td >
+                                {{ project.project_department }}
+                            </td>
+
+                                                                                                         <td class="project-state">
+                                <p>{{ project.project_budget}}</p>
+                            </td>
+
+                                                                                                                            <td class="project-state">
+                                <p>{{ project.project_curator.get_full_name}}</p>
+                            </td>
+                                                        <td class="project_progress" style="width: 10%;">
+                                <div class="progress progress-sm">
+                                    <div class="progress-bar {% if project.project_status == 'Yangi' %} bg-light {% elif project.project_status == 'Jarayonda' %} bg-yellow {% elif project.project_status == 'Tugatilgan' %}bg-green{% endif %}"
+                                         role="progressbar" aria-valuenow="{{ project.project_done_percentage }}"
+                                         aria-valuemin="0" aria-valuemax="100"
+                                         style="width: {{ project.project_done_percentage }}%">
+                                    </div>
+                                </div>
+                                <small>
+                                    {{ project.project_done_percentage }}%<br>
+                                    <strong>{{ project.project_status }}</strong>
+                                </small>
+                            </td>
+
+                            <td class="project-actions text-right">
+<ul style="list-style: none">
+    <li>
+        <a class="btn btn-primary btn-sm" href="{% url 'my-projects-detail' project.pk %}">
+            <i class="fas fa-folder"></i>
+        </a>
+    </li>
+    <li>
+        <a class="btn btn-info btn-sm" href="{% url 'update-project' project.pk %}">
+            <i class="fas fa-pencil-alt"></i>
+        </a>
+    </li>
+    <li>
+        <button id="{{ project.pk }}" type="button" class="btn btn-danger btn-sm delete-button" data-toggle="modal" data-target="#myModal">
+            <i class="fas fa-trash"></i>
+        </button>
+    </li>
+</ul>
+
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Chindan ham loyihani o'chirasizmi ?</h4>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="confirm" type="button" class="btn btn-primary" data-dismiss="modal">Ha</button>
+                        <button id="cancel" type="button" class="btn btn-danger" data-dismiss="modal">Bekor qilish
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </section>
+
+
+{% endblock content %}

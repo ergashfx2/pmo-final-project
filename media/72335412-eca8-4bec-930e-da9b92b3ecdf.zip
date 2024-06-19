@@ -1,0 +1,793 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PMO system</title>
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <link rel="stylesheet" href="/static/plugins/fontawesome-free/css/all.min.css">
+    <link href="/static/fontawesomefree/css/fontawesome.css" rel="stylesheet">
+    <link href="/static/fontawesomefree/css/brands.css" rel="stylesheet" type="text/css">
+    <link href="/static/fontawesomefree/css/solid.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/static/dist/css/adminlte.min.css">
+</head>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <script>
+            var lists = JSON.parse('')
+            var token = 'xKIpmpiNBCJqsze4BONK5ng2J1kJ6zfmf0m1lPbwOiM3kEtnO2hW7wYSZzWuC8FW';
+        </script>
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+            </li>
+            <li class="nav-item d-none d-sm-inline-block">
+                <a href="/" class="nav-link">Home</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" data-widget="navbar-search" href="#" role="button">
+                    <i class="fas fa-search"></i>
+                </a>
+                <div class="navbar-search-block">
+                    <form class="form-inline">
+                        <div class="input-group input-group-sm">
+                            <input class="form-control form-control-navbar" type="search" placeholder="Search"
+                                   aria-label="Search">
+                            <div class="input-group-append">
+                                <button class="btn btn-navbar" type="submit">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                                <button class="btn btn-navbar" type="button" data-widget="navbar-search">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </li>
+
+            <li class="nav-item dropdown">
+                <a class="nav-link" data-toggle="dropdown" href="#">
+                    <i class="far fa-comments"></i>
+                    <span class="badge badge-danger navbar-badge">3</span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                    <a href="#" class="dropdown-item">
+                        <div class="media">
+                            <img src="/static/dist/img/user1-128x128.jp" alt="User Avatar"
+                                 class="img-size-50 mr-3 img-circle">
+                            <div class="media-body">
+                                <h3 class="dropdown-item-title">
+                                    Brad Diesel
+                                    <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
+                                </h3>
+                                <p class="text-sm">Call me whenever you can...</p>
+                                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
+                            </div>
+                        </div>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item">
+                        <div class="media">
+                            <img src="/static/dist/img/user8-128x128.jp" alt="User Avatar"
+                                 class="img-size-50 img-circle mr-3">
+                            <div class="media-body">
+                                <h3 class="dropdown-item-title">
+                                    John Pierce
+                                    <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span>
+                                </h3>
+                                <p class="text-sm">I got your message bro</p>
+                                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
+                            </div>
+                        </div>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item">
+                        <div class="media">
+                            <img src="/static/dist/img/user3-128x128.jp" alt="User Avatar"
+                                 class="img-size-50 img-circle mr-3">
+                            <div class="media-body">
+                                <h3 class="dropdown-item-title">
+                                    Nora Silvester
+                                    <span class="float-right text-sm text-warning"><i class="fas fa-star"></i></span>
+                                </h3>
+                                <p class="text-sm">The subject goes here</p>
+                                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
+                            </div>
+                        </div>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link" data-toggle="dropdown" href="#">
+                    <i class="far fa-bell"></i>
+                    <span class="badge badge-warning navbar-badge">15</span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                    <span class="dropdown-item dropdown-header">15 Notifications</span>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item">
+                        <i class="fas fa-envelope mr-2"></i> 4 new messages
+                        <span class="float-right text-muted text-sm">3 mins</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item">
+                        <i class="fas fa-users mr-2"></i> 8 friend requests
+                        <span class="float-right text-muted text-sm">12 hours</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item">
+                        <i class="fas fa-file mr-2"></i> 3 new reports
+                        <span class="float-right text-muted text-sm">2 days</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+                    <i class="fas fa-expand-arrows-alt"></i>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
+                    <i class="fas fa-th-large"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <a href="/" class="brand-link">
+            <img src="/static/dist/img/AdminLTELogo.png" alt="Logo"
+                 class="brand-image img-circle elevation-3" style="opacity: .8">
+            <span class="brand-text font-weight-light">PMO system</span>
+        </a>
+        <div class="sidebar">
+            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                <div class="image">
+                    
+                    <img src="/media/images/Robert_Downey_Jr._2012.jpg" class="img-circle elevation-2"
+                         alt="User Image">
+                    
+                </div>
+                <div class="info">
+                    <a href="/users/profile/" class="d-block">Abduvokhidov Ergashali</a>
+                </div>
+            </div>
+
+            <div class="form-inline">
+                <div class="input-group" data-widget="sidebar-search">
+                    <input class="form-control form-control-sidebar" type="search" placeholder="Search"
+                             aria-label="Search">
+                    <div class="input-group-append">
+                        <button class="btn btn-sidebar">
+                            <i class="fas fa-search fa-fw"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <nav class="mt-2">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                    data-accordion="false">
+                    <li class="nav-item">
+                        <a href="/users/profile/" class="nav-link">
+                            <i class="fa-solid fa-user" style="color: #fafafa;margin-right: 2%"></i>
+                            <p>
+                                Profil
+                            </p>
+                        </a>
+                    </li>
+                    
+                                        <li class="nav-item">
+                        <a href="/users/view/" class="nav-link">
+                            <i class="fa-solid fa-users" style="color: #fafafa;margin-right: 2%"></i>
+                            <p>
+                                Foydalanuvchilar
+                            </p>
+                        </a>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a href="/projects/all/" class="nav-link">
+                            <i class="fa-solid fa-file-invoice" style="color: #fafafa;margin-right: 2%"></i>
+                            <p>
+                                Barcha loyihalar
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/projects/my-projects/" class="nav-link">
+                            <i class="fa-solid fa-file-contract" style="color: #fafafa;margin-right: 2%"></i>
+                            <p>
+                                Mening loyihalarim
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/projects/owner-projects/" class="nav-link">
+                            <i class="fa-solid fa-briefcase" style="color: #fafafa;margin-right: 2%"></i>
+                            <p>
+                                Loyiha egasi
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fa-solid fa-square-poll-vertical" style="color: #fafafa;margin-right: 2%"></i>
+                            <p>
+                                Kvalifikatsiya
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fa-solid fa-building-columns" style="color: #fafafa;margin-right: 2%"></i>
+                            <p>
+                                Xarajatlar
+                            </p>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </aside>
+    <div class="content-wrapper">
+        
+    <div class="container-fluid">
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        
+                            <h1><strong>Sayt boshlash</strong> - loyihasi haqida batafsil ma'lumot</h1>
+                        
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="/">Home</a></li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="content">
+            <div class="card" style="height: 100dvh">
+                <div class="card-header">
+                    <div class="card-tools">
+                        <i id="" data-toggle="modal" data-target="#add-phase"
+                           class="fa-solid fa-circle-plus btn btn-outline-dark"></i>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 col-md-12 col-lg-8 order-2 order-md-1">
+                            <div class="row">
+                                <div class="col-12 col-sm-4">
+                                    <div class="info-box bg-light">
+                                        <div class="info-box-content">
+                                            <span class="info-box-text text-center text-muted">Loyiha budjeti</span>
+                                            
+                                                <span class="info-box-number text-center text-muted mb-0">100 000 000</span>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-4">
+                                    <div class="info-box bg-light">
+                                        <div class="info-box-content">
+                                            <span class="info-box-text text-center text-muted">Sarflangan pul</span>
+                                            
+                                                <span class="info-box-number text-center text-muted mb-0">30</span>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-4">
+                                    <div class="info-box bg-light">
+                                        <div class="info-box-content">
+                                            <span class="info-box-text text-center text-muted">Tugash vaqti</span>
+                                            
+                                                <span class="info-box-number text-center text-muted mb-0">2-Fevral 2024 yil</span>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="text-start mt-2 border-bottom border-dark"
+                                                 style="margin-bottom: 3%">
+                                                <h4><strong>Ushbu loyihaga tegishli faza va tasklar</strong></h4>
+                                            </div>
+                                            
+                                                <div class="row">
+                                                    <div class="col-10">
+                                                        
+                                                            <div class="row bg-light mb-3 chevron 13"
+                                                                 data-toggle="collapse" data-target="#collapse8308294e-23c4-4c70-bec5-52442c209306"
+                                                                 style="height: 50px;box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;">
+                                                                <div class="col-10">
+                                                                    <p id="phase13">jbkjk</p>
+                                                                </div>
+
+                                                            </div>
+                                                            </div>
+                                                            <div id="icons-panel13"
+                                                                 class="col-2 bg-light mb-3 text-center pt-3"
+                                                                 style="box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;">
+                                                                <i class="fa-solid fa-pen-to-square mx-1 13 icon-buttons"
+                                                                   style="cursor: pointer"></i>
+                                                                <i class="fa-solid fa-trash trash-icon mx-1"
+                                                                   data-toggle="modal" data-target="#delete-phase"
+                                                                   id="13" style="cursor: pointer"></i>
+                                                                <i id="chevron13"
+                                                                   data-toggle="collapse" data-target="#collapse8308294e-23c4-4c70-bec5-52442c209306"
+                                                                   class="fa-solid fa-chevron-right chevron mx-1 collapse-icon13"></i>
+                                                            </div>
+                                                            </div>
+                                                            
+                                                                
+                                                                    <div class="card bg-green collapse"
+                                                                         id="collapse8308294e-23c4-4c70-bec5-52442c209306">
+                                                                        <div class="card-body row">
+                                                                            <div class="col-11">
+                                                                                <label id="label30">task</label>
+                                                                                <br><strong>Tugatilganligi
+                                                                                :</strong> 100%
+                                                                            </div>
+                                                                            <div class="col-1">
+                                                                                <i style="cursor: pointer"
+                                                                                   data-toggle="modal"
+                                                                                   data-target="#finish-task"
+                                                                                   class="fa-solid fa-flag-checkered task-finish 30"></i>
+                                                                                <i class="fa-solid fa-pen-to-square mx-1 30 edit-task-icon"
+                                                                                   style="cursor: pointer"></i>
+                                                                                <i class="fa-solid fa-trash delete-task-icon trash-icon mx-1"
+                                                                                   data-toggle="modal"
+                                                                                   data-target="#delete-task"
+                                                                                   id="30"
+                                                                                   style="cursor: pointer"></i>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                
+                                                            
+                                                                
+                                                                    <div class="card bg-yellow  collapse"
+                                                                         id="collapse8308294e-23c4-4c70-bec5-52442c209306">
+                                                                        <div class="card-body row">
+                                                                            <div class="col-11">
+                                                                                <label id="label31">csacacacvs</label>
+                                                                                <br><strong>Tugatilganligi
+                                                                                :</strong> 70%
+                                                                            </div>
+                                                                            <div class="col-1">
+                                                                                <i style="cursor: pointer"
+                                                                                   data-toggle="modal"
+                                                                                   data-target="#finish-task"
+                                                                                   class="fa-solid fa-flag-checkered task-finish 31"></i>
+                                                                                <i class="fa-solid fa-pen-to-square mx-1 31 edit-task-icon"
+                                                                                   style="cursor: pointer"></i>
+                                                                                <i class="fa-solid fa-trash delete-task-icon trash-icon mx-1"
+                                                                                   data-toggle="modal"
+                                                                                   data-target="#delete-task"
+                                                                                   id="31"
+                                                                                   style="cursor: pointer"></i>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                
+                                                            
+                                                        
+                                            
+                                                <div class="row">
+                                                    <div class="col-10">
+                                                        
+                                                            <div class="row bg-light mb-3 chevron 15"
+                                                                 data-toggle="collapse" data-target="#collapsed9880459-0b39-4f8c-af9e-d862760ec5bb"
+                                                                 style="height: 50px;box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;">
+                                                                <div class="col-10">
+                                                                    <p id="phase15">sdvvsv</p>
+                                                                </div>
+
+                                                            </div>
+                                                            </div>
+                                                            <div id="icons-panel15"
+                                                                 class="col-2 bg-light mb-3 text-center pt-3"
+                                                                 style="box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;">
+                                                                <i class="fa-solid fa-pen-to-square mx-1 15 icon-buttons"
+                                                                   style="cursor: pointer"></i>
+                                                                <i class="fa-solid fa-trash trash-icon mx-1"
+                                                                   data-toggle="modal" data-target="#delete-phase"
+                                                                   id="15" style="cursor: pointer"></i>
+                                                                <i id="chevron15"
+                                                                   data-toggle="collapse" data-target="#collapsed9880459-0b39-4f8c-af9e-d862760ec5bb"
+                                                                   class="fa-solid fa-chevron-right chevron mx-1 collapse-icon15"></i>
+                                                            </div>
+                                                            </div>
+                                                            
+                                                                
+                                                                    <div class="card bg-yellow  collapse"
+                                                                         id="collapsed9880459-0b39-4f8c-af9e-d862760ec5bb">
+                                                                        <div class="card-body row">
+                                                                            <div class="col-11">
+                                                                                <label id="label35">ascsasacas</label>
+                                                                                <br><strong>Tugatilganligi
+                                                                                :</strong> 10%
+                                                                            </div>
+                                                                            <div class="col-1">
+                                                                                <i style="cursor: pointer"
+                                                                                   data-toggle="modal"
+                                                                                   data-target="#finish-task"
+                                                                                   class="fa-solid fa-flag-checkered task-finish 35"></i>
+                                                                                <i class="fa-solid fa-pen-to-square mx-1 35 edit-task-icon"
+                                                                                   style="cursor: pointer"></i>
+                                                                                <i class="fa-solid fa-trash delete-task-icon trash-icon mx-1"
+                                                                                   data-toggle="modal"
+                                                                                   data-target="#delete-task"
+                                                                                   id="35"
+                                                                                   style="cursor: pointer"></i>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                
+                                                            
+                                                                
+                                                                    <div class="card  collapse"
+                                                                         id="collapsed9880459-0b39-4f8c-af9e-d862760ec5bb">
+                                                                        <div class="card-body row">
+                                                                            <div class="col-11">
+                                                                                <label id="label36">ascsacaca</label>
+                                                                                <br><strong>Tugatilganligi
+                                                                                :</strong> 0%
+                                                                            </div>
+                                                                            <div class="col-1">
+                                                                                <i style="cursor: pointer"
+                                                                                   data-toggle="modal"
+                                                                                   data-target="#finish-task"
+                                                                                   class="fa-solid fa-flag-checkered task-finish 36"></i>
+                                                                                <i class="fa-solid fa-pen-to-square mx-1 36 edit-task-icon"
+                                                                                   style="cursor: pointer"></i>
+                                                                                <i class="fa-solid fa-trash delete-task-icon trash-icon mx-1"
+                                                                                   data-toggle="modal"
+                                                                                   data-target="#delete-task"
+                                                                                   id="36"
+                                                                                   style="cursor: pointer"></i>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                
+                                                            
+                                                                
+                                                                    <div class="card bg-yellow  collapse"
+                                                                         id="collapsed9880459-0b39-4f8c-af9e-d862760ec5bb">
+                                                                        <div class="card-body row">
+                                                                            <div class="col-11">
+                                                                                <label id="label37">asccacs</label>
+                                                                                <br><strong>Tugatilganligi
+                                                                                :</strong> 20%
+                                                                            </div>
+                                                                            <div class="col-1">
+                                                                                <i style="cursor: pointer"
+                                                                                   data-toggle="modal"
+                                                                                   data-target="#finish-task"
+                                                                                   class="fa-solid fa-flag-checkered task-finish 37"></i>
+                                                                                <i class="fa-solid fa-pen-to-square mx-1 37 edit-task-icon"
+                                                                                   style="cursor: pointer"></i>
+                                                                                <i class="fa-solid fa-trash delete-task-icon trash-icon mx-1"
+                                                                                   data-toggle="modal"
+                                                                                   data-target="#delete-task"
+                                                                                   id="37"
+                                                                                   style="cursor: pointer"></i>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                
+                                                            
+                                                        
+                                            
+                                                <div class="row">
+                                                    <div class="col-10">
+                                                        
+                                                            <div class="row bg-light mb-3 chevron 16"
+                                                                 data-toggle="collapse" data-target="#collapse4a9064b4-2864-45aa-8b93-36259e4438a8"
+                                                                 style="height: 50px;box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;">
+                                                                <div class="col-10">
+                                                                    <p id="phase16">ascacsaca</p>
+                                                                </div>
+
+                                                            </div>
+                                                            </div>
+                                                            <div id="icons-panel16"
+                                                                 class="col-2 bg-light mb-3 text-center pt-3"
+                                                                 style="box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;">
+                                                                <i class="fa-solid fa-pen-to-square mx-1 16 icon-buttons"
+                                                                   style="cursor: pointer"></i>
+                                                                <i class="fa-solid fa-trash trash-icon mx-1"
+                                                                   data-toggle="modal" data-target="#delete-phase"
+                                                                   id="16" style="cursor: pointer"></i>
+                                                                <i id="chevron16"
+                                                                   data-toggle="collapse" data-target="#collapse4a9064b4-2864-45aa-8b93-36259e4438a8"
+                                                                   class="fa-solid fa-chevron-right chevron mx-1 collapse-icon16"></i>
+                                                            </div>
+                                                            </div>
+                                                            
+                                                                
+                                                                    <div class="card  collapse"
+                                                                         id="collapse4a9064b4-2864-45aa-8b93-36259e4438a8">
+                                                                        <div class="card-body row">
+                                                                            <div class="col-11">
+                                                                                <label id="label38">acsacac</label>
+                                                                                <br><strong>Tugatilganligi
+                                                                                :</strong> 0%
+                                                                            </div>
+                                                                            <div class="col-1">
+                                                                                <i style="cursor: pointer"
+                                                                                   data-toggle="modal"
+                                                                                   data-target="#finish-task"
+                                                                                   class="fa-solid fa-flag-checkered task-finish 38"></i>
+                                                                                <i class="fa-solid fa-pen-to-square mx-1 38 edit-task-icon"
+                                                                                   style="cursor: pointer"></i>
+                                                                                <i class="fa-solid fa-trash delete-task-icon trash-icon mx-1"
+                                                                                   data-toggle="modal"
+                                                                                   data-target="#delete-task"
+                                                                                   id="38"
+                                                                                   style="cursor: pointer"></i>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                
+                                                            
+                                                        
+                                            
+
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-12 col-lg-4 order-1 order-md-2">
+                            
+                                <h3 class="text-primary"><i class="fas fa-paint-brush"></i>Sayt boshlash </h3>
+                                <p class="text-muted">xaSasadcas</p>
+                                <br>
+                                <div class="text-muted">
+                                    <p class="text-sm">Loyiha egasi
+                                        <b class="d-block">Abduvokhidov Ergashali</b>
+                                    </p>
+                                    <p class="text-sm">Loyiha kuratori
+                                        <b class="d-block">husan</b>
+                                    </p>
+                                </div>
+                            
+                            <h5 class="mt-5 text-muted">Loyiha fayllari</h5>
+                            <ul class="list-unstyled">
+                                
+                                    <li>
+                                        
+                                            <a href="" class="btn-link text-secondary" download="add-user_2.png"><i
+                                                    class="fa-solid fa-file-image" style="margin-right: 2%"></i>
+                                                <embed href="add-user_2.png">
+                                                add-user_2.png<br>
+                                                <small>10-Iyun 2024 yil</small>
+                                            </a>
+                                        
+                                    </li>
+                                
+                            </ul>
+                            <div class="text-start mt-5 mb-3">
+                                <button data-toggle="modal" data-target="#addfile" class="btn btn-sm btn-primary"><i class="fa-solid fa-upload"></i> Fayl
+                                    yuklash
+                                </button>
+                                <button data-toggle="modal" data-target="#delete-file" class="btn btn-sm btn-danger">
+                                    <i class="fa-solid fa-trash"></i> O'chirish
+                                </button>
+                            
+                                <button name="72335412-eca8-4bec-930e-da9b92b3ecdf" id="archive" class="btn btn-sm bg-green"><i class="fa-solid fa-download"></i> Arxiv sifatida yuklab olish 
+                                </button>
+                            
+                                <div id="addfile" class="modal fade" role="dialog">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1>Faylni qo'shish</h1>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form method="post" enctype="multipart/form-data" id="add-file-form">
+                                                    <input type="hidden" name="csrfmiddlewaretoken" value="xKIpmpiNBCJqsze4BONK5ng2J1kJ6zfmf0m1lPbwOiM3kEtnO2hW7wYSZzWuC8FW">
+                                                    <p>
+    
+    <input type="text" name="url" class="form-control" id="url-input" maxlength="250">
+    
+    
+  </p>
+
+  
+  <p>
+    <label for="id_document">Document:</label>
+    <input type="file" name="document" id="id_document">
+    
+    
+      
+    
+  </p>
+                                                    <button id="add-url" type="button" class="btn btn-primary">Url
+                                                        kiritish
+                                                    </button>
+                                                    <div class="modal-footer">
+                                                        <button type="submit" class="btn btn-primary">Ha</button>
+                                                        <button class="btn btn-primary" data-dismiss="modal">Bekor
+                                                            qilish
+                                                        </button>
+                                                    </div>
+
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div id="delete-file" class="modal fade" role="dialog">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1>Fayllarni tanlang</h1>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form method="post" enctype="multipart/form-data" id="delete-file-form">
+                                                    <input type="hidden" name="csrfmiddlewaretoken" value="xKIpmpiNBCJqsze4BONK5ng2J1kJ6zfmf0m1lPbwOiM3kEtnO2hW7wYSZzWuC8FW">
+                                                    
+                                                        <div class="row">
+                                                            <div class="col-1">
+                                                                <input class="del-files" type="checkbox"
+                                                                       id="87">
+                                                            </div>
+                                                            <div class="col">
+                                                                add-user_2.png
+
+                                                            </div>
+                                                        </div>
+                                                    
+                                                    <div class="modal-footer">
+                                                        <button id="del-confirm" type="button" class="btn btn-danger">
+                                                            O'chirish
+                                                        </button>
+                                                        <button class="btn btn-primary" data-dismiss="modal">Bekor
+                                                            qilish
+                                                        </button>
+                                                    </div>
+
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div id="add-phase" class="modal fade" role="dialog">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1>Faza yaratish boshlandi</h1>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form method="post" id="phase-form">
+                                                    <label> Faza nomini yozing :
+                                                        <input class="form-control mb-4" type="text" name="phase"
+                                                               id="phase-input">
+                                                    </label><br>
+                                                    <hr>
+                                                    <div class="add-task" id="add-task">
+                                                        <label>Task qo'shish</label>
+                                                        <i class="fa-solid fa-circle-plus"></i>
+                                                    </div>
+                                                    <hr>
+                                                </form>
+                                                <div class="modal-footer">
+                                                    <button id="save-all-data" class="btn btn-primary">Saqlash</button>
+                                                    <button data-dismiss="modal" class="btn btn-secondary">Bekor
+                                                        qilish
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+                            <div id="delete-phase" class="modal fade" role="dialog">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1>Fazani o'chirasizmi ?</h1>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button id="delete-icon-confirm" class="btn btn-danger">O'chirish</button>
+                                            <button data-dismiss="modal" class="btn btn-secondary">Bekor qilish</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div id="delete-task" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1>Task o'chirasizmi ?</h1>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button id="delete-task-confirm" class="btn btn-danger">O'chirish</button>
+                                        <button data-dismiss="modal" class="btn btn-secondary">Bekor qilish</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div id="finish-task" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1>Nechi foizga tugatamiz ?</h1>
+                                </div>
+                                <div class="modal-body">
+                                    <input id="task-done" name="task-complete-percentage" placeholder="0"
+                                           class="form-control"/>
+                                </div>
+                                <div class="modal-footer">
+                                    <button id="finish-task-confirm" class="btn btn-danger">Saqlash</button>
+                                    <button data-dismiss="modal" class="btn btn-secondary">Bekor qilish</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+    </div>
+    </div>
+    </div>
+    </div>
+    </section>
+    </div>
+
+    </div>
+</div>
+<script src="/static/plugins/jquery/jquery.min.js"></script>
+<script src="/static/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/static/dist/js/adminlte.js"></script>
+<script src="/static/plugins/chart.js/Chart.min.js"></script>
+<script src="/static/dist/js/demo.js"></script>
+<script src="/static/dist/js/pages/dashboard3.js"></script>
+<script src="/static/static/js/script.js">
+</script>
+</body>
+</html>
