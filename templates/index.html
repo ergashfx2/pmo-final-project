@@ -1,112 +1,124 @@
 {% extends 'base.html' %}
 {% load static %}
+    {% block content %}
+<link href="{% static 'plugins/bower_components/chartist/dist/chartist.min.css' %}" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'plugins/bower_components/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.css' %}">
 
-
-{% block content %}
-
-    {% if user.is_authenticated %}
-        <div class="content" style="width: 100%;height: 100%">
-            <div class="container-fluid" style="height: 100%;width: 100%">
-                <div class="row mb-4">
-                    <div class="col-lg-6 mt-3">
-                        <div class="card">
-                            <div class="card-header border-0">
-                                <div class="d-flex justify-content-between">
-                                    <h3 class="card-title">Bloklardagi departamentlar soni : {{ departments }} ta</h3>
-                                </div>
-                            </div>
-                            <div class="card-body">
-
-                                <div class="position-relative mb-4">
-                                    <canvas id="visitors-chart" height="200"></canvas>
-                                </div>
-                            </div>
+<link href="{% static 'css/style.min.css' %}" rel="stylesheet">
+        <div class="page-wrapper">
+            <div class="container-fluid">
+                <div class="row justify-content-center">
+                    <div class="col-lg-4 col-md-12">
+                        <div class="white-box analytics-info">
+                            <h3 class="box-title">Loyihalar</h3>
+                            <ul class="list-inline two-part d-flex align-items-center mb-0">
+                                <li>
+                                    <div id="sparklinedash"><canvas width="67" height="30"
+                                            style="display: inline-block; width: 67px; height: 30px; vertical-align: top;"></canvas>
+                                    </div>
+                                </li>
+                                <li class="ms-auto"><span class="counter text-success">{{ projects_count }}</span></li>
+                            </ul>
                         </div>
-
                     </div>
-                                       <div class="col-lg-6 mt-3">
-                        <div class="card">
-                            <div class="card-header border-0">
-                                <div class="d-flex justify-content-between">
-                                    <h3 class="card-title">Loyihalar bloklar kesimida</h3>
-                                </div>
-                            </div>
-                            <div class="card-body">
-
-                                <div class="position-relative mb-4">
-                                    <canvas id="projects-chart" height="200"></canvas>
-                                </div>
-                            </div>
+                    <div class="col-lg-4 col-md-12">
+                        <div class="white-box analytics-info">
+                            <h3 class="box-title">Jarayondagi</h3>
+                            <ul class="list-inline two-part d-flex align-items-center mb-0">
+                                <li>
+                                    <div id="sparklinedash2"><canvas width="67" height="30"
+                                            style="display: inline-block; width: 67px; height: 30px; vertical-align: top;"></canvas>
+                                    </div>
+                                </li>
+                                <li class="ms-auto"><span class="counter text-purple">{{ projects_process }}</span></li>
+                            </ul>
                         </div>
-
+                    </div>
+                    <div class="col-lg-4 col-md-12">
+                        <div class="white-box analytics-info">
+                            <h3 class="box-title">Tugatilgan</h3>
+                            <ul class="list-inline two-part d-flex align-items-center mb-0">
+                                <li>
+                                    <div id="sparklinedash3"><canvas width="67" height="30"
+                                            style="display: inline-block; width: 67px; height: 30px; vertical-align: top;"></canvas>
+                                    </div>
+                                </li>
+                                <li class="ms-auto"><span class="counter text-info">{{ projects_done  }}</span>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-                                        <div class="card">
-                            <div class="card-header border-0">
-                                <div class="d-flex justify-content-between">
-                                    <h3 class="card-title">Atamalar to'liq nomi</h3>
+                <!-- ============================================================== -->
+                <!-- PRODUCTS YEARLY SALES -->
+                <!-- ============================================================== -->
+                <div class="row">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <div class="white-box">
+                            <h3 class="box-title">Oylik xarajatlar</h3>
+                            <div id="ct-visits" style="height: 405px;">
+                                <div class="chartist-tooltip" style="top: -17px; left: -12px;"><span
+                                        class="chartist-tooltip-value">6</span>
                                 </div>
                             </div>
-                            <div class="card-body">
-                                <table class="table">
-                                    <tr>
-                                        <th>BB</th>
-                                        <td>Biznes bloki</td>
-                                    </tr>
-                                                                        <tr>
-                                        <th>BR</th>
-                                        <td>Boshqaruv Raisi</td>
-                                    </tr>
-
-                                                                        <tr>
-                                        <th>BRBO</th>
-                                        <td>Boshqaruv raisi brinchi o'rinbosari</td>
-                                    </tr>
-
-                                                                        <tr>
-                                        <th>IDAO</th>
-                                        <td>Ijtimoiy dasturlarni amalga oshirish</td>
-                                    </tr>
-
-                                                                        <tr>
-                                        <th>IK</th>
-                                        <td>IT kompleks</td>
-                                    </tr>
-
-                                                                        <tr>
-                                        <th>KK</th>
-                                        <td>Kuzatuv kengashi</td>
-                                    </tr>
-
-                                                                        <tr>
-                                        <th>MB</th>
-                                        <td>Moliyaviy blok</td>
-                                    </tr>
-
-                                                                        <tr>
-                                        <th>MABIK</th>
-                                        <td>Muammoli aktivlar bilan ishlash kompleksi</td>
-                                    </tr>
-
-                                                                        <tr>
-                                        <th>OK</th>
-                                        <td>Operatsiyalar kompleksi</td>
-                                    </tr>
-                       </tr>
-
-                                                                        <tr>
-                                        <th>TXK</th>
-                                        <td>Tranzaksion xizmatlar kompleksi</td>
-                                    </tr>
-
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 col-lg-12 col-sm-12">
+                        <div class="white-box">
+                            <div class="d-md-flex mb-3">
+                                <h3 class="box-title mb-0">Barcha hodimlar</h3>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table no-wrap">
+                                    <thead>
+                                        <tr>
+                                            <th class="border-top-0">#</th>
+                                            <th class="border-top-0">FIO</th>
+                                            <th class="border-top-0">Status</th>
+                                            <th class="border-top-0">Loyihalar soni</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for user in users %}
+                                        <tr>
+                                            <td>{{ forloop.counter }}</td>
+                                            <td class="txt-oflo">{{ user.get_full_name }}</td>
+                                            <td>{{ user.status }}</td>
+                                            <td class="txt-oflo">23</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
                                 </table>
+                            <a href="{% url 'hodimlar:users' %}" class="btn btn-primary w-100">Barchasini ko'rish</a>
                             </div>
                         </div>
-            </div>
+                    </div>
+                </div>
         </div>
-        {% else %}
-        
-    {% endif %}
-    {% endblock content %}
+
+<script src="{% static 'plugins/bower_components/jquery/dist/jquery.min.js' %}"></script>
+
+<script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 
 
+<script src="{% static 'js/app-style-switcher.js' %}"></script>
+
+
+<script src="{% static 'plugins/bower_components/jquery-sparkline/jquery.sparkline.min.js' %}"></script>
+
+
+<script src="{% static 'js/waves.js' %}"></script>
+
+
+<script src="{% static 'js/sidebarmenu.js' %}"></script>
+
+
+<script src="{% static 'js/custom.js' %}"></script>
+
+<script src="{% static 'plugins/bower_components/chartist/dist/chartist.min.js' %}"></script>
+<script src="{% static 'plugins/bower_components/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js' %}"></script>
+<script src="{% static 'js/pages/dashboards/dashboard1.js' %}"></script>
+
+{% endblock content %}

@@ -51,4 +51,4 @@ class User(AbstractUser):
         self.save()
 
     def __str__(self):
-        return self.username
+        return self.get_full_name()

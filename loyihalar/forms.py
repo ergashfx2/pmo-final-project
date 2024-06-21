@@ -35,7 +35,7 @@ class CreateProjectForm(ModelForm):
         }
         widgets = {
             'project_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'author': forms.SelectMultiple(attrs={'class': 'form-control'}),
+            'author': forms.SelectMultiple(attrs={'class': 'form-control','id':'project_author' }),
             'project_size': forms.Select(attrs={'class': 'form-control'},choices=size_choices),
             'project_level': forms.Select(attrs={'class': 'form-control'},choices=level_choices),
             'project_speed': forms.Select(attrs={'class': 'form-control'},choices=speed_choices),
@@ -50,7 +50,7 @@ class CreateProjectForm(ModelForm):
             'project_manager': forms.SelectMultiple(attrs={'class': 'form-control'}),
             'project_blog': forms.Select(attrs={'class': 'form-control'}),
             'project_team': forms.SelectMultiple(attrs={'class': 'form-control'}),
-            'project_departments': forms.SelectMultiple(attrs={'class': 'form-control'}),
+            'project_departments': forms.SelectMultiple(attrs={'class':'form-control'}),
         }
 
 
@@ -60,6 +60,7 @@ class EditProjectForm(ModelForm):
         exclude = ['author', 'project_start_date']
         labels = {
             'project_curator': 'Loyiha kuratori',
+            'project_manager': 'Loyiha menejeri(lari)',
             'project_name': 'Loyiha nomi',
             'project_blog': 'Blok',
             'project_size': 'Hajmi',
@@ -86,6 +87,7 @@ class EditProjectForm(ModelForm):
             'project_status': forms.Select(attrs={'class': 'form-control'},choices=status_choices),
             'project_spent_money': forms.TextInput(attrs={'class': 'form-control'}),
             'project_curator': forms.Select(attrs={'class': 'form-control'}),
+            'project_manager': forms.SelectMultiple(attrs={'class': 'form-control'}),
             'project_blog': forms.Select(attrs={'class': 'form-control'}),
             'project_team': forms.SelectMultiple(attrs={'class': 'form-control'}),
             'project_departments': forms.SelectMultiple(attrs={'class': 'form-control'}),

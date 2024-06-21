@@ -25,9 +25,9 @@
                             Loyiha haqida
                         </th>
                         <th scope="col">
-                            Tashabbuskor departament
+                            Departamentlar
                         </th>
-                                                                  <th scope="col">
+                                                                  <th scope="col" class="text-center" style="width: 20%">
                             Summasi
 
                         </th>
@@ -56,7 +56,9 @@
                                 {{ project.project_description }}
                             </td>
                             <td >
-                                {{ project.project_department }}
+                                {% for department in project.project_departments.all %}
+                                    {{ department.department_name}},
+                                    {% endfor %}
                             </td>
 
                                                                                                          <td class="project-state">

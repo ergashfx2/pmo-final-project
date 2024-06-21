@@ -20,10 +20,7 @@
                             <input class="cols" name="project_description" type="checkbox"> Loyiha haqida
                         </label>
                         <label class="grid-item">
-                            <input class="cols" name="project_department" type="checkbox"> Tashabbuskor departament
-                        </label>
-                        <label class="grid-item">
-                            <input class="cols" name="project_blog__blog_name" type="checkbox"> Blok
+                            <input class="cols" name="project_blog" type="checkbox"> Blok
                         </label>
                         <label class="grid-item">
                             <input class="cols" name="project_type" type="checkbox"> Loyiha turi
@@ -79,9 +76,13 @@
                                     <a href="{% url 'get-project' project.pk %}"
                                        style="color: black">{{ project.project_name }}</a>
                                 </td>
-                                <td>{{ project.project_description }}</td>
-                                <td>{{ project.project_department }}</td>
-                                <td>{{ project.project_curator.get_full_name }}</td>
+                                <td class="text-center">{{ project.project_description }}</td>
+                            <td class="text-center">
+                                {% for department in project.project_departments.all %}
+                                    {{ department.department_name }},
+                                    {% endfor %}
+                            </td>
+                                <td class="text-center">{{ project.project_curator.get_full_name }}</td>
                             </tr>
                         {% endfor %}
                         </tbody>
@@ -124,9 +125,13 @@
 
         document.getElementById('apply-changes').addEventListener('click', function () {
             document.getElementById('filter-container').style.display = 'none'
+            thead = ''
+            tbody = ''
             cols.forEach(col => {
                 thead += `<th>${col}</th>`
+
             })
+            console.log(`1 time ${thead}`)
             for (i = 0; i < projects_s.length; i++) {
                 var tds = ''
                 colNames.forEach(value => {
@@ -134,8 +139,6 @@
                 })
                 tbody += `<tr>${tds}</tr>`
             }
-
-
             document.getElementById('table-projects').innerHTML = `<thead><tr>${thead}</tr></thead><tbody>${tbody}</tbody>`
         })
 

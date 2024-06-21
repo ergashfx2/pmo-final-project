@@ -1,33 +1,26 @@
 import json
 
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from django.shortcuts import redirect, render
 from django.contrib.auth import get_user_model
 from django.views.decorators.cache import cache_page
+
+from loyihalar.models import Project
 
 User = get_user_model()
 from hodimlar.models import *
 
 def home(request):
     if request.user.is_authenticated:
-        user = User.objects.get(pk=request.user.pk)
-        users = User.objects.all()
-        labels = {}
-        departments = Department.objects.all()
-        bb= Department.objects.filter(blog_name=10)
-        blogs = Blog.objects.all()
-        for blog in blogs:
-            blog_departments = 0
-            for department in departments:
-                if department.blog_name.blog_name == blog.blog_name:
-                    blog_departments += 1
-            words = blog.blog_name.split()
-            first_word = [word[0].title() for word in words]
-            blog_name = ' '.join(first_word)
-            labels[blog_name] = blog_departments
-        labels_object = json.dumps(labels)
+        users = User.objects.all()[:4]
+        pk = request.user.id
+        projects_count = Project.objects.count()
+        projects_done = Project.objects.filter(project_status='Tugatilgan').count()
+        projects_process = Project.objects.filter(project_status='Jarayonda').count()
 
-        return render(request, 'index.html', {'user': user, 'departments': len(departments), 'labels': labels_object,'users':users})
+        print(projects_process)
+        return render(request, 'index.html', {'users': users,'projects_count':projects_count,'project_done':projects_done,'projects_process':projects_process,})
     else:
         return render(request, 'index.html')
 

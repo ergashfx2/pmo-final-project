@@ -1,52 +1,55 @@
-$(function () {
-    'use strict'
+document.addEventListener('DOMContentLoaded',function (){
 
-    var ticksStyle = {
-        fontColor: '#495057',
-        fontStyle: 'bold'
-    }
+    google.charts.load('current', {'packages':['corechart']});
+google.charts.setOnLoadCallback(drawChart);
 
-    var mode = 'index'
-    var intersect = true
-    var $visitorsChart = $('#visitors-chart')
-    var inital = [0];
-    var visitorsChart = new Chart($visitorsChart, {
-        type: 'bar',
-        data: {
-  labels: inital.concat(Object.keys(lists)),
-  datasets: [{
-    label: 'Departamentlar',
-    data: inital.concat(Object.values(lists)),
-    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-    borderWidth: 1
-  }]
+function drawChart() {
+  var array = [
+      ['', '',{ role: 'style' }],
+  ]
+
+  for(key in lists){
+    array.push([key,lists[key],'#e8bddd'])
+  }
+
+const data = google.visualization.arrayToDataTable(array);
+
+const options = {
+  title:'Bloklardagi departamentlar soni',
+    bar: {groupWidth: "80%"},
+    colors: ['#ffffff'],
+    height:700,
+    width:900
+};
+
+const chart = new google.visualization.BarChart(document.getElementById('myChart'));
+chart.draw(data, options);
+
 }
-    })
 
-    function generate_color(len) {
-        var colors = [];
-        for (let i = 0; i < len; i++) {
-            const randomColor = "#" + Math.floor(Math.random() * 16777215).toString(16);
-            colors.push(randomColor);
-        }
-        return colors
-    }
-
-
-    var $projectsChart = $('#projects-chart')
-    var projectsChart = new Chart($projectsChart, {
-        type: 'doughnut',
-        data: {
-            labels: Object.keys(lists),
-            datasets: [{
-                label: 'My First Dataset',
-                data: Object.values(lists),
-                backgroundColor: generate_color(Object.keys(lists).length),
-                hoverOffset: 4
-            }]
-        }
-
-
-    })
 })
 
+document.addEventListener('DOMContentLoaded',function (){
+        google.charts.load("current", {packages:["corechart"]});
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Task', 'Hours per Day'],
+          ['Yangi',     31 ],
+          ['Jarayonda',      22],
+          ['Tugatilgan',  21],
+        ]);
+
+        var options = {
+          title: 'Loyihalar holati',
+          pieHole: 0.4,
+
+          colors: ['#4b85d3','#da7006','#54af2f'],
+            height: 600,
+            width:800
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('myChart2'));
+        chart.draw(data, options);
+      }
+})

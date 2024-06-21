@@ -264,7 +264,7 @@
                                 <br>
                                 <div class="text-muted">
                                     <p class="text-sm">Loyiha egasi
-                                        <b class="d-block">{{ ph.author.get_full_name }}</b>
+                                        <b class="d-block">{% for author in  ph.author.all %}{{ author.get_full_name }}{% endfor %}</b>
                                     </p>
                                     <p class="text-sm">Loyiha kuratori
                                         <b class="d-block">{{ ph.project_curator }}</b>

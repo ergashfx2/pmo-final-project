@@ -63,11 +63,15 @@ def all_projects(request):
     tasks = Task.objects.all()
     projects_serialized = serializers.serialize('json', projects)
     arr = json.loads(projects_serialized)
+    for project in projects:
+        print(project.project_departments.all)
     for a in arr:
         project = Project.objects.get(pk=dict(a)['pk'])
         fields = dict(a)['fields']
         fields['project_departments'] = [department.department_name for department in project.project_departments.all()],
         fields['project_team'] = [man.get_full_name() for man in project.project_team.all()]
+        fields['project_curator'] = project.project_curator.get_full_name()
+        fields['project_blog'] = project.project_blog.blog_name
     projects_serialized_modified = json.dumps(arr)
     return render(request, 'all_projects.html', context={'projects': projects, 'phases': phases, 'tasks': tasks,'projects_serialized': projects_serialized_modified})
 
@@ -186,6 +190,7 @@ def add_phase(request, pk):
     project = get_object_or_404(Project, pk=pk)
     phase = Phase.objects.create(project=project,phase_name=data['phase_name'],phase_deadline=data['phase_deadline'])
     for data in data['tasks']:
+        print(data['deadline'])
         deadline = datetime.datetime.strptime(data['deadline'], '%Y-%m-%d').date()
         Task.objects.create(project=project,phase=phase,task_name=data['name'],task_deadline=deadline,task_manager=data['manager'])
     return redirect('my-projects-detail',pk)
