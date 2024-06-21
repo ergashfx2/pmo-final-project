@@ -319,7 +319,7 @@ def post_comment(request,pk):
         comment = json.loads(request.body)['comment']
         Comments.objects.create(project_id=pk,author=request.user ,comment=comment)
         return redirect('my-projects-detail')
-    return redirect('my-projects-detail')
+    return redirect('my-projects-detail',pk)
 
 @login_required
 def edit_comment(request,pk):
