@@ -43,7 +43,7 @@
                                             style="display: inline-block; width: 67px; height: 30px; vertical-align: top;"></canvas>
                                     </div>
                                 </li>
-                                <li class="ms-auto"><span class="counter text-info">{{ projects_done  }}</span>
+                                <li class="ms-auto"><span class="counter text-info">{{ project_done  }}</span>
                                 </li>
                             </ul>
                         </div>
@@ -84,8 +84,8 @@
                                     {% for user in users %}
                                         <tr>
                                             <td>{{ forloop.counter }}</td>
-                                            <td class="txt-oflo">{{ user.get_full_name }}</td>
-                                            <td>{{ user.status }}</td>
+                                            <td class="txt-oflo"><img src="{{ user.avatar.url }}" width="30" height="30" class="mr-4">{{ user.get_full_name }}</td>
+                                            <td>{% if user.status == 'Active' %}<div class="alert alert-success">{{ user.status }}{% else %}<div class="alert alert-danger">{{ user.status }}{% endif %}</div></td>
                                             <td class="txt-oflo">23</td>
                                         </tr>
                                     {% endfor %}

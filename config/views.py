@@ -17,6 +17,7 @@ def home(request):
         pk = request.user.id
         projects_count = Project.objects.count()
         projects_done = Project.objects.filter(project_status='Tugatilgan').count()
+        print(projects_done)
         projects_process = Project.objects.filter(project_status='Jarayonda').count()
 
         print(projects_process)
