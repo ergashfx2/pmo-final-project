@@ -100,21 +100,25 @@ def create_user(request):
 
 @login_required
 def block_user(request, pk):
-    user = User.objects.get(pk=pk)
-    user.block()
-    print("Working")
-    return redirect('hodimlar:users')
+    print('working')
+    if request.method == "POST":
+        user = User.objects.get(pk=pk)
+        user.block()
+        print("Working")
+        return redirect('hodimlar:users')
 
 
 @login_required
 def unblock_user(request, pk):
-    user = get_object_or_404(User, pk=pk)
-    user.unblock()
-    return redirect('hodimlar:users')
+    if request.method == "POST":
+        user = get_object_or_404(User, pk=pk)
+        user.unblock()
+        return redirect('hodimlar:users')
 
 
 @login_required
 def delete_user(request, pk):
-    user = User.objects.get(pk=pk)
-    user.delete()
-    return redirect('hodimlar:users')
+    if request.method == "POST":
+        user = User.objects.get(pk=pk)
+        user.delete()
+        return redirect('hodimlar:users')

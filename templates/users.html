@@ -1,31 +1,30 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="col-12">
-        <div class="card shadow-2-strong"
-             style="background-color: #ffffff; height: 100dvh">
-            <div class="card-header">
-                <div class="row mt-3">
-                    <label for="inputEmail3" class="col-1 col-form-label">Tanlang</label>
-                    <div class="col-6">
-                        <select type="text" class="form-control" id="input-select">
-                            <option>Hech nima tanlanmagan</option>
-                            <option id="detailed" name="batafsil">Batafsil</option>
-                            <option id="block" name="block">Bloklash</option>
-                            <option id="unblock" name="unblock">Blokdan ochish</option>
-                        </select>
-                    </div>
-                    <div class="col-2">
-                        <button id="do-button" class="btn btn-danger" style="display: inline">Go</button>
-                        <i onclick="location.href = '{% url 'hodimlar:create-user' %}'" id="add-user" class="fa-solid fa-circle-plus btn btn-outline-dark" ></i>
-                        <i id="delete-button" class="fa-solid fa-trash-can btn btn-outline-dark"></i>
-                    </div>
+<div class="col-12">
+    <div class="card shadow-2-strong" style="background-color: #ffffff; height: 100dvh">
+        <div class="card-header">
+            <div class="row mt-3">
+                <label for="inputEmail3" class="col-1 col-form-label">Tanlang</label>
+                <div class="col-6">
+                    <select class="form-control" id="input-select">
+                        <option>Hech nima tanlanmagan</option>
+                        <option value="detailed">Batafsil</option>
+                        <option value="block">Bloklash</option>
+                        <option value="unblock">Blokdan ochish</option>
+                    </select>
+                </div>
+                <div class="col-2">
+                    <button id="do-button" class="btn btn-danger">Go</button>
+                    <i onclick="location.href='{% url 'hodimlar:create-user' %}'" id="add-user" class="fa-solid fa-circle-plus btn btn-outline-dark"></i>
+                    <i id="delete-button" class="fa-solid fa-trash-can btn btn-outline-dark"></i>
                 </div>
             </div>
-            <div class="card-body">
-                <div class="table-responsive" style="overflow-x: auto">
-                    <table class="table table-borderless mb-0">
-                        <thead>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive" style="overflow-x: auto">
+                <table class="table table-borderless mb-0">
+                    <thead>
                         <tr>
                             <th scope="col"></th>
                             <th scope="col">№</th>
@@ -34,37 +33,34 @@
                             <th scope="col">ROLI</th>
                             <th scope="col">RAQAMI</th>
                         </tr>
-                        </thead>
-                        <tbody>
+                    </thead>
+                    <tbody>
                         {% with num=0 %}
                             {% for user in object_list %}
                                 <tr>
                                     <th scope="row">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value=""
-                                                   id="{{ user.id }}"/>
+                                            <input class="form-check-input" type="checkbox" value="{{ user.id }}"/>
                                         </div>
                                     </th>
                                     <td>{{ forloop.counter }}</td>
                                     <td><a href="{% url 'hodimlar:profile2' user.id %}" style="color:#000;">{{ user.get_full_name }}</a></td>
-                                    {% if user.status == 'Active' %}
-                                        <td><i class="fa-solid fa-circle"
-                                               style="color: green;margin-left: 10%"></i></td>
-                                    {% else %}
-                                        <td><i class="fa-solid fa-circle"
-                                               style="color: red;margin-left: 10%"></i></td>
-                                    {% endif %}
+                                    <td>
+                                        {% if user.status == 'Active' %}
+                                            <i class="fa-solid fa-circle" style="color: green; margin-left: 10%;"></i>
+                                        {% else %}
+                                            <i class="fa-solid fa-circle" style="color: red; margin-left: 10%;"></i>
+                                        {% endif %}
+                                    </td>
                                     <td>{{ user.role }}</td>
                                     <td>{{ user.phone }}</td>
                                 </tr>
                             {% endfor %}
                         {% endwith %}
-                        </tbody>
-                    </table>
-                </div>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
-
-
+</div>
 {% endblock content %}
