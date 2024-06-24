@@ -49,9 +49,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- ============================================================== -->
-                <!-- PRODUCTS YEARLY SALES -->
-                <!-- ============================================================== -->
                 <div class="row">
                     <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
                         <div class="white-box">
@@ -84,14 +81,19 @@
                                     {% for user in users %}
                                         <tr>
                                             <td>{{ forloop.counter }}</td>
-                                            <td class="txt-oflo"><img src="{{ user.avatar.url }}" width="30" height="30" class="mr-4">{{ user.get_full_name }}</td>
+                                        {% if user.avatar.url %}
+                                            <td class="text-flow"><img src="{{ user.avatar.url }}" width="30" height="30" class="mr-4">{{ user.get_full_name }}</td>
+                                            {% else %}
+                                            <td class="text-flow"><img src="https://t3.ftcdn.net/jpg/05/06/55/22/360_F_506552238_j3Y4oq4rrlLEgzVG30AdEe0TaRINtUKr.jpg" width="50" height="50" class="mr-4">{{ user.get_full_name }}</td>
+                                        {% endif %}
+                                        
                                             <td>{% if user.status == 'Active' %}<div class="alert alert-success">{{ user.status }}{% else %}<div class="alert alert-danger">{{ user.status }}{% endif %}</div></td>
-                                            <td class="txt-oflo">23</td>
+                                            <td class="txt-oflo">{{ user.projects }}</td>
                                         </tr>
                                     {% endfor %}
                                     </tbody>
                                 </table>
-                            <a href="{% url 'hodimlar:users' %}" class="btn btn-primary w-100">Barchasini ko'rish</a>
+                            <a id="see-all-users" href="{% url 'hodimlar:users' %}" class="btn btn-primary w-100">Barchasini ko'rish</a>
                             </div>
                         </div>
                     </div>

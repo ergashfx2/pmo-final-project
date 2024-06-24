@@ -56,7 +56,7 @@ function initTaskManager() {
     const addTaskBtn = document.getElementById('add-task');
     const tasksContainer = document.getElementById('tasks-container');
     let taskCount = 0;
-    const phaseData = { phase_name: '', phase_deadline: '', tasks: [] };
+    const phaseData = {phase_name: '', phase_deadline: '', tasks: []};
 
     const createTaskHTML = (id) => `
         <div class="task" id="task-${id}">
@@ -88,9 +88,9 @@ function initTaskManager() {
             const taskName = taskDiv.querySelector('input[name*="[name]"]').value;
             const taskDeadline = taskDiv.querySelector('input[name*="[deadline]"]').value;
             const taskManager = taskDiv.querySelector('input[name*="[manager]"]').value;
-            phaseData.tasks.push({ name: taskName, deadline: taskDeadline, manager: taskManager });
+            phaseData.tasks.push({name: taskName, deadline: taskDeadline, manager: taskManager});
         });
-        sendPostRequest(`${window.location.href}/add-phase/`, { data: phaseData });
+        sendPostRequest(`${window.location.href}/add-phase/`, {data: phaseData});
     };
 
     addTaskBtn.addEventListener('click', addTask);
@@ -153,7 +153,7 @@ function initPhaseActions() {
 
             document.getElementById('icon-save').addEventListener('click', function () {
                 const newInput = document.getElementById(`phase${phaseId}`).children.item(0).value;
-                sendPostRequest(`update-phase/${phaseId}`, { phase_name: newInput });
+                sendPostRequest(`update-phase/${phaseId}`, {phase_name: newInput});
             });
         }
     });
@@ -228,7 +228,7 @@ function initTaskCompletion() {
     });
 
     document.getElementById('finish-task-confirm').addEventListener('click', function () {
-        sendPostRequest(`update-task-percentage/${taskId}`, { task_done_percentage: newVal });
+        sendPostRequest(`update-task-percentage/${taskId}`, {task_done_percentage: newVal});
     });
 }
 
@@ -237,13 +237,13 @@ function initCommentSystem() {
     document.getElementById('problem-btn').addEventListener('click', function () {
         const problem = document.getElementById('problem').value;
         const taskId = this.classList[1];
-        sendPostRequest(`add-problem/${taskId}`, { problem });
+        sendPostRequest(`add-problem/${taskId}`, {problem});
     });
 
     document.getElementById('comment-btn').addEventListener('click', function () {
         const comment = document.getElementById('comment').value;
         const taskId = this.classList[1];
-        sendPostRequest(`add-comment/${taskId}`, { comment });
+        sendPostRequest(`add-comment/${taskId}`, {comment});
     });
 }
 
@@ -282,7 +282,7 @@ function initMultiSelect() {
         select.addEventListener('change', function () {
             const selectedOptions = Array.from(this.selectedOptions).map(option => option.value);
             const taskId = this.classList[1];
-            sendPostRequest(`update-multi/${taskId}`, { selected: selectedOptions });
+            sendPostRequest(`update-multi/${taskId}`, {selected: selectedOptions});
         });
     });
 }
@@ -297,13 +297,13 @@ function sendPostRequest(url, data) {
         },
         body: JSON.stringify(data)
     })
-    .then(response => {
-        if (!response.ok) {
-            return response.json().then(err => Promise.reject(err));
-        }
-        location.reload();
-    })
-    .catch(error => console.error('Error:', error));
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(err => Promise.reject(err));
+            }
+            location.reload();
+        })
+        .catch(error => console.error('Error:', error));
 }
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -338,16 +338,16 @@ document.addEventListener('DOMContentLoaded', function () {
                         'X-CSRFToken': csrfToken,
                     }
                 })
-                .then(response => {
-                    if (!response.ok) {
-                        location.reload()
-                    }
-                });
+                    .then(response => {
+                        if (!response.ok) {
+                            location.reload()
+                        }
+                    });
             }))
-            .then(() => {
-                location.reload();  // Reload the page after all actions are completed
-            })
-            .catch(error => console.error('Error:', error));
+                .then(() => {
+                    location.reload();  // Reload the page after all actions are completed
+                })
+                .catch(error => console.error('Error:', error));
         } else {
             alert('No items selected.');
         }
@@ -375,3 +375,67 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
+function formatNumber(val) {
+    val = parseInt(val);
+    let formatted = val.toLocaleString();
+
+    formatted = formatted.replace(/,/g, ' ');
+
+    return formatted;
+}
+function add_listeners(){
+ document.querySelectorAll('.delete-expense').forEach(value => {
+    let e_id = value.id
+    value.addEventListener('click',function (){
+        fetch(`delete-expense/${e_id}}`).then(res=>{
+            var child = document.getElementById(e_id);
+            if (child){
+                var parent = child.closest('tr');
+                if (parent){
+                    parent.remove()
+                    res.json().then(response=>{
+                        var total = response.spent_money
+                var left = response.total_money.replaceAll(' ','') - response.spent_money.replaceAll(' ','')
+                document.getElementById('totalExpenses').textContent = `${formatNumber(total)}`
+                document.getElementById('budgetLeft').textContent = `${formatNumber(left)}`
+                    })
+                }
+            }
+        })
+    })
+})
+}
+
+add_listeners()
+
+document.getElementById('add-expense').addEventListener('submit', function (e) {
+    e.preventDefault()
+    let expense = document.getElementById('expense').value
+    let amount = document.getElementById('amount').value
+    let date = document.getElementById('date').value
+    let p_id = e.target.classList[0];
+    console.log(p_id)
+    let csrfToken = getCookie('csrftoken')
+    fetch(`add-expense/${p_id}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken,
+        },
+        body: JSON.stringify({'expense': expense, 'amount': amount, 'date': date}),
+    }).then(res => {
+        if (res.status === 200) {
+            res.json().then(response => {
+                let tbody = document.getElementById('expenses-body')
+                tbody.innerHTML = `${tbody.innerHTML} <tr><td>${expense}</td><td>${amount}</td><td>${date}</td> <td><i style="color: red;cursor: pointer" id="${response.id}" class="fa-regular delete-expense fa-trash-can"></i></td></tr>`
+                add_listeners()
+                var total = response.spent_money
+                var left = response.total_money.replaceAll(' ','') - response.spent_money.replaceAll(' ','')
+                document.getElementById('totalExpenses').textContent = `${formatNumber(total)}`
+                document.getElementById('budgetLeft').textContent = `${formatNumber(left)}`
+            })
+        } else {
+            alert("error occured")
+        }
+    })
+})

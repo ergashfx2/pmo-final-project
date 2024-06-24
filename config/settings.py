@@ -15,6 +15,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'hodimlar',
     'loyihalar',
+    'expenses',
     'fontawesomefree',
     "django_bootstrap5"
 ]

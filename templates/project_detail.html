@@ -42,7 +42,7 @@
                                         <div class="info-box-content">
                                             <span class="info-box-text text-center text-muted">Loyiha budjeti</span>
                                             {% for ph in project %}
-                                                <span class="info-box-number text-center text-muted mb-0">{{ ph.project_budget }}</span>
+                                                <span class="info-box-number text-center text-muted mb-0">{{ ph.project_budget | format_number }}</span>
                                             {% endfor %}
                                         </div>
                                     </div>
@@ -52,7 +52,7 @@
                                         <div class="info-box-content">
                                             <span class="info-box-text text-center text-muted">Sarflangan pul</span>
                                             {% for ph in project %}
-                                                <span class="info-box-number text-center text-muted mb-0">{{ ph.project_spent_money }}</span>
+                                                <span class="info-box-number text-center text-muted mb-0">{{ ph.project_spent_money | format_number }}</span>
                                             {% endfor %}
                                         </div>
                                     </div>

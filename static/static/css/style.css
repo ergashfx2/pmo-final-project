@@ -13,3 +13,70 @@
   text-align: center;
 }
 
+
+.menu {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    list-style: none;
+}
+
+svg {
+    margin-right: 5%;
+}
+
+.menu-item {
+    border-bottom: 2px solid white;
+    padding: 5%;
+    color: white;
+    font-size: 20px;
+    font-family: "Roboto Slab", serif;
+    font-optical-sizing: auto;
+    font-weight: lighter;
+    font-style: normal;
+}
+
+.menu-item :hover {
+    color: black;
+
+}
+
+.main {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+}
+
+.main > h1 {
+    color: rgb(100, 100, 100);
+    font-weight: bold;
+    text-shadow: 1px 1px rgb(255, 255, 255);
+    font-size: 55px;
+}
+
+.budget-container {
+    height: 85%;
+    width: 85%;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    border-radius: 20px;
+    background-color: rgba(255, 255, 255, 0.6);
+    padding: 40px;
+}
+
+.add-budget-container, .add-expense-container {
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.display-container {
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.5);
+    width: 65%;
+}

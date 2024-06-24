@@ -9,7 +9,8 @@ urlpatterns = [
     path('users/', include('hodimlar.urls')),
     path('', home, name='home'),
     path('projects/',include('loyihalar.urls')),
-    path('accounts/',blockedPage, name='blocked-page' )
+    path('accounts/',blockedPage, name='blocked-page' ),
+    path('expenses/',include('expenses.urls'))
 ]
 
 if settings.DEBUG:

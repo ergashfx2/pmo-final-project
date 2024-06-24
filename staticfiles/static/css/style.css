@@ -36,32 +36,3 @@ body, html {
     justify-content: center;
     margin-top: 10%;
 }
-
-.menu {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    width: 100%;
-    list-style: none;
-}
-
-svg {
-    margin-right: 5%;
-}
-
-.menu-item {
-    border-bottom: 2px solid white;
-    padding: 5%;
-    color: white;
-    font-size: 20px;
-    font-family: "Roboto Slab", serif;
-    font-optical-sizing: auto;
-    font-weight: lighter;
-    font-style: normal;
-}
-
-.menu-item :hover {
-    color: black;
-
-}
-

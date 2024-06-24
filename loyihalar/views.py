@@ -303,15 +303,6 @@ def create_archive(request, pk):
         return response
 
 
-@login_required
-def qualification(request):
-    return render(request, 'qualification.html')
-
-
-@login_required
-def spending(request):
-    return render(request, 'spendings.html')
-
 
 @login_required
 def post_comment(request,pk):
