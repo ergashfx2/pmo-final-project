@@ -70,19 +70,23 @@
                         </thead>
                         <tbody>
                         {% for project in projects %}
-                            <tr>
+                             <tr>
                                 <td>{{ forloop.counter }}</td>
                                 <td class="text-center">
-                                    <a href="{% url 'get-project' project.pk %}"
-                                       style="color: black">{{ project.project_name }}</a>
+                                                              <a href="{% url 'get-project' project.pk %}"
+                                                                 style="color: black"> {{ project.project_name }} </a>
                                 </td>
-                                <td class="text-center">{{ project.project_description }}</td>
-                            <td class="text-center">
+                                <td class="text-center">                             <a href="{% url 'get-project' project.pk %}"
+                                                                                        style="color: black">{{ project.project_description }} </a></td>
+                            <td class="text-center">                            <a href="{% url 'get-project' project.pk %}"
+                                       style="color: black">
                                 {% for department in project.project_departments.all %}
                                     {{ department.department_name }},
                                     {% endfor %}
+                            </a>
                             </td>
-                                <td class="text-center">{{ project.project_curator.get_full_name }}</td>
+                                <td class="text-center">                            <a href="{% url 'get-project' project.pk %}"
+                                                                                       style="color: black">{{ project.project_curator.get_full_name }}</a></td>
                             </tr>
                         {% endfor %}
                         </tbody>

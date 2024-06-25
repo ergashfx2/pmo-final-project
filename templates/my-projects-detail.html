@@ -165,7 +165,7 @@
                                                                           id="comment" rows="4"></textarea>
                                                             </div>
                                                             <div class="col-1">
-                                                                <button class="btn btn-primary" id="post-comment">
+                                                                <button class="btn btn-primary" id="comment-btn">
                                                                     Yozish
                                                                 </button>
                                                             </div>
@@ -207,7 +207,7 @@
                                                                           id="problem" rows="4"></textarea>
                                                             </div>
                                                             <div class="col-1">
-                                                                <button class="btn btn-primary" id="post-problem">
+                                                                <button class="btn btn-primary" id="problem-btn">
                                                                     Yozish
                                                                 </button>
                                                             </div>
@@ -222,7 +222,7 @@
                                                                                     {{ problem.author.get_full_name }}
                                                                                 </div>
                                                                                 <div class="col-1">
-                                                                                    <i class="fa-solid fa-pen-to-square mx-1 edit-problem {{ problem.pk }} icon-buttons"
+                                                                                    <i class="fa-solid fa-pen-to-square mx-1 edit-problem {{ problem.pk }}"
                                                                                        style="cursor: pointer"></i>
                                                                                     <i class="fa-solid fa-trash delete-problem mx-1 {{ problem.pk }}"
                                                                                        style="cursor: pointer"></i>
@@ -255,11 +255,14 @@
                                 <p class="text-muted">{{ ph.project_description }}</p>
                                 <br>
                                 <div class="text-muted">
-                                    <p class="text-sm">Loyiha egasi
-                                        <b class="d-block">{% for author in  ph.author.all %}{{ author.get_full_name }}{% endfor %}</b>
+                                    <p class="text-sm">Loyiha tashabbuskori
+                                        <b class="d-block">{% for author in  ph.author.all %}{{ author.department }} departamentidan {{ author.get_full_name }}{% endfor %}</b>
                                     </p>
                                     <p class="text-sm">Loyiha kuratori
                                         <b class="d-block">{{ ph.project_curator }}</b>
+                                    </p>
+                                                                    <p class="text-sm">Strategiya departamentidan hodim(lar)
+                                        <b class="d-block">{% for manager in  ph.project_manager.all %}{{ manager.get_full_name }}, {% endfor %}</b>
                                     </p>
                                 </div>
                             {% endfor %}

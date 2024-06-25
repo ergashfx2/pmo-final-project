@@ -53,20 +53,25 @@
                                 </a>
                             </td>
                             <td>
-                                {{ project.project_description }}
+                                                           <a href="{% url 'my-projects-detail' project.pk %}"
+                                                              style="color: black"> {{ project.project_description }} </a>
                             </td>
                             <td >
+                                                        <a href="{% url 'my-projects-detail' project.pk %}"
+                                       style="color: black">
                                 {% for department in project.project_departments.all %}
                                     {{ department.department_name}},
-                                    {% endfor %}
+                                {% endfor %}</a>
                             </td>
 
                                                                                                          <td class="project-state">
-                                <p>{{ project.project_budget}}</p>
+                                <p>                             <a href="{% url 'my-projects-detail' project.pk %}"
+                                                                   style="color: black">{{ project.project_budget}} </a></p>
                             </td>
 
                                                                                                                             <td class="project-state">
-                                <p>{{ project.project_curator.get_full_name}}</p>
+                                <p>                            <a href="{% url 'my-projects-detail' project.pk %}"
+                                                                  style="color: black">{{ project.project_curator.get_full_name}} </a></p>
                             </td>
                                                         <td class="project_progress" style="width: 10%;">
                                 <div class="progress progress-sm">

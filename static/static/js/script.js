@@ -16,9 +16,10 @@ function getCookie(name) {
 
 // Event listener for DOM content loaded
 document.addEventListener("DOMContentLoaded", function () {
+        problemsManager();
+    deleteFiles()
     initTabs();
     initTaskManager();
-    initBulkActions();
     initPhaseActions();
     initTaskEdit();
     initTaskDelete();
@@ -49,6 +50,40 @@ function initTabs() {
     });
 
     activateStoredTab();
+}
+
+function deleteFiles (){
+    console.log('working files')
+    var all_delete_buttons = document.querySelectorAll('.delete-button')
+    var selectedFiles = document.querySelectorAll('.del-files')
+    var delFiles = []
+
+
+    document.getElementById('del-confirm').addEventListener('click', function () {
+        selectedFiles.forEach(file => {
+            file.addEventListener('change', function () {
+                if (file.checked === true) {
+                    delFiles.push(file.id)
+                }
+                if (file.checked === false) {
+                    delFiles = delFiles.filter(item => item !== file.id)
+                }
+            })
+
+
+        all_delete_buttons.forEach(value => {
+            value.addEventListener('click', function () {
+                confirm_delete.addEventListener('click', function () {
+                    fetch(`delete/${value.id}`).then(res => {
+                        location.reload()
+                    })
+
+                })
+            })
+        })
+    })
+})
+
 }
 
 // Initialize task manager for adding and removing tasks
@@ -99,44 +134,15 @@ function initTaskManager() {
     document.getElementById('save-all-data').addEventListener('click', savePhaseData);
 }
 
-// Initialize bulk actions for blocking, unblocking, and deleting users
-function initBulkActions() {
-    const select = document.getElementById('input-select');
-    const button = document.getElementById('do-button');
-    const deleteButton = document.getElementById('delete-button');
-    const confirmDelete = document.getElementById('confirm');
-    let selectedItems = [];
 
-    document.querySelectorAll("input[type='checkbox']").forEach(checkbox => {
-        checkbox.addEventListener('change', function () {
-            if (this.checked) selectedItems.push(this.id);
-            else selectedItems = selectedItems.filter(id => id !== this.id);
-        });
-    });
 
-    const performAction = (action) => {
-        alert("working")
-        selectedItems.forEach(id => {
-            fetch(`/${action}/${id}`).then(() => location.reload());
-        });
-    };
-
-    button.addEventListener('click', function () {
-        if (select.value === 'Block') performAction('block');
-        if (select.value === 'Unblock') performAction('unblock');
-    });
-
-    deleteButton.addEventListener('click', () => performAction('delete-user'));
-    confirmDelete.addEventListener('click', () => performAction('delete'));
-}
 
 // Initialize phase actions for editing and deleting
 function initPhaseActions() {
     let phaseId = null;
-
     document.querySelectorAll('.trash-icon').forEach(icon => {
         icon.addEventListener('click', function () {
-            phaseId = this.id;
+            phaseId = icon.id;
         });
     });
 
@@ -144,10 +150,12 @@ function initPhaseActions() {
         fetch(`/projects/my-projects/delete-phase/${phaseId}`).then(() => location.reload());
     });
 
-    document.addEventListener('click', function (event) {
-        if (event.target.classList.contains('icon-buttons')) {
-            phaseId = event.target.classList[3];
-            const element = document.getElementById(`phase${phaseId}`).textContent.trim();
+    document.querySelectorAll('.icon-buttons').forEach(value => {
+        value.addEventListener('click',function (){
+                             let phaseId = value.classList[3];
+            const el = document.getElementById(`phase${phaseId}`);
+            console.log(el)
+            let element = el.textContent.trim();
             document.getElementById(`phase${phaseId}`).innerHTML = `<input type="text" value="${element}"/>`;
             document.getElementById(`icons-panel${phaseId}`).innerHTML = `<i id="icon-save" class="fa-solid fa-circle-check" style="color: green;cursor: pointer"></i>`;
 
@@ -155,19 +163,35 @@ function initPhaseActions() {
                 const newInput = document.getElementById(`phase${phaseId}`).children.item(0).value;
                 sendPostRequest(`update-phase/${phaseId}`, {phase_name: newInput});
             });
-        }
-    });
+        })
+    })
+
+
+}
+
+function problemsManager(){
+    console.log(`Working problem`)
+    let edit_problems = document.querySelectorAll('.edit-problem ');
+    edit_problems.forEach(value => {
+        value.addEventListener('click',function (){
+            console.log(value.classList)
+            let problem =  document.getElementById(value.classList[4])
+            problem.innerHTML = `<textarea type="text"> ${problem.textContent.trim()} </textarea>`;
+        })
+    })
 }
 
 // Initialize task edit functionality
 function initTaskEdit() {
+    console.log("Task working")
     const taskName = document.getElementById('task-edit-task-name');
     const taskDeadline = document.getElementById('task-edit-deadline');
     const taskManager = document.getElementById('task-edit-task-manager');
 
     document.querySelectorAll('.edit-task-icon').forEach(task => {
         task.addEventListener('click', function () {
-            const taskId = this.classList[3];
+            const taskId = task.classList[3];
+            console.log(taskId)
             fetch(`get-task/${taskId}`).then(res => res.json()).then(data => {
                 const taskData = JSON.parse(data)[0].fields;
                 taskName.value = taskData.task_name;
@@ -193,7 +217,7 @@ function initTaskDelete() {
 
     document.querySelectorAll('.delete-task-icon').forEach(task => {
         task.addEventListener('click', function () {
-            taskId = this.id;
+            taskId = task.id;
         });
     });
 
@@ -235,15 +259,15 @@ function initTaskCompletion() {
 // Initialize comment and problem management system
 function initCommentSystem() {
     document.getElementById('problem-btn').addEventListener('click', function () {
-        const problem = document.getElementById('problem').value;
-        const taskId = this.classList[1];
-        sendPostRequest(`add-problem/${taskId}`, {problem});
+        const problem = document.getElementById('problem');
+        const taskId = problem.classList[1];
+        sendPostRequest(`post-problem/${taskId}`, {'problem':problem.value});
     });
 
     document.getElementById('comment-btn').addEventListener('click', function () {
-        const comment = document.getElementById('comment').value;
-        const taskId = this.classList[1];
-        sendPostRequest(`add-comment/${taskId}`, {comment});
+        const comment = document.getElementById('comment');
+        const taskId = comment.classList[1];
+        sendPostRequest(`post-comment/${taskId}`, {'comment':comment.value});
     });
 }
 
@@ -414,15 +438,24 @@ document.getElementById('add-expense').addEventListener('submit', function (e) {
     let amount = document.getElementById('amount').value
     let date = document.getElementById('date').value
     let p_id = e.target.classList[0];
-    console.log(p_id)
+    let file = document.getElementById('file')
+    var input_file
+    if (file.files[0]){
+       input_file = file.files[0]
+    }
     let csrfToken = getCookie('csrftoken')
-    fetch(`add-expense/${p_id}`, {
+    let formData = new FormData()
+    let data = {'expense': expense, 'amount': amount, 'date': date,'file':file.files[0]}
+    formData.append('file',input_file)
+    formData.append('data',JSON.stringify(data))
+    if (expense){
+        console.log(input_file)
+            fetch(`add-expense/${p_id}`, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
             'X-CSRFToken': csrfToken,
         },
-        body: JSON.stringify({'expense': expense, 'amount': amount, 'date': date}),
+        body: formData,
     }).then(res => {
         if (res.status === 200) {
             res.json().then(response => {
@@ -438,4 +471,5 @@ document.getElementById('add-expense').addEventListener('submit', function (e) {
             alert("error occured")
         }
     })
+    }
 })

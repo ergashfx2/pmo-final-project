@@ -58,3 +58,13 @@ $(function () {
     });
 });
 
+$(function () {
+    "use strict";
+new Chartist.Bar('#visits', {
+  labels: ['15', '30', '45', '60', '75', '90', '120'],
+  series: [20, 60, 120, 200, 180, 20, 10]
+}, {
+  distributeSeries: true
+});
+
+});
