@@ -450,28 +450,17 @@ function formatNumber(val) {
     return formatted;
 }
 
-function add_listeners(e_id=null){
+function add_listeners(){
 var delete_expense_modal =  document.getElementById('delete-expense-btn');
+var e_id
  document.querySelectorAll('.delete-expense').forEach(value => {
     value.addEventListener('click',function (){
         e_id = value.id
-        delete_expense_modal.classList.add('modal-open');
-        delete_expense_modal.style.display = 'block';
-        document.body.classList.add('modal-open');
-        let backdrop = document.createElement('div');
-        backdrop.className = 'modal-backdrop fade show';
-        document.body.appendChild(backdrop)
 
     })
 })
     var delete_expense_btn =  document.getElementById('confirm-delete-expense-btn');
     delete_expense_btn.addEventListener('click',function (){
-    delete_expense_modal.classList.remove('show');
-    delete_expense_modal.style.display = 'none';
-    document.body.classList.remove('modal-open');
-    document.querySelector('.modal-backdrop').remove();
-
-
    fetch(`delete-expense/${e_id}}`).then(res=>{
             var child = document.getElementById(e_id);
             if (child){
@@ -483,7 +472,10 @@ var delete_expense_modal =  document.getElementById('delete-expense-btn');
                 var left = response.total_money.replaceAll(' ','') - response.spent_money.replaceAll(' ','')
                 document.getElementById('totalExpenses').textContent = `${formatNumber(total)}`
                 document.getElementById('budgetLeft').textContent = `${formatNumber(left)}`
-
+                           delete_expense_modal.classList.remove('show');
+    delete_expense_modal.style.display = 'none';
+    document.body.classList.remove('modal-open');
+    document.querySelector('.modal-backdrop').remove();
                     })
                 }
             }
@@ -541,7 +533,7 @@ var delete_expense_modal =  document.getElementById('delete-expense-btn');
 
                                                                                         </div>
                                                                                     </div>`
-                add_listeners(id=response.id)
+                add_listeners()
                 var total = response.spent_money
                 var left = response.total_money.replaceAll(' ','') - response.spent_money.replaceAll(' ','')
                 document.getElementById('totalExpenses').textContent = `${formatNumber(total)}`
