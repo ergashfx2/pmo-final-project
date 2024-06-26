@@ -205,14 +205,14 @@ def update_phase(request, pk):
     if request.method == 'POST':
         data = json.loads(request.body)
         Phase.objects.select_related(pk).filter(pk=pk).update(phase_name=data['phase_name'])
-        return redirect('my-projects')
+        return JsonResponse(status=200,data={'status':'ok'})
     return redirect('my-projects')
 
 
 @login_required
 def delete_phase(request, pk):
     Phase.objects.select_related(pk).filter(pk=pk).delete()
-    return redirect('my-projects')
+    return JsonResponse(status=200,data={'status':'ok'})
 
 
 @login_required
@@ -224,7 +224,7 @@ def update_task(request, pk):
         task.task_deadline = data['task_deadline']
         task.task_manager = data['task_manager']
         task.save()
-        return redirect('my-projects')
+        return JsonResponse(status=200,data={'status':'ok'})
     return redirect('my-projects')
 
 
@@ -256,14 +256,14 @@ def update_task_percentage(request, pk):
         print(final_project_percentage)
         project_obj.project_done_percentage = int(final_project_percentage)
         project_obj.save()
-        return redirect('my-projects')
+        return JsonResponse(status=200,data={'status':'ok'})
     return redirect('my-projects')
 
 
 @login_required
 def delete_task(request, pk):
     Task.objects.select_related(pk).filter(pk=pk).delete()
-    return redirect('my-projects')
+    return JsonResponse(status=200,data={'status':'ok'})
 
 
 @login_required
@@ -273,7 +273,7 @@ def delete_files(request):
         print(datas)
         for data in datas:
             Documents.objects.filter(id=data).delete()
-        return redirect('my-projects')
+        return JsonResponse(status=200,data={'status':'ok'})
     return redirect('my-projects')
 
 

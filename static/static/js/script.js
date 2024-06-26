@@ -16,8 +16,10 @@ function getCookie(name) {
 
 // Event listener for DOM content loaded
 document.addEventListener("DOMContentLoaded", function () {
+        add_listeners();
         problemsManager();
-    deleteFiles()
+        commentsManager();
+    deleteFiles();
     initTabs();
     initTaskManager();
     initPhaseActions();
@@ -57,11 +59,9 @@ function deleteFiles (){
     var all_delete_buttons = document.querySelectorAll('.delete-button')
     var selectedFiles = document.querySelectorAll('.del-files')
     var delFiles = []
-
-
-    document.getElementById('del-confirm').addEventListener('click', function () {
         selectedFiles.forEach(file => {
             file.addEventListener('change', function () {
+                console.log('changed')
                 if (file.checked === true) {
                     delFiles.push(file.id)
                 }
@@ -69,19 +69,10 @@ function deleteFiles (){
                     delFiles = delFiles.filter(item => item !== file.id)
                 }
             })
-
-
-        all_delete_buttons.forEach(value => {
-            value.addEventListener('click', function () {
-                confirm_delete.addEventListener('click', function () {
-                    fetch(`delete/${value.id}`).then(res => {
-                        location.reload()
-                    })
-
-                })
-            })
-        })
     })
+    document.getElementById('del-confirm').addEventListener('click', function () {
+        sendPostRequest('delete-files/',{'datas':delFiles})
+        location.reload()
 })
 
 }
@@ -126,6 +117,7 @@ function initTaskManager() {
             phaseData.tasks.push({name: taskName, deadline: taskDeadline, manager: taskManager});
         });
         sendPostRequest(`${window.location.href}/add-phase/`, {data: phaseData});
+        location.reload()
     };
 
     addTaskBtn.addEventListener('click', addTask);
@@ -162,6 +154,7 @@ function initPhaseActions() {
             document.getElementById('icon-save').addEventListener('click', function () {
                 const newInput = document.getElementById(`phase${phaseId}`).children.item(0).value;
                 sendPostRequest(`update-phase/${phaseId}`, {phase_name: newInput});
+                location.reload()
             });
         })
     })
@@ -172,16 +165,66 @@ function initPhaseActions() {
 function problemsManager(){
     console.log(`Working problem`)
     let edit_problems = document.querySelectorAll('.edit-problem ');
+    let delete_problems = document.querySelectorAll('.delete-problem');
+    var problem
     edit_problems.forEach(value => {
         value.addEventListener('click',function (){
-            console.log(value.classList)
-            let problem =  document.getElementById(value.classList[4])
-            problem.innerHTML = `<textarea type="text"> ${problem.textContent.trim()} </textarea>`;
+            problem = document.getElementById(value.classList[4]);
+            problem.innerHTML = `<textarea type="text" id="area${problem.id}"> ${problem.textContent.trim()} </textarea>`;
+
+                    document.addEventListener('keypress',function (e){
+            if (e.key === 'Enter'){
+                sendPostRequest(`edit-problem/${problem.id}`,{'problem':problem.firstChild.value})
+                problem.innerHTML = `${problem.firstChild.value}`
+                problem = null
+            }
+        })
+        })
+
+    })
+        delete_problems.forEach(value => {
+        value.addEventListener('click',function () {
+              var problem_id = value.classList[4]
+            console.log(problem_id)
+            document.getElementById('confirm-delete-problem').addEventListener('click',function (){
+                fetch(`delete-problem/${problem_id}`).then(res=> {location.reload()})
+            })
+
         })
     })
 }
 
-// Initialize task edit functionality
+function commentsManager(){
+    let delete_comments = document.querySelectorAll('.delete-comment');
+    let edit_comments = document.querySelectorAll('.edit-comment ');
+    var comment
+    edit_comments.forEach(value => {
+        value.addEventListener('click',function (){
+            comment = document.getElementById(value.classList[4]);
+            comment.innerHTML = `<textarea type="text" id="area${comment.id}"> ${comment.textContent.trim()} </textarea>`;
+
+                    document.addEventListener('keypress',function (e){
+            if (e.key === 'Enter'){
+                sendPostRequest(`edit-comment/${comment.id}`,{'comment':comment.firstChild.value})
+                comment.innerHTML = `${comment.firstChild.value}`
+                comment = null
+            }
+        })
+        })
+
+    })
+    delete_comments.forEach(value => {
+        value.addEventListener('click',function () {
+              var comment_id = value.classList[4]
+            document.getElementById('confirm-delete-comment').addEventListener('click',function (){
+                fetch(`delete-comment/${comment_id}`).then(res=> {location.reload()})
+            })
+
+        })
+    })
+}
+
+
 function initTaskEdit() {
     console.log("Task working")
     const taskName = document.getElementById('task-edit-task-name');
@@ -206,12 +249,13 @@ function initTaskEdit() {
                     task_manager: taskManager.value
                 };
                 sendPostRequest(`update-task/${taskId}`, updatedData);
+                location.reload()
             });
         });
     });
 }
 
-// Initialize task delete functionality
+
 function initTaskDelete() {
     let taskId = null;
 
@@ -226,7 +270,6 @@ function initTaskDelete() {
     });
 }
 
-// Initialize task completion functionality
 function initTaskCompletion() {
     const rangeInput = document.getElementById('task-done');
     const label = document.getElementById('task-done-percentage');
@@ -243,6 +286,7 @@ function initTaskCompletion() {
             taskId = this.classList[3];
             const percentage = parseInt(document.getElementById(`task-percentage${taskId}`).textContent.trim());
             updateValue(percentage);
+
         });
     });
 
@@ -253,25 +297,28 @@ function initTaskCompletion() {
 
     document.getElementById('finish-task-confirm').addEventListener('click', function () {
         sendPostRequest(`update-task-percentage/${taskId}`, {task_done_percentage: newVal});
+        location.reload()
     });
 }
 
-// Initialize comment and problem management system
+
 function initCommentSystem() {
     document.getElementById('problem-btn').addEventListener('click', function () {
         const problem = document.getElementById('problem');
         const taskId = problem.classList[1];
         sendPostRequest(`post-problem/${taskId}`, {'problem':problem.value});
+        location.reload()
     });
 
     document.getElementById('comment-btn').addEventListener('click', function () {
         const comment = document.getElementById('comment');
         const taskId = comment.classList[1];
         sendPostRequest(`post-comment/${taskId}`, {'comment':comment.value});
+        location.reload()
     });
 }
 
-// Initialize archive functionality
+
 function initArchive() {
     document.querySelectorAll('.archive-btn').forEach(button => {
         button.addEventListener('click', function () {
@@ -288,7 +335,7 @@ function initArchive() {
     });
 }
 
-// Initialize filter toggle functionality
+
 function initFilterToggle() {
     document.getElementById('filter').addEventListener('click', function () {
         const filterArea = document.getElementById('filter-area');
@@ -300,18 +347,19 @@ function initFilterToggle() {
     });
 }
 
-// Initialize multi-select functionality
+
 function initMultiSelect() {
     document.querySelectorAll('.multi-select').forEach(select => {
         select.addEventListener('change', function () {
             const selectedOptions = Array.from(this.selectedOptions).map(option => option.value);
             const taskId = this.classList[1];
             sendPostRequest(`update-multi/${taskId}`, {selected: selectedOptions});
+            location.reload()
         });
     });
 }
 
-// Send POST request utility
+
 function sendPostRequest(url, data) {
     fetch(url, {
         method: 'POST',
@@ -325,15 +373,13 @@ function sendPostRequest(url, data) {
             if (!response.ok) {
                 return response.json().then(err => Promise.reject(err));
             }
-            location.reload();
+
         })
         .catch(error => console.error('Error:', error));
 }
 
 document.addEventListener('DOMContentLoaded', function () {
     const csrfToken = getCookie('csrftoken');
-
-    // Get CSRF token from cookie
     function getCookie(name) {
         let cookieValue = null;
         if (document.cookie && document.cookie !== '') {
@@ -349,7 +395,6 @@ document.addEventListener('DOMContentLoaded', function () {
         return cookieValue;
     }
 
-    // Handle bulk actions
     function handleBulkAction(action) {
         const selectedIds = Array.from(document.querySelectorAll('.form-check-input:checked'))
             .map(checkbox => checkbox.value);
@@ -369,7 +414,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     });
             }))
                 .then(() => {
-                    location.reload();  // Reload the page after all actions are completed
+                    location.reload();
                 })
                 .catch(error => console.error('Error:', error));
         } else {
@@ -377,21 +422,18 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Event listener for the Go button
     document.getElementById('do-button').addEventListener('click', function () {
         const action = document.getElementById('input-select').value;
         if (action === 'block') handleBulkAction('users/view/block');
         else if (action === 'unblock') handleBulkAction('users/view/unblock');
     });
 
-    // Event listener for the Delete button
     document.getElementById('delete-button').addEventListener('click', function () {
         if (confirm("Chindan ham bu foydalanuvchini o'chirasizmi ?")) {
             handleBulkAction('users/view/delete-user');
         }
     });
 
-    // Select all checkbox
     document.getElementById('select-all').addEventListener('change', function () {
         const checkboxes = document.querySelectorAll('.form-check-input');
         checkboxes.forEach(checkbox => {
@@ -407,11 +449,30 @@ function formatNumber(val) {
 
     return formatted;
 }
-function add_listeners(){
+
+function add_listeners(e_id=null){
+var delete_expense_modal =  document.getElementById('delete-expense-btn');
  document.querySelectorAll('.delete-expense').forEach(value => {
-    let e_id = value.id
     value.addEventListener('click',function (){
-        fetch(`delete-expense/${e_id}}`).then(res=>{
+        e_id = value.id
+        delete_expense_modal.classList.add('modal-open');
+        delete_expense_modal.style.display = 'block';
+        document.body.classList.add('modal-open');
+        let backdrop = document.createElement('div');
+        backdrop.className = 'modal-backdrop fade show';
+        document.body.appendChild(backdrop)
+
+    })
+})
+    var delete_expense_btn =  document.getElementById('confirm-delete-expense-btn');
+    delete_expense_btn.addEventListener('click',function (){
+    delete_expense_modal.classList.remove('show');
+    delete_expense_modal.style.display = 'none';
+    document.body.classList.remove('modal-open');
+    document.querySelector('.modal-backdrop').remove();
+
+
+   fetch(`delete-expense/${e_id}}`).then(res=>{
             var child = document.getElementById(e_id);
             if (child){
                 var parent = child.closest('tr');
@@ -422,17 +483,17 @@ function add_listeners(){
                 var left = response.total_money.replaceAll(' ','') - response.spent_money.replaceAll(' ','')
                 document.getElementById('totalExpenses').textContent = `${formatNumber(total)}`
                 document.getElementById('budgetLeft').textContent = `${formatNumber(left)}`
+
                     })
                 }
             }
         })
     })
-})
 }
 
-add_listeners()
 
-document.getElementById('add-expense').addEventListener('submit', function (e) {
+
+    document.getElementById('add-expense').addEventListener('submit', function (e) {
     e.preventDefault()
     let expense = document.getElementById('expense').value
     let amount = document.getElementById('amount').value
@@ -459,9 +520,28 @@ document.getElementById('add-expense').addEventListener('submit', function (e) {
     }).then(res => {
         if (res.status === 200) {
             res.json().then(response => {
+                console.log(response)
                 let tbody = document.getElementById('expenses-body')
-                tbody.innerHTML = `${tbody.innerHTML} <tr><td>${expense}</td><td>${amount}</td><td>${date}</td> <td><i style="color: red;cursor: pointer" id="${response.id}" class="fa-regular delete-expense fa-trash-can"></i></td></tr>`
-                add_listeners()
+                tbody.innerHTML = `${tbody.innerHTML} <tr><td>${expense}</td><td>${amount}</td><td>${date}</td> <td><i style="color: red;cursor: pointer" id="${response.id}" data-toggle="modal" data-target="#delete-expense-btn" class="fa-regular delete-expense fa-trash-can"></i></td></tr><div id="delete-expense-btn"
+                                                                                         class="modal fade"
+                                                                                         tabindex="-1" role="dialog"
+                                                                                         aria-hidden="true">
+                                                                                        <div class="modal-dialog modal-sm modal-dialog-centered"
+                                                                                             role="document">
+                                                                                            <div class="modal-content">
+                                                                                                <div class="modal-body text-center">
+                                                                                                    <i class="fa-solid fa-triangle-exclamation btn-lg" style="font-size: 5dvh"></i>
+                                                                                                    <h4>Chindan o'chirasizmi ?</h4></div>
+                                                                                                <div class="d-flex justify-content-center mb-2">
+                                                                                                    <button id="confirm-delete-expense-btn" class="btn btn-danger mr-2"><i class="fa-solid fa-trash-can"></i> O'chirish</button>
+                                                                                                    <button class="btn btn-secondary" data-dismiss="modal">Bekor qilish</button>
+                                                                                                    <br>
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                        </div>
+                                                                                    </div>`
+                add_listeners(id=response.id)
                 var total = response.spent_money
                 var left = response.total_money.replaceAll(' ','') - response.spent_money.replaceAll(' ','')
                 document.getElementById('totalExpenses').textContent = `${formatNumber(total)}`
@@ -473,3 +553,4 @@ document.getElementById('add-expense').addEventListener('submit', function (e) {
     })
     }
 })
+

@@ -61,7 +61,7 @@
                                         <div class="info-box-content">
                                             <span class="info-box-text text-center text-muted">Tugash vaqti</span>
                                             {% for ph in project %}
-                                                <span class="info-box-number text-center text-muted mb-0">{{ ph.project_deadline | date:"d.m.Y"}}</span>
+                                                <span class="info-box-number text-center text-muted mb-0">{{ ph.project_deadline | date:"d.m.Y" }}</span>
                                             {% endfor %}
                                         </div>
                                     </div>
@@ -76,13 +76,21 @@
                                                 <h4><strong>Ushbu loyihaga tegishli ma'lumotlar</strong></h4>
                                             </div>
                                             <div class="row mt-4">
-    <nav class="w-100">
-        <div class="nav nav-tabs" id="product-tab" role="tablist">
-            <a class="nav-item nav-link active" id="product-desc-tab" data-toggle="tab" style="color: black" href="#project-desc" role="tab" aria-controls="project-desc" aria-selected="true">Loyiha</a>
-            <a class="nav-item nav-link" style="color:#000;" id="product-comments-tab" data-toggle="tab" href="#project-comments" role="tab" aria-controls="project-comments" aria-selected="false">Izohlar</a>
-            <a class="nav-item nav-link" style="color: black" id="product-rating-tab" data-toggle="tab" href="#project-problems" role="tab" aria-controls="project-problems" aria-selected="false">Muammolar</a>
-        </div>
-    </nav>
+                                                <nav class="w-100">
+                                                    <div class="nav nav-tabs" id="product-tab" role="tablist">
+                                                        <a class="nav-item nav-link active" id="product-desc-tab"
+                                                           data-toggle="tab" style="color: black" href="#project-desc"
+                                                           role="tab" aria-controls="project-desc" aria-selected="true">Loyiha</a>
+                                                        <a class="nav-item nav-link" style="color:#000;"
+                                                           id="product-comments-tab" data-toggle="tab"
+                                                           href="#project-comments" role="tab"
+                                                           aria-controls="project-comments" aria-selected="false">Izohlar</a>
+                                                        <a class="nav-item nav-link" style="color: black"
+                                                           id="product-rating-tab" data-toggle="tab"
+                                                           href="#project-problems" role="tab"
+                                                           aria-controls="project-problems" aria-selected="false">Muammolar</a>
+                                                    </div>
+                                                </nav>
                                                 <div class="tab-content p-3" id="nav-tabContent">
                                                     <div class="tab-pane panels fade show active" id="project-desc"
                                                          role="tabpanel" aria-labelledby="project-desc-tab">
@@ -123,18 +131,25 @@
                                                                                      id="{{ id }}">
                                                                                     <div class="card-body row">
                                                                                         <div class="col-11">
-                                                                                            <table class="table-bordered" style="width: 80dvh">
+                                                                                            <table class="table-bordered"
+                                                                                                   style="width: 80dvh">
                                                                                                 <thead style="width: 100%">
-                                                                                                <tr  style="width: 100%">
-                                                                                                    <th class="p-2" style="width: 60%;">{{ task.task_name }}</th>
-                                                                                                    <th class="p-2" style="width: 20%;">{{ task.task_deadline | date:"d.m.Y" }}</th>
-                                                                                                    <th class="p-2" style="width: 20%;">{{ task.task_manager }}</th>
+                                                                                                <tr style="width: 100%">
+                                                                                                    <th class="p-2"
+                                                                                                        style="width: 60%;">{{ task.task_name }}</th>
+                                                                                                    <th class="p-2"
+                                                                                                        style="width: 20%;">{{ task.task_deadline | date:"d.m.Y" }}</th>
+                                                                                                    <th class="p-2"
+                                                                                                        style="width: 20%;">{{ task.task_manager }}</th>
                                                                                                 </tr>
                                                                                                 </thead>
 
                                                                                             </table>
                                                                                             <br><strong>Tugatilganligi
-                                                                                            :</strong> <p class="d-inline" id="task-percentage{{ task.pk }}">{{ task.task_done_percentage }}</p>%
+                                                                                            :</strong>
+                                                                                            <p class="d-inline"
+                                                                                               id="task-percentage{{ task.pk }}">{{ task.task_done_percentage }}</p>
+                                                                                            %
                                                                                         </div>
                                                                                         <div class="col-1">
                                                                                             <i style="cursor: pointer"
@@ -142,7 +157,9 @@
                                                                                                data-target="#finish-task"
                                                                                                class="fa-solid fa-flag-checkered task-finish {{ task.id }}"></i>
                                                                                             <i class="fa-solid fa-pen-to-square mx-1 {{ task.id }} edit-task-icon"
-                                                                                               style="cursor: pointer" data-toggle="modal" data-target="#edit-task"></i>
+                                                                                               style="cursor: pointer"
+                                                                                               data-toggle="modal"
+                                                                                               data-target="#edit-task"></i>
                                                                                             <i class="fa-solid fa-trash delete-task-icon trash-icon mx-1"
                                                                                                data-toggle="modal"
                                                                                                data-target="#delete-task"
@@ -184,7 +201,28 @@
                                                                                        style="cursor: pointer"></i>
                                                                                     <i class="fa-solid fa-trash delete-comment mx-1 {{ comment.pk }}"
                                                                                        id="delete-comment"
+                                                                                       data-toggle="modal"
+                                                                                       data-target="#deleteModalc"
                                                                                        style="cursor: pointer"></i>
+                                                                                    <div id="deleteModalc"
+                                                                                         class="modal fade"
+                                                                                         tabindex="-1" role="dialog"
+                                                                                         aria-hidden="true">
+                                                                                        <div class="modal-dialog modal-sm modal-dialog-centered"
+                                                                                             role="document">
+                                                                                            <div class="modal-content">
+                                                                                                <div class="modal-body text-center">
+                                                                                                    <i class="fa-solid fa-triangle-exclamation btn-lg" style="font-size: 5dvh"></i>
+                                                                                                    <h4>Chindan o'chirasizmi ?</h4></div>
+                                                                                                <div class="d-flex justify-content-center mb-2">
+                                                                                                    <button id="confirm-delete-comment" class="btn btn-danger mr-2"><i class="fa-solid fa-trash-can"></i> O'chirish</button>
+                                                                                                    <button class="btn btn-secondary" data-dismiss="modal">Bekor qilish</button>
+                                                                                                    <br>
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                        </div>
+                                                                                    </div>
                                                                                 </div>
                                                                             </div>
                                                                             <p class="small">{{ comment.created_at |format_date }}</p>
@@ -213,7 +251,7 @@
                                                             </div>
                                                         </div>
                                                         {% for problem in problems %}
-                                                            <div class="d-flex flex-start mb-4">
+                                                            <div class="d-flex flex-start mb-4" id="problem-container">
                                                                 <div class="card mx-2 w-100">
                                                                     <div class="card-body p-4">
                                                                         <div>
@@ -225,7 +263,28 @@
                                                                                     <i class="fa-solid fa-pen-to-square mx-1 edit-problem {{ problem.pk }}"
                                                                                        style="cursor: pointer"></i>
                                                                                     <i class="fa-solid fa-trash delete-problem mx-1 {{ problem.pk }}"
-                                                                                       style="cursor: pointer"></i>
+                                                                                       style="cursor: pointer" data-toggle="modal" data-target="#delete-problem"></i>
+                                                                                          <div id="delete-problem"
+                                                                                         class="modal fade"
+                                                                                         tabindex="-1" role="dialog"
+                                                                                         aria-hidden="true">
+                                                                                        <div class="modal-dialog modal-sm modal-dialog-centered"
+                                                                                             role="document">
+                                                                                            <div class="modal-content">
+                                                                                                <div class="modal-body text-center">
+                                                                                                    <i class="fa-solid fa-triangle-exclamation btn-lg" style="font-size: 5dvh"></i>
+                                                                                                    <h4>Chindan o'chirasizmi ?</h4></div>
+                                                                                                <div class="d-flex justify-content-center mb-2">
+                                                                                                    <button id="confirm-delete-problem" class="btn btn-danger mr-2"><i class="fa-solid fa-trash-can"></i> O'chirish</button>
+                                                                                                    <button class="btn btn-secondary" data-dismiss="modal">Bekor qilish</button>
+                                                                                                    <br>
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                        </div>
+                                                                                    </div>
+
+
                                                                                 </div>
                                                                             </div>
                                                                             <p class="small">{{ problem.created_at |format_date }}</p>
@@ -256,13 +315,17 @@
                                 <br>
                                 <div class="text-muted">
                                     <p class="text-sm">Loyiha tashabbuskori
-                                        <b class="d-block">{% for author in  ph.author.all %}{{ author.department }} departamentidan {{ author.get_full_name }}{% endfor %}</b>
+                                        <b class="d-block">
+                                            {% for author in  ph.author.all %}{{ author.department }} departamentidan
+                                                {{ author.get_full_name }}{% endfor %}</b>
                                     </p>
                                     <p class="text-sm">Loyiha kuratori
                                         <b class="d-block">{{ ph.project_curator }}</b>
                                     </p>
-                                                                    <p class="text-sm">Strategiya departamentidan hodim(lar)
-                                        <b class="d-block">{% for manager in  ph.project_manager.all %}{{ manager.get_full_name }}, {% endfor %}</b>
+                                    <p class="text-sm">Strategiya departamentidan hodim(lar)
+                                        <b class="d-block">
+                                            {% for manager in  ph.project_manager.all %}{{ manager.get_full_name }}
+                                                , {% endfor %}</b>
                                     </p>
                                 </div>
                             {% endfor %}
@@ -327,7 +390,7 @@
 
                                 </div>
                                 <div id="delete-file" class="modal fade" role="dialog">
-                                    <div class="modal-dialog">
+                                    <div class="modal-dialog ">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h1>Fayllarni tanlang</h1>
@@ -362,8 +425,8 @@
                                     </div>
 
                                 </div>
-                                                            <div id="edit-task" class="modal fade" role="dialog">
-                                    <div class="modal-dialog">
+                                <div id="edit-task" class="modal fade" role="dialog">
+                                    <div class="modal-dialog modal-sm modal-dialog-centered">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h1>Taskni tahrirlash boshlandi</h1>
@@ -372,19 +435,22 @@
                                                 <form method="post" enctype="multipart/form-data" id="delete-file-form">
                                                     {% csrf_token %}
                                                     <label for="task-name">Task nomi
-                                                        <input id="task-edit-task-name" class="form-control" type="text">
+                                                        <input id="task-edit-task-name" class="form-control"
+                                                               type="text">
 
                                                     </label>
-                                                                                                        <label  for="task-name">Muddati
+                                                    <label for="task-name">Muddati
                                                         <input id="task-edit-deadline" class="form-control" type="date">
 
                                                     </label>
-                                                                                                        <label for="task-name">Bajaruvchi hodim ismi
-                                                        <input id="task-edit-task-manager" class="form-control" type="text">
+                                                    <label for="task-name">Bajaruvchi hodim ismi
+                                                        <input id="task-edit-task-manager" class="form-control"
+                                                               type="text">
 
                                                     </label>
                                                     <div class="modal-footer">
-                                                        <button id="confirm-task-update" type="button" class="btn btn-danger">
+                                                        <button id="confirm-task-update" type="button"
+                                                                class="btn btn-danger">
                                                             Saqlash
                                                         </button>
                                                         <button class="btn btn-primary" data-dismiss="modal">Bekor
@@ -412,8 +478,9 @@
                                                         <input class="form-control mb-4" type="text" name="phase"
                                                                id="phase-input">
                                                     </label><br>
-                                                                                                        <label> Faza tugash sanasini yozing :
-                                                        <input class="form-control mb-4" type="date" name="phase-deadline"
+                                                    <label> Faza tugash sanasini yozing :
+                                                        <input class="form-control mb-4" type="date"
+                                                               name="phase-deadline"
                                                                id="phase-deadline">
                                                     </label><br>
                                                     <hr>
@@ -442,10 +509,11 @@
 
                             </div>
                             <div id="delete-phase" class="modal fade" role="dialog">
-                                <div class="modal-dialog">
+                                <div class="modal-dialog modal-sm modal-dialog-centered">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h1>Fazani o'chirasizmi ?</h1>
+                                             <i class="fa-solid fa-triangle-exclamation btn-lg" style="font-size: 5dvh"></i>
+                                                                                                    <h4>Chindan o'chirasizmi ?</h4>
                                         </div>
                                         <div class="modal-footer">
                                             <button id="delete-icon-confirm" class="btn btn-danger">O'chirish</button>
@@ -458,10 +526,11 @@
                         </div>
 
                         <div id="delete-task" class="modal fade" role="dialog">
-                            <div class="modal-dialog">
+                            <div class="modal-dialog modal-sm modal-dialog-centered">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h1>Task o'chirasizmi ?</h1>
+                                        <i class="fa-solid fa-triangle-exclamation btn-lg" style="font-size: 5dvh"></i>
+                                                                                                    <h4>Chindan o'chirasizmi ?</h4>
                                     </div>
                                     <div class="modal-footer">
                                         <button id="delete-task-confirm" class="btn btn-danger">O'chirish</button>
@@ -480,8 +549,10 @@
                                     <h1>Nechi foizga tugatamiz ?</h1>
                                 </div>
                                 <div class="modal-body">
-                                    <label for="task-done" id="task-done-percentage">Tugatish foizi : 0</label><input step="5" value="0" type="range" id="task-done" min="0" max="100" name="task-complete-percentage" placeholder="0"
-                                                                          class="form-control"/>
+                                    <label for="task-done" id="task-done-percentage">Tugatish foizi : 0</label><input
+                                        step="5" value="0" type="range" id="task-done" min="0" max="100"
+                                        name="task-complete-percentage" placeholder="0"
+                                        class="form-control"/>
                                 </div>
                                 <div class="modal-footer">
                                     <button id="finish-task-confirm" class="btn btn-danger">Saqlash</button>

@@ -73,8 +73,27 @@
                                   <td>{{ expense.description }}</td>
                                   <td>{{ expense.quantity }}</td>
                                   <td>{{ expense.date |  date:"d-m-Y" }}</td>
-                                                           <td><i style="color: red;cursor: pointer" id="{{ expense.id }}" class="fa-regular delete-expense fa-trash-can"></i></td>
+                                                           <td><i style="color: red;cursor: pointer" data-toggle="modal" data-target="#delete-expense-btn" id="{{ expense.id }}" class="fa-regular delete-expense fa-trash-can"></i></td>
                                                             </tr>
+                                  <div id="delete-expense-btn"
+                                                                                         class="modal fade"
+                                                                                         tabindex="-1" role="dialog"
+                                                                                         aria-hidden="true">
+                                                                                        <div class="modal-dialog modal-sm modal-dialog-centered"
+                                                                                             role="document">
+                                                                                            <div class="modal-content">
+                                                                                                <div class="modal-body text-center">
+                                                                                                    <i class="fa-solid fa-triangle-exclamation btn-lg" style="font-size: 5dvh"></i>
+                                                                                                    <h4>Chindan o'chirasizmi ?</h4></div>
+                                                                                                <div class="d-flex justify-content-center mb-2">
+                                                                                                    <button id="confirm-delete-expense-btn" class="btn btn-danger mr-2"><i class="fa-solid fa-trash-can"></i> O'chirish</button>
+                                                                                                    <button class="btn btn-secondary" data-dismiss="modal">Bekor qilish</button>
+                                                                                                    <br>
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                        </div>
+                                                                                    </div>
                               {% endfor %}
                         </tbody>
                     </table>
@@ -84,5 +103,6 @@
         </div>
 
     </div>
+
 
 {% endblock content %}
