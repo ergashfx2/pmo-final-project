@@ -177,7 +177,6 @@ class UpdateProject(UpdateView):
 
 @login_required
 def DeleteProject(request, pk):
-    print('working')
     project = Project.objects.filter(pk=pk)
     project.delete()
     return redirect('my-projects')

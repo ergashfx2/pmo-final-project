@@ -17,7 +17,7 @@
                                             style="display: inline-block; width: 67px; height: 30px; vertical-align: top;"></canvas>
                                     </div>
                                 </li>
-                                <li class="ms-auto"><span class="counter text-success">{{ projects_count }}</span></li>
+                                <li class="ms-auto"><span class="counter text-success">{{ projects | length }}</span></li>
                             </ul>
                         </div>
                     </div>
@@ -30,7 +30,7 @@
                                             style="display: inline-block; width: 67px; height: 30px; vertical-align: top;"></canvas>
                                     </div>
                                 </li>
-                                <li class="ms-auto"><span class="counter text-purple">{{ projects_process }}</span></li>
+                                <li class="ms-auto"><span class="counter text-purple">{{ projects_processing }}</span></li>
                             </ul>
                         </div>
                     </div>
@@ -43,7 +43,7 @@
                                             style="display: inline-block; width: 67px; height: 30px; vertical-align: top;"></canvas>
                                     </div>
                                 </li>
-                                <li class="ms-auto"><span class="counter text-info">{{ project_done  }}</span>
+                                <li class="ms-auto"><span class="counter text-info">{{ projects_done  }}</span>
                                 </li>
                             </ul>
                         </div>
@@ -62,41 +62,40 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-12 col-lg-12 col-sm-12">
-                        <div class="white-box">
+                    <div class="col-md-7 col-lg-7 col-sm-12">
+                        <div class="white-box h-100 card">
                             <div class="d-md-flex mb-3">
-                                <h3 class="box-title mb-0">Barcha hodimlar</h3>
+                                <h3 class="box-title mb-0">Barcha loyihalar</h3>
                             </div>
                             <div class="table-responsive">
                                 <table class="table no-wrap">
                                     <thead>
                                         <tr>
-                                            <th class="border-top-0">#</th>
-                                            <th class="border-top-0">FIO</th>
-                                            <th class="border-top-0">Status</th>
-                                            <th class="border-top-0">Loyihalar soni</th>
+                                            <th class="border-top-0 text-center">#</th>
+                                            <th class="border-top-0 text-center">Nomi</th>
+                                            <th class="border-top-0 text-center">Holati</th>
+                                            <th class="border-top-0 text-center">Tugatilganligi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    {% for user in users %}
-                                        <tr data-url="{% url 'hodimlar:profile2' user.pk %}" style="cursor: pointer">
+                                    {% for project in projects %}
+                                        <tr data-url="{% url 'get-project' project.pk %}" style="cursor: pointer;">
                                             <td>{{ forloop.counter }}</td>
-                                        {% if user.avatar.url %}
-                                            <td class="text-flow"><img src="{{ user.avatar.url }}" width="30" height="30" class="mr-4">{{ user.get_full_name }}</td>
-                                            {% else %}
-                                            <td class="text-flow"><img src="https://t3.ftcdn.net/jpg/05/06/55/22/360_F_506552238_j3Y4oq4rrlLEgzVG30AdEe0TaRINtUKr.jpg" width="50" height="50" class="mr-4">{{ user.get_full_name }}</td>
-                                        {% endif %}
-                                        
-                                            <td>{% if user.status == 'Active' %}<div class="alert alert-success">{{ user.status }}{% else %}<div class="alert alert-danger">{{ user.status }}{% endif %}</div></td>
-                                            <td class="txt-oflo">{{ user.projects }}</td>
+                                            <td class="text-flow text-center">{{ project.project_name }}</td>
+                                            <td class="text-center">{% if project.project_status == 'Jarayonda' %}<div class="alert alert-warning">{{ project.project_status }}</div>{% elif project.project_status == 'Yangi' %}<div class="alert alert-primary">{{ project.project_status }}{% else %}<div class="alert alert-success">{{ project.project_status }}</div>{% endif %}</div></td>
+                                            <td class="text-flow text-center">{{ project.project_done_percentage }}%</td>
                                         </tr>
                                     {% endfor %}
                                     </tbody>
                                 </table>
-                            <a id="see-all-users" href="{% url 'hodimlar:users' %}" class="btn btn-primary w-100">Barchasini ko'rish</a>
                             </div>
                         </div>
                     </div>
+                <div class="col-md-5 col-lg-5 col-sm-12">
+                    <div class="card h-100">
+                        <div class="card-body"><canvas id="myChart" style="width:500px"></canvas></div>
+                    </div>
+                </div>
                 </div>
         </div>
         </div>

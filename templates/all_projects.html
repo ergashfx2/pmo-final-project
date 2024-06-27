@@ -70,7 +70,7 @@
                         </thead>
                         <tbody>
                         {% for project in projects %}
-                             <tr>
+                             <tr data-url="{% url 'get-project' project.pk %}">
                                 <td>{{ forloop.counter }}</td>
                                 <td class="text-center">
                                                               <a href="{% url 'get-project' project.pk %}"

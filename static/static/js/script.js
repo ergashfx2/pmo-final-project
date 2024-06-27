@@ -16,9 +16,13 @@ function getCookie(name) {
 
 // Event listener for DOM content loaded
 document.addEventListener("DOMContentLoaded", function () {
-        add_listeners();
+    document.querySelectorAll('th').forEach(value => value.classList.add('text-center'))
+    document.querySelectorAll('td').forEach(value => value.classList.add('text-center'))
+      initArchive();
         problemsManager();
         commentsManager();
+        change_table();
+        tableRedirect()
     deleteFiles();
     initTabs();
     initTaskManager();
@@ -27,12 +31,11 @@ document.addEventListener("DOMContentLoaded", function () {
     initTaskDelete();
     initTaskCompletion();
     initCommentSystem();
-    initArchive();
+    add_listeners();
     initFilterToggle();
     initMultiSelect();
 });
 
-// Initialize tabs with stored state
 function initTabs() {
     const tabs = document.querySelectorAll('.nav-tabs a[data-toggle="tab"]');
     const storeActiveTab = (tabId) => localStorage.setItem('activeTab', tabId);
@@ -77,7 +80,7 @@ function deleteFiles (){
 
 }
 
-// Initialize task manager for adding and removing tasks
+
 function initTaskManager() {
     const addTaskBtn = document.getElementById('add-task');
     const tasksContainer = document.getElementById('tasks-container');
@@ -129,7 +132,7 @@ function initTaskManager() {
 
 
 
-// Initialize phase actions for editing and deleting
+
 function initPhaseActions() {
     let phaseId = null;
     document.querySelectorAll('.trash-icon').forEach(icon => {
@@ -320,10 +323,13 @@ function initCommentSystem() {
 
 
 function initArchive() {
+    console.log('archive working')
     document.querySelectorAll('.archive-btn').forEach(button => {
-        button.addEventListener('click', function () {
-            const phaseId = this.id;
-            fetch(`archive-phase/${phaseId}`).then(() => location.reload());
+        button.addEventListener('click', function (e) {
+            const project_id = e.target.name;
+            console.log(project_id)
+            fetch(`create-archive/${project_id}`).then(res => {
+                console.log(res)} );
         });
     });
 
@@ -483,6 +489,25 @@ var e_id
     })
 }
 
+function change_table(){
+    document.querySelectorAll('.change-table').forEach(value => {
+        value.addEventListener('change',function (e){
+            let selectedId = value.selectedOptions[0].id
+            if (selectedId === 'blog'){
+                document.querySelectorAll('.d_datas').forEach(el => el.style.display = 'none')
+                document.querySelectorAll('.b_datas').forEach(el => el.style.display = '')
+                document.getElementById('table-title').innerText = 'Loyihalar boklar kesimida'
+
+            }
+
+            if (selectedId === 'dept'){
+                document.querySelectorAll('.d_datas').forEach(el => el.style.display = '')
+                document.querySelectorAll('.b_datas').forEach(el => el.style.display = 'none')
+                document.getElementById('table-title').innerText = 'Loyihalar departamentlar kesimida'
+            }
+        })
+    })
+}
 
 
     document.getElementById('add-expense').addEventListener('submit', function (e) {
@@ -546,3 +571,11 @@ var e_id
     }
 })
 
+function tableRedirect(){
+    document.querySelectorAll('tr').forEach(value => {
+        value.addEventListener('click',function (){
+            console.log(value.getAttribute('data-url'))
+            window.location.href = value.getAttribute('data-url')
+        })
+    })
+}

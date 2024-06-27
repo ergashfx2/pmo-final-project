@@ -14,7 +14,7 @@
             <div class="card-body p-0" style="overflow-x: auto">
                 <table class="table table-striped projects">
                     <thead>
-                    <tr>
+                    <tr data-url="">
                         <th scope="col">
                             No
                         </th>
@@ -43,12 +43,12 @@
                     </thead>
                     <tbody>
                     {% for project in projects %}
-                        <tr>
+                        <tr data-url="{% url 'my-projects-detail' project.pk %}">
                             <td>
                                 {{ forloop.counter }}
                             </td>
                             <td>
-                                <a href="{% url 'get-project' project.pk %}" style="color: black">
+                                <a href="{% url 'my-projects-detail' project.pk %}" style="color: black">
                                     {{ project.project_name }}
                                 </a>
                             </td>

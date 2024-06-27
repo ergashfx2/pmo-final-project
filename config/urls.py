@@ -10,7 +10,8 @@ urlpatterns = [
     path('', home, name='home'),
     path('projects/',include('loyihalar.urls')),
     path('accounts/',blockedPage, name='blocked-page' ),
-    path('expenses/',include('expenses.urls'))
+    path('expenses/',include('expenses.urls')),
+    path('qualification/',include('qualification.urls'))
 ]
 
 if settings.DEBUG:

@@ -28,6 +28,7 @@ def format_date(value):
 
 @register.filter
 def format_number(value):
+    value = str(value)
     val = value.replace(" ","")
     return f"{int(val):,}".replace(",", " ")
 

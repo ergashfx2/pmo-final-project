@@ -16,6 +16,7 @@ INSTALLED_APPS = [
     'hodimlar',
     'loyihalar',
     'expenses',
+    'qualification',
     'fontawesomefree',
     "django_bootstrap5"
 ]

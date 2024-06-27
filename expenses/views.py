@@ -1,15 +1,15 @@
 import json
 
 from django.contrib.auth.decorators import login_required
+from django.db.models import Sum, IntegerField
+from django.db.models.functions import Cast
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
-from loyihalar.models import Project,Documents
+
+from hodimlar.models import Department
+from loyihalar.models import Project, Documents, Blog
 from .models import Expense
 from loyihalar.views import file_extensions
-
-@login_required
-def qualification(request):
-    return render(request, 'qualification.html')
 
 
 @login_required
@@ -18,9 +18,10 @@ def spending(request):
     total_budget = 0
     spent_budget = 0
     for project in projects:
-        total_budget += int(project.project_budget.replace(" ",''))
-        spent_budget += int(project.project_spent_money.replace(" ",''))
-    return render(request, 'spendings.html', {'projects': projects,'total_budget':str(total_budget),'spent_budget':str(spent_budget)})
+        total_budget += int(project.project_budget.replace(" ", ''))
+        spent_budget += int(project.project_spent_money.replace(" ", ''))
+    return render(request, 'spendings.html',
+                  {'projects': projects, 'total_budget': str(total_budget), 'spent_budget': str(spent_budget)})
 
 
 @login_required
@@ -35,16 +36,18 @@ def add_expense(request, pk):
     if request.method == 'POST':
         data = json.loads(request.POST.get('data'))
         project = Project.objects.get(pk=pk)
-        amount = data['amount'].replace(" ","")
+        amount = data['amount'].replace(" ", "")
         project.project_spent_money = int(project.project_spent_money) + int(amount)
         project.save()
         if request.FILES.get('file'):
             doc_type = str(request.FILES.get('file')).split('.')[-1]
-            Documents.objects.create(document=request.FILES.get('file'),project_id=pk,type=file_extensions[doc_type])
+            Documents.objects.create(document=request.FILES.get('file'), project_id=pk, type=file_extensions[doc_type])
         else:
             pass
-        expense = Expense.objects.create(project_id=pk, description=data['expense'], quantity=data['amount'],date=data['date'])
-        return JsonResponse({'id': expense.id,'spent_money':Project.objects.get(pk=pk).project_spent_money,'total_money': project.project_budget})
+        expense = Expense.objects.create(project_id=pk, description=data['expense'], quantity=data['amount'],
+                                         date=data['date'])
+        return JsonResponse({'id': expense.id, 'spent_money': Project.objects.get(pk=pk).project_spent_money,
+                             'total_money': project.project_budget})
 
 
 @login_required
@@ -55,4 +58,6 @@ def delete_expense(request, pk):
     project.project_spent_money = int(project.project_spent_money) - int(amount)
     project.save()
     expense.delete()
-    return JsonResponse(status=200,data={'succuss':True,'spent_money':Project.objects.get(pk=project.pk).project_spent_money,'total_money': project.project_budget})
+    return JsonResponse(status=200,
+                        data={'succuss': True, 'spent_money': Project.objects.get(pk=project.pk).project_spent_money,
+                              'total_money': project.project_budget})
