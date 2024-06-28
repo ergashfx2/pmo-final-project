@@ -37,7 +37,7 @@
                     <tbody>
                     {% for data in dept_data %}
                       <tr class="d_datas" data-url="{% url 'department-detailed' data.department_id %}">
-                        <th scope="row">{{ data.department_name }}</th>
+                        <th class="no-center" scope="row">{{ data.department_name }}</th>
                         <td>{{ data.projects_count }}</td>
                         <td>{{ data.new_projects }}</td>
                         <td>{{ data.projects_processing }}</td>
@@ -48,7 +48,7 @@
                     {% endfor %}
                     {% for data in b_data %}
                       <tr class="b_datas" style="display: none" data-url="{% url 'blog-detailed' data.blog_id %}">
-                        <th scope="row">{{ data.blog_name }}</th>
+                        <th class="no-center" scope="row">{{ data.blog_name }}</th>
                         <td>{{ data.projects_count_blog }}</td>
                         <td>{{ data.new_projects_blog }}</td>
                         <td>{{ data.projects_processing_blog }}</td>

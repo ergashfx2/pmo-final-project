@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load filters %}
     {% block content %}
 <link href="{% static 'plugins/bower_components/chartist/dist/chartist.min.css' %}" rel="stylesheet">
 <link rel="stylesheet" href="{% static 'plugins/bower_components/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.css' %}">
@@ -93,12 +94,49 @@
                     </div>
                 <div class="col-md-5 col-lg-5 col-sm-12">
                     <div class="card h-100">
-                        <div class="card-body"><canvas id="myChart" style="width:500px"></canvas></div>
+                <div class="mb-8">
+                  <!-- card -->
+                  <div class="card bg-gray-300 shadow-none mb-4">
+                    <!-- card body -->
+                    <div class="card-body">
+                      <div class="d-flex justify-content-between
+                        align-items-center">
+                        <div>
+                          <h5 class="mb-0">Oxirgi harakatlar</h5>
+                        </div>
+                      </div>
                     </div>
+                  </div>
+                  <div class="card">
+                    <ul class="list-group list-group-flush">
+                        {% for action in actions %}
+                      <li class="list-group-item p-3">
+                        <div class="d-flex justify-content-between
+                          align-items-center">
+                          <div class="d-flex align-items-center">
+                            <div>
+                                {% if action.author.avatar.url %}
+                              <img src="{{ action.author.avatar.url }}" alt="Image" class="avatar-sm rounded-circle">
+                                {% endif %}
+                            </div>
+                            <div class="ms-3">
+                              <p class="mb-0
+                                font-weight-medium"><a href="{% url 'hodimlar:profile2' action.author.pk  %}">{{ action.author.get_full_name }} </a>{{ action.action | safe }} <br> <small>{{ action.date | uzbek_format }}</small></p>
+
+                            </div>
+                          </div>
+                        </div>
+                      </li>
+                        {% endfor %}
+                    </ul>
+                  <a href="{% url 'blog-all-actions' blog_id %}" class="btn btn-primary d-block h-100">Barchasini ko'rish</a>
+                  </div>
                 </div>
-                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        </div>
+                    </div>
 <script src="{% static 'plugins/bower_components/jquery/dist/jquery.min.js' %}"></script>
 
 <script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>

@@ -16,8 +16,6 @@ function getCookie(name) {
 
 // Event listener for DOM content loaded
 document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll('th').forEach(value => value.classList.add('text-center'))
-    document.querySelectorAll('td').forEach(value => value.classList.add('text-center'))
       initArchive();
         problemsManager();
         commentsManager();
@@ -539,7 +537,7 @@ function change_table(){
             res.json().then(response => {
                 console.log(response)
                 let tbody = document.getElementById('expenses-body')
-                tbody.innerHTML = `${tbody.innerHTML} <tr><td>${expense}</td><td>${amount}</td><td>${date}</td> <td><i style="color: red;cursor: pointer" id="${response.id}" data-toggle="modal" data-target="#delete-expense-btn" class="fa-regular delete-expense fa-trash-can"></i></td></tr><div id="delete-expense-btn"
+                tbody.innerHTML = `${tbody.innerHTML} <tr class="text-center"><td class="text-center">${expense}</td><td class="text-center">${amount}</td><td class="text-center">${date}</td> <td class="text-center"><i style="color: red;cursor: pointer" id="${response.id}" data-toggle="modal" data-target="#delete-expense-btn" class="fa-regular delete-expense fa-trash-can text-center"></i></td></tr><div id="delete-expense-btn"
                                                                                          class="modal fade"
                                                                                          tabindex="-1" role="dialog"
                                                                                          aria-hidden="true">
@@ -573,9 +571,13 @@ function change_table(){
 
 function tableRedirect(){
     document.querySelectorAll('tr').forEach(value => {
-        value.addEventListener('click',function (){
+        if (value.classList.contains('no-url')){
+
+        }else {
+                    value.addEventListener('click',function (){
             console.log(value.getAttribute('data-url'))
             window.location.href = value.getAttribute('data-url')
         })
+        }
     })
 }

@@ -24,35 +24,35 @@
             <div class="table-responsive" style="overflow-x: auto">
                 <table class="table table-borderless mb-0">
                     <thead>
-                        <tr>
-                            <th scope="col"></th>
-                            <th scope="col">№</th>
-                            <th scope="col">FIO</th>
-                            <th scope="col">STATUS</th>
-                            <th scope="col">ROLI</th>
-                            <th scope="col">RAQAMI</th>
+                        <tr class="no-url">
+                            <th scope="col" class="no-center"></th>
+                            <th scope="col" class="no-center">№</th>
+                            <th scope="col" class="no-center">FIO</th>
+                            <th scope="col" class="no-center">STATUS</th>
+                            <th scope="col" class="no-center">ROLI</th>
+                            <th scope="col" class="no-center">RAQAMI</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% with num=0 %}
                             {% for user in object_list %}
-                                <tr>
-                                    <th scope="row">
+                                <tr class="no-url">
+                                    <th scope="row" class="no-center">
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" value="{{ user.id }}"/>
                                         </div>
                                     </th>
-                                    <td>{{ forloop.counter }}</td>
-                                    <td><a href="{% url 'hodimlar:profile2' user.id %}" style="color:#000;">{{ user.get_full_name }}</a></td>
-                                    <td>
+                                    <td class="no-center">{{ forloop.counter }}</td>
+                                    <td class="no-center"><a href="{% url 'hodimlar:profile2' user.id %}" style="color:#000;">{{ user.get_full_name }}</a></td>
+                                    <td class="no-center">
                                         {% if user.status == 'Active' %}
                                             <i class="fa-solid fa-circle" style="color: green; margin-left: 10%;"></i>
                                         {% else %}
                                             <i class="fa-solid fa-circle" style="color: red; margin-left: 10%;"></i>
                                         {% endif %}
                                     </td>
-                                    <td>{{ user.role }}</td>
-                                    <td>{{ user.phone }}</td>
+                                    <td class="no-center">{{ user.role }}</td>
+                                    <td class="no-center">{{ user.phone }}</td>
                                 </tr>
                             {% endfor %}
                         {% endwith %}

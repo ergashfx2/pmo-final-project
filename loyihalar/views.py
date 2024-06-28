@@ -9,6 +9,7 @@ from django.urls import reverse
 from django.views.generic import CreateView, DetailView, DeleteView, UpdateView
 from zipfile import ZipFile
 
+from actions.models import Action
 from config import settings
 from .forms import CreateProjectForm, EditProjectForm, AddFileForm, AddPhaseForm, AddTaskForm, PermittedProjectsForm
 from .formsets import TaskFormSet
@@ -125,6 +126,7 @@ def DetailMyProjects(request, pk):
             document.type = file_extensions[doc_type]
             document.project = Project.objects.get(pk=pk)
             document.save()
+            Action.objects.create(author_id=request.user.pk, project_id=project.pk, action=f"<strong>{form.cleaned_data.get('document')}</strong> nomli fayl qo'shdi")
             return redirect('my-projects-detail', pk=pk)
         if form.is_valid() and form.cleaned_data.get('url'):
             document = form.save(commit=False)
@@ -161,6 +163,7 @@ def CreateProject(request):
             project = form.save(commit=False)
             form.save()
             form.save_m2m()
+            Action.objects.create(author_id=request.user.pk, project_id=project.pk, action=f"{form.project_name} nomli loyiha yaratdi")
             return redirect('my-projects')
 
     return render(request, 'create_project.html', context={'form': form})
@@ -177,8 +180,9 @@ class UpdateProject(UpdateView):
 
 @login_required
 def DeleteProject(request, pk):
-    project = Project.objects.filter(pk=pk)
+    project = Project.objects.get(pk=pk)
     project.delete()
+    Action.objects.create(author_id=request.user.pk, project_id=project.pk, action=f"{project.project_name} nomli loyihani o'chirib yubordi")
     return redirect('my-projects')
 
 
@@ -188,8 +192,8 @@ def add_phase(request, pk):
     data = dat.get('data')
     project = get_object_or_404(Project, pk=pk)
     phase = Phase.objects.create(project=project,phase_name=data['phase_name'],phase_deadline=data['phase_deadline'])
+    Action.objects.create(author_id=request.user.pk, project_id=project.pk, action=f"{project.project_name} nomli loyihaga {data['phase_name']} nomli faza qo'shdi")
     for data in data['tasks']:
-        print(data['deadline'])
         deadline = datetime.datetime.strptime(data['deadline'], '%Y-%m-%d').date()
         Task.objects.create(project=project,phase=phase,task_name=data['name'],task_deadline=deadline,task_manager=data['manager'])
     return redirect('my-projects-detail',pk)
@@ -203,7 +207,10 @@ def get_task(request, pk):
 def update_phase(request, pk):
     if request.method == 'POST':
         data = json.loads(request.body)
-        Phase.objects.select_related(pk).filter(pk=pk).update(phase_name=data['phase_name'])
+        phase = Phase.objects.get(pk=pk)
+        Phase.objects.filter(pk=pk).update(phase_name=data['phase_name'])
+        project = Phase.objects.get(pk=pk).project
+        Action.objects.create(author_id=request.user.pk, project_id=project.pk, action=f"{project.project_name} nomli loyihadagi <strong>{phase.phase_name}</strong> fazasini <strong>{data['phase_name']}</strong> ga yangiladi")
         return JsonResponse(status=200,data={'status':'ok'})
     return redirect('my-projects')
 
@@ -211,6 +218,9 @@ def update_phase(request, pk):
 @login_required
 def delete_phase(request, pk):
     Phase.objects.select_related(pk).filter(pk=pk).delete()
+    project = Phase.objects.get(pk=pk).project
+    phase = Phase.objects.get(pk=pk)
+    Action.objects.create(author_id=request.user.pk, project_id=project.pk, action=f"{project.project_name} nomli loyihadagi <strong>{phase.phase_name}</strong> fazasini o'chirib yubordi")
     return JsonResponse(status=200,data={'status':'ok'})
 
 
@@ -219,10 +229,13 @@ def update_task(request, pk):
     if request.method == 'POST':
         data = json.loads(request.body)
         task = Task.objects.get(pk=pk)
+        project = task.project
         task.task_name = data['task_name']
         task.task_deadline = data['task_deadline']
         task.task_manager = data['task_manager']
         task.save()
+        Action.objects.create(author_id=request.user.pk, project_id=project.pk,
+                              action=f"{project.project_name} loyihasidagi {task.task_name} nomli taskni yangiladi so'mlik xarajatni o'chirdi")
         return JsonResponse(status=200,data={'status':'ok'})
     return redirect('my-projects')
 
@@ -255,13 +268,17 @@ def update_task_percentage(request, pk):
         print(final_project_percentage)
         project_obj.project_done_percentage = int(final_project_percentage)
         project_obj.save()
+        task = Task.objects.get(pk=pk)
+        Action.objects.create(author_id=request.user.pk, project_id=task.project.pk, action=f"{task.project.project_name} loyihasidagi <strong>{task.task_name}</strong> taskini <strong>{data['task_done_percentage']}</strong> foizga yakunladi")
         return JsonResponse(status=200,data={'status':'ok'})
     return redirect('my-projects')
 
 
 @login_required
 def delete_task(request, pk):
+    task = Task.objects.get(pk=pk)
     Task.objects.select_related(pk).filter(pk=pk).delete()
+    Action.objects.create(author_id=request.user.pk, project_id=task.project.pk, action=f"{task.project.project_name} loyihasidagi <strong>{task.task_name}</strong> taskini o'chirdi")
     return JsonResponse(status=200,data={'status':'ok'})
 
 
@@ -271,7 +288,10 @@ def delete_files(request):
         datas = json.loads(request.body)['datas']
         print(datas)
         for data in datas:
+            document = Documents.objects.get(pk=data)
             Documents.objects.filter(id=data).delete()
+            project = Documents.objects.get(pk=data).project
+            Action.objects.create(author_id=request.user.pk, project_id=project.pk, action=f"{project.project_name} loyihasidagi <strong>{document.document}</strong> nomli faylni o'chirdi")
         return JsonResponse(status=200,data={'status':'ok'})
     return redirect('my-projects')
 
@@ -308,6 +328,8 @@ def post_comment(request,pk):
     if request.method == 'POST':
         comment = json.loads(request.body)['comment']
         Comments.objects.create(project_id=pk,author=request.user ,comment=comment)
+        project = Project.objects.get(pk=pk)
+        Action.objects.create(author_id=request.user.pk, project_id=project.pk, action=f"{project.project_name} nomli loyihaga izoh yozdi.Izoh matni: <strong>{comment}</strong>")
         return redirect('my-projects-detail',pk)
     return redirect('my-projects-detail',pk)
 
@@ -315,17 +337,24 @@ def post_comment(request,pk):
 def edit_comment(request,pk):
     if request.method == 'POST':
         comment = json.loads(request.body)['comment']
+        comment2 = Comments.objects.get(pk=pk)
         Comments.objects.filter(pk=pk).update(comment=comment)
         pk = Comments.objects.get(pk=pk).project.pk
+        project = Project.objects.get(pk=pk)
+        Action.objects.create(author_id=request.user.pk, project_id=project.pk, action=f"{project.project_name} nomli loyihadagi izohni tahrirladi. <br> Izohning asl holati <strong>{comment2.comment}</strong> va o'zgartirilgan holati <strong>{comment}</strong> ")
         return redirect('my-projects-detail',pk)
     return redirect('my-projects-detail',pk)
 
 
 @login_required
 def delete_comment(request,pk):
+    prkey = Comments.objects.get(pk=pk).project.pk
+    project = Project.objects.get(pk=prkey)
+    comment = Comments.objects.get(pk=pk)
     Comments.objects.filter(pk=pk).delete()
-    pk = Comments.objects.get(pk=pk).project.pk
-    return redirect('my-projects-detail',pk)
+    Action.objects.create(author_id=request.user.pk, project_id=prkey,
+                          action=f"{project.project_name} nomli loyihadagi izohni o'chirdi.Izoh matni :<strong> {comment.comment}</strong>")
+    return redirect('my-projects-detail',prkey)
 
 
 
@@ -334,6 +363,8 @@ def post_problem(request,pk):
     if request.method == 'POST':
         problem = json.loads(request.body)['problem']
         Problems.objects.create(project_id=pk,author=request.user ,problem=problem)
+        project = Project.objects.get(pk=pk)
+        Action.objects.create(author_id=request.user.pk, project_id=project.pk, action=f"{project.project_name} nomli loyihaga muammoli izoh yozdi.Izoh matni <strong>{project}</strong>")
         return redirect('my-projects-detail',pk)
     return redirect('my-projects-detail',pk)
 
@@ -341,16 +372,22 @@ def post_problem(request,pk):
 def edit_problem(request,pk):
     if request.method == 'POST':
         problem = json.loads(request.body)['problem']
+        problem2 = Problems.objects.get(pk=pk)
         Problems.objects.filter(pk=pk).update(problem=problem)
         pk = Problems.objects.get(pk=pk).project.pk
+        project = Project.objects.get(pk=pk)
+        Action.objects.create(author_id=request.user.pk, project_id=project.pk, action=f"{project.project_name} nomli loyihadagi muammoli izohni tahrirladi. <br> Izohning asl holati <strong>{problem2.problem}</strong> va o'zgartirilgan holati <strong>{problem}</strong> ")
         return redirect('my-projects-detail',pk)
     return redirect('my-projects-detail',pk)
 
 
 @login_required
 def delete_problem(request,pk):
-    Problems.objects.filter(pk=pk).delete()
     pk = Problems.objects.get(pk=pk).project.pk
+    project = Project.objects.get(pk=pk)
+    Action.objects.create(author_id=request.user.pk, project_id=project.pk,
+                          action=f"{project.project_name} nomli loyihadagi muammoli izohni o'chirdi")
+    Problems.objects.filter(pk=pk).delete()
     return redirect('my-projects-detail',pk)
 
 @login_required
@@ -362,6 +399,10 @@ def add_team_member(request,pk):
             project = form.save(commit=False)
             project.project = Project.objects.get(pk=pk)
             form.save()
+            project = Project.objects.get(pk=pk)
+            print(form.cleaned_data.get('user').get_full_name())
+            Action.objects.create(author_id=request.user.pk, project_id=project.pk,
+                                  action=f"{project.project_name} nomli loyihaga {form.cleaned_data.get('user').get_full_name()} ismli foydalanuvchiga ko'rish imkoniyatini berdi")
         return redirect('my-projects-detail',pk)
     return render(request,'add_project_member.html',context={'form':form})
 
@@ -374,6 +415,9 @@ def remove_team_member(request,pk):
         if form.is_valid():
             user = form.cleaned_data.get('user')
             PermittedProjects.objects.filter(project=pk,user=user).delete()
+            project = Project.objects.get(pk=pk)
+            Action.objects.create(author_id=request.user.pk, project_id=project.pk,
+                                  action=f"{project.project_name} nomli loyihadan {form.cleaned_data.get('user').get_full_name()} ismli foydalanuvchini olib tashladi")
         return redirect('my-projects-detail',pk)
     return render(request,'remove_project_member.html',context={'form':form})
 

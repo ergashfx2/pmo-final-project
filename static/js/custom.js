@@ -39,7 +39,7 @@ $(function () {
     new Chartist.Line('#ct-visits', {
         labels: ['Yanvar', 'Fevral', 'Mart', 'Aprel', 'May', 'Iyun', 'Iyul', 'Avgust','Sentyabr','Oktyabr','Noyabr','Dekabr'],
         series: [
-            [2, 5, 2, 6, 2, 5, 2, 4,2,3,4,9]
+            [2, 5, 2, 6, 2, 5, 2, 4,2,3,4,4]
         ]
     }, {
         top: 0,

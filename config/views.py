@@ -7,12 +7,13 @@ from django.contrib.auth import get_user_model
 from django.views.decorators.cache import cache_page
 
 from loyihalar.models import Project
-
+from django.utils import timezone
 User = get_user_model()
 from hodimlar.models import *
 
 def home(request):
     if request.user.is_authenticated:
+        print(timezone.now())
         users = User.objects.annotate(projects=Count('author',distinct=True) + Count('team',distinct=True) + Count('manager',distinct=True) + Count('curator',distinct=True))[:4]
         pk = request.user.id
         projects_count = Project.objects.all().count()

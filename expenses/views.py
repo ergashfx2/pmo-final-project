@@ -6,6 +6,7 @@ from django.db.models.functions import Cast
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 
+from actions.models import Action
 from hodimlar.models import Department
 from loyihalar.models import Project, Documents, Blog
 from .models import Expense
@@ -42,10 +43,12 @@ def add_expense(request, pk):
         if request.FILES.get('file'):
             doc_type = str(request.FILES.get('file')).split('.')[-1]
             Documents.objects.create(document=request.FILES.get('file'), project_id=pk, type=file_extensions[doc_type])
+            Action.objects.create(author_id=request.user.pk, project_id=project.pk,action=f"{request.FILES.get('file')} nomli fayl qo'shdi")
         else:
             pass
         expense = Expense.objects.create(project_id=pk, description=data['expense'], quantity=data['amount'],
                                          date=data['date'])
+        Action.objects.create(author_id=request.user.pk, project_id=project.pk,action=f"{project.project_name} loyihasiga <strong>{expense.quantity}</strong> so'mlik miqdordagi xarajat qo'shdi")
         return JsonResponse({'id': expense.id, 'spent_money': Project.objects.get(pk=pk).project_spent_money,
                              'total_money': project.project_budget})
 
@@ -58,6 +61,7 @@ def delete_expense(request, pk):
     project.project_spent_money = int(project.project_spent_money) - int(amount)
     project.save()
     expense.delete()
+    Action.objects.create(author_id=request.user.pk, project_id=project.pk, action=f"{project.project_name} loyihasidagi {expense.quantity} so'mlik xarajatni o'chirdi")
     return JsonResponse(status=200,
                         data={'succuss': True, 'spent_money': Project.objects.get(pk=project.pk).project_spent_money,
                               'total_money': project.project_budget})

@@ -10,6 +10,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views.generic import UpdateView, ListView, CreateView, View
 
+from actions.models import Action
 from loyihalar.models import PermittedProjects, Project
 from .forms import UpdateUserForm, CreateUserForm
 
@@ -104,7 +105,6 @@ def block_user(request, pk):
     if request.method == "POST":
         user = User.objects.get(pk=pk)
         user.block()
-        print("Working")
         return redirect('hodimlar:users')
 
 

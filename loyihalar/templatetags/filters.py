@@ -2,6 +2,7 @@ import uuid
 
 from django import template
 from datetime import datetime
+from django.utils.translation import gettext as _
 
 register = template.Library()
 
@@ -20,6 +21,20 @@ uzbek_month = {
     12: 'Dekabr',
 }
 
+uzbek_month_names = {
+    1: _("yanvar"),
+    2: _("fevral"),
+    3: _("mart"),
+    4: _("aprel"),
+    5: _("may"),
+    6: _("iyun"),
+    7: _("iyul"),
+    8: _("avgust"),
+    9: _("sentabr"),
+    10: _("oktabr"),
+    11: _("noyabr"),
+    12: _("dekabr"),
+}
 
 @register.filter
 def format_date(value):
@@ -59,3 +74,13 @@ def multiple_args_tag(a, b):
     val2 = int(b.replace(" ",""))
     val3 = val1 - val2
     return f"{int(val3):,}".replace(",", " ")
+
+@register.filter
+def uzbek_format(value):
+    if isinstance(value, datetime):
+        day = value.strftime("%d")
+        month = uzbek_month_names.get(value.month, "")
+        year = value.strftime("%Y")
+        time = value.strftime("%H:%M")
+        return f"{day} - {month}, {year}, {time}"
+    return value
