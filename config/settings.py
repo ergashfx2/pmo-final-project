@@ -7,6 +7,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['ergashfx2-pmo-final-project-73ce.twc1.net']
 CSRF_TRUSTED_ORIGINS = ['https://ergashfx2-pmo-final-project-73ce.twc1.net/']
+CSRF_COOKIE_SECURE = True
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -21,7 +22,8 @@ INSTALLED_APPS = [
     'qualification',
     'actions',
     'fontawesomefree',
-    "django_bootstrap5"
+    "django_bootstrap5",
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -32,8 +34,16 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'config.custom_middleware.CustomMiddleware'
+    'config.custom_middleware.CustomMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
+
+CORS_ALLOWED_ORIGINS = [
+    'https://ergashfx2-pmo-final-project-73ce.twc1.net',
+]
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 
 ROOT_URLCONF = 'config.urls'
 
@@ -80,10 +90,9 @@ LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'Asia/Tashkent'
 USE_TZ = False
 
-
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR,'static')
+    os.path.join(BASE_DIR, 'static')
 ]
 MEDIA_URL = '/media/'
 MEDIA_ROOT = str(BASE_DIR.joinpath('media'))
