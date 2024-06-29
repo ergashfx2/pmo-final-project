@@ -6,7 +6,7 @@ SECRET_KEY = 'django-insecure-c9mf+qm+en)33e#1--kp7yd^=7mi9n$sjm=mb@^i#4bzm6(^yd
 DEBUG = True
 
 ALLOWED_HOSTS = ['ergashfx2-pmo-final-project-73ce.twc1.net']
-CSRF_TRUSTED_ORIGINS = ['https://ergashfx2-pmo-final-project-73ce.twc1.net/']
+CSRF_TRUSTED_ORIGINS = ['https://*.twc1.net']
 CSRF_COOKIE_SECURE = True
 
 INSTALLED_APPS = [
