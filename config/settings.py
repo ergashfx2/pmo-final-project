@@ -37,26 +37,7 @@ MIDDLEWARE = [
     'config.custom_middleware.CustomMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'config.custom_middleware.LogOriginMiddleware'
 ]
-
-WSGI_APPLICATION = 'wsgi.application'
-
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-        },
-    },
-    'loggers': {
-        '': {
-            'handlers': ['console'],
-            'level': 'INFO',
-        },
-    },
-}
 
 CORS_ALLOWED_ORIGINS = [
     'https://ergashfx2-pmo-final-project-73ce.twc1.net',
