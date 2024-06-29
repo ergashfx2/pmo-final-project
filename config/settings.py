@@ -37,6 +37,7 @@ MIDDLEWARE = [
     'config.custom_middleware.CustomMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'config.custom_middleware.LogOriginMiddleware'
 ]
 
 CORS_ALLOWED_ORIGINS = [
