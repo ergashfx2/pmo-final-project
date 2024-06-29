@@ -40,6 +40,22 @@ MIDDLEWARE = [
     'config.custom_middleware.LogOriginMiddleware'
 ]
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        '': {
+            'handlers': ['console'],
+            'level': 'INFO',
+        },
+    },
+}
+
 CORS_ALLOWED_ORIGINS = [
     'https://ergashfx2-pmo-final-project-73ce.twc1.net',
 ]
