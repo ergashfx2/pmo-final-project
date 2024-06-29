@@ -6,6 +6,8 @@ SECRET_KEY = 'django-insecure-c9mf+qm+en)33e#1--kp7yd^=7mi9n$sjm=mb@^i#4bzm6(^yd
 DEBUG = True
 
 ALLOWED_HOSTS = ['ergashfx2-pmo-final-project-73ce.twc1.net']
+CSRF_TRUSTED_ORIGINS = ['ergashfx2-pmo-final-project-73ce.twc1.net']
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
