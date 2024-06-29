@@ -1,3 +1,11 @@
+from django.utils.deprecation import MiddlewareMixin
+from django.shortcuts import render, redirect
+from django.contrib.auth import get_user_model, logout
+
+User = get_user_model()
+
+
+
 class UserStatusCheckMiddleware(MiddlewareMixin):
     def process_request(self, request):
         if request.user.is_authenticated:
