@@ -40,6 +40,8 @@ MIDDLEWARE = [
     'config.custom_middleware.LogOriginMiddleware'
 ]
 
+WSGI_APPLICATION = 'wsgi.application'
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
