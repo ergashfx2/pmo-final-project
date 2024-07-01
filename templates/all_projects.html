@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
     {% load filters %}
     <section class="bg-light">
@@ -70,7 +71,7 @@
                         </thead>
                         <tbody>
                         {% for project in projects %}
-                             <tr data-url="{% url 'get-project' project.pk %}">
+                             <tr class="datas" data-url="{% url 'get-project' project.pk %}">
                                 <td>{{ forloop.counter }}</td>
                                 <td class="text-center">
                                                               <a href="{% url 'get-project' project.pk %}"
@@ -147,5 +148,5 @@
         })
 
     </script>
-
+<script src="{% static 'static/js/expense.js' %}"></script>
 {% endblock content %}
