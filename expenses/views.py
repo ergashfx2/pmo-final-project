@@ -83,3 +83,9 @@ def updateBudget(request,pk):
                                   'spent_money': Project.objects.get(pk=project.pk).project_spent_money,
                                   'total_money': project.project_budget})
 
+
+@login_required
+def deleteAll(request):
+    expenses = Expense.objects.all()
+    expenses.delete()
+    return JsonResponse(status=200,data={'success':True})

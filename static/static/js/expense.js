@@ -200,3 +200,12 @@ document.getElementById('add-expense').addEventListener('submit', function (e) {
     }
 })
 
+function deleteAll(){
+    document.getElementById('reset-all').addEventListener('click',function (){
+        fetch('delete-expense-all/').then(res=>{
+            location.reload()
+        })
+    })
+}
+
+deleteAll()

@@ -41,7 +41,26 @@
                         <button id="add-expense-button" type="submit" class="btn btn-primary form-control">Qo'shish</button>
                     </form>
                 </div>
-                <button class="btn btn-danger form-control mt-2">Reset All</button>
+                <button data-toggle="modal" data-target="#delete-all-btn" class="btn btn-danger form-control mt-2">Reset All</button>
+                  <div id="delete-all-btn"
+                                                                                         class="modal fade"
+                                                                                         tabindex="-1" role="dialog"
+                                                                                         aria-hidden="true">
+                                                                                        <div class="modal-dialog modal-sm modal-dialog-centered"
+                                                                                             role="document">
+                                                                                            <div class="modal-content">
+                                                                                                <div class="modal-body text-center">
+                                                                                                    <i class="fa-solid fa-triangle-exclamation btn-lg" style="font-size: 5dvh"></i>
+                                                                                                    <h4>Chindan o'chirasizmi ?</h4></div>
+                                                                                                <div class="d-flex justify-content-center mb-2">
+                                                                                                    <button id="reset-all" class="btn btn-danger mr-2"><i class="fa-solid fa-trash-can"></i> O'chirish</button>
+                                                                                                    <button class="btn btn-secondary" data-dismiss="modal">Bekor qilish</button>
+                                                                                                    <br>
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                        </div>
+                                                                                    </div>
 
             </div>
 
