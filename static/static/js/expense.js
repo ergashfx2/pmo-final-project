@@ -83,16 +83,11 @@ function add_listeners() {
 }
 
 function redirecting(){
-    document.querySelectorAll('.d_datas').forEach(value => {
+    document.querySelectorAll('.datas').forEach(value => {
         value.addEventListener('click',function (){
             window.location.href = value.getAttribute('data-url');
         })
     });
-        document.querySelectorAll('.b_datas').forEach(value => {
-        value.addEventListener('click',function (){
-            window.location.href = value.getAttribute('data-url');
-        })
-    })
 }
 
 redirecting()
