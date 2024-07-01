@@ -121,10 +121,11 @@ def DetailMyProjects(request, pk):
     if request.method == 'POST':
         form = AddFileForm(data=request.POST, files=request.FILES)
         if form.is_valid() and form.cleaned_data.get('document'):
+            project = Project.objects.get(pk=pk)
             document = form.save(commit=False)
             doc_type = str(form.cleaned_data.get('document')).split('.')[-1]
             document.type = file_extensions[doc_type]
-            document.project = Project.objects.get(pk=pk)
+            document.project = project
             document.save()
             Action.objects.create(author_id=request.user.pk, project_id=project.pk, action=f"<strong>{form.cleaned_data.get('document')}</strong> nomli fayl qo'shdi")
             return redirect('my-projects-detail', pk=pk)

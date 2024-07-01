@@ -1,4 +1,4 @@
-// Utility to get CSRF token from cookies
+
 function getCookie(name) {
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {
@@ -14,14 +14,14 @@ function getCookie(name) {
     return cookieValue;
 }
 
-// Event listener for DOM content loaded
+
 document.addEventListener("DOMContentLoaded", function () {
-      initArchive();
-        problemsManager();
-        commentsManager();
-        change_table();
-        tableRedirect()
+add_listeners();
+add_expense();
+    problemsManager();
+    commentsManager();
     deleteFiles();
+    change_table();
     initTabs();
     initTaskManager();
     initPhaseActions();
@@ -29,7 +29,6 @@ document.addEventListener("DOMContentLoaded", function () {
     initTaskDelete();
     initTaskCompletion();
     initCommentSystem();
-    add_listeners();
     initFilterToggle();
     initMultiSelect();
 });
@@ -55,31 +54,32 @@ function initTabs() {
     activateStoredTab();
 }
 
-function deleteFiles (){
+function deleteFiles() {
     console.log('working files')
     var all_delete_buttons = document.querySelectorAll('.delete-button')
     var selectedFiles = document.querySelectorAll('.del-files')
     var delFiles = []
-        selectedFiles.forEach(file => {
-            file.addEventListener('change', function () {
-                console.log('changed')
-                if (file.checked === true) {
-                    delFiles.push(file.id)
-                }
-                if (file.checked === false) {
-                    delFiles = delFiles.filter(item => item !== file.id)
-                }
-            })
-    })
-    document.getElementById('del-confirm').addEventListener('click', function () {
-        sendPostRequest('delete-files/',{'datas':delFiles})
+    selectedFiles.forEach(file => {
+        file.addEventListener('change', function () {
+            console.log('changed')
+            if (file.checked === true) {
+                delFiles.push(file.id)
+            }
+            if (file.checked === false) {
+                delFiles = delFiles.filter(item => item !== file.id)
+            }
+        })
+            document.getElementById('del-confirm').addEventListener('click', function () {
+        sendPostRequest('delete-files/', {'datas': delFiles})
         location.reload()
-})
+    })
+    })
 
 }
 
 
 function initTaskManager() {
+    console.log("task working")
     const addTaskBtn = document.getElementById('add-task');
     const tasksContainer = document.getElementById('tasks-container');
     let taskCount = 0;
@@ -128,10 +128,8 @@ function initTaskManager() {
 }
 
 
-
-
-
 function initPhaseActions() {
+    console.log('phase working')
     let phaseId = null;
     document.querySelectorAll('.trash-icon').forEach(icon => {
         icon.addEventListener('click', function () {
@@ -144,8 +142,8 @@ function initPhaseActions() {
     });
 
     document.querySelectorAll('.icon-buttons').forEach(value => {
-        value.addEventListener('click',function (){
-                             let phaseId = value.classList[3];
+        value.addEventListener('click', function () {
+            let phaseId = value.classList[3];
             const el = document.getElementById(`phase${phaseId}`);
             console.log(el)
             let element = el.textContent.trim();
@@ -163,62 +161,67 @@ function initPhaseActions() {
 
 }
 
-function problemsManager(){
+function problemsManager() {
     console.log(`Working problem`)
     let edit_problems = document.querySelectorAll('.edit-problem ');
     let delete_problems = document.querySelectorAll('.delete-problem');
     var problem
     edit_problems.forEach(value => {
-        value.addEventListener('click',function (){
+        value.addEventListener('click', function () {
             problem = document.getElementById(value.classList[4]);
             problem.innerHTML = `<textarea type="text" id="area${problem.id}"> ${problem.textContent.trim()} </textarea>`;
 
-                    document.addEventListener('keypress',function (e){
-            if (e.key === 'Enter'){
-                sendPostRequest(`edit-problem/${problem.id}`,{'problem':problem.firstChild.value})
-                problem.innerHTML = `${problem.firstChild.value}`
-                problem = null
-            }
-        })
+            document.addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    sendPostRequest(`edit-problem/${problem.id}`, {'problem': problem.firstChild.value})
+                    problem.innerHTML = `${problem.firstChild.value}`
+                    problem = null
+                }
+            })
         })
 
     })
-        delete_problems.forEach(value => {
-        value.addEventListener('click',function () {
-              var problem_id = value.classList[4]
+    delete_problems.forEach(value => {
+        value.addEventListener('click', function () {
+            var problem_id = value.classList[4]
             console.log(problem_id)
-            document.getElementById('confirm-delete-problem').addEventListener('click',function (){
-                fetch(`delete-problem/${problem_id}`).then(res=> {location.reload()})
+            document.getElementById('confirm-delete-problem').addEventListener('click', function () {
+                fetch(`delete-problem/${problem_id}`).then(res => {
+                    location.reload()
+                })
             })
 
         })
     })
 }
 
-function commentsManager(){
+function commentsManager() {
+    console.log('Working comments')
     let delete_comments = document.querySelectorAll('.delete-comment');
     let edit_comments = document.querySelectorAll('.edit-comment ');
     var comment
     edit_comments.forEach(value => {
-        value.addEventListener('click',function (){
+        value.addEventListener('click', function () {
             comment = document.getElementById(value.classList[4]);
             comment.innerHTML = `<textarea type="text" id="area${comment.id}"> ${comment.textContent.trim()} </textarea>`;
 
-                    document.addEventListener('keypress',function (e){
-            if (e.key === 'Enter'){
-                sendPostRequest(`edit-comment/${comment.id}`,{'comment':comment.firstChild.value})
-                comment.innerHTML = `${comment.firstChild.value}`
-                comment = null
-            }
-        })
+            document.addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    sendPostRequest(`edit-comment/${comment.id}`, {'comment': comment.firstChild.value})
+                    comment.innerHTML = `${comment.firstChild.value}`
+                    comment = null
+                }
+            })
         })
 
     })
     delete_comments.forEach(value => {
-        value.addEventListener('click',function () {
-              var comment_id = value.classList[4]
-            document.getElementById('confirm-delete-comment').addEventListener('click',function (){
-                fetch(`delete-comment/${comment_id}`).then(res=> {location.reload()})
+        value.addEventListener('click', function () {
+            var comment_id = value.classList[4]
+            document.getElementById('confirm-delete-comment').addEventListener('click', function () {
+                fetch(`delete-comment/${comment_id}`).then(res => {
+                    location.reload()
+                })
             })
 
         })
@@ -258,6 +261,7 @@ function initTaskEdit() {
 
 
 function initTaskDelete() {
+    console.log('task delete working')
     let taskId = null;
 
     document.querySelectorAll('.delete-task-icon').forEach(task => {
@@ -272,6 +276,7 @@ function initTaskDelete() {
 }
 
 function initTaskCompletion() {
+    console.log('task complete working')
     const rangeInput = document.getElementById('task-done');
     const label = document.getElementById('task-done-percentage');
     let taskId = null;
@@ -304,17 +309,18 @@ function initTaskCompletion() {
 
 
 function initCommentSystem() {
+    console.log('Comments sys working')
     document.getElementById('problem-btn').addEventListener('click', function () {
         const problem = document.getElementById('problem');
         const taskId = problem.classList[1];
-        sendPostRequest(`post-problem/${taskId}`, {'problem':problem.value});
+        sendPostRequest(`post-problem/${taskId}`, {'problem': problem.value});
         location.reload()
     });
 
     document.getElementById('comment-btn').addEventListener('click', function () {
         const comment = document.getElementById('comment');
         const taskId = comment.classList[1];
-        sendPostRequest(`post-comment/${taskId}`, {'comment':comment.value});
+        sendPostRequest(`post-comment/${taskId}`, {'comment': comment.value});
         location.reload()
     });
 }
@@ -327,7 +333,8 @@ function initArchive() {
             const project_id = e.target.name;
             console.log(project_id)
             fetch(`create-archive/${project_id}`).then(res => {
-                console.log(res)} );
+                console.log(res)
+            });
         });
     });
 
@@ -341,6 +348,7 @@ function initArchive() {
 
 
 function initFilterToggle() {
+    console.log('filter working')
     document.getElementById('filter').addEventListener('click', function () {
         const filterArea = document.getElementById('filter-area');
         if (filterArea.style.display === 'none' || !filterArea.style.display) {
@@ -353,6 +361,7 @@ function initFilterToggle() {
 
 
 function initMultiSelect() {
+    console.log('multi working')
     document.querySelectorAll('.multi-select').forEach(select => {
         select.addEventListener('change', function () {
             const selectedOptions = Array.from(this.selectedOptions).map(option => option.value);
@@ -384,6 +393,7 @@ function sendPostRequest(url, data) {
 
 document.addEventListener('DOMContentLoaded', function () {
     const csrfToken = getCookie('csrftoken');
+
     function getCookie(name) {
         let cookieValue = null;
         if (document.cookie && document.cookie !== '') {
@@ -400,6 +410,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function handleBulkAction(action) {
+        console.log('bulk working')
         const selectedIds = Array.from(document.querySelectorAll('.form-check-input:checked'))
             .map(checkbox => checkbox.value);
         if (selectedIds.length > 0) {
@@ -445,6 +456,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
+
 function formatNumber(val) {
     val = parseInt(val);
     let formatted = val.toLocaleString();
@@ -454,32 +466,33 @@ function formatNumber(val) {
     return formatted;
 }
 
-function add_listeners(){
-var delete_expense_modal =  document.getElementById('delete-expense-btn');
-var e_id
- document.querySelectorAll('.delete-expense').forEach(value => {
-    value.addEventListener('click',function (){
-        e_id = value.id
+function add_listeners() {
+    var delete_expense_modal = document.getElementById('delete-expense-btn');
+    var e_id
+    console.log("listeners working")
+    document.querySelectorAll('.delete-expense').forEach(value => {
+        value.addEventListener('click', function () {
+            e_id = value.id
 
+        })
     })
-})
-    var delete_expense_btn =  document.getElementById('confirm-delete-expense-btn');
-    delete_expense_btn.addEventListener('click',function (){
-   fetch(`delete-expense/${e_id}}`).then(res=>{
+    var delete_expense_btn = document.getElementById('confirm-delete-expense-btn');
+    delete_expense_btn.addEventListener('click', function () {
+        fetch(`delete-expense/${e_id}}`).then(res => {
             var child = document.getElementById(e_id);
-            if (child){
+            if (child) {
                 var parent = child.closest('tr');
-                if (parent){
+                if (parent) {
                     parent.remove()
-                    res.json().then(response=>{
+                    res.json().then(response => {
                         var total = response.spent_money
-                var left = response.total_money.replaceAll(' ','') - response.spent_money.replaceAll(' ','')
-                document.getElementById('totalExpenses').textContent = `${formatNumber(total)}`
-                document.getElementById('budgetLeft').textContent = `${formatNumber(left)}`
-                           delete_expense_modal.classList.remove('show');
-    delete_expense_modal.style.display = 'none';
-    document.body.classList.remove('modal-open');
-    document.querySelector('.modal-backdrop').remove();
+                        var left = response.total_money.replaceAll(' ', '') - response.spent_money.replaceAll(' ', '')
+                        document.getElementById('totalExpenses').textContent = `${formatNumber(total)}`
+                        document.getElementById('budgetLeft').textContent = `${formatNumber(left)}`
+                        delete_expense_modal.classList.remove('show');
+                        delete_expense_modal.style.display = 'none';
+                        document.body.classList.remove('modal-open');
+                        document.querySelector('.modal-backdrop').remove();
                     })
                 }
             }
@@ -487,18 +500,19 @@ var e_id
     })
 }
 
-function change_table(){
+function change_table() {
+    console.log('table working')
     document.querySelectorAll('.change-table').forEach(value => {
-        value.addEventListener('change',function (e){
-            let selectedId = value.selectedOptions[0].id
-            if (selectedId === 'blog'){
+        value.addEventListener('change', function (e) {
+            let selectedId = value.selectedOptions[0].id;
+            if (selectedId === 'blog') {
                 document.querySelectorAll('.d_datas').forEach(el => el.style.display = 'none')
                 document.querySelectorAll('.b_datas').forEach(el => el.style.display = '')
                 document.getElementById('table-title').innerText = 'Loyihalar boklar kesimida'
 
             }
 
-            if (selectedId === 'dept'){
+            if (selectedId === 'dept') {
                 document.querySelectorAll('.d_datas').forEach(el => el.style.display = '')
                 document.querySelectorAll('.b_datas').forEach(el => el.style.display = 'none')
                 document.getElementById('table-title').innerText = 'Loyihalar departamentlar kesimida'
@@ -508,7 +522,8 @@ function change_table(){
 }
 
 
-    document.getElementById('add-expense').addEventListener('submit', function (e) {
+
+document.getElementById('add-expense').addEventListener('submit', function (e) {
     e.preventDefault()
     let expense = document.getElementById('expense').value
     let amount = document.getElementById('amount').value
@@ -516,28 +531,28 @@ function change_table(){
     let p_id = e.target.classList[0];
     let file = document.getElementById('file')
     var input_file
-    if (file.files[0]){
-       input_file = file.files[0]
+    if (file.files[0]) {
+        input_file = file.files[0]
     }
     let csrfToken = getCookie('csrftoken')
     let formData = new FormData()
-    let data = {'expense': expense, 'amount': amount, 'date': date,'file':file.files[0]}
-    formData.append('file',input_file)
-    formData.append('data',JSON.stringify(data))
-    if (expense){
+    let data = {'expense': expense, 'amount': amount, 'date': date, 'file': file.files[0]}
+    formData.append('file', input_file)
+    formData.append('data', JSON.stringify(data))
+    if (expense) {
         console.log(input_file)
-            fetch(`add-expense/${p_id}`, {
-        method: 'POST',
-        headers: {
-            'X-CSRFToken': csrfToken,
-        },
-        body: formData,
-    }).then(res => {
-        if (res.status === 200) {
-            res.json().then(response => {
-                console.log(response)
-                let tbody = document.getElementById('expenses-body')
-                tbody.innerHTML = `${tbody.innerHTML} <tr class="text-center"><td class="text-center">${expense}</td><td class="text-center">${amount}</td><td class="text-center">${date}</td> <td class="text-center"><i style="color: red;cursor: pointer" id="${response.id}" data-toggle="modal" data-target="#delete-expense-btn" class="fa-regular delete-expense fa-trash-can text-center"></i></td></tr><div id="delete-expense-btn"
+        fetch(`add-expense/${p_id}`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': csrfToken,
+            },
+            body: formData,
+        }).then(res => {
+            if (res.status === 200) {
+                res.json().then(response => {
+                    console.log(response)
+                    let tbody = document.getElementById('expenses-body')
+                    tbody.innerHTML = `${tbody.innerHTML} <tr class="text-center"><td class="text-center">${expense}</td><td class="text-center">${amount}</td><td class="text-center">${date}</td> <td class="text-center"><i style="color: red;cursor: pointer" id="${response.id}" data-toggle="modal" data-target="#delete-expense-btn" class="fa-regular delete-expense fa-trash-can text-center"></i></td></tr><div id="delete-expense-btn"
                                                                                          class="modal fade"
                                                                                          tabindex="-1" role="dialog"
                                                                                          aria-hidden="true">
@@ -556,28 +571,16 @@ function change_table(){
 
                                                                                         </div>
                                                                                     </div>`
-                add_listeners()
-                var total = response.spent_money
-                var left = response.total_money.replaceAll(' ','') - response.spent_money.replaceAll(' ','')
-                document.getElementById('totalExpenses').textContent = `${formatNumber(total)}`
-                document.getElementById('budgetLeft').textContent = `${formatNumber(left)}`
-            })
-        } else {
-            alert("error occured")
-        }
-    })
+                    add_listeners()
+                    var total = response.spent_money
+                    var left = response.total_money.replaceAll(' ', '') - response.spent_money.replaceAll(' ', '')
+                    document.getElementById('totalExpenses').textContent = `${formatNumber(total)}`
+                    document.getElementById('budgetLeft').textContent = `${formatNumber(left)}`
+                })
+            } else {
+                alert("error occured")
+            }
+        })
     }
 })
 
-function tableRedirect(){
-    document.querySelectorAll('tr').forEach(value => {
-        if (value.classList.contains('no-url')){
-
-        }else {
-                    value.addEventListener('click',function (){
-            console.log(value.getAttribute('data-url'))
-            window.location.href = value.getAttribute('data-url')
-        })
-        }
-    })
-}
