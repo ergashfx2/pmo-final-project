@@ -16,8 +16,6 @@ function getCookie(name) {
 
 
 document.addEventListener("DOMContentLoaded", function () {
-add_listeners();
-add_expense();
     problemsManager();
     commentsManager();
     deleteFiles();
@@ -55,27 +53,33 @@ function initTabs() {
 }
 
 function deleteFiles() {
-    console.log('working files')
-    var all_delete_buttons = document.querySelectorAll('.delete-button')
-    var selectedFiles = document.querySelectorAll('.del-files')
-    var delFiles = []
+    console.log('deleteFiles function initialized');
+
+    // Initialize array to store selected file IDs
+    let delFiles = [];
+
+    // Select all delete buttons and corresponding file checkboxes
+    const all_delete_buttons = document.querySelectorAll('.delete-button');
+    const selectedFiles = document.querySelectorAll('.del-files');
+
+    // Add change event listener to each file checkbox
     selectedFiles.forEach(file => {
         file.addEventListener('change', function () {
-            console.log('changed')
             if (file.checked === true) {
-                delFiles.push(file.id)
+                delFiles.push(file.id); // Add file ID to delete list if checked
+            } else {
+                delFiles = delFiles.filter(item => item !== file.id); // Remove file ID if unchecked
             }
-            if (file.checked === false) {
-                delFiles = delFiles.filter(item => item !== file.id)
-            }
-        })
-            document.getElementById('del-confirm').addEventListener('click', function () {
+        });
+    });
+
+    // Add click event listener to confirm deletion button
+    document.getElementById('del-confirm').addEventListener('click', function () {
         sendPostRequest('delete-files/', {'datas': delFiles})
         location.reload()
-    })
-    })
-
+    });
 }
+
 
 
 function initTaskManager() {

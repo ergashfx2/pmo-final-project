@@ -287,12 +287,10 @@ def delete_task(request, pk):
 def delete_files(request):
     if request.method == 'POST':
         datas = json.loads(request.body)['datas']
-        print(datas)
         for data in datas:
-            document = Documents.objects.get(pk=data)
+            document = Documents.objects.get(id=data)
             Documents.objects.filter(id=data).delete()
-            project = Documents.objects.get(pk=data).project
-            Action.objects.create(author_id=request.user.pk, project_id=project.pk, action=f"{project.project_name} loyihasidagi <strong>{document.document}</strong> nomli faylni o'chirdi")
+            Action.objects.create(author_id=request.user.pk, project_id=document.project.pk, action=f"{document.project.project_name} loyihasidagi <strong>{document.document}</strong> nomli faylni o'chirdi")
         return JsonResponse(status=200,data={'status':'ok'})
     return redirect('my-projects')
 

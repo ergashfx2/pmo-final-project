@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% load filters %}
 {% block content %}
     <div class="container-fluid">
@@ -568,4 +569,5 @@
             </div>
         </section>
     </div>
+    <script src="{% static 'static/js/script.js' %}"></script>
 {% endblock content %}
