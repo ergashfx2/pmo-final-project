@@ -5,7 +5,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-c9mf+qm+en)33e#1--kp7yd^=7mi9n$sjm=mb@^i#4bzm6(^yd'
 DEBUG = True
 
-ALLOWED_HOSTS = ['ergashfx2-pmo-final-project-73ce.twc1.net','*']
+ALLOWED_HOSTS = ['ergashfx2-pmo-final-project-73ce.twc1.net', '*']
 CSRF_TRUSTED_ORIGINS = ['https://*.twc1.net']
 CSRF_COOKIE_SECURE = True
 
@@ -24,7 +24,26 @@ INSTALLED_APPS = [
     'fontawesomefree',
     "django_bootstrap5",
     'corsheaders',
+    'django_select2',
 ]
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'default-cache',
+    },
+    'select2': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://127.0.0.1:6379/2',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
+    }
+}
+
+
+# Tell select2 which cache configuration to use:
+SELECT2_CACHE_BACKEND = "select2"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -43,7 +62,6 @@ CORS_ALLOWED_ORIGINS = [
     'https://ergashfx2-pmo-final-project-73ce.twc1.net',
 ]
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
 
 ROOT_URLCONF = 'config.urls'
 

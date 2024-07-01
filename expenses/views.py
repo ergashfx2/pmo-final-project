@@ -11,6 +11,7 @@ from hodimlar.models import Department
 from loyihalar.models import Project, Documents, Blog
 from .models import Expense
 from loyihalar.views import file_extensions
+from django.core import serializers
 
 
 @login_required
@@ -32,13 +33,15 @@ def detailedExpenses(request, pk):
     return render(request, 'expenses-detailed.html', {'project': project, 'expenses': expenses})
 
 
+
 @login_required
 def add_expense(request, pk):
     if request.method == 'POST':
-        data = json.loads(request.POST.get('data'))
+        d = json.dumps(request.POST)
+        data = json.loads(d).get('data')
+        data  = json.loads(data)
         project = Project.objects.get(pk=pk)
-        amount = data['amount'].replace(" ", "")
-        project.project_spent_money = int(project.project_spent_money) + int(amount)
+        project.project_spent_money = int(project.project_spent_money) + int(str(data['amount']).replace(' ',''))
         project.save()
         if request.FILES.get('file'):
             doc_type = str(request.FILES.get('file')).split('.')[-1]
@@ -65,3 +68,18 @@ def delete_expense(request, pk):
     return JsonResponse(status=200,
                         data={'succuss': True, 'spent_money': Project.objects.get(pk=project.pk).project_spent_money,
                               'total_money': project.project_budget})
+
+
+@login_required
+def updateBudget(request,pk):
+    if request.method == 'POST':
+        project = Project.objects.get(pk=pk)
+        data = json.loads(request.body)
+        project.project_budget = int(project.project_budget) + int(data['data'])
+        project.save()
+        Action.objects.create(author_id=request.user.pk,project_id=project.pk,action=f"{project.project_name} loyihasining budgeti {data['data']} so'mga oshirdi")
+        return JsonResponse(status=200,
+                            data={'succuss': True,
+                                  'spent_money': Project.objects.get(pk=project.pk).project_spent_money,
+                                  'total_money': project.project_budget})
+

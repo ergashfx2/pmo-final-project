@@ -13,6 +13,32 @@ function getCookie(name) {
     return cookieValue;
 }
 
+function sendPostRequest(url, data) {
+    return new Promise((resolve, reject) => {
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            resolve(data);
+        })
+        .catch(error => {
+            reject(error);
+        });
+    });
+}
+
+
 function formatNumber(val) {
     val = parseInt(val);
     let formatted = val.toLocaleString();
@@ -80,6 +106,23 @@ function change_table() {
 }
 
 
+function expandBudget(){
+    document.getElementById('budget-expand-btn').addEventListener('click',function (){
+        var budget = document.getElementById('budget');
+        var res = sendPostRequest(`expand-budget/${budget.classList[1]}`,{'data':budget.value})
+        res.then(res=>{
+                               var total = res.spent_money
+            console.log(res.spent_money)
+                    var left = res.total_money - res.spent_money
+            console.log(total)
+                    document.getElementById('totalExpenses').textContent = `${formatNumber(total)}`
+            document.getElementById('totalBudget').textContent = `${formatNumber(res.total_money)}`
+                    document.getElementById('budgetLeft').textContent = `${formatNumber(left)}`
+        })
+    })
+}
+
+expandBudget()
 
 document.getElementById('add-expense').addEventListener('submit', function (e) {
     e.preventDefault()
@@ -110,7 +153,7 @@ document.getElementById('add-expense').addEventListener('submit', function (e) {
                 res.json().then(response => {
                     console.log(response)
                     let tbody = document.getElementById('expenses-body')
-                    tbody.innerHTML = `${tbody.innerHTML} <tr class="text-center"><td class="text-center">${expense}</td><td class="text-center">${amount}</td><td class="text-center">${date}</td> <td class="text-center"><i style="color: red;cursor: pointer" id="${response.id}" data-toggle="modal" data-target="#delete-expense-btn" class="fa-regular delete-expense fa-trash-can text-center"></i></td></tr><div id="delete-expense-btn"
+                    tbody.innerHTML = `${tbody.innerHTML} <tr ><td>${expense}</td><td >${amount}</td><td >${date}</td> <td ><i style="color: red;cursor: pointer" id="${response.id}" data-toggle="modal" data-target="#delete-expense-btn" class="fa-regular delete-expense fa-trash-can text-center"></i></td></tr><div id="delete-expense-btn"
                                                                                          class="modal fade"
                                                                                          tabindex="-1" role="dialog"
                                                                                          aria-hidden="true">
