@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% load filters %}
 
 {% block content %}
@@ -63,7 +64,7 @@
               </div>
 
 
-
+<script src="{% static 'static/js/expense.js' %}"></script>
     
     
 {% endblock content %}
