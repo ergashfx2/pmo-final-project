@@ -206,29 +206,19 @@ svg {
     border-top: inherit;
 }
 
-.bs-canvas-overlay {
-   		opacity: 0.85;
-		z-index: 1100;
-	}
+    .offcanvas-collapse {
+        position: fixed;
+        top: 0;
+        right: -300px;
+        width: 300px;
+        height: 100%;
+        background-color: white;
+        box-shadow: -3px 0 5px rgba(0, 0, 0, 0.2);
+        overflow-y: auto;
+        transition: right 0.3s ease-in-out;
+        z-index: 1045; /* Above Bootstrap modal */
+    }
 
-	.bs-canvas {
-		top: 0;
-		z-index: 1110;
-		overflow-x: hidden;
-		overflow-y: auto;
-		width: 330px;
-		transition: margin .4s ease-out;
-		-webkit-transition: margin .4s ease-out;
-		-moz-transition: margin .4s ease-out;
-		-ms-transition: margin .4s ease-out;
-	}
-
-	.bs-canvas-left {
-		left: 0;
-		margin-left: -330px;
-	}
-
-	.bs-canvas-right {
-		right: 0;
-		margin-right: -330px;
-	}
+    .offcanvas-collapse.show {
+        right: 0;
+    }
