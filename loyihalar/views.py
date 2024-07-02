@@ -4,6 +4,7 @@ import os.path
 import uuid
 
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views.generic import CreateView, DetailView, DeleteView, UpdateView
@@ -77,7 +78,12 @@ def all_projects(request):
 
 @login_required
 def myProjects(request):
-    projects = Project.objects.filter(author=request.user.pk)
+    projects = Project.objects.filter(
+        Q(project_manager__id=request.user.pk) |
+        Q(project_curator__id=request.user.pk) |
+        Q(project_team__username=request.user.username)
+    ).distinct()
+    print(projects)
     return render(request, 'my-projects.html', context={'projects': projects})
 
 
