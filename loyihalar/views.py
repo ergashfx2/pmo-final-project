@@ -64,8 +64,6 @@ def all_projects(request):
     tasks = Task.objects.all()
     projects_serialized = serializers.serialize('json', projects)
     arr = json.loads(projects_serialized)
-    for project in projects:
-        print(project.project_departments.all)
     for a in arr:
         project = Project.objects.get(pk=dict(a)['pk'])
         fields = dict(a)['fields']
@@ -253,7 +251,6 @@ def update_task_percentage(request, pk):
         for task in tasks:
             phase_done_percentage += int(task.task_done_percentage)
         final_phase_percentage = phase_done_percentage / len(tasks)
-        print(final_phase_percentage)
         phase_obj = Phase.objects.get(pk=phase)
         phase_obj.phase_done_percentage = int(final_phase_percentage)
         phase_obj.save()
@@ -266,7 +263,6 @@ def update_task_percentage(request, pk):
             project_obj.project_status = 'Tugatilgan'
         else:
             project_obj.project_status = 'Jarayonda'
-        print(final_project_percentage)
         project_obj.project_done_percentage = int(final_project_percentage)
         project_obj.save()
         task = Task.objects.get(pk=pk)
@@ -298,7 +294,6 @@ def delete_files(request):
 @login_required
 def owned_projects(request):
     projects = Project.objects.filter(project_curator=request.user)
-    print(projects)
     return render(request, 'owned_projects.html', context={'projects': projects})
 
 
@@ -399,7 +394,6 @@ def add_team_member(request,pk):
             project.project = Project.objects.get(pk=pk)
             form.save()
             project = Project.objects.get(pk=pk)
-            print(form.cleaned_data.get('user').get_full_name())
             Action.objects.create(author_id=request.user.pk, project_id=project.pk,
                                   action=f"{project.project_name} nomli loyihaga {form.cleaned_data.get('user').get_full_name()} ismli foydalanuvchiga ko'rish imkoniyatini berdi")
         return redirect('my-projects-detail',pk)
@@ -427,5 +421,4 @@ def filter_table(request):
     datas = []
     for col in cols:
         datas.append(Project.objects.values_list(col, flat=True))
-    print(datas)
     return render(request,'all_projects.html')

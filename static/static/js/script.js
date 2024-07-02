@@ -53,27 +53,18 @@ function initTabs() {
 }
 
 function deleteFiles() {
-    console.log('deleteFiles function initialized');
-
-    // Initialize array to store selected file IDs
     let delFiles = [];
-
-    // Select all delete buttons and corresponding file checkboxes
     const all_delete_buttons = document.querySelectorAll('.delete-button');
     const selectedFiles = document.querySelectorAll('.del-files');
-
-    // Add change event listener to each file checkbox
     selectedFiles.forEach(file => {
         file.addEventListener('change', function () {
             if (file.checked === true) {
-                delFiles.push(file.id); // Add file ID to delete list if checked
+                delFiles.push(file.id);
             } else {
-                delFiles = delFiles.filter(item => item !== file.id); // Remove file ID if unchecked
+                delFiles = delFiles.filter(item => item !== file.id);
             }
         });
     });
-
-    // Add click event listener to confirm deletion button
     document.getElementById('del-confirm').addEventListener('click', function () {
         sendPostRequest('delete-files/', {'datas': delFiles})
         location.reload()
@@ -83,7 +74,6 @@ function deleteFiles() {
 
 
 function initTaskManager() {
-    console.log("task working")
     const addTaskBtn = document.getElementById('add-task');
     const tasksContainer = document.getElementById('tasks-container');
     let taskCount = 0;
@@ -133,7 +123,6 @@ function initTaskManager() {
 
 
 function initPhaseActions() {
-    console.log('phase working')
     let phaseId = null;
     document.querySelectorAll('.trash-icon').forEach(icon => {
         icon.addEventListener('click', function () {
@@ -166,7 +155,6 @@ function initPhaseActions() {
 }
 
 function problemsManager() {
-    console.log(`Working problem`)
     let edit_problems = document.querySelectorAll('.edit-problem ');
     let delete_problems = document.querySelectorAll('.delete-problem');
     var problem
@@ -200,7 +188,6 @@ function problemsManager() {
 }
 
 function commentsManager() {
-    console.log('Working comments')
     let delete_comments = document.querySelectorAll('.delete-comment');
     let edit_comments = document.querySelectorAll('.edit-comment ');
     var comment
@@ -234,7 +221,6 @@ function commentsManager() {
 
 
 function initTaskEdit() {
-    console.log("Task working")
     const taskName = document.getElementById('task-edit-task-name');
     const taskDeadline = document.getElementById('task-edit-deadline');
     const taskManager = document.getElementById('task-edit-task-manager');
@@ -242,7 +228,6 @@ function initTaskEdit() {
     document.querySelectorAll('.edit-task-icon').forEach(task => {
         task.addEventListener('click', function () {
             const taskId = task.classList[3];
-            console.log(taskId)
             fetch(`get-task/${taskId}`).then(res => res.json()).then(data => {
                 const taskData = JSON.parse(data)[0].fields;
                 taskName.value = taskData.task_name;
@@ -265,7 +250,6 @@ function initTaskEdit() {
 
 
 function initTaskDelete() {
-    console.log('task delete working')
     let taskId = null;
 
     document.querySelectorAll('.delete-task-icon').forEach(task => {
@@ -280,7 +264,6 @@ function initTaskDelete() {
 }
 
 function initTaskCompletion() {
-    console.log('task complete working')
     const rangeInput = document.getElementById('task-done');
     const label = document.getElementById('task-done-percentage');
     let taskId = null;
@@ -313,7 +296,6 @@ function initTaskCompletion() {
 
 
 function initCommentSystem() {
-    console.log('Comments sys working')
     document.getElementById('problem-btn').addEventListener('click', function () {
         const problem = document.getElementById('problem');
         const taskId = problem.classList[1];
@@ -335,9 +317,7 @@ function initArchive() {
     document.querySelectorAll('.archive-btn').forEach(button => {
         button.addEventListener('click', function (e) {
             const project_id = e.target.name;
-            console.log(project_id)
             fetch(`create-archive/${project_id}`).then(res => {
-                console.log(res)
             });
         });
     });
@@ -352,7 +332,6 @@ function initArchive() {
 
 
 function initFilterToggle() {
-    console.log('filter working')
     document.getElementById('filter').addEventListener('click', function () {
         const filterArea = document.getElementById('filter-area');
         if (filterArea.style.display === 'none' || !filterArea.style.display) {
@@ -365,7 +344,6 @@ function initFilterToggle() {
 
 
 function initMultiSelect() {
-    console.log('multi working')
     document.querySelectorAll('.multi-select').forEach(select => {
         select.addEventListener('change', function () {
             const selectedOptions = Array.from(this.selectedOptions).map(option => option.value);
@@ -414,7 +392,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function handleBulkAction(action) {
-        console.log('bulk working')
         const selectedIds = Array.from(document.querySelectorAll('.form-check-input:checked'))
             .map(checkbox => checkbox.value);
         if (selectedIds.length > 0) {
@@ -473,7 +450,6 @@ function formatNumber(val) {
 function add_listeners() {
     var delete_expense_modal = document.getElementById('delete-expense-btn');
     var e_id
-    console.log("listeners working")
     document.querySelectorAll('.delete-expense').forEach(value => {
         value.addEventListener('click', function () {
             e_id = value.id

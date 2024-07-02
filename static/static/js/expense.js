@@ -51,7 +51,6 @@ function formatNumber(val) {
 function add_listeners() {
     var delete_expense_modal = document.getElementById('delete-expense-btn');
     var e_id
-    console.log("listeners working")
     document.querySelectorAll('.delete-expense').forEach(value => {
         value.addEventListener('click', function () {
             e_id = value.id
@@ -93,7 +92,6 @@ function redirecting(){
 redirecting()
 
 function change_table() {
-    console.log('table working')
     document.querySelectorAll('.change-table').forEach(value => {
         value.addEventListener('change', function (e) {
             let selectedId = value.selectedOptions[0].id;

@@ -58,7 +58,6 @@ def login_view(request):
                 user = User.objects.filter(username=username)
                 username = user.values()[0]['username']
                 user = authenticate(request, username=username, password=password)
-                print(user)
             except User.DoesNotExist:
                 user = None
 
@@ -101,7 +100,6 @@ def create_user(request):
 
 @login_required
 def block_user(request, pk):
-    print('working')
     if request.method == "POST":
         user = User.objects.get(pk=pk)
         user.block()

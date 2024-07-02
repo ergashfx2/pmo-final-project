@@ -79,7 +79,7 @@
                                     </thead>
                                     <tbody>
                                     {% for user in users %}
-                                        <tr data-url="{% url 'hodimlar:profile2' user.pk %}" style="cursor: pointer">
+                                        <tr class="datas" data-url="{% url 'hodimlar:profile2' user.pk %}" style="cursor: pointer">
                                             <td>{{ forloop.counter }}</td>
                                         {% if user.avatar.url %}
                                             <td class="text-flow"><img src="{{ user.avatar.url }}" width="30" height="30" class="mr-4">{{ user.get_full_name }}</td>
@@ -122,5 +122,5 @@
 <script src="{% static 'plugins/bower_components/chartist/dist/chartist.min.js' %}"></script>
 <script src="{% static 'plugins/bower_components/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js' %}"></script>
 <script src="{% static 'js/pages/dashboards/dashboard1.js' %}"></script>
-
+<script src="{% static 'static/js/expense.js' %}"></script>
 {% endblock content %}

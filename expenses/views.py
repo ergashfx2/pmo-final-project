@@ -1,17 +1,13 @@
 import json
 
 from django.contrib.auth.decorators import login_required
-from django.db.models import Sum, IntegerField
-from django.db.models.functions import Cast
 from django.http import JsonResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 
 from actions.models import Action
-from hodimlar.models import Department
-from loyihalar.models import Project, Documents, Blog
+from loyihalar.models import Project, Documents
 from .models import Expense
 from loyihalar.views import file_extensions
-from django.core import serializers
 
 
 @login_required

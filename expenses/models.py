@@ -1,13 +1,10 @@
-import datetime
-import time
+
 import uuid
 
 from django.db import models
 
 from loyihalar.models import Project
 from django.utils import timezone
-
-# Create your models here.
 
 class Expense(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
