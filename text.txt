@@ -7,11 +7,16 @@ from .models import Expense
 
 def monthly_expenses(request):
     # Query expenses, group by month, and calculate the total for each month
-    expenses = (Expense.objects
-                .annotate(month=TruncMonth('date'))
-                .values('month')
-                .annotate(total_amount=Sum('amount'))
-                .order_by('month'))
+    Expense.objects
+        .annotate(month=TruncMonth('date'))
+        .annotate(
+            quantity_clean=Replace(F('quantity'), Value(' '), Value('')),
+            quantity_int=Cast('quantity_clean', IntegerField())
+        )
+        .values('month')
+        .annotate(total_quantity=Sum('quantity_int'))
+        .order_by('month')
+    )
 
     # Prepare the data for response
     data = {expense['month'].strftime('%Y-%m'): expense['total_amount'] for expense in expenses}
