@@ -83,7 +83,6 @@ def myProjects(request):
         Q(project_curator__id=request.user.pk) |
         Q(project_team__username=request.user.username)
     ).distinct()
-    print(projects)
     return render(request, 'my-projects.html', context={'projects': projects})
 
 
