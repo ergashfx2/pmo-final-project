@@ -2,32 +2,46 @@
 {% load static %}
 {% block content %}
     {% load filters %}
+    <style>
+        .offcanvas-collapse {
+        position: fixed;
+        top: 0;
+        right: -500px;
+        width: 500px;
+        height: 100%;
+        background-color: white;
+        box-shadow: -3px 0 5px rgba(0, 0, 0, 0.2);
+        overflow-y: auto;
+        transition: right 0.3s ease-in-out;
+        z-index: 1045;
+
+    }
+
+    .offcanvas-collapse.show {
+        right: 0;
+    }
+
+    </style>
     <section class="bg-light">
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Loyihalar</h3>
 
                 <div class="card-tools mb-3">
-                    <i style="rotate: 90deg" id="filter-table" class="fa-solid fa-sliders btn btn-outline-dark"></i>
+                    <i style="rotate: 90deg" id="filter-table" class="fa-solid fa-sliders btn btn-outline-dark" data-toggle="offcanvas" data-target="#offcanvasRight"></i>
 
                 </div>
-<button class="btn btn-primary" type="button" data-toggle="offcanvas" data-target="#offcanvasRight">
-    Toggle Offcanvas
-</button>
+
 
 <div class="offcanvas-collapse" id="offcanvasRight">
     <div class="offcanvas-header">
-        <h5>Offcanvas Right</h5>
-        <button type="button" class="close" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
+        <h5 class="bg-secondary" style="padding: 7%">Kerakli menyularni tanlang</h5>
+        <button type="button" class="close mr-4" aria-label="Close">
+            <span class="btn btn-danger">&times;</span>
         </button>
     </div>
     <div class="offcanvas-body">
-        <p>Offcanvas content goes here.</p>
-    </div>
-</div>
-                <div class="table-responsive">
-                    <div class="card grid-container mt-3" id="filter-container" style="display: none">
+                           <div class="grid-container mt-3" id="filter-container">
                         <label class="grid-item">
                             <input class="cols" name="project_name" type="checkbox"> Loyiha nomi
                         </label>
@@ -71,8 +85,11 @@
                         <label class="grid-item">
                             <input class="cols" name="project_spent_money" type="checkbox"> Sarflangan xarajat
                         </label>
-                        <button id="apply-changes" class="btn btn-primary">Qo'llash</button>
                     </div>
+        <button id="apply-changes" class="btn btn-primary" style="width: 95%;margin: 3%">Qo'llash</button>
+    </div>
+</div>
+                <div class="table-responsive">
                     <table class="table table-striped" id="table-projects">
                         <thead>
                         <tr>
@@ -115,15 +132,18 @@
         var projects_s = {{ projects_serialized | safe }};
     </script>
     <script>
-        console.log(projects_s)
-        document.getElementById('filter-table').addEventListener('click', function () {
-            var filter = document.getElementById('filter-container');
-            if (filter.style.display === 'none') {
-                filter.style.display = 'block'
-            } else {
-                filter.style.display = 'none'
-            }
-        })
+document.addEventListener('DOMContentLoaded', function () {
+        var toggleButton = document.querySelector('[data-toggle="offcanvas"]');
+        var offcanvasElement = document.querySelector(toggleButton.getAttribute('data-target'));
+        var closeButton = offcanvasElement.querySelector('.close');
+
+        toggleButton.addEventListener('click', function () {
+            offcanvasElement.classList.toggle('show');
+        });
+
+        closeButton.addEventListener('click', function () {
+            offcanvasElement.classList.remove('show');
+        });
         var cols = []
         var colNames = []
         var thead = ''
@@ -143,7 +163,7 @@
         })
 
         document.getElementById('apply-changes').addEventListener('click', function () {
-            document.getElementById('filter-container').style.display = 'none'
+             offcanvasElement.classList.remove('show');
             thead = ''
             tbody = ''
             cols.forEach(col => {
@@ -160,7 +180,7 @@
             }
             document.getElementById('table-projects').innerHTML = `<thead><tr>${thead}</tr></thead><tbody>${tbody}</tbody>`
         })
-
+    });
     </script>
 <script src="{% static 'static/js/expense.js' %}"></script>
 {% endblock content %}
