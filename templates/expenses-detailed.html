@@ -14,12 +14,14 @@
                             <label for="budget">Summa:</label>
                             <input class="form-control {{ project.pk }}" type="text" id="budget">
                         </div>
-                            <button class="btn btn-primary form-control" type="button" id="budget-expand-btn">Qo'shish</button>
+                        <button class="btn btn-primary form-control" type="button" id="budget-expand-btn">Qo'shish
+                        </button>
                     </form>
                 </div>
                 <div class="add-expense-container mt-4">
                     <h4>Xarajat qo'shish</h4>
-                    <form id="add-expense" method="post" class="{{ project.pk }}" action="{% url 'add-expense' project.pk %}">
+                    <form id="add-expense" method="post" class="{{ project.pk }}"
+                          action="{% url 'add-expense' project.pk %}">
                         {% csrf_token %}
                         <div class="form-group">
                             <label for="expense">Qisqacha:</label>
@@ -29,51 +31,66 @@
                             <label for="amount">Summasi:</label>
                             <input name="amount" class="form-control" type="text" id="amount">
                         </div>
-                                                <div class="form-group">
+                        <div class="form-group">
                             <label for="amount">Sanasi:</label>
                             <input name="date" class="form-control" type="date" id="date">
                         </div>
-                                                                        <div class="form-group">
+                        <div class="form-group">
+                            <input class="currency" checked type="radio" id="uzs" name="currency" value="uzs">
+                            <label for="uzs">UZS</label>
+
+                            <input class="ml-4 currency" type="radio" id="usd" name="currency" value="usd">
+                            <label for="usd">USD</label>
+                        </div>
+
+                        <div class="form-group">
                             <label for="file">Fayl:</label>
                             <input name="file" type="file" id="file">
                         </div>
 
-                        <button id="add-expense-button" type="submit" class="btn btn-primary form-control">Qo'shish</button>
+                        <button id="add-expense-button" type="submit" class="btn btn-primary form-control">Qo'shish
+                        </button>
                     </form>
                 </div>
-                <button data-toggle="modal" data-target="#delete-all-btn" class="btn btn-danger form-control mt-2">Reset All</button>
-                  <div id="delete-all-btn"
-                                                                                         class="modal fade"
-                                                                                         tabindex="-1" role="dialog"
-                                                                                         aria-hidden="true">
-                                                                                        <div class="modal-dialog modal-sm modal-dialog-centered"
-                                                                                             role="document">
-                                                                                            <div class="modal-content">
-                                                                                                <div class="modal-body text-center">
-                                                                                                    <i class="fa-solid fa-triangle-exclamation btn-lg" style="font-size: 5dvh"></i>
-                                                                                                    <h4>Chindan o'chirasizmi ?</h4></div>
-                                                                                                <div class="d-flex justify-content-center mb-2">
-                                                                                                    <button id="reset-all" class="btn btn-danger mr-2"><i class="fa-solid fa-trash-can"></i> O'chirish</button>
-                                                                                                    <button class="btn btn-secondary" data-dismiss="modal">Bekor qilish</button>
-                                                                                                    <br>
-                                                                                                </div>
-                                                                                            </div>
+                <button data-toggle="modal" data-target="#delete-all-btn" class="btn btn-danger form-control mt-2">Reset
+                    All
+                </button>
+                <div id="delete-all-btn"
+                     class="modal fade"
+                     tabindex="-1" role="dialog"
+                     aria-hidden="true">
+                    <div class="modal-dialog modal-sm modal-dialog-centered"
+                         role="document">
+                        <div class="modal-content">
+                            <div class="modal-body text-center">
+                                <i class="fa-solid fa-triangle-exclamation btn-lg" style="font-size: 5dvh"></i>
+                                <h4>Chindan o'chirasizmi ?</h4></div>
+                            <div class="d-flex justify-content-center mb-2">
+                                <button id="reset-all" project_id="{{ project.pk }}" class="btn btn-danger mr-2"><i
+                                        class="fa-solid fa-trash-can"></i> O'chirish
+                                </button>
+                                <button class="btn btn-secondary" data-dismiss="modal">Bekor qilish</button>
+                                <br>
+                            </div>
+                        </div>
 
-                                                                                        </div>
-                                                                                    </div>
+                    </div>
+                </div>
 
             </div>
 
             <div class="display-container">
                 <div class="heading row" style="display: flex; justify-content: space-around;">
                     <div class="alert alert-primary" role="alert">
-                        Loyiha Budjeti: <span id="totalBudget">{{ project.project_budget | format_number  }}</span>
+                        Loyiha Budjeti: <span id="totalBudget">{{ project.project_budget | format_number }}</span>
                     </div>
                     <div class="alert alert-primary" role="alert">
-                        Jami xarajatlar: <span id="totalExpenses">{{ project.project_spent_money | format_number  }}</span>
+                        Jami xarajatlar: <span
+                            id="totalExpenses">{{ project.project_spent_money | format_number }}</span>
                     </div>
                     <div class="alert alert-primary" role="alert">
-                        Qolgan budjet: <span id="budgetLeft">{% multiple_args_tag project.project_budget project.project_spent_money  %}</span>
+                        Qolgan budjet: <span
+                            id="budgetLeft">{% multiple_args_tag project.project_budget project.project_spent_money %}</span>
                     </div>
                 </div>
                 <hr>
@@ -81,40 +98,45 @@
                     <h5>Xarajatlar tarixi:</h5>
                     <table class="table">
                         <thead>
-                          <tr>
+                        <tr>
                             <th scope="col">Xarajat nomi</th>
                             <th scope="col">Summasi</th>
                             <th scope="col">Sana</th>
-                          </tr>
+                        </tr>
                         </thead>
                         <tbody id="expenses-body">
-                              {% for expense in expenses %}
-                                                           <tr>
-                                  <td>{{ expense.description }}</td>
-                                  <td>{{ expense.quantity }}</td>
-                                  <td>{{ expense.date |  date:"d-m-Y" }}</td>
-                                                           <td><i style="color: red;cursor: pointer" data-toggle="modal" data-target="#delete-expense-btn" id="{{ expense.id }}" class="fa-regular delete-expense fa-trash-can"></i></td>
-                                                            </tr>
-                                  <div id="delete-expense-btn"
-                                                                                         class="modal fade"
-                                                                                         tabindex="-1" role="dialog"
-                                                                                         aria-hidden="true">
-                                                                                        <div class="modal-dialog modal-sm modal-dialog-centered"
-                                                                                             role="document">
-                                                                                            <div class="modal-content">
-                                                                                                <div class="modal-body text-center">
-                                                                                                    <i class="fa-solid fa-triangle-exclamation btn-lg" style="font-size: 5dvh"></i>
-                                                                                                    <h4>Chindan o'chirasizmi ?</h4></div>
-                                                                                                <div class="d-flex justify-content-center mb-2">
-                                                                                                    <button id="confirm-delete-expense-btn" class="btn btn-danger mr-2"><i class="fa-solid fa-trash-can"></i> O'chirish</button>
-                                                                                                    <button class="btn btn-secondary" data-dismiss="modal">Bekor qilish</button>
-                                                                                                    <br>
-                                                                                                </div>
-                                                                                            </div>
+                        {% for expense in expenses %}
+                            <tr>
+                                <td>{{ expense.description }}</td>
+                                <td>{{ expense.quantity }}</td>
+                                <td>{{ expense.date |  date:"d-m-Y" }}</td>
+                                <td><i style="color: red;cursor: pointer" data-toggle="modal"
+                                       data-target="#delete-expense-btn" id="{{ expense.id }}"
+                                       class="fa-regular delete-expense fa-trash-can"></i></td>
+                            </tr>
+                            <div id="delete-expense-btn"
+                                 class="modal fade"
+                                 tabindex="-1" role="dialog"
+                                 aria-hidden="true">
+                                <div class="modal-dialog modal-sm modal-dialog-centered"
+                                     role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-body text-center">
+                                            <i class="fa-solid fa-triangle-exclamation btn-lg"
+                                               style="font-size: 5dvh"></i>
+                                            <h4>Chindan o'chirasizmi ?</h4></div>
+                                        <div class="d-flex justify-content-center mb-2">
+                                            <button id="confirm-delete-expense-btn" class="btn btn-danger mr-2"><i
+                                                    class="fa-solid fa-trash-can"></i> O'chirish
+                                            </button>
+                                            <button class="btn btn-secondary" data-dismiss="modal">Bekor qilish</button>
+                                            <br>
+                                        </div>
+                                    </div>
 
-                                                                                        </div>
-                                                                                    </div>
-                              {% endfor %}
+                                </div>
+                            </div>
+                        {% endfor %}
                         </tbody>
                     </table>
                 </div>
@@ -124,5 +146,5 @@
 
     </div>
 
-<script src="{% static 'static/js/expense.js' %}"></script>
+    <script src="{% static 'static/js/expense.js' %}"></script>
 {% endblock content %}

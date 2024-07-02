@@ -51,6 +51,7 @@ function formatNumber(val) {
 function add_listeners() {
     var delete_expense_modal = document.getElementById('delete-expense-btn');
     var e_id
+
     document.querySelectorAll('.delete-expense').forEach(value => {
         value.addEventListener('click', function () {
             e_id = value.id
@@ -139,13 +140,14 @@ document.getElementById('add-expense').addEventListener('submit', function (e) {
     let date = document.getElementById('date').value
     let p_id = e.target.classList[0];
     let file = document.getElementById('file')
+    let currency = document.querySelector('input[name="currency"]:checked').value;
     var input_file
     if (file.files[0]) {
         input_file = file.files[0]
     }
     let csrfToken = getCookie('csrftoken')
     let formData = new FormData()
-    let data = {'expense': expense, 'amount': amount, 'date': date, 'file': file.files[0]}
+    let data = {'expense': expense, 'amount': amount, 'date': date, 'file': file.files[0],'currency':currency}
     formData.append('file', input_file)
     formData.append('data', JSON.stringify(data))
     if (expense) {
@@ -159,9 +161,8 @@ document.getElementById('add-expense').addEventListener('submit', function (e) {
         }).then(res => {
             if (res.status === 200) {
                 res.json().then(response => {
-                    console.log(response)
                     let tbody = document.getElementById('expenses-body')
-                    tbody.innerHTML = `${tbody.innerHTML} <tr ><td>${expense}</td><td >${amount}</td><td >${date}</td> <td ><i style="color: red;cursor: pointer" id="${response.id}" data-toggle="modal" data-target="#delete-expense-btn" class="fa-regular delete-expense fa-trash-can text-center"></i></td></tr><div id="delete-expense-btn"
+                    tbody.innerHTML = `${tbody.innerHTML} <tr ><td>${expense}</td><td >${response.quantity}</td><td >${date}</td> <td ><i style="color: red;cursor: pointer" id="${response.id}" data-toggle="modal" data-target="#delete-expense-btn" class="fa-regular delete-expense fa-trash-can text-center"></i></td></tr><div id="delete-expense-btn"
                                                                                          class="modal fade"
                                                                                          tabindex="-1" role="dialog"
                                                                                          aria-hidden="true">
@@ -194,11 +195,14 @@ document.getElementById('add-expense').addEventListener('submit', function (e) {
 })
 
 function deleteAll(){
-    document.getElementById('reset-all').addEventListener('click',function (){
-        fetch('delete-expense-all/').then(res=>{
+    let button = document.getElementById('reset-all');
+    let project_id = button.getAttribute('project_id')
+    button.addEventListener('click',function (){
+        fetch(`delete-expense-all/${project_id}`).then(res=>{
             location.reload()
         })
     })
 }
 
 deleteAll()
+add_listeners()

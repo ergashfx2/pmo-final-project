@@ -43,9 +43,11 @@ def format_date(value):
 
 @register.filter
 def format_number(value):
-    value = str(value)
-    val = value.replace(" ","")
-    return f"{int(val):,}".replace(",", " ")
+    try:
+        float_value = float(value)
+        return f"{float_value:,.2f}".replace(",", " ").replace(".00", "")
+    except ValueError:
+        return value
 
 @register.filter
 def to_int(value):
@@ -70,10 +72,13 @@ def generate_random(value):
 
 @register.simple_tag
 def multiple_args_tag(a, b):
-    val1 = int(a.replace(" ",""))
-    val2 = int(b.replace(" ",""))
-    val3 = val1 - val2
-    return f"{int(val3):,}".replace(",", " ")
+    try:
+        val1 = float(a.replace(" ", ""))
+        val2 = float(b.replace(" ", ""))
+        val3 = val1 - val2
+        return f"{val3:,.2f}".replace(",", " ").replace(".00", "")
+    except ValueError:
+        return "Invalid Input"
 
 @register.filter
 def uzbek_format(value):

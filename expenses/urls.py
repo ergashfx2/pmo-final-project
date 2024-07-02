@@ -7,5 +7,5 @@ urlpatterns = [
     path('detailed/add-expense/<pk>',add_expense,name='add-expense'),
     path('detailed/expand-budget/<pk>',updateBudget,name='expand-budget'),
     path('detailed/delete-expense/<pk>',delete_expense,name='delete-expense'),
-    path('detailed/delete-expense-all/',deleteAll,name='delete-expense-all')
+    path('detailed/delete-expense-all/<pk>',deleteAll,name='delete-expense-all')
 ]

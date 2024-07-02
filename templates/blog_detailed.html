@@ -153,7 +153,10 @@
 
 <script src="{% static 'js/sidebarmenu.js' %}"></script>
 
+<script>
+    window.total_blog = {{ expenses | safe }};
 
+</script>
 <script src="{% static 'js/custom.js' %}"></script>
 
 <script src="{% static 'plugins/bower_components/chartist/dist/chartist.min.js' %}"></script>

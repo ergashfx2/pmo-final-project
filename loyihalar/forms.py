@@ -52,6 +52,19 @@ class CreateProjectForm(ModelForm):
             'project_team': forms.SelectMultiple(attrs={'class': 'form-control'}),
             'project_departments': forms.SelectMultiple(attrs={'class':'form-control'}),
         }
+    def clean_spent_money(self):
+        cleaned_data = self.cleaned_data['project_spent_money']
+        cleaned_data = cleaned_data.replace(' ', '')
+        return cleaned_data
+
+    def clean_project_budget(self):
+        cleaned_data = self.cleaned_data['project_budget']
+        cleaned_data = cleaned_data.replace(' ','')
+        return cleaned_data
+
+    def clean(self):
+        cleaned_data = super().clean()
+        return cleaned_data
 
 
 class EditProjectForm(ModelForm):
@@ -92,6 +105,20 @@ class EditProjectForm(ModelForm):
             'project_team': forms.SelectMultiple(attrs={'class': 'form-control'}),
             'project_departments': forms.SelectMultiple(attrs={'class': 'form-control'}),
         }
+
+    def clean_spent_money(self):
+        cleaned_data = self.cleaned_data['project_spent_money']
+        cleaned_data = cleaned_data.replace(' ', '')
+        return cleaned_data
+
+    def clean_project_budget(self):
+        cleaned_data = self.cleaned_data['project_budget']
+        cleaned_data = cleaned_data.replace(' ','')
+        return cleaned_data
+
+    def clean(self):
+        cleaned_data = super().clean()
+        return cleaned_data
 
 
 class AddFileForm(forms.ModelForm):

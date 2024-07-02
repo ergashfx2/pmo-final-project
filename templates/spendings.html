@@ -36,8 +36,8 @@
                     <div class="col-sm-12">
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="card-title">Choraklik xarajatlar diagrammasi</h4>
-                            <div id="visits" style="height: 405px;">
+                                <h4 class="card-title">Xarajatlar diagrammasi</h4>
+                            <div id="ct-visits" style="height: 405px;">
                                 <div class="chartist-tooltip" style="top: -17px; left: -12px;"><span
                                         class="chartist-tooltip-value">6</span>
                                 </div>
@@ -97,6 +97,10 @@
 
 <script src="{% static 'js/custom.js' %}"></script>
 
+<script>
+    window.total = {{ expenses | safe }};
+
+</script>
 <script src="{% static 'plugins/bower_components/chartist/dist/chartist.min.js' %}"></script>
 <script src="{% static 'plugins/bower_components/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js' %}"></script>
 <script src="{% static 'js/pages/dashboards/dashboard1.js' %}"></script>

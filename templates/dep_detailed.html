@@ -54,7 +54,7 @@
                     <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
                         <div class="white-box">
                             <h3 class="box-title">Oylik xarajatlar</h3>
-                            <div id="ct-visits" style="height: 405px;">
+                            <div id="visits" style="height: 405px;">
                                 <div class="chartist-tooltip" style="top: -17px; left: -12px;"><span
                                         class="chartist-tooltip-value">6</span>
                                 </div>
@@ -153,7 +153,10 @@
 
 <script src="{% static 'js/sidebarmenu.js' %}"></script>
 
+<script>
+    window.total_dept = {{ expenses | safe }};
 
+</script>
 <script src="{% static 'js/custom.js' %}"></script>
 
 <script src="{% static 'plugins/bower_components/chartist/dist/chartist.min.js' %}"></script>

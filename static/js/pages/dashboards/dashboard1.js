@@ -3,11 +3,11 @@ $(function () {
     new Chartist.Line('#ct-visits', {
         labels: ['Yanvar', 'Fevral', 'Mart', 'Aprel', 'May', 'Iyun', 'Iyul', 'Avgust','Sentyabr','Oktyabr','Noyabr','Dekabr'],
         series: [
-            [2, 5, 2, 6, 2, 5, 2, 4,2,3,4,4]
+            Object.values(window.total.monthly_expenses)
         ]
     }, {
         top: 0,
-        low: 1,
+        low: 0,
         showPoint: true,
         fullWidth: true,
         plugins: [

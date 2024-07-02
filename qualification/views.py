@@ -1,11 +1,12 @@
 from django.contrib.auth.decorators import login_required
 from django.db.models import Sum
 from django.shortcuts import render
+from django.utils import timezone
 
 from actions.models import Action
 from hodimlar.models import Blog, Department
 from loyihalar.models import Project
-
+from config.views import getExpensesAll
 
 # Create your views here.
 @login_required
@@ -68,23 +69,25 @@ def qualification(request):
 
 @login_required
 def blogDetailed(request,pk):
+    total = getExpensesAll(year=timezone.now().year,blog_id=pk)
     projects = Project.objects.filter(project_blog_id=pk)
     project_new = projects.filter(project_status='Yangi').count()
     project_processing = projects.filter(project_status='Jarayonda').count()
     project_done = projects.filter(project_status='Tugatilgan').count()
     actions = Action.objects.filter(project__project_blog_id=pk).order_by('-date')[:5]
-    return render(request,'blog_detailed.html',{'projects':projects,'projects_new':project_new,'projects_processing':project_processing,'projects_done':project_done,'actions':actions,'blog_id':pk})
+    return render(request,'blog_detailed.html',{'projects':projects,'projects_new':project_new,'projects_processing':project_processing,'projects_done':project_done,'actions':actions,'blog_id':pk,'expenses':total})
 
 
 @login_required
 def depDetailed(request,pk):
     dept = Department.objects.get(pk=pk)
+    total = getExpensesAll(year=timezone.now().year,dept_id=pk)
     projects = Project.objects.filter(project_departments__department_name__contains=dept.department_name)
     project_new = projects.filter(project_status='Yangi').count()
     project_processing = projects.filter(project_status='Jarayonda').count()
     project_done = projects.filter(project_status='Tugatilgan').count()
     actions = Action.objects.filter(project__project_departments__department_name=dept.department_name).order_by('-date')[:5]
-    return render(request,'dep_detailed.html',{'projects':projects,'projects_new':project_new,'projects_processing':project_processing,'projects_done':project_done,'actions':actions,'blog_id':pk})
+    return render(request,'dep_detailed.html',{'projects':projects,'projects_new':project_new,'projects_processing':project_processing,'projects_done':project_done,'actions':actions,'blog_id':pk,'expenses':total})
 
 
 @login_required

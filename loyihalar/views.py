@@ -162,7 +162,7 @@ def CreateProject(request):
             project = form.save(commit=False)
             form.save()
             form.save_m2m()
-            Action.objects.create(author_id=request.user.pk, project_id=project.pk, action=f"{form.project_name} nomli loyiha yaratdi")
+            Action.objects.create(author_id=request.user.pk, project_id=project.pk, action=f"{form.cleaned_data.get('project_name')} nomli loyiha yaratdi")
             return redirect('my-projects')
 
     return render(request, 'create_project.html', context={'form': form})

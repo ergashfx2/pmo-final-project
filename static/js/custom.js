@@ -33,13 +33,12 @@ $(function() {
     $(window).on("resize", setsidebartype);
 
 });
-
 $(function () {
     "use strict";
     new Chartist.Line('#ct-visits', {
         labels: ['Yanvar', 'Fevral', 'Mart', 'Aprel', 'May', 'Iyun', 'Iyul', 'Avgust','Sentyabr','Oktyabr','Noyabr','Dekabr'],
         series: [
-            [2, 5, 2, 6, 2, 5, 2, 4,2,3,4,4]
+            Object.values(window.total_blog.monthly_expenses)
         ]
     }, {
         top: 0,
@@ -58,13 +57,27 @@ $(function () {
     });
 });
 
+
 $(function () {
     "use strict";
-new Chartist.Bar('#visits', {
-  labels: ['15', '30', '45', '60', '75', '90', '120'],
-  series: [20, 60, 120, 200, 180, 20, 10]
-}, {
-  distributeSeries: true
-});
-
+    new Chartist.Line('#visits', {
+        labels: ['Yanvar', 'Fevral', 'Mart', 'Aprel', 'May', 'Iyun', 'Iyul', 'Avgust','Sentyabr','Oktyabr','Noyabr','Dekabr'],
+        series: [
+            Object.values(window.total_dept.monthly_expenses)
+        ]
+    }, {
+        top: 0,
+        low: 1,
+        showPoint: true,
+        fullWidth: true,
+        plugins: [
+            Chartist.plugins.tooltip()
+        ],
+        axisY: {
+            labelInterpolationFnc: function (value) {
+                return (value / 1) + 'M';
+            }
+        },
+        showArea: true
+    });
 });

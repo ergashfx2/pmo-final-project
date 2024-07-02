@@ -1,4 +1,5 @@
 
-from django.utils import timezone
+from requests import request
 
-print(timezone.now())
+
+currency_rate = request(url='https://cbu.uz/uz/arkhiv-kursov-valyut/json/',method='GET').json()[0]['Rate']
