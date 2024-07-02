@@ -67,7 +67,7 @@
 
                                                                                                          <td class="project-state">
                                 <p>                             <a href="{% url 'my-projects-detail' project.pk %}"
-                                                                   style="color: black">{{ project.project_budget}} </a></p>
+                                                                   style="color: black">{{ project.project_budget | format_number}} </a></p>
                             </td>
 
                                                                                                                             <td class="project-state">

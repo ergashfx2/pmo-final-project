@@ -46,7 +46,7 @@ def qualification(request):
                 total_budget=Sum('project_spent_money'))[
                 'total_budget']
         if total_budget is not None:
-            print(total_budget)
+            pass
         if total_budget is None:
             total_budget = 0
         if total_spent is None:
