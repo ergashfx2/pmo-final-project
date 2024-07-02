@@ -572,4 +572,3 @@ function downloadArchive(){
 
 }
 
-downloadArchive()
