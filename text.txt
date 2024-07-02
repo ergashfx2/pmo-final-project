@@ -19,6 +19,8 @@ def monthly_expenses(request):
     )
 
     # Prepare the data for response
-    data = {expense['month'].strftime('%Y-%m'): expense['total_amount'] for expense in expenses}
+    data = {
+        expense['month'].strftime('%Y-%m'): expense['total_quantity'] for expense in expenses
+    }
     
     return JsonResponse(data)
