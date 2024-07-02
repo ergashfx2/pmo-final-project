@@ -1,11 +1,13 @@
+document.addEventListener('DOMContentLoaded', function () {
+        var toggleButton = document.querySelector('[data-toggle="offcanvas"]');
+        var offcanvasElement = document.querySelector(toggleButton.getAttribute('data-target'));
+        var closeButton = offcanvasElement.querySelector('.close');
 
-    $(document).ready(function() {
-        $('[data-toggle="offcanvas"]').click(function() {
-            var target = $(this).data('target');
-            $(target).toggleClass('show');
+        toggleButton.addEventListener('click', function () {
+            offcanvasElement.classList.toggle('show');
         });
 
-        $('.offcanvas .close').click(function() {
-            $(this).closest('.offcanvas').removeClass('show');
+        closeButton.addEventListener('click', function () {
+            offcanvasElement.classList.remove('show');
         });
     });
