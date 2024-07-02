@@ -564,3 +564,12 @@ document.getElementById('add-expense').addEventListener('submit', function (e) {
     }
 })
 
+function downloadArchive(){
+    let element = document.getElementById('archive-btn');
+    element.addEventListener('click',function (){
+        console.log('CLICKED')
+    })
+
+}
+
+downloadArchive()
