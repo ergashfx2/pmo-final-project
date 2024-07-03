@@ -24,26 +24,12 @@ INSTALLED_APPS = [
     'fontawesomefree',
     "django_bootstrap5",
     'corsheaders',
-    'django_select2',
+    'crispy_forms',
+    'crispy_bootstrap5',
 ]
 
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        'LOCATION': 'default-cache',
-    },
-    'select2': {
-        'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://127.0.0.1:6379/2',
-        'OPTIONS': {
-            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
-        }
-    }
-}
-
-
-# Tell select2 which cache configuration to use:
-SELECT2_CACHE_BACKEND = "select2"
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

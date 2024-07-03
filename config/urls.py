@@ -2,16 +2,16 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
-from .views import home,blockedPage
+from .views import home, blockedPage
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('users/', include('hodimlar.urls')),
     path('', home, name='home'),
-    path('projects/',include('loyihalar.urls')),
-    path('accounts/',blockedPage, name='blocked-page' ),
-    path('expenses/',include('expenses.urls')),
-    path('qualification/',include('qualification.urls'))
+    path('projects/', include('loyihalar.urls')),
+    path('accounts/', blockedPage, name='blocked-page'),
+    path('expenses/', include('expenses.urls')),
+    path('qualification/', include('qualification.urls'))
 ]
 
 if settings.DEBUG:

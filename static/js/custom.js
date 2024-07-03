@@ -42,7 +42,7 @@ $(function () {
         ]
     }, {
         top: 0,
-        low: 1,
+        low: 0,
         showPoint: true,
         fullWidth: true,
         plugins: [
@@ -67,7 +67,7 @@ $(function () {
         ]
     }, {
         top: 0,
-        low: 1,
+        low: 0,
         showPoint: true,
         fullWidth: true,
         plugins: [

@@ -16,6 +16,10 @@ function getCookie(name) {
 
 
 document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById('archive-btn').addEventListener('click',function (){
+    let p_id = document.getElementById('archive-btn').getAttribute('p_id')
+    downloadArchive(p_id)
+})
     problemsManager();
     commentsManager();
     deleteFiles();
@@ -564,11 +568,29 @@ document.getElementById('add-expense').addEventListener('submit', function (e) {
     }
 })
 
-function downloadArchive(){
-    let element = document.getElementById('archive-btn');
-    element.addEventListener('click',function (){
-        console.log('CLICKED')
-    })
-
+function downloadArchive(pk) {
+    $.ajax({
+        type: 'GET',
+        url: `create-archive/${pk}`,
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
+        },
+        xhrFields: {
+            responseType: 'blob'
+        },
+        success: function(data) {
+            var a = document.createElement('a');
+            a.style = 'display: none';
+            document.body.appendChild(a);
+            var url = window.URL.createObjectURL(data);
+            a.href = url;
+            a.download = `${pk}.zip`;
+            a.click();
+            window.URL.revokeObjectURL(url);
+        },
+        error: function(xhr, status, error) {
+            console.error('Error downloading archive:', error);
+        }
+    });
 }
 

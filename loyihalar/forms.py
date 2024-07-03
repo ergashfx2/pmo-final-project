@@ -1,3 +1,4 @@
+from django.contrib.admin.widgets import FilteredSelectMultiple
 from django.contrib.auth import get_user_model
 from django.forms import forms, ModelForm
 
@@ -9,13 +10,12 @@ from django import forms
 
 User = get_user_model()
 
-
 class CreateProjectForm(ModelForm):
     class Meta:
         model = Project
-        exclude = ['project_spent_money','project_status','project_done_percentage']
+        exclude = ['project_spent_money', 'project_status', 'project_done_percentage']
         labels = {
-            'author':"Loyiha tashabbuskori(tashabbuskorlari)",
+            'author': "Loyiha tashabbuskori(tashabbuskorlari)",
             'project_curator': 'Loyiha kuratori',
             'project_name': 'Loyiha nomi',
             'project_blog': 'Blok',
@@ -35,23 +35,24 @@ class CreateProjectForm(ModelForm):
         }
         widgets = {
             'project_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'author': forms.SelectMultiple(attrs={'class': 'form-control','id':'project_author' }),
-            'project_size': forms.Select(attrs={'class': 'form-control'},choices=size_choices),
-            'project_level': forms.Select(attrs={'class': 'form-control'},choices=level_choices),
-            'project_speed': forms.Select(attrs={'class': 'form-control'},choices=speed_choices),
-            'project_type': forms.Select(attrs={'class': 'form-control'},choices=type_choices),
+            'author': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'id': 'project_author', 'size': '15'}),
+            'project_size': forms.Select(attrs={'class': 'form-control'}, choices=size_choices),
+            'project_level': forms.Select(attrs={'class': 'form-control'}, choices=level_choices),
+            'project_speed': forms.Select(attrs={'class': 'form-control'}, choices=speed_choices),
+            'project_type': forms.Select(attrs={'class': 'form-control'}, choices=type_choices),
             'project_description': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
-            'project_start_date': forms.DateInput(attrs={'class': 'form-control','type':'date'}),
-            'project_deadline': forms.DateInput(attrs={'class': 'form-control','type':'date'}),
+            'project_start_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'project_deadline': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'project_budget': forms.TextInput(attrs={'class': 'form-control'}),
-            'project_status': forms.Select(attrs={'class': 'form-control'},choices=status_choices),
+            'project_status': forms.Select(attrs={'class': 'form-control'}, choices=status_choices),
             'project_spent_money': forms.TextInput(attrs={'class': 'form-control'}),
             'project_curator': forms.Select(attrs={'class': 'form-control'}),
-            'project_manager': forms.SelectMultiple(attrs={'class': 'form-control'}),
+            'project_manager': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'size': '15'}),
             'project_blog': forms.Select(attrs={'class': 'form-control'}),
-            'project_team': forms.SelectMultiple(attrs={'class': 'form-control'}),
-            'project_departments': forms.SelectMultiple(attrs={'class':'form-control'}),
+            'project_team': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'size': '15'}),
+            'project_departments': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'size': '15'}),
         }
+
     def clean_spent_money(self):
         cleaned_data = self.cleaned_data['project_spent_money']
         cleaned_data = cleaned_data.replace(' ', '')
@@ -59,7 +60,7 @@ class CreateProjectForm(ModelForm):
 
     def clean_project_budget(self):
         cleaned_data = self.cleaned_data['project_budget']
-        cleaned_data = cleaned_data.replace(' ','')
+        cleaned_data = cleaned_data.replace(' ', '')
         return cleaned_data
 
     def clean(self):
@@ -90,14 +91,14 @@ class EditProjectForm(ModelForm):
         }
         widgets = {
             'project_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'project_size': forms.Select(attrs={'class': 'form-control'},choices=size_choices),
-            'project_level': forms.Select(attrs={'class': 'form-control'},choices=level_choices),
-            'project_speed': forms.Select(attrs={'class': 'form-control'},choices=speed_choices),
-            'project_type': forms.Select(attrs={'class': 'form-control'},choices=type_choices),
+            'project_size': forms.Select(attrs={'class': 'form-control'}, choices=size_choices),
+            'project_level': forms.Select(attrs={'class': 'form-control'}, choices=level_choices),
+            'project_speed': forms.Select(attrs={'class': 'form-control'}, choices=speed_choices),
+            'project_type': forms.Select(attrs={'class': 'form-control'}, choices=type_choices),
             'project_description': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
             'project_deadline': forms.DateInput(attrs={'class': 'form-control'}),
             'project_budget': forms.TextInput(attrs={'class': 'form-control'}),
-            'project_status': forms.Select(attrs={'class': 'form-control'},choices=status_choices),
+            'project_status': forms.Select(attrs={'class': 'form-control'}, choices=status_choices),
             'project_spent_money': forms.TextInput(attrs={'class': 'form-control'}),
             'project_curator': forms.Select(attrs={'class': 'form-control'}),
             'project_manager': forms.SelectMultiple(attrs={'class': 'form-control'}),
@@ -113,7 +114,7 @@ class EditProjectForm(ModelForm):
 
     def clean_project_budget(self):
         cleaned_data = self.cleaned_data['project_budget']
-        cleaned_data = cleaned_data.replace(' ','')
+        cleaned_data = cleaned_data.replace(' ', '')
         return cleaned_data
 
     def clean(self):
@@ -143,14 +144,15 @@ class AddTaskForm(forms.ModelForm):
         model = Task
         fields = ['task_name']
 
+
 class PermittedProjectsForm(forms.ModelForm):
     class Meta:
         model = PermittedProjects
         fields = ['user']
         exclude = ['project']
         labels = {
-            'user':"Foydalanuvchini tanlang"
+            'user': "Foydalanuvchini tanlang"
         }
         widgets = {
-            'user':forms.Select(attrs={'class':'form-control'})
+            'user': forms.Select(attrs={'class': 'form-control'})
         }

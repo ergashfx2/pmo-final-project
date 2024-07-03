@@ -1,9 +1,18 @@
 {% extends 'base.html' %}
+{% load crispy_forms_filters %}
 {% load django_bootstrap5 %}
 
 {% block content %}
 
-
+    {% load static %}
+    <link href="{% static 'django_select2/django_select2.css' %}" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="{% static 'django_select2/django_select2.js' %}"></script>
+    <script>
+        $(document).ready(function() {
+            $('select').djangoSelect2();
+        });
+    </script>
 <div class="container">
     <div class="card">
         <div class="card-header">
@@ -12,7 +21,7 @@
         <div class="card-body">
             <form method="post">
                 {% csrf_token %}
-                {{ form }}
+                {{ form | crispy  }}
 
                 <button type="submit" class="btn btn-primary d-block">Yaratish</button>
             </form>
@@ -20,5 +29,10 @@
     </div>
 </div>
 
-
+<link rel="stylesheet" type="text/css" href="{% static 'admin/css/widgets.css' %}">
+<script type="text/javascript" src="{% static 'admin/js/core.js' %}"></script>
+<script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
+<script type="text/javascript" src="{% static 'admin/js/jquery.init.js' %}"></script>
+<script type="text/javascript" src="{% static 'admin/js/actions.min.js' %}"></script>
+<script type="text/javascript" src="{% url 'admin:jsi18n' %}"></script>
 {% endblock content %}

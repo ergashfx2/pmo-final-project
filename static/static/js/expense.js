@@ -71,10 +71,7 @@ function add_listeners() {
                         var left = response.total_money.replaceAll(' ', '') - response.spent_money.replaceAll(' ', '')
                         document.getElementById('totalExpenses').textContent = `${formatNumber(total)}`
                         document.getElementById('budgetLeft').textContent = `${formatNumber(left)}`
-                        delete_expense_modal.classList.remove('show');
-                        delete_expense_modal.style.display = 'none';
-                        document.body.classList.remove('modal-open');
-                        document.querySelector('.modal-backdrop').remove();
+                        document.getElementById('cancel-expense-btn').click()
                     })
                 }
             }

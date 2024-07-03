@@ -129,9 +129,10 @@ def DetailMyProjects(request, pk):
             doc_type = str(form.cleaned_data.get('document')).split('.')[-1]
             document.type = file_extensions[doc_type]
             document.project = project
+            print(doc_type)
             document.save()
             Action.objects.create(author_id=request.user.pk, project_id=project.pk, action=f"<strong>{form.cleaned_data.get('document')}</strong> nomli fayl qo'shdi")
-            return redirect('my-projects-detail', pk=pk)
+            return redirect('my-projects-detail', pk=project.pk)
         if form.is_valid() and form.cleaned_data.get('url'):
             document = form.save(commit=False)
             url = str(form.cleaned_data.get('url'))
@@ -185,8 +186,8 @@ class UpdateProject(UpdateView):
 @login_required
 def DeleteProject(request, pk):
     project = Project.objects.get(pk=pk)
-    project.delete()
     Action.objects.create(author_id=request.user.pk, project_id=project.pk, action=f"{project.project_name} nomli loyihani o'chirib yubordi")
+    project.delete()
     return redirect('my-projects')
 
 
@@ -302,6 +303,7 @@ def owned_projects(request):
     return render(request, 'owned_projects.html', context={'projects': projects})
 
 
+
 @login_required
 def create_archive(request, pk):
     documents = Documents.objects.filter(project_id=pk)
@@ -313,7 +315,8 @@ def create_archive(request, pk):
     with ZipFile(zip_file_path, 'w') as zip:
         for doc_path in docs:
             doc_full_path = os.path.join(settings.MEDIA_ROOT, str(doc_path))
-            zip.write(doc_full_path, os.path.basename(doc_full_path))
+            if os.path.exists(doc_full_path):
+                zip.write(doc_full_path, os.path.basename(doc_full_path))
 
     with open(zip_file_path, 'rb') as file:
         response = HttpResponse(file.read(), content_type='application/zip')
