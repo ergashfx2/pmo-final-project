@@ -15,7 +15,7 @@ from config import settings
 from .forms import CreateProjectForm, EditProjectForm, AddFileForm, AddPhaseForm, AddTaskForm, PermittedProjectsForm
 from .formsets import TaskFormSet
 from .models import Project, Phase, Task, Documents, Comments, Problems, PermittedProjects
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, Http404
 from django.core import serializers
 
 import shutil
@@ -158,6 +158,19 @@ def DetailMyProjects(request, pk):
                   context={'project': project, 'datas': datas,'comments':comments,'problems':problems, 'documents': documents, 'form': form, 'form2': form2,
                            'form3': form3,'project_id':pk})
 
+
+@login_required
+def download_file(request,pk):
+    document = get_object_or_404(Documents, id=pk)
+    file_path = document.document.path
+    print(document.document.name)
+    try:
+        with open(file_path, 'rb') as f:
+            response = HttpResponse(f.read(), content_type="application/octet-stream")
+            response['Content-Disposition'] = f'attachment; filename="{document.document.name}"'
+            return response
+    except FileNotFoundError:
+        raise Http404("Dokument topilmadi")
 
 @login_required
 def CreateProject(request):

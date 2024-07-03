@@ -341,7 +341,7 @@
                                                 <small>{{ doc.created_at | format_date }}</small>
                                             </a>
                                         {% else %}
-                                            <a href="" class="btn-link text-secondary" download="{{ doc.document }}"><i
+                                            <a href="" id="{{ doc.pk }}" class="btn-link text-secondary p-files" ><i
                                                     class="fa-solid fa-{{ doc.type }}" style="margin-right: 2%"></i>
                                                 <embed href="{{ doc.document }}">
                                                 {{ doc.document }}<br>

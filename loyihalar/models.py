@@ -113,9 +113,8 @@ class Task(models.Model):
 
 
 class Documents(models.Model):
-    id = models.UUIDField(unique=True,default=uuid.uuid4(),primary_key=True)
     project = models.ForeignKey(Project, models.CASCADE)
-    document = models.FileField(upload_to='', blank=True)
+    document = models.FileField(upload_to='', blank=True,max_length=500)
     url = models.CharField(max_length=200, blank=True)
     type = models.CharField(max_length=150, default='url')
     created_at = models.DateField(auto_now=True)

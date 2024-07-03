@@ -1,0 +1,1038 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PMO system</title>
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <link rel="stylesheet" href="/static/plugins/fontawesome-free/css/all.min.css">
+    <link href="/static/fontawesomefree/css/fontawesome.css" rel="stylesheet">
+    <link href="/static/fontawesomefree/css/brands.css" rel="stylesheet" type="text/css">
+    <link href="/static/fontawesomefree/css/solid.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/static/dist/css/adminlte.min.css">
+        <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro:400,600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/static/extra/fonts/icomoon/style.css">
+
+    <link rel="stylesheet" href="/static/extra/css/select2.min.css">
+        <link rel="stylesheet" href="/static/extra/css/style.css">
+    <link rel="stylesheet" href="/static/static/css/style.css">
+      <link rel="stylesheet" href="/static/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="/static/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+  <link rel="stylesheet" href="/static/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+</head>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <script>
+            var lists = JSON.parse('')
+            var token = 'TJ4J8sWX02zCxbfBw2ibkQkNXUCMdU0ECUXXHhSQsIqIlfGBKzE4nJTpPXg7LK9u';
+        </script>
+        <ul class="navbar-nav">
+            <li class="nav-item d-none d-sm-inline-block">
+                <a href="/" class="nav-link">Home</a>
+            </li>
+        </ul>
+    </nav>
+
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <a href="/" class="brand-link">
+            <img src="/static/dist/img/AdminLTELogo.png" alt="Logo"
+                 class="brand-image img-circle elevation-3" style="opacity: .8">
+            <span class="brand-text font-weight-light">PMO system</span>
+        </a>
+        <div class="sidebar">
+            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                <div class="image">
+                    
+                    <img src="/media/images/Robert_Downey_Jr._2012_8YsLDwk.jpg" class="img-circle elevation-2"
+                         alt="User Image">
+                    
+                </div>
+                <div class="info">
+                    <a href="/users/profile/" class="d-block">Abduvokhidov Ergashali 1</a>
+                </div>
+            </div>
+
+            <div class="form-inline">
+                <div class="input-group" data-widget="sidebar-search">
+                    <input class="form-control form-control-sidebar" type="search" placeholder="Search"
+                             aria-label="Search">
+                    <div class="input-group-append">
+                        <button class="btn btn-sidebar">
+                            <i class="fas fa-search fa-fw"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <nav class="mt-2">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                    data-accordion="false">
+                    <li class="nav-item">
+                        <a href="/users/profile/" class="nav-link">
+                            <i class="fa-solid fa-user" style="color: #fafafa;margin-right: 2%"></i>
+                            <p>
+                                Profil
+                            </p>
+                        </a>
+                    </li>
+                    
+                                        <li class="nav-item">
+                        <a href="/users/view/" class="nav-link">
+                            <i class="fa-solid fa-users" style="color: #fafafa;margin-right: 2%"></i>
+                            <p>
+                                Foydalanuvchilar
+                            </p>
+                        </a>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a href="/projects/all/" class="nav-link">
+                            <i class="fa-solid fa-file-invoice" style="color: #fafafa;margin-right: 2%"></i>
+                            <p>
+                                Barcha loyihalar
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/projects/my-projects/" class="nav-link">
+                            <i class="fa-solid fa-file-contract" style="color: #fafafa;margin-right: 2%"></i>
+                            <p>
+                                Mening loyihalarim
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/projects/owner-projects/" class="nav-link">
+                            <i class="fa-solid fa-briefcase" style="color: #fafafa;margin-right: 2%"></i>
+                            <p>
+                                Loyiha egasi
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/expenses/qualification/" class="nav-link">
+                            <i class="fa-solid fa-square-poll-vertical" style="color: #fafafa;margin-right: 2%"></i>
+                            <p>
+                                Kvalifikatsiya
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/expenses/" class="nav-link">
+                            <i class="fa-solid fa-building-columns" style="color: #fafafa;margin-right: 2%"></i>
+                            <p>
+                                Xarajatlar
+                            </p>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </aside>
+    <div class="content-wrapper">
+        
+    <div class="container-fluid">
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        
+                            <h1><strong>&quot;Hard Collection&quot; tizimi</strong> - loyihasi haqida batafsil ma'lumot</h1>
+                        
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="/">Home</a></li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="content">
+            <div class="card" style="height: 100%">
+                <div class="card-header">
+                    <div class="card-tools">
+                        <i id="" data-toggle="modal" data-target="#add-phase"
+                           class="fa-solid fa-circle-plus btn btn-outline-dark"></i>
+                        
+                            <a href="/projects/add-team-member/a7f0992e-69b2-4231-93d4-4e2c6d2e8d2f"> <i
+                                    class="fa-solid fa-person-circle-plus btn btn-outline-dark"></i></a>
+                            <a href="/projects/remove-team-member/a7f0992e-69b2-4231-93d4-4e2c6d2e8d2f"><i
+                                    class="fa-solid fa-person-circle-minus btn btn-outline-dark"></i></a>
+                        
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 col-md-12 col-lg-8 order-2 order-md-1">
+                            <div class="row">
+                                <div class="col-12 col-sm-4">
+                                    <div class="info-box bg-light">
+                                        <div class="info-box-content">
+                                            <span class="info-box-text text-center text-muted">Loyiha budjeti</span>
+                                            
+                                                <span class="info-box-number text-center text-muted mb-0">100 000 000</span>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-4">
+                                    <div class="info-box bg-light">
+                                        <div class="info-box-content">
+                                            <span class="info-box-text text-center text-muted">Sarflangan pul</span>
+                                            
+                                                <span class="info-box-number text-center text-muted mb-0">5 000 000</span>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-4">
+                                    <div class="info-box bg-light">
+                                        <div class="info-box-content">
+                                            <span class="info-box-text text-center text-muted">Tugash vaqti</span>
+                                            
+                                                <span class="info-box-number text-center text-muted mb-0">01.04.2024</span>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="row">
+                                        <div class="col-md-12" id="content-main">
+                                            <div class="text-start mt-2 border-bottom border-dark"
+                                                 style="margin-bottom: 3%">
+                                                <h4><strong>Ushbu loyihaga tegishli ma'lumotlar</strong></h4>
+                                            </div>
+                                            <div class="row mt-4">
+    <nav class="w-100">
+        <div class="nav nav-tabs" id="product-tab" role="tablist">
+            <a class="nav-item nav-link active" id="product-desc-tab" data-toggle="tab" style="color: black" href="#project-desc" role="tab" aria-controls="project-desc" aria-selected="true">Loyiha</a>
+            <a class="nav-item nav-link" style="color:#000;" id="product-comments-tab" data-toggle="tab" href="#project-comments" role="tab" aria-controls="project-comments" aria-selected="false">Izohlar</a>
+            <a class="nav-item nav-link" style="color: black" id="product-rating-tab" data-toggle="tab" href="#project-problems" role="tab" aria-controls="project-problems" aria-selected="false">Muammolar</a>
+        </div>
+    </nav>
+                                                <div class="tab-content p-3" id="nav-tabContent">
+                                                    <div class="tab-pane panels fade show active" id="project-desc"
+                                                         role="tabpanel" aria-labelledby="project-desc-tab">
+                                                        
+                                                            <div class="row" style="width: 100dvh">
+                                                                <div class="col-10">
+                                                                    
+                                                                        <div class="row bg-light mb-3 chevron 13"
+                                                                             data-toggle="collapse"
+                                                                             data-target="#collapse4571120f-9898-4bef-afcd-09bc58336895">
+                                                                            <div class="col-10">
+                                                                                <p id="phase13">Dastur uchun yaratish
+                                                                                </p>
+                                                                                <strong>Tugatildi
+                                                                                    :</strong> 5%
+                                                                            </div>
+
+                                                                        </div>
+                                                                        </div>
+                                                                        <div id="icons-panel13"
+                                                                             class="col-2 bg-light mb-3 text-center pt-3">
+                                                                            <i class="fa-solid fa-pen-to-square mx-1 13 icon-buttons"
+                                                                               style="cursor: pointer"></i>
+                                                                            <i class="fa-solid fa-trash trash-icon mx-1"
+                                                                               data-toggle="modal"
+                                                                               data-target="#delete-phase"
+                                                                               id="13"
+                                                                               style="cursor: pointer"></i>
+                                                                            <i id="chevron13"
+                                                                               data-toggle="collapse"
+                                                                               data-target="#collapse4571120f-9898-4bef-afcd-09bc58336895"
+                                                                               class="fa-solid fa-chevron-right chevron mx-1 collapse-icon13"></i>
+                                                                        </div>
+                                                                        </div>
+                                                                        
+                                                                            
+                                                                                <div class="card bg-yellow  collapse"
+                                                                                     id="collapse4571120f-9898-4bef-afcd-09bc58336895">
+                                                                                    <div class="card-body row">
+                                                                                        <div class="col-11">
+                                                                                            <table class="table-bordered" style="width: 80dvh">
+                                                                                                <thead style="width: 100%">
+                                                                                                <tr  style="width: 100%">
+                                                                                                    <th class="p-2" style="width: 60%;">Dastur uchun dizayner yollash</th>
+                                                                                                    <th class="p-2" style="width: 20%;">03.03.2023</th>
+                                                                                                    <th class="p-2" style="width: 20%;">Sergey Ogay Aleksandrovich</th>
+                                                                                                </tr>
+                                                                                                </thead>
+
+                                                                                            </table>
+                                                                                            <br><strong>Tugatilganligi
+                                                                                            :</strong> <p class="d-inline" id="task-percentage6">15</p>%
+                                                                                        </div>
+                                                                                        <div class="col-1">
+                                                                                            <i style="cursor: pointer"
+                                                                                               data-toggle="modal"
+                                                                                               data-target="#finish-task"
+                                                                                               class="fa-solid fa-flag-checkered task-finish 6"></i>
+                                                                                            <i class="fa-solid fa-pen-to-square mx-1 6 edit-task-icon"
+                                                                                               style="cursor: pointer" data-toggle="modal" data-target="#edit-task"></i>
+                                                                                            <i class="fa-solid fa-trash delete-task-icon trash-icon mx-1"
+                                                                                               data-toggle="modal"
+                                                                                               data-target="#delete-task"
+                                                                                               id="6"
+                                                                                               style="cursor: pointer"></i>
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                </div>
+                                                                            
+                                                                        
+                                                                    
+                                                        
+                                                            <div class="row" style="width: 100dvh">
+                                                                <div class="col-10">
+                                                                    
+                                                                        <div class="row bg-light mb-3 chevron 27"
+                                                                             data-toggle="collapse"
+                                                                             data-target="#collapse2fafbd5b-4077-4b66-895a-8a83e4f0bc4a">
+                                                                            <div class="col-10">
+                                                                                <p id="phase27">faza
+                                                                                </p>
+                                                                                <strong>Tugatildi
+                                                                                    :</strong> 35%
+                                                                            </div>
+
+                                                                        </div>
+                                                                        </div>
+                                                                        <div id="icons-panel27"
+                                                                             class="col-2 bg-light mb-3 text-center pt-3">
+                                                                            <i class="fa-solid fa-pen-to-square mx-1 27 icon-buttons"
+                                                                               style="cursor: pointer"></i>
+                                                                            <i class="fa-solid fa-trash trash-icon mx-1"
+                                                                               data-toggle="modal"
+                                                                               data-target="#delete-phase"
+                                                                               id="27"
+                                                                               style="cursor: pointer"></i>
+                                                                            <i id="chevron27"
+                                                                               data-toggle="collapse"
+                                                                               data-target="#collapse2fafbd5b-4077-4b66-895a-8a83e4f0bc4a"
+                                                                               class="fa-solid fa-chevron-right chevron mx-1 collapse-icon27"></i>
+                                                                        </div>
+                                                                        </div>
+                                                                        
+                                                                            
+                                                                                <div class="card bg-yellow  collapse"
+                                                                                     id="collapse2fafbd5b-4077-4b66-895a-8a83e4f0bc4a">
+                                                                                    <div class="card-body row">
+                                                                                        <div class="col-11">
+                                                                                            <table class="table-bordered" style="width: 80dvh">
+                                                                                                <thead style="width: 100%">
+                                                                                                <tr  style="width: 100%">
+                                                                                                    <th class="p-2" style="width: 60%;">task</th>
+                                                                                                    <th class="p-2" style="width: 20%;">12.12.1222</th>
+                                                                                                    <th class="p-2" style="width: 20%;">Sergey Ogay Aleksandrovich</th>
+                                                                                                </tr>
+                                                                                                </thead>
+
+                                                                                            </table>
+                                                                                            <br><strong>Tugatilganligi
+                                                                                            :</strong> <p class="d-inline" id="task-percentage22">35</p>%
+                                                                                        </div>
+                                                                                        <div class="col-1">
+                                                                                            <i style="cursor: pointer"
+                                                                                               data-toggle="modal"
+                                                                                               data-target="#finish-task"
+                                                                                               class="fa-solid fa-flag-checkered task-finish 22"></i>
+                                                                                            <i class="fa-solid fa-pen-to-square mx-1 22 edit-task-icon"
+                                                                                               style="cursor: pointer" data-toggle="modal" data-target="#edit-task"></i>
+                                                                                            <i class="fa-solid fa-trash delete-task-icon trash-icon mx-1"
+                                                                                               data-toggle="modal"
+                                                                                               data-target="#delete-task"
+                                                                                               id="22"
+                                                                                               style="cursor: pointer"></i>
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                </div>
+                                                                            
+                                                                        
+                                                                    
+                                                        
+                                                    </div>
+                                                    <div class="tab-pane fade" id="project-comments" role="tabpanel"
+                                                         aria-labelledby="project-comments-tab">
+                                                        <div class="row mb-4" style="width: 100dvh">
+                                                            <div class="col-11">
+                                                                <textarea class="form-control a7f0992e-69b2-4231-93d4-4e2c6d2e8d2f"
+                                                                          id="comment" rows="4"></textarea>
+                                                            </div>
+                                                            <div class="col-1">
+                                                                <button class="btn btn-primary" id="comment-btn">
+                                                                    Yozish
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                            <div class="d-flex flex-start mb-4">
+                                                                <div class="card mx-2 w-100">
+                                                                    <div class="card-body p-4">
+                                                                        <div class="">
+                                                                            <div class="row">
+                                                                                <div class="col-11">
+                                                                                    Abduvokhidov Ergashali 1
+                                                                                </div>
+                                                                                <div class="col-1">
+                                                                                    <i class="fa-solid fa-pen-to-square mx-1 edit-comment 0455d637-bb49-4ea0-bba0-a217cebfa7e3 icon-buttons"
+                                                                                       style="cursor: pointer"></i>
+                                                                                    <i class="fa-solid fa-trash delete-comment mx-1 0455d637-bb49-4ea0-bba0-a217cebfa7e3"
+                                                                                       id="delete-comment"
+                                                                                       style="cursor: pointer"></i>
+                                                                                </div>
+                                                                            </div>
+                                                                            <p class="small">21-Iyun 2024 yil</p>
+                                                                            <p id="0455d637-bb49-4ea0-bba0-a217cebfa7e3">
+                                                                                izoh2
+                                                                            </p>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        
+                                                            <div class="d-flex flex-start mb-4">
+                                                                <div class="card mx-2 w-100">
+                                                                    <div class="card-body p-4">
+                                                                        <div class="">
+                                                                            <div class="row">
+                                                                                <div class="col-11">
+                                                                                    Abduvokhidov Ergashali 1
+                                                                                </div>
+                                                                                <div class="col-1">
+                                                                                    <i class="fa-solid fa-pen-to-square mx-1 edit-comment a2f8a81a-cdbb-4f99-bd79-69c19638d938 icon-buttons"
+                                                                                       style="cursor: pointer"></i>
+                                                                                    <i class="fa-solid fa-trash delete-comment mx-1 a2f8a81a-cdbb-4f99-bd79-69c19638d938"
+                                                                                       id="delete-comment"
+                                                                                       style="cursor: pointer"></i>
+                                                                                </div>
+                                                                            </div>
+                                                                            <p class="small">25-Iyun 2024 yil</p>
+                                                                            <p id="a2f8a81a-cdbb-4f99-bd79-69c19638d938">
+                                                                                Muammo2
+                                                                            </p>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        
+                                                            <div class="d-flex flex-start mb-4">
+                                                                <div class="card mx-2 w-100">
+                                                                    <div class="card-body p-4">
+                                                                        <div class="">
+                                                                            <div class="row">
+                                                                                <div class="col-11">
+                                                                                    Abduvokhidov Ergashali 1
+                                                                                </div>
+                                                                                <div class="col-1">
+                                                                                    <i class="fa-solid fa-pen-to-square mx-1 edit-comment df2638bd-1978-424c-8633-76f96c9b6c82 icon-buttons"
+                                                                                       style="cursor: pointer"></i>
+                                                                                    <i class="fa-solid fa-trash delete-comment mx-1 df2638bd-1978-424c-8633-76f96c9b6c82"
+                                                                                       id="delete-comment"
+                                                                                       style="cursor: pointer"></i>
+                                                                                </div>
+                                                                            </div>
+                                                                            <p class="small">25-Iyun 2024 yil</p>
+                                                                            <p id="df2638bd-1978-424c-8633-76f96c9b6c82">
+                                                                                sacasc
+                                                                            </p>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        
+                                                            <div class="d-flex flex-start mb-4">
+                                                                <div class="card mx-2 w-100">
+                                                                    <div class="card-body p-4">
+                                                                        <div class="">
+                                                                            <div class="row">
+                                                                                <div class="col-11">
+                                                                                    Abduvokhidov Ergashali 1
+                                                                                </div>
+                                                                                <div class="col-1">
+                                                                                    <i class="fa-solid fa-pen-to-square mx-1 edit-comment 137dbad5-34fd-4276-9f6d-6095eb0814a1 icon-buttons"
+                                                                                       style="cursor: pointer"></i>
+                                                                                    <i class="fa-solid fa-trash delete-comment mx-1 137dbad5-34fd-4276-9f6d-6095eb0814a1"
+                                                                                       id="delete-comment"
+                                                                                       style="cursor: pointer"></i>
+                                                                                </div>
+                                                                            </div>
+                                                                            <p class="small">25-Iyun 2024 yil</p>
+                                                                            <p id="137dbad5-34fd-4276-9f6d-6095eb0814a1">
+                                                                                csacac
+                                                                            </p>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        
+                                                            <div class="d-flex flex-start mb-4">
+                                                                <div class="card mx-2 w-100">
+                                                                    <div class="card-body p-4">
+                                                                        <div class="">
+                                                                            <div class="row">
+                                                                                <div class="col-11">
+                                                                                    Abduvokhidov Ergashali 1
+                                                                                </div>
+                                                                                <div class="col-1">
+                                                                                    <i class="fa-solid fa-pen-to-square mx-1 edit-comment 04182f8c-7197-47df-b2ff-daeb5bfb03c0 icon-buttons"
+                                                                                       style="cursor: pointer"></i>
+                                                                                    <i class="fa-solid fa-trash delete-comment mx-1 04182f8c-7197-47df-b2ff-daeb5bfb03c0"
+                                                                                       id="delete-comment"
+                                                                                       style="cursor: pointer"></i>
+                                                                                </div>
+                                                                            </div>
+                                                                            <p class="small">25-Iyun 2024 yil</p>
+                                                                            <p id="04182f8c-7197-47df-b2ff-daeb5bfb03c0">
+                                                                                commen test
+                                                                            </p>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        
+                                                            <div class="d-flex flex-start mb-4">
+                                                                <div class="card mx-2 w-100">
+                                                                    <div class="card-body p-4">
+                                                                        <div class="">
+                                                                            <div class="row">
+                                                                                <div class="col-11">
+                                                                                    Abduvokhidov Ergashali 1
+                                                                                </div>
+                                                                                <div class="col-1">
+                                                                                    <i class="fa-solid fa-pen-to-square mx-1 edit-comment 3c41b642-dc08-4ea1-8b4a-18b7e55b3dba icon-buttons"
+                                                                                       style="cursor: pointer"></i>
+                                                                                    <i class="fa-solid fa-trash delete-comment mx-1 3c41b642-dc08-4ea1-8b4a-18b7e55b3dba"
+                                                                                       id="delete-comment"
+                                                                                       style="cursor: pointer"></i>
+                                                                                </div>
+                                                                            </div>
+                                                                            <p class="small">25-Iyun 2024 yil</p>
+                                                                            <p id="3c41b642-dc08-4ea1-8b4a-18b7e55b3dba">
+                                                                                sdfvbs
+                                                                            </p>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        
+                                                            <div class="d-flex flex-start mb-4">
+                                                                <div class="card mx-2 w-100">
+                                                                    <div class="card-body p-4">
+                                                                        <div class="">
+                                                                            <div class="row">
+                                                                                <div class="col-11">
+                                                                                    Abduvokhidov Ergashali 1
+                                                                                </div>
+                                                                                <div class="col-1">
+                                                                                    <i class="fa-solid fa-pen-to-square mx-1 edit-comment afbfe050-630f-4b0c-a683-fae6e6814b8a icon-buttons"
+                                                                                       style="cursor: pointer"></i>
+                                                                                    <i class="fa-solid fa-trash delete-comment mx-1 afbfe050-630f-4b0c-a683-fae6e6814b8a"
+                                                                                       id="delete-comment"
+                                                                                       style="cursor: pointer"></i>
+                                                                                </div>
+                                                                            </div>
+                                                                            <p class="small">25-Iyun 2024 yil</p>
+                                                                            <p id="afbfe050-630f-4b0c-a683-fae6e6814b8a">
+                                                                                Comment 3
+                                                                            </p>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        
+                                                            <div class="d-flex flex-start mb-4">
+                                                                <div class="card mx-2 w-100">
+                                                                    <div class="card-body p-4">
+                                                                        <div class="">
+                                                                            <div class="row">
+                                                                                <div class="col-11">
+                                                                                    Abduvokhidov Ergashali 1
+                                                                                </div>
+                                                                                <div class="col-1">
+                                                                                    <i class="fa-solid fa-pen-to-square mx-1 edit-comment f049daa6-6e6d-4f1c-aef7-d7a1d091f578 icon-buttons"
+                                                                                       style="cursor: pointer"></i>
+                                                                                    <i class="fa-solid fa-trash delete-comment mx-1 f049daa6-6e6d-4f1c-aef7-d7a1d091f578"
+                                                                                       id="delete-comment"
+                                                                                       style="cursor: pointer"></i>
+                                                                                </div>
+                                                                            </div>
+                                                                            <p class="small">25-Iyun 2024 yil</p>
+                                                                            <p id="f049daa6-6e6d-4f1c-aef7-d7a1d091f578">
+                                                                                vd
+                                                                            </p>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        
+                                                            <div class="d-flex flex-start mb-4">
+                                                                <div class="card mx-2 w-100">
+                                                                    <div class="card-body p-4">
+                                                                        <div class="">
+                                                                            <div class="row">
+                                                                                <div class="col-11">
+                                                                                    Abduvokhidov Ergashali 1
+                                                                                </div>
+                                                                                <div class="col-1">
+                                                                                    <i class="fa-solid fa-pen-to-square mx-1 edit-comment 1ffb25ad-cc32-4d4f-a4d0-32ad79f9badc icon-buttons"
+                                                                                       style="cursor: pointer"></i>
+                                                                                    <i class="fa-solid fa-trash delete-comment mx-1 1ffb25ad-cc32-4d4f-a4d0-32ad79f9badc"
+                                                                                       id="delete-comment"
+                                                                                       style="cursor: pointer"></i>
+                                                                                </div>
+                                                                            </div>
+                                                                            <p class="small">26-Iyun 2024 yil</p>
+                                                                            <p id="1ffb25ad-cc32-4d4f-a4d0-32ad79f9badc">
+                                                                                izoh
+                                                                            </p>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        
+
+                                                    </div>
+                                                    <div class="tab-pane fade" id="project-problems" role="tabpanel"
+                                                         aria-labelledby="project-problems-tab">
+                                                        <div class="row mb-4" style="width: 100dvh">
+                                                            <div class="col-11">
+                                                                <textarea class="form-control a7f0992e-69b2-4231-93d4-4e2c6d2e8d2f"
+                                                                          id="problem" rows="4"></textarea>
+                                                            </div>
+                                                            <div class="col-1">
+                                                                <button class="btn btn-primary" id="problem-btn">
+                                                                    Yozish
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                            <div class="d-flex flex-start mb-4" id="problem-container">
+                                                                <div class="card mx-2 w-100">
+                                                                    <div class="card-body p-4">
+                                                                        <div>
+                                                                            <div class="row">
+                                                                                <div class="col-11">
+                                                                                    Abduvokhidov Ergashali 1
+                                                                                </div>
+                                                                                <div class="col-1">
+                                                                                    <i class="fa-solid fa-pen-to-square mx-1 edit-problem 559124d7-59d2-4e61-81b3-76cce2783aa9"
+                                                                                       style="cursor: pointer"></i>
+                                                                                    <i class="fa-solid fa-trash delete-problem mx-1 559124d7-59d2-4e61-81b3-76cce2783aa9"
+                                                                                       style="cursor: pointer"></i>
+                                                                                </div>
+                                                                            </div>
+                                                                            <p class="small">25-Iyun 2024 yil</p>
+                                                                            <p id="559124d7-59d2-4e61-81b3-76cce2783aa9">
+                                                                                 3 as  wsas sad dsa
+                                                                            </p>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        
+                                                            <div class="d-flex flex-start mb-4" id="problem-container">
+                                                                <div class="card mx-2 w-100">
+                                                                    <div class="card-body p-4">
+                                                                        <div>
+                                                                            <div class="row">
+                                                                                <div class="col-11">
+                                                                                    Abduvokhidov Ergashali 1
+                                                                                </div>
+                                                                                <div class="col-1">
+                                                                                    <i class="fa-solid fa-pen-to-square mx-1 edit-problem 28ce53d3-fb20-485e-833a-3796452fa004"
+                                                                                       style="cursor: pointer"></i>
+                                                                                    <i class="fa-solid fa-trash delete-problem mx-1 28ce53d3-fb20-485e-833a-3796452fa004"
+                                                                                       style="cursor: pointer"></i>
+                                                                                </div>
+                                                                            </div>
+                                                                            <p class="small">26-Iyun 2024 yil</p>
+                                                                            <p id="28ce53d3-fb20-485e-833a-3796452fa004">
+                                                                                muammo
+                                                                            </p>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        
+                                                            <div class="d-flex flex-start mb-4" id="problem-container">
+                                                                <div class="card mx-2 w-100">
+                                                                    <div class="card-body p-4">
+                                                                        <div>
+                                                                            <div class="row">
+                                                                                <div class="col-11">
+                                                                                    Abduvokhidov Ergashali 1
+                                                                                </div>
+                                                                                <div class="col-1">
+                                                                                    <i class="fa-solid fa-pen-to-square mx-1 edit-problem 6fedf60d-24e2-42cc-baf4-4cbc11cec939"
+                                                                                       style="cursor: pointer"></i>
+                                                                                    <i class="fa-solid fa-trash delete-problem mx-1 6fedf60d-24e2-42cc-baf4-4cbc11cec939"
+                                                                                       style="cursor: pointer"></i>
+                                                                                </div>
+                                                                            </div>
+                                                                            <p class="small">26-Iyun 2024 yil</p>
+                                                                            <p id="6fedf60d-24e2-42cc-baf4-4cbc11cec939">
+                                                                                sdvg
+                                                                            </p>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        
+                                                            <div class="d-flex flex-start mb-4" id="problem-container">
+                                                                <div class="card mx-2 w-100">
+                                                                    <div class="card-body p-4">
+                                                                        <div>
+                                                                            <div class="row">
+                                                                                <div class="col-11">
+                                                                                    Abduvokhidov Ergashali 1
+                                                                                </div>
+                                                                                <div class="col-1">
+                                                                                    <i class="fa-solid fa-pen-to-square mx-1 edit-problem 598c7b3f-749c-4744-859a-69268ed9e08c"
+                                                                                       style="cursor: pointer"></i>
+                                                                                    <i class="fa-solid fa-trash delete-problem mx-1 598c7b3f-749c-4744-859a-69268ed9e08c"
+                                                                                       style="cursor: pointer"></i>
+                                                                                </div>
+                                                                            </div>
+                                                                            <p class="small">26-Iyun 2024 yil</p>
+                                                                            <p id="598c7b3f-749c-4744-859a-69268ed9e08c">
+                                                                                muammmo 2
+
+                                                                            </p>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-12 col-lg-4 order-1 order-md-2">
+                            
+                                <h3 class="text-primary"><i class="fas fa-paint-brush"></i>&quot;Hard Collection&quot; tizimi </h3>
+                                <p class="text-muted">Muddati o&#x27;tgan kreditlarni (90+) undirish jarayonini optimallashtirish hamda yagona tizim orqali boshqarilishini yo&#x27;lga qo&#x27;yish bo&#x27;yicha CRM platformasi</p>
+                                <br>
+                                <div class="text-muted">
+                                    <p class="text-sm">Loyiha tashabbuskori
+                                        <b class="d-block">Strategiya departamentidan Abduvokhidov Ergashali 1</b>
+                                    </p>
+                                    <p class="text-sm">Loyiha kuratori
+                                        <b class="d-block">Muxtaramaxon Botirova</b>
+                                    </p>
+                                                                    <p class="text-sm">Strategiya departamentidan hodim(lar)
+                                        <b class="d-block">Dilshod mirkabulov, Muxtaramaxon Botirova, </b>
+                                    </p>
+                                </div>
+                            
+                            <h5 class="mt-5 text-muted">Loyiha fayllari</h5>
+                            <ul class="list-unstyled">
+                                
+                                    <li>
+                                        
+                                            <a href="" class="btn-link text-secondary" download="AdminLTE_3__DataTables.xlsx"><i
+                                                    class="fa-solid fa-file-excel" style="margin-right: 2%"></i>
+                                                <embed href="AdminLTE_3__DataTables.xlsx">
+                                                AdminLTE_3__DataTables.xlsx<br>
+                                                <small>26-Iyun 2024 yil</small>
+                                            </a>
+                                        
+                                    </li>
+                                
+                            </ul>
+                            <div class="text-start mt-5 mb-3">
+                                <button data-toggle="modal" data-target="#addfile" class="btn btn-sm btn-primary"><i
+                                        class="fa-solid fa-upload"></i> Fayl
+                                    yuklash
+                                </button>
+                                <button data-toggle="modal" data-target="#delete-file" class="btn btn-sm btn-danger">
+                                    <i class="fa-solid fa-trash"></i> O'chirish
+                                </button>
+                                
+                                    <button name="a7f0992e-69b2-4231-93d4-4e2c6d2e8d2f" id="archive" class="btn btn-sm bg-green"><i
+                                            class="fa-solid fa-download"></i> Arxiv sifatida yuklab olish
+                                    </button>
+                                
+                                <div id="addfile" class="modal fade" role="dialog">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1>Faylni qo'shish</h1>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form method="post" enctype="multipart/form-data" id="add-file-form">
+                                                    <input type="hidden" name="csrfmiddlewaretoken" value="TJ4J8sWX02zCxbfBw2ibkQkNXUCMdU0ECUXXHhSQsIqIlfGBKzE4nJTpPXg7LK9u">
+                                                    <p>
+    <label for="id_document">Document:</label>
+    <input type="file" name="document" id="id_document">
+    
+    
+  </p>
+
+  
+  <p>
+    
+    <input type="text" name="url" class="form-control" id="url-input" maxlength="250">
+    
+    
+      
+    
+  </p>
+                                                    <button id="add-url" type="button" class="btn btn-primary">Url
+                                                        kiritish
+                                                    </button>
+                                                    <div class="modal-footer">
+                                                        <button type="submit" class="btn btn-primary">Ha</button>
+                                                        <button class="btn btn-primary" data-dismiss="modal">Bekor
+                                                            qilish
+                                                        </button>
+                                                    </div>
+
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div id="delete-file" class="modal fade" role="dialog">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1>Fayllarni tanlang</h1>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form method="post" enctype="multipart/form-data" id="delete-file-form">
+                                                    <input type="hidden" name="csrfmiddlewaretoken" value="TJ4J8sWX02zCxbfBw2ibkQkNXUCMdU0ECUXXHhSQsIqIlfGBKzE4nJTpPXg7LK9u">
+                                                    
+                                                        <div class="row">
+                                                            <div class="col-1">
+                                                                <input class="del-files" type="checkbox"
+                                                                       id="17">
+                                                            </div>
+                                                            <div class="col">
+                                                                AdminLTE_3__DataTables.xlsx
+
+                                                            </div>
+                                                        </div>
+                                                    
+                                                    <div class="modal-footer">
+                                                        <button id="del-confirm" type="button" class="btn btn-danger">
+                                                            O'chirish
+                                                        </button>
+                                                        <button class="btn btn-primary" data-dismiss="modal">Bekor
+                                                            qilish
+                                                        </button>
+                                                    </div>
+
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                                            <div id="edit-task" class="modal fade" role="dialog">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1>Taskni tahrirlash boshlandi</h1>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form method="post" enctype="multipart/form-data" id="delete-file-form">
+                                                    <input type="hidden" name="csrfmiddlewaretoken" value="TJ4J8sWX02zCxbfBw2ibkQkNXUCMdU0ECUXXHhSQsIqIlfGBKzE4nJTpPXg7LK9u">
+                                                    <label for="task-name">Task nomi
+                                                        <input id="task-edit-task-name" class="form-control" type="text">
+
+                                                    </label>
+                                                                                                        <label  for="task-name">Muddati
+                                                        <input id="task-edit-deadline" class="form-control" type="date">
+
+                                                    </label>
+                                                                                                        <label for="task-name">Bajaruvchi hodim ismi
+                                                        <input id="task-edit-task-manager" class="form-control" type="text">
+
+                                                    </label>
+                                                    <div class="modal-footer">
+                                                        <button id="confirm-task-update" type="button" class="btn btn-danger">
+                                                            Saqlash
+                                                        </button>
+                                                        <button class="btn btn-primary" data-dismiss="modal">Bekor
+                                                            qilish
+                                                        </button>
+                                                    </div>
+
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div id="add-phase" class="modal fade" role="dialog">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1>Faza yaratish boshlandi</h1>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form method="post" id="phase-form">
+                                                    <input type="hidden" name="csrfmiddlewaretoken" value="TJ4J8sWX02zCxbfBw2ibkQkNXUCMdU0ECUXXHhSQsIqIlfGBKzE4nJTpPXg7LK9u">
+                                                    <label> Faza nomini yozing :
+                                                        <input class="form-control mb-4" type="text" name="phase"
+                                                               id="phase-input">
+                                                    </label><br>
+                                                                                                        <label> Faza tugash sanasini yozing :
+                                                        <input class="form-control mb-4" type="date" name="phase-deadline"
+                                                               id="phase-deadline">
+                                                    </label><br>
+                                                    <hr>
+                                                    <div id="tasks-container">
+
+                                                    </div>
+                                                    <div class="add-task" id="add-task">
+                                                        <label>Task qo'shish</label>
+                                                        <i class="fa-solid fa-circle-plus"></i>
+                                                    </div>
+                                                    <hr>
+                                                </form>
+
+                                                <div class="modal-footer">
+                                                    <button id="save-all-data" class="btn btn-primary">Saqlash</button>
+                                                    <button data-dismiss="modal" class="btn btn-secondary">Bekor
+                                                        qilish
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+                            <div id="delete-phase" class="modal fade" role="dialog">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1>Fazani o'chirasizmi ?</h1>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button id="delete-icon-confirm" class="btn btn-danger">O'chirish</button>
+                                            <button data-dismiss="modal" class="btn btn-secondary">Bekor qilish</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div id="delete-task" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1>Task o'chirasizmi ?</h1>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button id="delete-task-confirm" class="btn btn-danger">O'chirish</button>
+                                        <button data-dismiss="modal" class="btn btn-secondary">Bekor qilish</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div id="finish-task" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1>Nechi foizga tugatamiz ?</h1>
+                                </div>
+                                <div class="modal-body">
+                                    <label for="task-done" id="task-done-percentage">Tugatish foizi : 0</label><input step="5" value="0" type="range" id="task-done" min="0" max="100" name="task-complete-percentage" placeholder="0"
+                                                                          class="form-control"/>
+                                </div>
+                                <div class="modal-footer">
+                                    <button id="finish-task-confirm" class="btn btn-danger">Saqlash</button>
+                                    <button data-dismiss="modal" class="btn btn-secondary">Bekor qilish</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+
+    </div>
+    </div>
+    </div>
+    </div>
+    </section>
+    </div>
+
+    </div>
+</div>
+<script src="https://www.gstatic.com/charts/loader.js"></script>
+<script src="/static/plugins/jquery/jquery.min.js"></script>
+<script src="/static/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/static/dist/js/adminlte.js"></script>
+<script src="/static/plugins/chart.js/Chart.min.js"></script>
+<script src="/static/dist/js/demo.js"></script>
+<script src="/static/dist/js/pages/dashboard3.js"></script>
+<script src="/static/static/js/script.js">
+<script src="/static/static/js/script2.js">
+</script>
+    <script src="/static/extra/js/jquery-3.3.1.min.js"></script>
+    <script src="/static/extra/js/popper.min.js"></script>
+    <script src="/static/extra/js/select2.min.js"></script>
+    <script src="/static/extra/js/main.js"></script>
+    <script src="/static/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="/static/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="/static/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="/static/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="/static/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="/static/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="/static/plugins/jszip/jszip.min.js"></script>
+<script src="/static/plugins/pdfmake/pdfmake.min.js"></script>
+<script src="/static/plugins/pdfmake/vfs_fonts.js"></script>
+<script src="/static/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="/static/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="/static/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+<script src="/static/plugins/jquery/jquery.min.js"></script>
+<script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
+
+</body>
+</html>

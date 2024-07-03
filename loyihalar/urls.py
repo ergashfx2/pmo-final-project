@@ -1,8 +1,7 @@
 from django.urls import path
 from .views import all_projects, get_project, myProjects, DetailMyProjects, CreateProject, UpdateProject, DeleteProject, \
     add_phase, update_phase, delete_phase, update_task, delete_task, update_task_percentage, delete_files, \
-    owned_projects,create_archive,post_comment,post_problem,edit_comment,edit_problem,delete_comment,delete_problem,add_team_member,remove_team_member,filter_table,get_task
-
+    owned_projects,create_archive,post_comment,post_problem,edit_comment,edit_problem,delete_comment,delete_problem,add_team_member,remove_team_member,filter_table,get_task,download_file
 urlpatterns = [
     path('all/', all_projects, name='all-projects'),
     path('all/filter/', filter_table, name='filter-table'),
@@ -20,6 +19,7 @@ urlpatterns = [
     path('my-projects/add-file/<pk>', myProjects, name='add-file'),
     path('my-projects/delete/<pk>', DeleteProject, name='delete-my-project'),
     path('my-projects/detail/create-archive/<pk>', create_archive, name='create-archive'),
+    path('my-projects/detail/download-file/<pk>', download_file, name='create-archive'),
     path('my-projects/delete-phase/<pk>', delete_phase, name='delete-phase'),
     path('my-projects/delete-task/<pk>', delete_task, name='delete-task'),
     path('my-projects/detail/<pk>/add-phase/', add_phase, name='add-phase'),

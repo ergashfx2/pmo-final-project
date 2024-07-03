@@ -20,6 +20,11 @@ document.addEventListener("DOMContentLoaded", function () {
     let p_id = document.getElementById('archive-btn').getAttribute('p_id')
     downloadArchive(p_id)
 })
+    document.querySelectorAll('.p-files').forEach(value => {
+        value.addEventListener('click',function (){
+          downloadFile(value.id)
+        })
+    })
     problemsManager();
     commentsManager();
     deleteFiles();
@@ -316,23 +321,6 @@ function initCommentSystem() {
 }
 
 
-function initArchive() {
-    console.log('archive working')
-    document.querySelectorAll('.archive-btn').forEach(button => {
-        button.addEventListener('click', function (e) {
-            const project_id = e.target.name;
-            fetch(`create-archive/${project_id}`).then(res => {
-            });
-        });
-    });
-
-    document.querySelectorAll('.unarchive-btn').forEach(button => {
-        button.addEventListener('click', function () {
-            const phaseId = this.id;
-            fetch(`unarchive-phase/${phaseId}`).then(() => location.reload());
-        });
-    });
-}
 
 
 function initFilterToggle() {
@@ -372,7 +360,6 @@ function sendPostRequest(url, data) {
             if (!response.ok) {
                 return response.json().then(err => Promise.reject(err));
             }
-
         })
         .catch(error => console.error('Error:', error));
 }
@@ -594,3 +581,29 @@ function downloadArchive(pk) {
     });
 }
 
+        function downloadFile(documentId) {
+            const downloadUrl = `download-file/${documentId}`;
+
+            fetch(downloadUrl)
+                .then(response => {
+                    if (response.ok) {
+                        const contentDisposition = response.headers.get('Content-Disposition');
+                        const filename = contentDisposition ? contentDisposition.split('filename=')[1].replace(/"/g, '') : 'downloaded_file';
+                        return response.blob().then(blob => ({ filename, blob }));
+                    }
+                    throw new Error('Network response was not ok.');
+                })
+                .then(({ filename, blob }) => {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.style.display = 'none';
+                    a.href = url;
+                    a.download = filename;
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                })
+                .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
+                });
+        }
