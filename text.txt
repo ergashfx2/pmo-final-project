@@ -1,0 +1,38 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Download Document</title>
+</head>
+<body>
+    <button onclick="downloadFile(1)">Download Document</button> <!-- Replace 1 with the actual document ID -->
+    <script>
+        function downloadFile(documentId) {
+            const downloadUrl = `/download/${documentId}/`;
+
+            fetch(downloadUrl)
+                .then(response => {
+                    if (response.ok) {
+                        const contentDisposition = response.headers.get('Content-Disposition');
+                        const filename = contentDisposition ? contentDisposition.split('filename=')[1].replace(/"/g, '') : 'downloaded_file';
+                        return response.blob().then(blob => ({ filename, blob }));
+                    }
+                    throw new Error('Network response was not ok.');
+                })
+                .then(({ filename, blob }) => {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.style.display = 'none';
+                    a.href = url;
+                    a.download = filename;  // Use the actual filename from the response
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                })
+                .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
+                });
+        }
+    </script>
+</body>
+</html>
