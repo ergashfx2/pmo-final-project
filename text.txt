@@ -1,20 +1,3 @@
-# views.py
-from django.http import HttpResponse, Http404
-from django.shortcuts import get_object_or_404
-from .models import Document
-
-def download_document(request, document_id):
-    document = get_object_or_404(Document, id=document_id)
-    file_path = document.file.path  # Assuming your file field is named 'file'
-
-    try:
-        with open(file_path, 'rb') as f:
-            response = HttpResponse(f.read(), content_type="application/octet-stream")
-            response['Content-Disposition'] = f'attachment; filename="{document.file.name}"'
-            return response
-    except FileNotFoundError:
-        raise Http404("Document does not exist")
-
 <!-- index.html -->
 <!DOCTYPE html>
 <html>
@@ -30,16 +13,18 @@ def download_document(request, document_id):
             fetch(downloadUrl)
                 .then(response => {
                     if (response.ok) {
-                        return response.blob();
+                        const contentDisposition = response.headers.get('Content-Disposition');
+                        const filename = contentDisposition ? contentDisposition.split('filename=')[1].replace(/"/g, '') : 'downloaded_file';
+                        return response.blob().then(blob => ({ filename, blob }));
                     }
                     throw new Error('Network response was not ok.');
                 })
-                .then(blob => {
+                .then(({ filename, blob }) => {
                     const url = window.URL.createObjectURL(blob);
                     const a = document.createElement('a');
                     a.style.display = 'none';
                     a.href = url;
-                    a.download = 'document';  // You can set a more specific name
+                    a.download = filename;  // Use the actual filename from the response
                     document.body.appendChild(a);
                     a.click();
                     window.URL.revokeObjectURL(url);
