@@ -607,3 +607,7 @@ function downloadArchive(pk) {
                     console.error('There was a problem with the fetch operation:', error);
                 });
         }
+
+document.getElementById('dropdownMenuButton').addEventListener('mouseover',function (){
+    document.getElementById('dropdown-menu').classList.add('show')
+})

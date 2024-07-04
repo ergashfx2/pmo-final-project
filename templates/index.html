@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load filters %}
     {% block content %}
 <link href="{% static 'plugins/bower_components/chartist/dist/chartist.min.css' %}" rel="stylesheet">
 <link rel="stylesheet" href="{% static 'plugins/bower_components/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.css' %}">
@@ -11,48 +12,19 @@
         <div class="page-wrapper">
             <div class="container-fluid">
                 <div class="row justify-content-center">
-                    <div class="col-lg-4 col-md-12">
-                        <div class="white-box analytics-info">
-                            <h3 class="box-title">Loyihalar</h3>
-                            <ul class="list-inline two-part d-flex align-items-center mb-0">
-                                <li>
-                                    <div id="sparklinedash"><canvas width="67" height="30"
-                                            style="display: inline-block; width: 67px; height: 30px; vertical-align: top;"></canvas>
-                                    </div>
-                                </li>
-                                <li class="ms-auto"><span class="counter text-success">{{ projects_count }}</span></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-12">
-                        <div class="white-box analytics-info">
-                            <h3 class="box-title">Jarayondagi</h3>
-                            <ul class="list-inline two-part d-flex align-items-center mb-0">
-                                <li>
-                                    <div id="sparklinedash2"><canvas width="67" height="30"
-                                            style="display: inline-block; width: 67px; height: 30px; vertical-align: top;"></canvas>
-                                    </div>
-                                </li>
-                                <li class="ms-auto"><span class="counter text-purple">{{ projects_process }}</span></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-12">
-                        <div class="white-box analytics-info">
-                            <h3 class="box-title">Tugatilgan</h3>
-                            <ul class="list-inline two-part d-flex align-items-center mb-0">
-                                <li>
-                                    <div id="sparklinedash3"><canvas width="67" height="30"
-                                            style="display: inline-block; width: 67px; height: 30px; vertical-align: top;"></canvas>
-                                    </div>
-                                </li>
-                                <li class="ms-auto"><span class="counter text-info">{{ project_done  }}</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
                 <div class="row">
+                                    <div class="col">
+                    <div class="card bg-primary"><div class="card-body"><div class="d-flex justify-content-between align-items-center mb-3"><div><h4 class="mb-0">Loyihalar soni</h4></div><div class="icon-shape icon-md bg-light-primary text-primary rounded-2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="18" height="18" fill="currentColor"><path d="M6.5 1A1.5 1.5 0 0 0 5 2.5V3H1.5A1.5 1.5 0 0 0 0 4.5v8A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 14.5 3H11v-.5A1.5 1.5 0 0 0 9.5 1h-3zm0 1h3a.5.5 0 0 1 .5.5V3H6v-.5a.5.5 0 0 1 .5-.5zm1.886 6.914L15 7.151V12.5a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5V7.15l6.614 1.764a1.5 1.5 0 0 0 .772 0zM1.5 4h13a.5.5 0 0 1 .5.5v1.616L8.129 7.948a.5.5 0 0 1-.258 0L1 6.116V4.5a.5.5 0 0 1 .5-.5z"></path></svg></div></div><div><h1 class="fw-bold">{{ projects_count }}</h1><p class="mb-0"><span class="text-dark me-2"></span></p></div></div></div>
+
+                </div>
+                <div class="col">
+                    <div class="card bg-warning"><div class="card-body"><div class="d-flex justify-content-between align-items-center mb-3"><div><h4 class="mb-0">Jarayondagi loyihalar</h4></div><div class="icon-shape icon-md bg-light-primary text-primary rounded-2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="18" height="18" fill="currentColor"><path d="M6.5 1A1.5 1.5 0 0 0 5 2.5V3H1.5A1.5 1.5 0 0 0 0 4.5v8A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 14.5 3H11v-.5A1.5 1.5 0 0 0 9.5 1h-3zm0 1h3a.5.5 0 0 1 .5.5V3H6v-.5a.5.5 0 0 1 .5-.5zm1.886 6.914L15 7.151V12.5a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5V7.15l6.614 1.764a1.5 1.5 0 0 0 .772 0zM1.5 4h13a.5.5 0 0 1 .5.5v1.616L8.129 7.948a.5.5 0 0 1-.258 0L1 6.116V4.5a.5.5 0 0 1 .5-.5z"></path></svg></div></div><div><h1 class="fw-bold">{{ projects_process }}</h1><p class="mb-0"><span class="text-dark me-2"></span></p></div></div></div>
+
+                </div>
+                <div class="col">
+                    <div class="card bg-green"><div class="card-body"><div class="d-flex justify-content-between align-items-center mb-3"><div><h4 class="mb-0">Tugatilgan loyihalar</h4></div><div class="icon-shape icon-md bg-light-primary text-primary rounded-2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="18" height="18" fill="currentColor"><path d="M6.5 1A1.5 1.5 0 0 0 5 2.5V3H1.5A1.5 1.5 0 0 0 0 4.5v8A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 14.5 3H11v-.5A1.5 1.5 0 0 0 9.5 1h-3zm0 1h3a.5.5 0 0 1 .5.5V3H6v-.5a.5.5 0 0 1 .5-.5zm1.886 6.914L15 7.151V12.5a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5V7.15l6.614 1.764a1.5 1.5 0 0 0 .772 0zM1.5 4h13a.5.5 0 0 1 .5.5v1.616L8.129 7.948a.5.5 0 0 1-.258 0L1 6.116V4.5a.5.5 0 0 1 .5-.5z"></path></svg></div></div><div><h1 class="fw-bold">{{ project_done }}</h1><p class="mb-0"><span class="text-dark me-2"></span></p></div></div></div>
+
+                </div>
                     <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
                         <div class="white-box">
                             <h3 class="box-title">Oylik xarajatlar</h3>
@@ -76,23 +48,20 @@
                                     <thead>
                                         <tr>
                                             <th class="border-top-0">#</th>
-                                            <th class="border-top-0">FIO</th>
-                                            <th class="border-top-0">Status</th>
-                                            <th class="border-top-0">Loyihalar soni</th>
+                                            <th class="border-top-0">Loyiha nomi</th>
+                                            <th class="border-top-0">Holati</th>
+                                            <th class="border-top-0">Summasi</th>
+                                            <th class="border-top-0">Biriktirilgan hodim</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    {% for user in users %}
+                                    {% for project in projects %}
                                         <tr class="datas" data-url="{% url 'hodimlar:profile2' user.pk %}" style="cursor: pointer">
                                             <td>{{ forloop.counter }}</td>
-                                        {% if user.avatar.url %}
-                                            <td class="text-flow"><img src="{{ user.avatar.url }}" width="30" height="30" class="mr-4">{{ user.get_full_name }}</td>
-                                            {% else %}
-                                            <td class="text-flow"><img src="https://t3.ftcdn.net/jpg/05/06/55/22/360_F_506552238_j3Y4oq4rrlLEgzVG30AdEe0TaRINtUKr.jpg" width="50" height="50" class="mr-4">{{ user.get_full_name }}</td>
-                                        {% endif %}
-
-                                            <td>{% if user.status == 'Active' %}<div class="alert alert-success">{{ user.status }}{% else %}<div class="alert alert-danger">{{ user.status }}{% endif %}</div></td>
-                                            <td class="txt-oflo">{{ user.projects }}</td>
+                                            <td class="txt-oflo">{{ project.project_name }}</td>
+                                            <td class="txt-oflo">{{ project.projject_status }}</td>
+                                            <td class="txt-oflo">{{ project.project_budget | format_number }}</td>
+                                            <td class="txt-oflo">{{ project.project_budget }}</td>
                                         </tr>
                                     {% endfor %}
                                     </tbody>
@@ -102,6 +71,7 @@
                         </div>
                     </div>
                 </div>
+        </div>
         </div>
         </div>
 

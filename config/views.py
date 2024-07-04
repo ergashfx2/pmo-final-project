@@ -1,6 +1,6 @@
 from collections import defaultdict
 
-from django.db.models import Count, Sum, F, IntegerField, Value
+from django.db.models import Count, Sum, F, IntegerField, Value, Q
 from django.db.models.functions import TruncMonth, Replace, Cast
 from django.shortcuts import render
 from django.contrib.auth import get_user_model
@@ -76,15 +76,16 @@ def getExpensesAll(year, blog_id=None, dept_id=None):
 def home(request):
     if request.user.is_authenticated:
         totalExpense = getExpensesAll(year=timezone.now().year)
-        users = User.objects.annotate(
-            projects=Count('author', distinct=True) + Count('team', distinct=True) + Count('manager',
-                                                                                           distinct=True) + Count(
-                'curator', distinct=True))[:4]
+        projects = Project.objects.filter(
+            Q(project_manager__id=request.user.pk) |
+            Q(project_curator__id=request.user.pk) |
+            Q(project_team__username=request.user.username)
+        ).distinct()
         projects_count = Project.objects.all().count()
         projects_done = Project.objects.filter(project_status='Tugatilgan').count()
         projects_process = Project.objects.filter(project_status='Jarayonda').count()
         return render(request, 'index.html',
-                      {'users': users, 'projects_count': projects_count, 'project_done': projects_done,
+                      {'projects': projects, 'projects_count': projects_count, 'project_done': projects_done,
                        'projects_process': projects_process, 'expenses': totalExpense})
     else:
         return render(request, 'index.html')

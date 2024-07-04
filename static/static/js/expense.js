@@ -23,18 +23,18 @@ function sendPostRequest(url, data) {
             },
             body: JSON.stringify(data)
         })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            resolve(data);
-        })
-        .catch(error => {
-            reject(error);
-        });
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                resolve(data);
+            })
+            .catch(error => {
+                reject(error);
+            });
     });
 }
 
@@ -79,9 +79,9 @@ function add_listeners() {
     })
 }
 
-function redirecting(){
+function redirecting() {
     document.querySelectorAll('.datas').forEach(value => {
-        value.addEventListener('click',function (){
+        value.addEventListener('click', function () {
             window.location.href = value.getAttribute('data-url');
         })
     });
@@ -112,18 +112,18 @@ function change_table() {
 change_table()
 
 
-function expandBudget(){
-    document.getElementById('budget-expand-btn').addEventListener('click',function (){
+function expandBudget() {
+    document.getElementById('budget-expand-btn').addEventListener('click', function () {
         var budget = document.getElementById('budget');
-        var res = sendPostRequest(`expand-budget/${budget.classList[1]}`,{'data':budget.value})
-        res.then(res=>{
-                               var total = res.spent_money
+        var res = sendPostRequest(`expand-budget/${budget.classList[1]}`, {'data': budget.value})
+        res.then(res => {
+            var total = res.spent_money
             console.log(res.spent_money)
-                    var left = res.total_money - res.spent_money
+            var left = res.total_money - res.spent_money
             console.log(total)
-                    document.getElementById('totalExpenses').textContent = `${formatNumber(total)}`
+            document.getElementById('totalExpenses').textContent = `${formatNumber(total)}`
             document.getElementById('totalBudget').textContent = `${formatNumber(res.total_money)}`
-                    document.getElementById('budgetLeft').textContent = `${formatNumber(left)}`
+            document.getElementById('budgetLeft').textContent = `${formatNumber(left)}`
         })
     })
 }
@@ -144,7 +144,7 @@ document.getElementById('add-expense').addEventListener('submit', function (e) {
     }
     let csrfToken = getCookie('csrftoken')
     let formData = new FormData()
-    let data = {'expense': expense, 'amount': amount, 'date': date, 'file': file.files[0],'currency':currency}
+    let data = {'expense': expense, 'amount': amount, 'date': date, 'file': file.files[0], 'currency': currency}
     formData.append('file', input_file)
     formData.append('data', JSON.stringify(data))
     if (expense) {
@@ -191,11 +191,11 @@ document.getElementById('add-expense').addEventListener('submit', function (e) {
     }
 })
 
-function deleteAll(){
+function deleteAll() {
     let button = document.getElementById('reset-all');
     let project_id = button.getAttribute('project_id')
-    button.addEventListener('click',function (){
-        fetch(`delete-expense-all/${project_id}`).then(res=>{
+    button.addEventListener('click', function () {
+        fetch(`delete-expense-all/${project_id}`).then(res => {
             location.reload()
         })
     })

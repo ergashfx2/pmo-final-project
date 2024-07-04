@@ -12,7 +12,10 @@
   padding: 20px;
   text-align: center;
 }
-
+.nav-item {
+    font-size: 110%;
+    margin-top: 7%;
+}
 
 .menu {
     margin: 0;
@@ -204,4 +207,28 @@ svg {
 .card>.list-group {
     border-bottom: inherit;
     border-top: inherit;
+}
+
+.box-title {
+    font-family: sans-serif;
+}
+
+.profile-drop {
+    z-index: 1000;
+    position: absolute;
+}
+
+a {
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: none;
+}
+
+.dropdown-menu {
+    z-index: 10000;
+}
+
+#dropdown-menu {
+
 }
