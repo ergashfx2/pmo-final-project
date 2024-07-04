@@ -118,9 +118,7 @@ function expandBudget() {
         var res = sendPostRequest(`expand-budget/${budget.classList[1]}`, {'data': budget.value})
         res.then(res => {
             var total = res.spent_money
-            console.log(res.spent_money)
             var left = res.total_money - res.spent_money
-            console.log(total)
             document.getElementById('totalExpenses').textContent = `${formatNumber(total)}`
             document.getElementById('totalBudget').textContent = `${formatNumber(res.total_money)}`
             document.getElementById('budgetLeft').textContent = `${formatNumber(left)}`

@@ -85,30 +85,38 @@
                                                               {% for data in datas %}
                                                 <div class="timeline">
                                                     <div class="time-label">
-                                                        <span class="bg-red">{{ data.phase }} {{ data.phase_done_percentage }}%</span>
+                                                        <div class="row bg-light" style="box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;">
+                                                            <div class="col-11">
+                               <span type="button" aria-controls="{{ data.phase_id }}" aria-expanded="false" data-toggle="collapse" data-target="#coll{{ data.phase_id }}" style="width: 100dvmin;padding: 1%">{{ data.phase }}</span>
+
+                                                            </div>
+                                                            <div class="col-1 bg-light" style="width: 10dvmin;">{{ data.phase_done_percentage }}%</div>
+                                                        </div>
                                                     </div>
                                                     <div>
                                                         <div class="timeline-item" style="width: 100dvh;">
+                                                        <div class="collapse" id="coll{{ data.phase_id }}">
+                                                                                                                 <table class="table table-striped">
+                                                                <thead>
+                                                                <tr>
+                                                                    <th scope="col" class="col-6">Task nomi</th>
+                                                                    <th scope="col" class="col-2">Tugash sanasi</th>
+                                                                    <th scope="col" class="col-2">Bajaruvchi shaxs</th>
+                                                                    <th scope="col" class="col-2">Bajarilganligi</th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody>
                                                             {% for task in data.tasks %}
-                                                                {% generate_random 'collapse' as random_id %}
-                                                                {% with task.task_done_percentage|to_int as percentage %}
-                                                                    <div class="progress-bar d-block mb-2
-    {% if percentage == 100 %}
-        bg-success
-    {% elif percentage < 100 and percentage >= 50 %}
-        bg-warning
-    {% elif percentage < 50 and percentage >= 0 %}
-        bg-light
-    {% endif %}"
-                                                                         role="progressbar"
-                                                                         aria-valuenow="{{ percentage }}"
-                                                                         aria-valuemin="0"
-                                                                         aria-valuemax="100"
-                                                                         style="width: 100%;">
-                                                                        {{ task.task_name }} {{ percentage }}%
-                                                                    </div>
-                                                                {% endwith %}
+                                                                <tr>
+                                                                    <td>{{ task.task_name }}</td>
+                                                                    <td>{{ task.task_deadline }}</td>
+                                                                    <td>{{ task.task_manager }}</td>
+                                                                    <td>{{ task.task_done_percentage }}%</td>
+                                                                </tr>
                                                             {% endfor %}
+                                                                                                                                                                    </tbody>
+                                                                </table>
+                                                           </div>
                                                         </div>
                                                     </div>
                                                 </div>

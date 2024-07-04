@@ -97,6 +97,7 @@ def get_project(request, pk):
     for phase in phases:
         datas.append({
             'phase': phase.phase_name,
+            'phase_id': phase.pk,
             'phase_done_percentage': int(phase.phase_done_percentage),
             'tasks': Task.objects.filter(phase=phase.id)
         })

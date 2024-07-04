@@ -25,6 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
           downloadFile(value.id)
         })
     })
+    redirecting()
     problemsManager();
     commentsManager();
     deleteFiles();
@@ -39,6 +40,14 @@ document.addEventListener("DOMContentLoaded", function () {
     initFilterToggle();
     initMultiSelect();
 });
+
+function redirecting() {
+    document.querySelectorAll('.datas').forEach(value => {
+        value.addEventListener('click', function () {
+            window.location.href = value.getAttribute('data-url');
+        })
+    });
+}
 
 function initTabs() {
     const tabs = document.querySelectorAll('.nav-tabs a[data-toggle="tab"]');
@@ -608,6 +617,3 @@ function downloadArchive(pk) {
                 });
         }
 
-document.getElementById('dropdownMenuButton').addEventListener('mouseover',function (){
-    document.getElementById('dropdown-menu').classList.add('show')
-})

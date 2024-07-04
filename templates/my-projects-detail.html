@@ -11,11 +11,6 @@
                             <h1><strong>{{ pr.project_name }}</strong> - loyihasi haqida batafsil ma'lumot</h1>
                         {% endfor %}
                     </div>
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
-                        </ol>
-                    </div>
                 </div>
             </div>
         </section>
@@ -96,10 +91,10 @@
                                                     <div class="tab-pane panels fade show active" id="project-desc"
                                                          role="tabpanel" aria-labelledby="project-desc-tab">
                                                         {% for data in datas %}
-                                                            <div class="row" style="width: 100dvh">
+                                                            <div class="row bg-light mb-3" style="width: 100dvh;box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;">
                                                                 <div class="col-10">
                                                                     {% with id='collapse'|generate_random %}
-                                                                        <div class="row bg-light mb-3 chevron {{ data.phase_id }}"
+                                                                        <div class="row mb-3 chevron {{ data.phase_id }}"
                                                                              data-toggle="collapse"
                                                                              data-target="#{{ id }}">
                                                                             <div class="col-10">
@@ -112,7 +107,7 @@
                                                                         </div>
                                                                         </div>
                                                                         <div id="icons-panel{{ data.phase_id }}"
-                                                                             class="col-2 bg-light mb-3 text-center pt-3">
+                                                                             class="col-2  mb-3 text-center pt-3">
                                                                             <i class="fa-solid fa-pen-to-square mx-1 {{ data.phase_id }} icon-buttons"
                                                                                style="cursor: pointer"></i>
                                                                             <i class="fa-solid fa-trash trash-icon mx-1"
@@ -311,7 +306,7 @@
                         </div>
                         <div class="col-12 col-md-12 col-lg-4 order-1 order-md-2">
                             {% for ph in project %}
-                                <h3 class="text-primary"><i class="fas fa-paint-brush"></i>{{ ph.project_name }} </h3>
+                                <h3 class="text-primary">{{ ph.project_name }} </h3>
                                 <p class="text-muted">{{ ph.project_description }}</p>
                                 <br>
                                 <div class="text-muted">
@@ -569,5 +564,6 @@
             </div>
         </section>
     </div>
+
     <script src="{% static 'static/js/script.js' %}"></script>
 {% endblock content %}

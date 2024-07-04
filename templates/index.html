@@ -51,22 +51,22 @@
                                             <th class="border-top-0">Loyiha nomi</th>
                                             <th class="border-top-0">Holati</th>
                                             <th class="border-top-0">Summasi</th>
-                                            <th class="border-top-0">Biriktirilgan hodim</th>
+                                            <th class="border-top-0">Loyiha kuratori</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                     {% for project in projects %}
-                                        <tr class="datas" data-url="{% url 'hodimlar:profile2' user.pk %}" style="cursor: pointer">
+                                        <tr class="datas" data-url="{% url 'get-project' project.pk %}" style="cursor: pointer">
                                             <td>{{ forloop.counter }}</td>
                                             <td class="txt-oflo">{{ project.project_name }}</td>
-                                            <td class="txt-oflo">{{ project.projject_status }}</td>
+                                            <td class="txt-oflo">{{ project.project_status }}</td>
                                             <td class="txt-oflo">{{ project.project_budget | format_number }}</td>
-                                            <td class="txt-oflo">{{ project.project_budget }}</td>
+                                            <td class="txt-oflo">{{ project.project_curator }}</td>
                                         </tr>
                                     {% endfor %}
                                     </tbody>
                                 </table>
-                            <a id="see-all-users" href="{% url 'hodimlar:users' %}" class="btn btn-primary w-100">Barchasini ko'rish</a>
+                            <a id="see-all-users" href="{% url 'my-projects' %}" class="btn btn-primary w-100">Barchasini ko'rish</a>
                             </div>
                         </div>
                     </div>
