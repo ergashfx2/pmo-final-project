@@ -110,11 +110,11 @@ def DetailMyProjects(request, pk):
     form = AddFileForm()
     form2 = AddPhaseForm()
     form3 = TaskFormSet()
-    project = Project.objects.filter(pk=pk)
+    project = Project.objects.get(pk=pk)
     datas = []
-    comments = Comments.objects.filter(project_id=project[0].id)
-    problems = Problems.objects.filter(project_id=project[0].id)
-    phases = Phase.objects.filter(project_id=project[0].id)
+    comments = Comments.objects.filter(project_id=project.id)
+    problems = Problems.objects.filter(project_id=project.id)
+    phases = Phase.objects.filter(project_id=project.id)
     for phase in phases:
         datas.append({
             'phase': phase.phase_name,
@@ -154,7 +154,7 @@ def DetailMyProjects(request, pk):
                 redirect('my-projects-detail', pk=pk)
         redirect('my-projects-detail', pk=pk)
 
-    documents = Documents.objects.filter(project=project[0].id).order_by('created_at')
+    documents = Documents.objects.filter(project=project.id).order_by('created_at')
     return render(request, 'my-projects-detail.html',
                   context={'project': project, 'datas': datas,'comments':comments,'problems':problems, 'documents': documents, 'form': form, 'form2': form2,
                            'form3': form3,'project_id':pk})
