@@ -218,6 +218,15 @@ def add_phase(request, pk):
     return redirect('my-projects-detail',pk)
 
 @login_required
+def add_tasks (request,pk):
+    if request.method == 'POST':
+        datas = json.loads(request.body)
+        for data in datas:
+            task = Task.objects.create(project_id=Phase.objects.get(pk=pk).project.pk,phase_id=pk,task_name=data[0]['task_name'],task_manager=data[1]['task_manager'],task_deadline=data[2]['task_deadline'])
+            return JsonResponse(status=200,data={'success':True,'task_id':task.pk})
+    return JsonResponse(status=500,data={'message':"Method must be POST"})
+
+@login_required
 def get_task(request, pk):
     task = serializers.serialize('json',Task.objects.filter(pk=pk))
     return JsonResponse(task, safe=False)
