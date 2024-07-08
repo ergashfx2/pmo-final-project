@@ -97,7 +97,7 @@ function initTaskManager() {
     let data = []
     let phase_id
     let table
-    let task_id
+    var task_id
     var original_row
     task_elements.forEach(task_element =>{
             task_element.addEventListener('click',function (){
@@ -146,11 +146,12 @@ task_tr.forEach(value => {
 
 }
 
+
 function click_tr_handler(event) {
-    console.log(event.target.parentNode)
     const value = event.currentTarget;
     const original_row = value.innerHTML;
-    value.innerHTML = `<td><input type="text" name="task_name" class="form-control" placeholder="Topshiriq nomi"/></td><td><input name="task_manager" type="text" class="form-control" placeholder="Ma'sul shaxs"/></td><td><input name="task_deadline" type="date" class="form-control" placeholder="Tugash sanasi"/></td><td><button class="btn btn-light save-buttons"><i class="fa-solid fa-floppy-disk"></i> Saqlash</button><i id="cancel-changes" class="fa-solid fa-xmark btn btn-light mx-2"></i></td>`;
+    let data2 = []
+    value.innerHTML = `<td><input type="text" name="task_name" class="form-control" placeholder="Topshiriq nomi"/></td><td><input name="task_manager" type="text" class="form-control" placeholder="Ma'sul shaxs"/></td><td><input name="task_deadline" type="date" class="form-control" placeholder="Tugash sanasi"/></td><td><button id="save-edit-buttons" class="btn btn-light save-edit-buttons"><i class="fa-solid fa-floppy-disk"></i> Saqlash</button><i id="cancel-changes" class="fa-solid fa-xmark btn btn-light mx-2"></i></td>`;
     value.removeEventListener('click', click_tr_handler);
     document.addEventListener('click', function cancel_changes_handler(event) {
         if (event.target && event.target.id === 'cancel-changes') {
@@ -158,6 +159,20 @@ function click_tr_handler(event) {
             value.addEventListener('click', click_tr_handler);
         }
     });
+    document.querySelectorAll('.save-edit-buttons').forEach(value=>{
+        value.addEventListener('click',function (){
+            value.parentNode.parentNode.childNodes.forEach(element=>{
+                console.log(element.firstChild)
+                let el_name = element.firstChild.name
+              let el_value = element.firstChild.value
+              data2.push({[el_name]:el_value})
+            })
+            console.log(task_id)
+                         sendPostRequest2(`update-task/${task_id}`,data2).then(res=>{
+                    console.log(res)
+                })
+        })
+    })
 }
 
 initTaskManager()
