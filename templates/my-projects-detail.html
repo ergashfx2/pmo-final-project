@@ -46,14 +46,14 @@
                                 <div class="card-body">
                                     {% for data in datas %}
                                         {% if data.phase_done_percentage == 0 %}
-                                            <div class="d-block border-bottom">
+                                            <div class="d-block border-bottom main-row">
                                                                                         <h4 type="button" data-toggle="modal"
-                                                data-target="#modal{{ data.phase_id }}"
+                                                data-target="#modal{{ data.phase_id }}" data-backdrop="static"
                                                 class="text-secondary d-inline phase_text">{{ data.phase }}</h4>
                                             </div>
                                             <div id="modal{{ data.phase_id }}" class="modal fade"
                                                  style="margin-left: 20%" role="dialog">
-                                                <div class="modal-dialog modal-xl modal-dialog-centered mx-2 mt-3">
+                                                <div class="modal-dialog modal-xl modal-dialog-scrollable  mx-2 mt-3">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
                                                             <h2 class="modal-title"><strong>{{ data.phase }}</strong> -
@@ -65,25 +65,25 @@
                                                         </div>
                                                         <div class="modal-body" style="height: 70vh">
                                                             <div class="row mb-2">
-                                                                <div class="col-2 mx-1 btn btn-default"><i
+                                                                <div phase_id="{{ data.phase_id }}" class="col-lg-2 col-md-3 col-sm-3 add-task mx-1 btn btn-default"><i
                                                                         class="fa-solid fa-plus"></i> Topshiriq yaratish
                                                                 </div>
-                                                                <div class="col-2 mx-1 btn btn-default"><i
+                                                                <div phase_id="{{ data.phase_id }}" id="add-file" class="col-lg-2 col-md-3 col-sm-3 mx-1 btn btn-default"><i
                                                                         class="fa-solid fa-paperclip"></i> Fayl
                                                                     biriktirish
                                                                 </div>
-                                                                <div class="col-2 mx-1 btn btn-default"><i
+                                                                <div  phase_id="{{ data.phase_id }}" id="delete-files" class="col-lg-2 col-md-3 col-sm-3 mx-1 btn btn-default"><i
                                                                         class="fa-solid fa-trash"></i> Fayllarni
                                                                     o'chirish
                                                                 </div>
-                                                                <div class="col-2 mx-1 btn btn-default"><i
+                                                                <div phase_id="{{ data.phase_id }}" id="download-all" class="col-lg-2 col-md-3 col-sm-3 mx-1 btn btn-default"><i
                                                                         class="fa-solid fa-download"></i> Barchasini
                                                                     yuklash
                                                                 </div>
                                                             </div>
-                                                            <div class="row mt-4">
-                                                                <h3>Bajariladigan ishlar ro'yxati</h3>
-                                                                <table class="table table-bordered">
+                                                         <p class="mt-4">Bajariladigan ishlar ro'yxati</p>
+                                                            <div class="row">
+                                                                <table id="{{ data.phase_id }}" class="table table-bordered m-0">
                                                                     <thead>
                                                                     <tr>
                                                                         <th scope="col" class="col-3">Topshiriq nomi
@@ -96,21 +96,21 @@
                                                                     </thead>
                                                                     <tbody>
                                                                     {% for task in data.tasks %}
-                                                                        <tr>
+                                                                        <tr class="task-tr" id={{ task.pk }}>
                                                                             <td style="cursor: pointer">{{ task.task_name }}</td>
                                                                             <td style="cursor: pointer">{{ task.task_manager }}</td>
-                                                                            <td style="cursor: pointer">{{ task.task_deadline | format_date }}</td>
+                                                                            <td style="cursor: pointer">{{ task.task_deadline | date:"d-m-Y" }}</td>
                                                                             <td style="cursor: pointer">{{ task.task_done_percentage }}%</td>
                                                                         </tr>
                                                                     {% endfor %}
                                                                     </tbody>
                                                                 </table>
                                                             </div>
-                                                            <div class="row mt-2">
-                                                                <h3>Fayllar</h3>
-                                                                <ul>
+                                                        <p class="mt-2 mb-2">Fayllar</p>
+                                                            <div class="row mt-2 mb-4">
+                                                                <ul class="list-group list-group-horizontal">
                                                                     {% for doc in documents %}
-                                                                        <li>
+                                                                        <li class="list-group-item">
                                                                             {% if doc.url %}
                                                                                 <a href="{{ doc.url }}"
                                                                                    class="btn-link text-secondary"><i
@@ -133,23 +133,13 @@
                                                                     {% endfor %}
                                                                 </ul>
                                                             </div>
-
+                                                        <h3>Bajarilgan ishlar</h3>
                                                             <div class="row mb-2">
-                                                                <div class="col-2 mx-1 btn btn-default"><i
-                                                                        class="fa-solid fa-plus"></i> Faza yaratish
+                                                                <div class="col-2 mx-1 btn btn-light">Izohlar
                                                                 </div>
-                                                                <div class="col-2 mx-1 btn btn-default"><i
-                                                                        class="fa-solid fa-paperclip"></i> Fayl
-                                                                    biriktirish
+                                                                <div class="col-2 mx-1 btn btn-light">Muammolar
                                                                 </div>
-                                                                <div class="col-2 mx-1 btn btn-default"><i
-                                                                        class="fa-solid fa-trash"></i> Fayllarni
-                                                                    o'chirish
-                                                                </div>
-                                                                <div class="col-2 mx-1 btn btn-default"><i
-                                                                        class="fa-solid fa-download"></i> Barchasini
-                                                                    yuklash
-                                                                </div>
+                                                                <div class="col-2 mx-1 btn btn-light">So'nggi harakatlar</div>
                                                             </div>
 
                                                         </div>

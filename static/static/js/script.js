@@ -92,53 +92,75 @@ function deleteFiles() {
 
 
 function initTaskManager() {
-    const addTaskBtn = document.getElementById('add-task');
-    const tasksContainer = document.getElementById('tasks-container');
-    let taskCount = 0;
-    const phaseData = {phase_name: '', phase_deadline: '', tasks: []};
+    let full_data = []
+    let task_elements = document.querySelectorAll('.add-task');
+    let data = []
+    let phase_id
+    let table
+    let task_id
+    var original_row
+    task_elements.forEach(task_element =>{
+            task_element.addEventListener('click',function (){
+        phase_id = task_element.getAttribute('phase_id')
+        table = document.getElementById(phase_id);
+        table.innerHTML = table.innerHTML + `<tr class="rows-with-inputs"><td><input type="text" name="task_name" class="form-control" placeholder="Topshiriq nomi"/></td><td><input name="task_manager" type="text" class="form-control" placeholder="Ma'sul shaxs"/></td><td><input name="task_deadline" type="date" class="form-control" placeholder="Tugash sanasi"/></td><td><button class="btn btn-light save-buttons"><i class="fa-solid fa-floppy-disk"></i> Saqlash</button><i class="fa-solid fa-trash-can remove-tr btn btn-danger mx-2"></i></td></tr>`
+    document.querySelectorAll('.save-buttons').forEach(value => {
+        value.addEventListener('click',function (){
+            data = []
+          value.parentNode.parentNode.childNodes.forEach(value =>{
+              let element = value.firstChild
+              let el_name = element.name
+              let el_value = element.value
+              data.push({[el_name]:el_value})
 
-    const createTaskHTML = (id) => `
-        <div class="task" id="task-${id}">
-            <label>Task Name:
-                <input type="text" name="tasks[${id}][name]" class="form-control mb-2">
-            </label><br>
-            <label>Deadline:
-                <input type="date" name="tasks[${id}][deadline]" class="form-control mb-2">
-            </label><br>
-            <label>Manager:
-                <input type="text" name="tasks[${id}][manager]" class="form-control mb-2">
-            </label>
-            <button type="button" class="remove-task" data-task-id="${id}">Remove</button>
-            <hr>
-        </div>
-    `;
+          })
+            full_data.push(data)
+            let res = sendPostRequest2(`add-task/${phase_id}`,full_data)
+            res.then(resp=>{
+                console.log(resp)
+                task_id = resp.task_id
+                            data = []
+            document.querySelectorAll('.rows-with-inputs').forEach(value=>{
+                value.remove()
+                full_data.forEach(value=>{
+                    let date = value[2].task_deadline.split('-').reverse().join('-')
+                    table.innerHTML = table.innerHTML + `<tr class="task-tr" id="${task_id}"><td>${value[0].task_name}</td><td>${value[1].task_manager}</td><td>${date}</td><td>0%</td></tr>`
+                })
+                full_data = []
+            })
+            })
 
-    const addTask = () => {
-        taskCount++;
-        tasksContainer.insertAdjacentHTML('beforeend', createTaskHTML(taskCount));
-        document.querySelector(`#task-${taskCount} .remove-task`).addEventListener('click', function () {
-            document.getElementById(`task-${this.dataset.taskId}`).remove();
-        });
-    };
+        })
+    });
+        document.querySelectorAll('.remove-tr').forEach(value => {
+            value.addEventListener('click',function (){
+                value.parentNode.parentNode.parentNode.removeChild()
+            })
+        })
+    });
+    })
+const task_tr = document.querySelectorAll('.task-tr');
+task_tr.forEach(value => {
+    value.addEventListener('click', click_tr_handler);
+});
 
-    const savePhaseData = () => {
-        phaseData.tasks = [];
-        document.querySelectorAll('.task').forEach(taskDiv => {
-            const taskName = taskDiv.querySelector('input[name*="[name]"]').value;
-            const taskDeadline = taskDiv.querySelector('input[name*="[deadline]"]').value;
-            const taskManager = taskDiv.querySelector('input[name*="[manager]"]').value;
-            phaseData.tasks.push({name: taskName, deadline: taskDeadline, manager: taskManager});
-        });
-        sendPostRequest(`${window.location.href}/add-phase/`, {data: phaseData});
-        location.reload()
-    };
-
-    addTaskBtn.addEventListener('click', addTask);
-    document.getElementById('phase-input').addEventListener('input', (e) => phaseData.phase_name = e.target.value);
-    document.getElementById('phase-deadline').addEventListener('input', (e) => phaseData.phase_deadline = e.target.value);
-    document.getElementById('save-all-data').addEventListener('click', savePhaseData);
 }
 
+function click_tr_handler(event) {
+    console.log(event.target.parentNode)
+    const value = event.currentTarget;
+    const original_row = value.innerHTML;
+    value.innerHTML = `<td><input type="text" name="task_name" class="form-control" placeholder="Topshiriq nomi"/></td><td><input name="task_manager" type="text" class="form-control" placeholder="Ma'sul shaxs"/></td><td><input name="task_deadline" type="date" class="form-control" placeholder="Tugash sanasi"/></td><td><button class="btn btn-light save-buttons"><i class="fa-solid fa-floppy-disk"></i> Saqlash</button><i id="cancel-changes" class="fa-solid fa-xmark btn btn-light mx-2"></i></td>`;
+    value.removeEventListener('click', click_tr_handler);
+    document.addEventListener('click', function cancel_changes_handler(event) {
+        if (event.target && event.target.id === 'cancel-changes') {
+            value.innerHTML = original_row;
+            value.addEventListener('click', click_tr_handler);
+        }
+    });
+}
+
+initTaskManager()
 
 function initPhaseActions() {
     let phaseId = null;
@@ -368,10 +390,34 @@ function sendPostRequest(url, data) {
         .then(response => {
             if (!response.ok) {
                 return response.json().then(err => Promise.reject(err));
+            }else {
+                return response.json()
             }
         })
         .catch(error => console.error('Error:', error));
 }
+
+function sendPostRequest2(url, data) {
+    return fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify(data)
+    }).then(res => {
+        if (!res.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return res.json();
+    }).then(response => {
+        return response;
+    }).catch(error => {
+        console.error('Error fetching data:', error);
+        throw error;
+    });
+}
+
 
 document.addEventListener('DOMContentLoaded', function () {
     const csrfToken = getCookie('csrftoken');
