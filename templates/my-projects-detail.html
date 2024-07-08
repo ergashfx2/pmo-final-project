@@ -97,10 +97,10 @@
                                                                     <tbody>
                                                                     {% for task in data.tasks %}
                                                                         <tr class="task-tr" id={{ task.pk }}>
-                                                                            <td style="cursor: pointer">{{ task.task_name }}</td>
-                                                                            <td style="cursor: pointer">{{ task.task_manager }}</td>
-                                                                            <td style="cursor: pointer">{{ task.task_deadline | date:"d-m-Y" }}</td>
-                                                                            <td style="cursor: pointer">{{ task.task_done_percentage }}%</td>
+                                                                            <td task_id="{{ task.pk }}" style="cursor: pointer">{{ task.task_name }}</td>
+                                                                            <td task_id="{{ task.pk }}" style="cursor: pointer">{{ task.task_manager }}</td>
+                                                                            <td task_id="{{ task.pk }}" style="cursor: pointer">{{ task.task_deadline | date:"d-m-Y" }}</td>
+                                                                            <td task_id="{{ task.pk }}" style="cursor: pointer">{{ task.task_done_percentage }}%</td>
                                                                         </tr>
                                                                     {% endfor %}
                                                                     </tbody>
