@@ -31,10 +31,6 @@
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
     <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-        <script>
-            var lists = JSON.parse('{{ labels | escapejs }}')
-            var token = '{{ csrf_token | escapejs }}';
-        </script>
         <div class="row" style="width: 100dvw">
             <div class="col-9">
                         <ul class="navbar-nav">
@@ -46,28 +42,6 @@
       </li>
         </ul>
             </div>
-{#        {% if user.is_authenticated %}#}
-{#                            <div class="col-3" style="border-radius: 30px;padding: 0.5%;box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;">#}
-{#                            <div class="text-end">#}
-{#                                                    <div class="image text-center">#}
-{##}
-{#                    {% if user.avatar.url %}#}
-{#                    <img style="max-height: 50px;max-width: 50px"  src="{{ user.avatar.url }}" class="img-circle elevation-2"#}
-{#                         alt="User Image">#}
-{#                    {% else %}#}
-{#                                            <img style="max-height: 30px;max-width: 30px" src="https://static.vecteezy.com/system/resources/previews/023/089/807/non_2x/simple-user-icon-the-icon-can-be-used-for-websites-print-templates-presentation-templates-illustrations-etc-free-vector.jpg" class="img-circle elevation-2"#}
-{#                         alt="User Image">#}
-{#                    {% endif %}#}
-{#  <h6 class="dropdown-toggle d-inline" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ user.get_full_name }}</h6>#}
-{##}
-{#  <div id="dropdown-menu" class="dropdown-menu" style="z-index: 1000" aria-labelledby="dropdownMenuButton">#}
-{#    <a class="dropdown-item text-dark" href="{% url 'hodimlar:profile' %}"><i class="fa-solid fa-user"></i>  Profile</a>#}
-{#    <a class="dropdown-item text-danger" href="{% url 'hodimlar:logout' %}"><i class="fa-solid fa-right-from-bracket"></i>  Chiqib ketish</a>#}
-{#  </div>#}
-{#                </div>#}
-{#                            </div>#}
-{#                </div>#}
-{#        {% endif %}#}
 
         </div>
     </nav>
