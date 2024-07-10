@@ -134,11 +134,10 @@ def DetailMyProjects(request, pk):
             doc_type = str(form.cleaned_data.get('document')).split('.')[-1]
             document.type = file_extensions[doc_type]
             document.project = project
-            print(doc_type)
             document.save()
             Action.objects.create(author_id=request.user.pk, project_id=project.pk,
                                   action=f"<strong>{form.cleaned_data.get('document')}</strong> nomli fayl qo'shdi")
-            return redirect('my-projects-detail', pk=project.pk)
+            return JsonResponse(status=200,data={'doc_type':document.type,'doc_id':document.id,'created_at':document.created_at})
         if form.is_valid() and form.cleaned_data.get('url'):
             document = form.save(commit=False)
             url = str(form.cleaned_data.get('url'))
@@ -229,6 +228,7 @@ def add_phase(request, pk):
 def add_tasks(request, pk):
     if request.method == 'POST':
         datas = json.loads(request.body)
+        print(datas)
         for data in datas:
             task = Task.objects.create(project_id=Phase.objects.get(pk=pk).project.pk, phase_id=pk,
                                        task_name=data[0]['task_name'], task_manager=data[1]['task_manager'],

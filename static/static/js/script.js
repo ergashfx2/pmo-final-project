@@ -15,10 +15,6 @@ function getCookie(name) {
 
 
 document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById('archive-btn').addEventListener('click', function () {
-        let p_id = document.getElementById('archive-btn').getAttribute('p_id')
-        downloadArchive(p_id)
-    })
     document.querySelectorAll('.p-files').forEach(value => {
         value.addEventListener('click', function () {
             downloadFile(value.id)
@@ -40,6 +36,18 @@ document.addEventListener("DOMContentLoaded", function () {
     initMultiSelect();
 });
 
+function download_all(){
+    document.querySelectorAll('.archive-btn').forEach(value => {
+        value.addEventListener('click',function (){
+            let p_id = window.location.href.split('/')
+            p_id = p_id[p_id.length - 1]
+            downloadArchive(p_id)
+        })
+    })
+}
+
+download_all()
+
 function redirecting() {
     document.querySelectorAll('.datas').forEach(value => {
         value.addEventListener('click', function () {
@@ -47,6 +55,57 @@ function redirecting() {
         })
     });
 }
+
+
+function preventRefresh() {
+    document.querySelectorAll('.add-file-forms').forEach(form => {
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(form);
+            let doc_name = formData.get('document').name;
+            let p_id = window.location.href.split('/').pop();
+
+            fetch(`${p_id}`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': form.csrfmiddlewaretoken.value
+                },
+                body: formData,
+            })
+            .then(res => res.json())
+            .then(res => {
+                let phase_id = form.id.split('-').pop().match(/\d+/)[0];
+                let docs = document.getElementById('files' + phase_id);
+                let newDoc = document.createElement('div');
+                newDoc.innerHTML = `
+                    <div id="${res.doc_id}" class="card-file p-files card grid-item-file mx-2" style="width: 10rem;">
+                        <i class="fa-solid fa-${res.doc_type}"></i>
+                        <img src="https://telegra.ph/file/ab7d76d0b10f3fa7dcbd7.jpg" class="card-img-top">
+                        <div class="card-body">
+                            <p class="card-text">${doc_name}</p>
+                            <small>${res.created_at}</small>
+                        </div>
+                    </div>
+                `;
+                docs.appendChild(newDoc);
+
+                newDoc.addEventListener('click', function () {
+                    downloadFile(newDoc.firstChild.id);
+                });
+
+                form.reset();
+                console.log(formData);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    });
+}
+
+
+preventRefresh()
 
 function initTabs() {
     const tabs = document.querySelectorAll('.nav-tabs a[data-toggle="tab"]');
@@ -119,6 +178,21 @@ function initTaskManager() {
 
     });
 }
+
+function document_listener() {
+    document.querySelectorAll('.add-file').forEach(value => {
+        value.addEventListener('click', function (index) {
+            let form = document.getElementById(`add-file-form${value.getAttribute('phase_id')}`)
+            let input = form.children.item(1).children.item(1)
+            input.click()
+            input.addEventListener('change',function (){
+                form.querySelector('div').children.item(0).click()
+            })
+        })
+    })
+}
+
+document_listener()
 
 function add_task_handler(event) {
     let task_element = event.target;
@@ -238,7 +312,7 @@ function click_tr_handler(event) {
     let task = fetch(`get-task/${task_id}`).then(res => {
         res.json().then(response => {
             task = JSON.parse(response)[0]['fields']
-            value.innerHTML = `<td><input type="text" name="task_name" class="form-control" value="${task.task_name}" placeholder="Topshiriq nomi"/></td><td><input name="task_manager" value="${task.task_manager}" type="text" class="form-control" placeholder="Ma'sul shaxs"/></td><td><input name="task_deadline" value="${task.task_deadline}" type="date" class="form-control" placeholder="Tugash sanasi"/></td><td>${generate_select(parseInt(task.task_done_percentage))}</td><td><button id="save-edit-buttons" class="btn btn-sm btn-light save-edit-buttons"><i class="fa-solid fa-floppy-disk"></i></button><i id="cancel-changes" class="fa-solid fa-xmark btn btn-sm btn-light mt-2"></i><i class="fa-solid fa-trash mt-2 btn btn-sm btn-light"></i></td>`;
+            value.innerHTML = `<td><input type="text" name="task_name" class="form-control" value="${task.task_name}" placeholder="Topshiriq nomi"/></td><td><input name="task_manager" value="${task.task_manager}" type="text" class="form-control" placeholder="Ma'sul shaxs"/></td><td><input name="task_deadline" value="${task.task_deadline}" type="date" class="form-control" placeholder="Tugash sanasi"/></td><td>${generate_select(parseInt(task.task_done_percentage))}</td><td task_id="${task_id}"><button id="save-edit-buttons" class="btn btn-sm btn-light save-edit-buttons"><i class="fa-solid fa-floppy-disk"></i></button><i id="cancel-changes" class="fa-solid fa-xmark btn btn-sm btn-light mt-2"></i><i class="fa-solid fa-trash mt-2 delete-task-btn btn btn-sm btn-light"></i></td>`;
             value.removeEventListener('click', click_tr_handler);
             document.addEventListener('click', function cancel_changes_handler(event) {
                 if (event.target && event.target.id === 'cancel-changes') {
@@ -246,6 +320,18 @@ function click_tr_handler(event) {
                     value.addEventListener('click', click_tr_handler);
                 }
             });
+            document.querySelectorAll('.delete-task-btn').forEach(value => {
+                value.addEventListener('click',function (){
+                    console.log(value.parentNode.parentNode)
+                    value.parentNode.innerHTML = `<i id="confirm-delete-task" class="fa-solid btn btn-sm btn-default fa-check"></i><i id="cancel-changes" class="fa-solid btn btn-sm btn-default fa-xmark"></i>`
+                    document.getElementById('confirm-delete-task').addEventListener('click',function (){
+                        fetch(`delete-task/${task_id}`).then(res=>{
+                            document.getElementById('cancel-changes').click()
+                            document.getElementById(task_id).remove()
+                        })
+                    })
+                })
+            })
             document.querySelectorAll('.save-edit-buttons').forEach(value => {
 
                 value.addEventListener('click', function () {
@@ -286,7 +372,6 @@ function initPhaseActions() {
         value.addEventListener('click', function () {
             let phaseId = value.classList[3];
             const el = document.getElementById(`phase${phaseId}`);
-            console.log(el)
             let element = el.textContent.trim();
             document.getElementById(`phase${phaseId}`).innerHTML = `<input type="text" value="${element}"/>`;
             document.getElementById(`icons-panel${phaseId}`).innerHTML = `<i id="icon-save" class="fa-solid fa-circle-check" style="color: green;cursor: pointer"></i>`;

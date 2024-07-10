@@ -18,9 +18,47 @@
   padding: 20px;
   text-align: center;
 }
+
+.grid-container-file {
+  display: grid;
+  grid-template-columns: auto auto auto auto auto auto;
+  padding: 10px;
+}
+
+@media screen and (max-width: 760px){
+    .grid-container-file {
+  display: grid;
+  grid-template-columns: auto auto;
+  padding: 10px;
+}
+}
+
+
+@media screen and (max-width: 576px){
+    .grid-container-file {
+  display: grid;
+  grid-template-columns: auto auto;
+  padding: 10px;
+}
+}
+
+
+@media screen and (max-width: 400px){
+    .grid-container-file {
+  display: grid;
+  grid-template-columns: auto;
+  padding: 10px;
+}
+}
+
 .nav-item {
     font-size: 110%;
     margin-top: 7%;
+}
+
+.card-file:hover {
+    opacity: 50%;
+    cursor: pointer;
 }
 
 .menu {
