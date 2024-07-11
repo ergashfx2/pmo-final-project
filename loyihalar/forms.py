@@ -1,10 +1,11 @@
 from django.contrib.admin.widgets import FilteredSelectMultiple
 from django.contrib.auth import get_user_model
 from django.forms import forms, ModelForm
+from django_summernote.widgets import SummernoteWidget, SummernoteInplaceWidget
 
 from hodimlar.models import Department, Blog
 from loyihalar.models import Project, status_choices, level_choices, size_choices, speed_choices, type_choices, \
-    PermittedProjects
+    PermittedProjects, Comments
 from .models import Documents, Phase, Task
 from django import forms
 
@@ -128,7 +129,7 @@ class AddFileForm(forms.ModelForm):
 
     class Meta:
         model = Documents
-        fields = ['document']
+        fields = ['document','phase']
         exclude = ['url']
 
 
@@ -143,6 +144,14 @@ class AddTaskForm(forms.ModelForm):
     class Meta:
         model = Task
         fields = ['task_name']
+
+
+class CommentForm(forms.ModelForm):
+    comment = forms.CharField(max_length=400,widget=SummernoteWidget())
+    class Meta:
+        model = Comments
+        fields = ['comment']
+        exclude = ['project','phase']
 
 
 class PermittedProjectsForm(forms.ModelForm):

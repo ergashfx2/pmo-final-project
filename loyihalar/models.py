@@ -113,6 +113,7 @@ class Task(models.Model):
 
 class Documents(models.Model):
     project = models.ForeignKey(Project, models.CASCADE)
+    phase = models.ForeignKey(Phase,on_delete=models.CASCADE)
     document = models.FileField(upload_to='', blank=True,max_length=500)
     url = models.CharField(max_length=200, blank=True)
     type = models.CharField(max_length=150, default='url')
@@ -128,6 +129,7 @@ class Problems(models.Model):
     author = models.ForeignKey(User, models.CASCADE)
     title = models.CharField(max_length=250)
     project = models.ForeignKey(Project, models.CASCADE)
+    phase = models.ForeignKey(Phase,models.CASCADE)
     problem = models.TextField()
     status = models.CharField(max_length=30, choices=status_problem_choices, default='Yangi')
     created_at = models.DateField(auto_now=True,editable=False)
@@ -138,6 +140,7 @@ class Comments(models.Model):
     id = models.UUIDField(primary_key=True,default=uuid.uuid4, editable=False)
     author = models.ForeignKey(User, models.CASCADE)
     project = models.ForeignKey(Project, models.CASCADE)
+    phase = models.ForeignKey(Phase,models.CASCADE)
     comment = models.TextField()
     created_at = models.DateField(auto_now=True,editable=False)
     update_at = models.DateField(auto_now=True)

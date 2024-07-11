@@ -2,6 +2,7 @@
 {% load static %}
 {% load filters %}
 {% block content %}
+
     <div class="container-fluid">
         <section class="content-header">
             <div class="container-fluid">
@@ -46,7 +47,7 @@
                                 <div class="card-body">
                                     {% for data in datas %}
                                         {% if data.phase_done_percentage == 0 %}
-                                            <div class="d-block border-bottom main-row">
+                                            <div class="d-block phases-text border-bottom main-row">
                                                 <h4 type="button" data-toggle="modal"
                                                     data-target="#modal{{ data.phase_id }}" data-backdrop="static"
                                                     class="text-secondary d-inline phase_text">{{ data.phase }}</h4>
@@ -83,7 +84,7 @@
                                                                 {% csrf_token %}
                                                                 {{ form.as_p }}
                                                                 <div class="card-footer">
-                                                                    <button type="submit" class="btn btn-info">Yuklash
+                                                                    <button type="button" class="btn btn-info">Yuklash
                                                                     </button>
                                                                 </div>
 
@@ -91,7 +92,7 @@
                                                             <form method="post" enctype="multipart/form-data"
                                                                   id="delete-file-form" style="display:none;">
                                                                 {% csrf_token %}
-                                                                {% for document in documents %}
+                                                                {% for document in data.documents %}
                                                                     <div class="row">
                                                                         <div class="col-1">
                                                                             <input class="del-files" type="checkbox"
@@ -115,8 +116,8 @@
                                                                 </div>
 
                                                             </form>
-                                                                <div phase_id="{{ data.phase_id }}" id="delete-files"
-                                                                     class="col-lg-2 col-md-3 col-sm-3 mx-1 btn btn-default">
+                                                                <div phase_id="{{ data.phase_id }}"
+                                                                     class="col-lg-2 col-md-3 col-sm-3 delete-files mx-1 btn btn-default">
                                                                     <i
                                                                             class="fa-solid fa-trash"></i> Fayllarni
                                                                     o'chirish
@@ -128,8 +129,8 @@
                                                                     yuklash
                                                                 </div>
                                                             </div>
-                                                            <p class="mt-4">Bajariladigan ishlar ro'yxati</p>
-                                                            <div class="row">
+                                                            <p style="margin-bottom: 0.5%;margin-top: 3%">Bajariladigan ishlar ro'yxati</p>
+                                                            <div  class="row" style="margin-top: 0">
                                                                 <table id="{{ data.phase_id }}"
                                                                        class="table table-bordered m-0">
                                                                     <thead>
@@ -159,10 +160,10 @@
                                                                     </tbody>
                                                                 </table>
                                                             </div>
-                                                            <p class="mt-2 mb-2">Fayllar</p>
+                                                            <p class="mt-4 mb-2">Fayllar</p>
                                                             <div class="row mt-2 mb-4">
                                                                 <ul class="grid-container-file" id="files{{ data.phase_id }}">
-                                                                    {% for doc in documents %}
+                                                                    {% for doc in data.documents %}
                                                                         {% if doc.url %}
                                                                             <div class="card grid-item-file mx-4"
                                                                                  style="width: 18rem;">
@@ -186,16 +187,34 @@
                                                                     {% endfor %}
                                                                 </ul>
                                                             </div>
-                                                            <h3>Bajarilgan ishlar</h3>
+                                                            <p>Bajarilgan ishlar</p>
                                                             <div class="row mb-2">
-                                                                <div class="col-2 mx-1 btn btn-light">Izohlar
-                                                                </div>
-                                                                <div class="col-2 mx-1 btn btn-light">Muammolar
-                                                                </div>
-                                                                <div class="col-2 mx-1 btn btn-light">So'nggi
-                                                                    harakatlar
+                                                                <div class="col-2 mx-1 btn btn-light active">Izohlar</div>
+                                                                <div class="col-2 mx-1 btn btn-light">Muammolar</div><div class="col-2 mx-1 btn btn-light">So'nggi harakatlar</div>
+                                                            </div>
+                                                        <div>
+                                                            <div class="row">
+                                                                <div class="col-0"> <span><img src="{{ user.avatar.url }}" width="35" height="35" style="border-radius: 40%"></span></div>
+                                                                <div class="col-8">
+                                                                    <input class="form-control comment-input" type="text" placeholder="Izoh yozish">
+                                                                    <div style="display: none">
+                                                                        <form method="post" phase_id="{{ data.phase_id }}" class="post-comment" enctype="multipart/form-data">
+                                                                            {% csrf_token %}
+                                                                          {{ comment_form  }}
+                                                                            <button type="submit" class="btn btn-md btn-secondary">Yozish</button>
+                                                                        </form>
+                                                                    </div>
                                                                 </div>
                                                             </div>
+                                                        </div>
+                                                        <div style="margin-top: 2%">
+                                                            {% for comment in comments %}
+                                                                <span class="d-block" style="margin: 0"><img src="{{ comment.author.avatar.url }}" height="35" width="35" style="border-radius: 40%"><strong class="ml-2">{{ comment.author.get_full_name }}</strong></span>
+                                                                <small style="margin: 0 0 5% 3%">{{ comment.created_at }}</small>
+                                                                <div style="margin-left: 3%">{{ comment.comment | safe }}</div>
+                                                                <div style="margin-left: 3%;margin-bottom: 2%"><small type="button" class="text-secondary mr-3">O'chirish</small> <small type="button" class="text-secondary">Tahrirlash</small></div>
+                                                            {% endfor %}
+                                                        </div>
 
                                                         </div>
                                                         <div class="modal-footer">
@@ -363,11 +382,11 @@
                                                             </div>
                                                             <h3>Bajarilgan ishlar</h3>
                                                             <div class="row mb-2">
-                                                                <div class="col-2 mx-1 btn btn-light">Izohlar
+                                                                <div class="col-2 mx-1 btn btn-default">Izohlar
                                                                 </div>
-                                                                <div class="col-2 mx-1 btn btn-light">Muammolar
+                                                                <div class="col-2 mx-1 btn btn-default">Muammolar
                                                                 </div>
-                                                                <div class="col-2 mx-1 btn btn-light">So'nggi
+                                                                <div class="col-2 mx-1 btn btn-default">So'nggi
                                                                     harakatlar
                                                                 </div>
                                                             </div>

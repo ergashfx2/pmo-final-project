@@ -12,7 +12,8 @@ from zipfile import ZipFile
 
 from actions.models import Action
 from config import settings
-from .forms import CreateProjectForm, EditProjectForm, AddFileForm, AddPhaseForm, AddTaskForm, PermittedProjectsForm
+from .forms import CreateProjectForm, EditProjectForm, AddFileForm, AddPhaseForm, AddTaskForm, PermittedProjectsForm, \
+    CommentForm
 from .formsets import TaskFormSet
 from .models import Project, Phase, Task, Documents, Comments, Problems, PermittedProjects
 from django.http import HttpResponse, JsonResponse, Http404
@@ -116,6 +117,7 @@ def DetailMyProjects(request, pk):
     form3 = TaskFormSet()
     project = Project.objects.get(pk=pk)
     datas = []
+    comment_form = CommentForm()
     comments = Comments.objects.filter(project_id=project.id)
     problems = Problems.objects.filter(project_id=project.id)
     phases = Phase.objects.filter(project_id=project.id)
@@ -125,6 +127,7 @@ def DetailMyProjects(request, pk):
             'phase_id': phase.pk,
             'phase_done_percentage': int(phase.phase_done_percentage),
             'tasks': Task.objects.filter(phase=phase.id),
+            'documents': Documents.objects.filter(phase=phase.id)
         })
     if request.method == 'POST':
         form = AddFileForm(data=request.POST, files=request.FILES)
@@ -137,7 +140,8 @@ def DetailMyProjects(request, pk):
             document.save()
             Action.objects.create(author_id=request.user.pk, project_id=project.pk,
                                   action=f"<strong>{form.cleaned_data.get('document')}</strong> nomli fayl qo'shdi")
-            return JsonResponse(status=200,data={'doc_type':document.type,'doc_id':document.id,'created_at':document.created_at})
+            return JsonResponse(status=200, data={'doc_type': document.type, 'doc_id': document.id,
+                                                  'created_at': document.created_at})
         if form.is_valid() and form.cleaned_data.get('url'):
             document = form.save(commit=False)
             url = str(form.cleaned_data.get('url'))
@@ -162,7 +166,7 @@ def DetailMyProjects(request, pk):
     return render(request, 'my-projects-detail.html',
                   context={'project': project, 'datas': datas, 'comments': comments, 'problems': problems,
                            'documents': documents, 'form': form, 'form2': form2,
-                           'form3': form3, 'project_id': pk})
+                           'form3': form3, 'project_id': pk, 'comment_form': comment_form})
 
 
 @login_required
@@ -221,7 +225,7 @@ def add_phase(request, pk):
     phase = Phase.objects.create(project=project, phase_name=data['phase_name'])
     Action.objects.create(author_id=request.user.pk, project_id=project.pk,
                           action=f"{project.project_name} nomli loyihaga {data['phase_name']} nomli faza qo'shdi")
-    return JsonResponse(status=200, data={'phase': phase.phase_name,'phase_id':phase.pk})
+    return JsonResponse(status=200, data={'phase': phase.phase_name, 'phase_id': phase.pk})
 
 
 @login_required
@@ -350,7 +354,7 @@ def owned_projects(request):
 
 @login_required
 def create_archive(request, pk):
-    documents = Documents.objects.filter(project_id=pk)
+    documents = Documents.objects.filter(phase_id=pk)
     docs = documents.values_list('document', flat=True)
     temp_dir = os.path.join(settings.MEDIA_ROOT, 'temp')
     os.makedirs(temp_dir, exist_ok=True)
@@ -370,14 +374,18 @@ def create_archive(request, pk):
 
 @login_required
 def post_comment(request, pk):
-    if request.method == 'POST':
-        comment = json.loads(request.body)['comment']
-        Comments.objects.create(project_id=pk, author=request.user, comment=comment)
-        project = Project.objects.get(pk=pk)
+    form = CommentForm(request.POST,files=request.FILES)
+    if request.method == 'POST' and form.is_valid():
+        comment = form.save(commit=False)
+        comment.project = Phase.objects.get(pk=pk).project
+        comment.author = request.user
+        comment.phase = Phase.objects.get(pk=pk)
+        form.save()
+        project = Phase.objects.get(pk=pk).project
         Action.objects.create(author_id=request.user.pk, project_id=project.pk,
                               action=f"{project.project_name} nomli loyihaga izoh yozdi.Izoh matni: <strong>{comment}</strong>")
-        return redirect('my-projects-detail', pk)
-    return redirect('my-projects-detail', pk)
+        return JsonResponse(status=200,data={'comment_id':comment.pk,'comment':comment.comment,'author_avatar':comment.author.avatar.url,'author_name':comment.author.get_full_name()})
+    return JsonResponse(status=404,data={'success':False})
 
 
 @login_required

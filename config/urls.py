@@ -5,6 +5,7 @@ from django.urls import path, include
 from .views import home, blockedPage
 
 urlpatterns = [
+    path('summernote/', include('django_summernote.urls')),
     path('admin/', admin.site.urls),
     path('users/', include('hodimlar.urls')),
     path('', home, name='home'),

@@ -36,12 +36,11 @@ document.addEventListener("DOMContentLoaded", function () {
     initMultiSelect();
 });
 
+
 function download_all(){
     document.querySelectorAll('.archive-btn').forEach(value => {
         value.addEventListener('click',function (){
-            let p_id = window.location.href.split('/')
-            p_id = p_id[p_id.length - 1]
-            downloadArchive(p_id)
+            downloadArchive(value.getAttribute('phase_id'))
         })
     })
 }
@@ -57,55 +56,7 @@ function redirecting() {
 }
 
 
-function preventRefresh() {
-    document.querySelectorAll('.add-file-forms').forEach(form => {
-        form.addEventListener('submit', function (e) {
-            e.preventDefault();
 
-            const formData = new FormData(form);
-            let doc_name = formData.get('document').name;
-            let p_id = window.location.href.split('/').pop();
-
-            fetch(`${p_id}`, {
-                method: 'POST',
-                headers: {
-                    'X-CSRFToken': form.csrfmiddlewaretoken.value
-                },
-                body: formData,
-            })
-            .then(res => res.json())
-            .then(res => {
-                let phase_id = form.id.split('-').pop().match(/\d+/)[0];
-                let docs = document.getElementById('files' + phase_id);
-                let newDoc = document.createElement('div');
-                newDoc.innerHTML = `
-                    <div id="${res.doc_id}" class="card-file p-files card grid-item-file mx-2" style="width: 10rem;">
-                        <i class="fa-solid fa-${res.doc_type}"></i>
-                        <img src="https://telegra.ph/file/ab7d76d0b10f3fa7dcbd7.jpg" class="card-img-top">
-                        <div class="card-body">
-                            <p class="card-text">${doc_name}</p>
-                            <small>${res.created_at}</small>
-                        </div>
-                    </div>
-                `;
-                docs.appendChild(newDoc);
-
-                newDoc.addEventListener('click', function () {
-                    downloadFile(newDoc.firstChild.id);
-                });
-
-                form.reset();
-                console.log(formData);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-        });
-    });
-}
-
-
-preventRefresh()
 
 function initTabs() {
     const tabs = document.querySelectorAll('.nav-tabs a[data-toggle="tab"]');
@@ -185,14 +136,56 @@ function document_listener() {
             let form = document.getElementById(`add-file-form${value.getAttribute('phase_id')}`)
             let input = form.children.item(1).children.item(1)
             input.click()
-            input.addEventListener('change',function (){
-                form.querySelector('div').children.item(0).click()
-            })
+            input.addEventListener('change',document_change_listener)
         })
     })
 }
 
+
 document_listener()
+function document_change_listener(event){
+    let form = event.target.parentNode.parentNode
+                form.querySelector('div').children.item(0).click()
+                            const formData = new FormData(form);
+            let doc_name = formData.get('document').name;
+            let p_id = window.location.href.split('/').pop();
+
+            fetch(`${p_id}`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': form.csrfmiddlewaretoken.value
+                },
+                body: formData,
+            })
+            .then(res => res.json())
+            .then(res => {
+                let phase_id = form.id.split('-').pop().match(/\d+/)[0];
+                let docs = document.getElementById('files' + phase_id);
+                let newDoc = document.createElement('div');
+                newDoc.innerHTML = `
+                    <div id="${res.doc_id}" class="card-file p-files card grid-item-file mx-2" style="width: 10rem;">
+                        <i class="fa-solid fa-${res.doc_type}"></i>
+                        <img src="https://telegra.ph/file/ab7d76d0b10f3fa7dcbd7.jpg" class="card-img-top">
+                        <div class="card-body">
+                            <p class="card-text">${doc_name}</p>
+                            <small>${res.created_at}</small>
+                        </div>
+                    </div>
+                `;
+                docs.appendChild(newDoc);
+
+                newDoc.addEventListener('click', function () {
+                    downloadFile(newDoc.firstChild.id);
+                });
+
+                form.reset();
+                console.log(formData);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+
+}
 
 function add_task_handler(event) {
     let task_element = event.target;
@@ -250,13 +243,6 @@ function add_task_handler(event) {
 }
 
 
-function add_event_listeners(){
-    document.querySelectorAll("tr").forEach(value => {
-        if (value.classList.contains('task_tr')){
-            value.addEventListener("click", click_tr_handler)
-        }
-    })
-}
 
 function phase_adder() {
     let parent = document.getElementById('add-phase-btn').parentNode;
@@ -356,6 +342,16 @@ function click_tr_handler(event) {
 
 initTaskManager()
 
+function delete_files(){
+    document.querySelectorAll('.delete-files').forEach(value => {
+        value.addEventListener('click',function (){
+            console.log(document.body.classList)
+        })
+    })
+}
+
+delete_files()
+
 function initPhaseActions() {
     let phaseId = null;
     document.querySelectorAll('.trash-icon').forEach(icon => {
@@ -420,10 +416,53 @@ function problemsManager() {
     })
 }
 
+function commentInputManager(event){
+    let comment = event.target
+        let parent = comment.parentNode
+        parent.firstChild.remove()
+        parent.children.item(0).style.display = 'none'
+        parent.children.item(1).style.display = 'block'
+
+    }
+
 function commentsManager() {
+    let comment_inputs = document.querySelectorAll('.comment-input');
     let delete_comments = document.querySelectorAll('.delete-comment');
     let edit_comments = document.querySelectorAll('.edit-comment ');
     var comment
+    var parent
+    comment_inputs.forEach(comment=>{
+        comment.addEventListener('click',commentInputManager)
+                comment.addEventListener('click',function (){
+            parent = comment.parentNode
+        })
+    })
+                document.querySelectorAll('.post-comment').forEach(form => {
+                form.addEventListener('submit',function (e){
+                    e.preventDefault()
+                    let formData = new FormData(form)
+                    let phase = e.target.getAttribute('phase_id')
+                    let url = `post-comment/${phase}`
+                    console.log(url)
+            fetch(`${url}`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': form.csrfmiddlewaretoken.value
+                },
+                body: formData,
+            })
+            .then(res => res.json().then(res=>{
+                console.log(res)
+                let span = document.createElement('span')
+                span.innerHTML = `<img src=${res.author_avatar} height="35" width="35" style="border-radius: 40%" alt=""><strong class="ml-2">${res.author_name}</strong>${res.comment}`
+                let comments_list = form.parentNode.parentNode.parentNode.parentNode.parentNode.children.item(8)
+                comments_list.appendChild(span)
+                            parent.children.item(0).style.display = 'block'
+            parent.children.item(1).style.display  = 'none'
+                parent.addEventListener('click')
+            }))
+                })
+    })
     edit_comments.forEach(value => {
         value.addEventListener('click', function () {
             comment = document.getElementById(value.classList[4]);
@@ -452,6 +491,18 @@ function commentsManager() {
     })
 }
 
+
+function phasesManager(){
+    document.querySelectorAll('.phases-text').forEach(value => {
+        value.addEventListener('click',function (){
+            let phase_id = value.children.item(0).getAttribute('data-target').slice(6)
+            let modal = document.getElementById(`modal${phase_id}`)
+            modal.querySelector('.add-file-forms').children.item(2).children.item(1).value = phase_id
+        })
+    })
+}
+
+phasesManager()
 
 function initTaskEdit() {
     const taskName = document.getElementById('task-edit-task-name');
@@ -799,6 +850,7 @@ document.getElementById('add-expense').addEventListener('submit', function (e) {
         })
     }
 })
+
 
 function downloadArchive(pk) {
     $.ajax({
