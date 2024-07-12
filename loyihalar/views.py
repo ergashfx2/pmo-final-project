@@ -18,45 +18,10 @@ from .formsets import TaskFormSet
 from .models import Project, Phase, Task, Documents, Comments, Problems, PermittedProjects
 from django.http import HttpResponse, JsonResponse, Http404
 from django.core import serializers
-
+from utils import getComments,getProblems,file_extensions
 import shutil
 
-file_extensions = {
-    'ai': 'adobe',
-    'avi': 'film',
-    'bmp': 'file-image',
-    'css': 'css3',
-    'csv': 'file-csv',
-    'doc': 'file-word',
-    'docx': 'file-word',
-    'eps': 'file-image',
-    'exe': 'file-code',
-    'flv': 'film',
-    'gif': 'file-image',
-    'html': 'html5',
-    'ico': 'file-image',
-    'iso': 'file-archive',
-    'jpg': 'file-image',
-    'jpeg': 'file-image',
-    'js': 'js',
-    'mp3': 'file-audio',
-    'mp4': 'film',
-    'pdf': 'file-pdf',
-    'png': 'file-image',
-    'ppt': 'powerpoint',
-    'pptx': 'powerpoint',
-    'psd': 'adobe',
-    'rar': 'file-archive',
-    'svg': 'file-image',
-    'tif': 'file-image',
-    'tiff': 'file-image',
-    'txt': 'file-alt',
-    'wav': 'file-audio',
-    'xls': 'file-excel',
-    'xlsx': 'file-excel',
-    'xml': 'code',
-    'zip': 'file-archive'
-}
+
 
 
 @login_required
@@ -121,13 +86,18 @@ def DetailMyProjects(request, pk):
     comments = Comments.objects.filter(project_id=project.id)
     problems = Problems.objects.filter(project_id=project.id)
     phases = Phase.objects.filter(project_id=project.id)
+    print(comments)
     for phase in phases:
+        comments = getComments(phase)
+        problems = getProblems(phase)
         datas.append({
             'phase': phase.phase_name,
             'phase_id': phase.pk,
             'phase_done_percentage': int(phase.phase_done_percentage),
             'tasks': Task.objects.filter(phase=phase.id),
-            'documents': Documents.objects.filter(phase=phase.id)
+            'documents': Documents.objects.filter(phase=phase.id),
+            'comments':Comments.objects.filter(phase=phase),
+            'problems':Problems.objects.filter(phase=phase)
         })
     if request.method == 'POST':
         form = AddFileForm(data=request.POST, files=request.FILES)
@@ -384,7 +354,7 @@ def post_comment(request, pk):
         project = Phase.objects.get(pk=pk).project
         Action.objects.create(author_id=request.user.pk, project_id=project.pk,
                               action=f"{project.project_name} nomli loyihaga izoh yozdi.Izoh matni: <strong>{comment}</strong>")
-        return JsonResponse(status=200,data={'comment_id':comment.pk,'comment':comment.comment,'author_avatar':comment.author.avatar.url,'author_name':comment.author.get_full_name()})
+        return JsonResponse(status=200,data={'comment_id':comment.pk,'comment':comment.comment,'comment_date':comment.created_at,'author_avatar':comment.author.avatar.url,'author_name':comment.author.get_full_name()})
     return JsonResponse(status=404,data={'success':False})
 
 

@@ -3,6 +3,7 @@ import uuid
 from django import template
 from datetime import datetime
 from django.utils.translation import gettext as _
+from datetime import datetime
 
 register = template.Library()
 
@@ -89,3 +90,38 @@ def uzbek_format(value):
         time = value.strftime("%H:%M")
         return f"{day} - {month}, {year}, {time}"
     return value
+
+
+@register.filter
+def format_date_and_time_difference(date_string):
+    input_date = datetime.strptime(str(date_string), "%Y-%m-%d %H:%M:%S.%f")
+    now = datetime.now()
+
+    year = input_date.year
+    month = str(input_date.month).zfill(2)
+    day = str(input_date.day).zfill(2)
+
+    diff = now - input_date
+    diff_seconds = int(diff.total_seconds())
+    diff_minutes = diff_seconds // 60
+    diff_hours = diff_minutes // 60
+    diff_days = diff_hours // 24
+    diff_weeks = diff_days // 7
+    diff_months = diff_days // 30
+    diff_years = diff_days // 365
+
+    if diff_years > 0:
+        time_ago = f"{diff_years} yil{'' if diff_years == 1 else ''} oldin"
+    elif diff_months > 0:
+        time_ago = f"{diff_months} oy{'' if diff_months == 1 else ''} oldin"
+    elif diff_weeks > 0:
+        time_ago = f"{diff_weeks} hafta{'' if diff_weeks == 1 else ''} oldin"
+    elif diff_days > 0:
+        time_ago = f"{diff_days} kun{'' if diff_days == 1 else ''} oldin"
+    elif diff_hours > 0:
+        time_ago = f"{diff_hours} soat{'' if diff_hours == 1 else ''} oldin"
+    else:
+        time_ago = f"{diff_minutes} daqiqa{'' if diff_minutes == 1 else ''} oldin"
+
+    formatted_date = f"{year}-{month}-{day}T{input_date.strftime('%H:%M:%S')}"
+    return time_ago

@@ -5,11 +5,12 @@ from django_summernote.widgets import SummernoteWidget, SummernoteInplaceWidget
 
 from hodimlar.models import Department, Blog
 from loyihalar.models import Project, status_choices, level_choices, size_choices, speed_choices, type_choices, \
-    PermittedProjects, Comments
+    PermittedProjects, Comments, Problems
 from .models import Documents, Phase, Task
 from django import forms
 
 User = get_user_model()
+
 
 class CreateProjectForm(ModelForm):
     class Meta:
@@ -36,7 +37,8 @@ class CreateProjectForm(ModelForm):
         }
         widgets = {
             'project_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'author': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'id': 'project_author', 'size': '15'}),
+            'author': forms.CheckboxSelectMultiple(
+                attrs={'class': 'form-control', 'id': 'project_author', 'size': '15'}),
             'project_size': forms.Select(attrs={'class': 'form-control'}, choices=size_choices),
             'project_level': forms.Select(attrs={'class': 'form-control'}, choices=level_choices),
             'project_speed': forms.Select(attrs={'class': 'form-control'}, choices=speed_choices),
@@ -129,7 +131,7 @@ class AddFileForm(forms.ModelForm):
 
     class Meta:
         model = Documents
-        fields = ['document','phase']
+        fields = ['document', 'phase']
         exclude = ['url']
 
 
@@ -147,11 +149,38 @@ class AddTaskForm(forms.ModelForm):
 
 
 class CommentForm(forms.ModelForm):
-    comment = forms.CharField(max_length=400,widget=SummernoteWidget())
+    comment = forms.CharField(max_length=400, widget=SummernoteWidget())
+
     class Meta:
         model = Comments
         fields = ['comment']
-        exclude = ['project','phase']
+        exclude = ['project', 'phase']
+
+
+class CommentEditForm(forms.ModelForm):
+    class Meta:
+        model = Comments
+        fields = ['comment']
+        exclude = ['project', 'phase']
+        widgets = {'comment': SummernoteWidget()}
+
+
+class ProblemForm(forms.ModelForm):
+    problem = forms.CharField(max_length=400, widget=SummernoteWidget())
+
+    class Meta:
+        model = Problems
+        fields = ['problem']
+        exclude = ['project', 'phase']
+
+
+class ProlemEditForm(forms.ModelForm):
+    comment = forms.CharField(max_length=400, widget=SummernoteWidget())
+
+    class Meta:
+        model = Problems
+        fields = ['problem']
+        exclude = ['project', 'phase']
 
 
 class PermittedProjectsForm(forms.ModelForm):

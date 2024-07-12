@@ -78,44 +78,46 @@
                                                                             class="fa-solid fa-paperclip"></i> Fayl
                                                                     biriktirish
                                                                 </div>
-                                                                                                                            <form method="post" class="add-file-forms" enctype="multipart/form-data"
-                                                                  id="add-file-form{{ data.phase_id }}"
-                                                                  style="display: none;margin-top: 5%">
-                                                                {% csrf_token %}
-                                                                {{ form.as_p }}
-                                                                <div class="card-footer">
-                                                                    <button type="button" class="btn btn-info">Yuklash
-                                                                    </button>
-                                                                </div>
-
-                                                            </form>
-                                                            <form method="post" enctype="multipart/form-data"
-                                                                  id="delete-file-form" style="display:none;">
-                                                                {% csrf_token %}
-                                                                {% for document in data.documents %}
-                                                                    <div class="row">
-                                                                        <div class="col-1">
-                                                                            <input class="del-files" type="checkbox"
-                                                                                   id="{{ document.pk }}">
-                                                                        </div>
-                                                                        <div class="col">
-                                                                            {{ document.document }}
-
-                                                                        </div>
+                                                                <form method="post" class="add-file-forms"
+                                                                      enctype="multipart/form-data"
+                                                                      id="add-file-form{{ data.phase_id }}"
+                                                                      style="display: none;margin-top: 5%">
+                                                                    {% csrf_token %}
+                                                                    {{ form.as_p }}
+                                                                    <div class="card-footer">
+                                                                        <button type="button" class="btn btn-info">
+                                                                            Yuklash
+                                                                        </button>
                                                                     </div>
-                                                                {% endfor %}
-                                                                <div class="card-footer">
-                                                                    <button id="del-confirm" type="button"
-                                                                            class="btn btn-danger">
-                                                                        O'chirish
-                                                                    </button>
-                                                                    <button class="btn btn-primary"
-                                                                            data-dismiss="modal">Bekor
-                                                                        qilish
-                                                                    </button>
-                                                                </div>
 
-                                                            </form>
+                                                                </form>
+                                                                <form method="post" enctype="multipart/form-data"
+                                                                      id="delete-file-form" style="display:none;">
+                                                                    {% csrf_token %}
+                                                                    {% for document in data.documents %}
+                                                                        <div class="row">
+                                                                            <div class="col-1">
+                                                                                <input class="del-files" type="checkbox"
+                                                                                       id="{{ document.pk }}">
+                                                                            </div>
+                                                                            <div class="col">
+                                                                                {{ document.document }}
+
+                                                                            </div>
+                                                                        </div>
+                                                                    {% endfor %}
+                                                                    <div class="card-footer">
+                                                                        <button id="del-confirm" type="button"
+                                                                                class="btn btn-danger">
+                                                                            O'chirish
+                                                                        </button>
+                                                                        <button class="btn btn-primary"
+                                                                                data-dismiss="modal">Bekor
+                                                                            qilish
+                                                                        </button>
+                                                                    </div>
+
+                                                                </form>
                                                                 <div phase_id="{{ data.phase_id }}"
                                                                      class="col-lg-2 col-md-3 col-sm-3 delete-files mx-1 btn btn-default">
                                                                     <i
@@ -129,8 +131,9 @@
                                                                     yuklash
                                                                 </div>
                                                             </div>
-                                                            <p style="margin-bottom: 0.5%;margin-top: 3%">Bajariladigan ishlar ro'yxati</p>
-                                                            <div  class="row" style="margin-top: 0">
+                                                            <p style="margin-bottom: 0.5%;margin-top: 3%">Bajariladigan
+                                                                ishlar ro'yxati</p>
+                                                            <div class="row" style="margin-top: 0">
                                                                 <table id="{{ data.phase_id }}"
                                                                        class="table table-bordered m-0">
                                                                     <thead>
@@ -162,7 +165,8 @@
                                                             </div>
                                                             <p class="mt-4 mb-2">Fayllar</p>
                                                             <div class="row mt-2 mb-4">
-                                                                <ul class="grid-container-file" id="files{{ data.phase_id }}">
+                                                                <ul class="grid-container-file"
+                                                                    id="files{{ data.phase_id }}">
                                                                     {% for doc in data.documents %}
                                                                         {% if doc.url %}
                                                                             <div class="card grid-item-file mx-4"
@@ -170,11 +174,13 @@
                                                                                 <img src="https://static.vecteezy.com/system/resources/previews/015/778/965/original/url-link-icon-hyperlink-chain-website-icon-isolated-on-white-background-free-vector.jpg"
                                                                                      class="card-img-top">
                                                                                 <div class="card-body">
-                                                                                    <p class="card-text">{{ doc.document }}.</p>
+                                                                                    <p class="text-sm">{{ doc.document }}.</p>
                                                                                 </div>
                                                                             </div>
                                                                         {% else %}
-                                                                            <div id="{{ doc.pk }}" class="card-file p-files card grid-item-file mx-2" style="width: 10rem;">
+                                                                            <div id="{{ doc.pk }}"
+                                                                                 class="card-file p-files card grid-item-file mx-2"
+                                                                                 style="width: 10rem;">
                                                                                 <i class="fa-solid fa-{{ doc.type }}"></i>
                                                                                 <img src=" https://telegra.ph/file/ab7d76d0b10f3fa7dcbd7.jpg"
                                                                                      class="card-img-top">
@@ -189,32 +195,79 @@
                                                             </div>
                                                             <p>Bajarilgan ishlar</p>
                                                             <div class="row mb-2">
-                                                                <div class="col-2 mx-1 btn btn-light active">Izohlar</div>
-                                                                <div class="col-2 mx-1 btn btn-light">Muammolar</div><div class="col-2 mx-1 btn btn-light">So'nggi harakatlar</div>
+                                                                <div class="col-2 mx-1 btn btn-light active">Izohlar
+                                                                </div>
+                                                                <div class="col-2 mx-1 btn btn-light">Muammolar</div>
+                                                                <div class="col-2 mx-1 btn btn-light">So'nggi
+                                                                    harakatlar
+                                                                </div>
                                                             </div>
-                                                        <div>
-                                                            <div class="row">
-                                                                <div class="col-0"> <span><img src="{{ user.avatar.url }}" width="35" height="35" style="border-radius: 40%"></span></div>
-                                                                <div class="col-8">
-                                                                    <input class="form-control comment-input" type="text" placeholder="Izoh yozish">
-                                                                    <div style="display: none">
-                                                                        <form method="post" phase_id="{{ data.phase_id }}" class="post-comment" enctype="multipart/form-data">
-                                                                            {% csrf_token %}
-                                                                          {{ comment_form  }}
-                                                                            <button type="submit" class="btn btn-md btn-secondary">Yozish</button>
-                                                                        </form>
+                                                            <div>
+                                                                <div class="row" style="margin-top: 2%">
+                                                                    <div class="col-0"><span><img
+                                                                            src="{{ user.avatar.url }}" width="35"
+                                                                            height="35"
+                                                                            style="border-radius: 40%"></span></div>
+                                                                    <div class="col-8">
+                                                                        <input class="form-control comment-input"
+                                                                               type="text" placeholder="Izoh yozish">
+                                                                        <div style="display: none">
+                                                                            <form method="post"
+                                                                                  phase_id="{{ data.phase_id }}"
+                                                                                  class="post-comment"
+                                                                                  enctype="multipart/form-data">
+                                                                                {% csrf_token %}
+                                                                                {{ comment_form }}
+                                                                                <button type="submit"
+                                                                                        class="btn btn-md btn-secondary">
+                                                                                    Yozish
+                                                                                </button>
+                                                                            </form>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                        <div style="margin-top: 2%">
-                                                            {% for comment in comments %}
-                                                                <span class="d-block" style="margin: 0"><img src="{{ comment.author.avatar.url }}" height="35" width="35" style="border-radius: 40%"><strong class="ml-2">{{ comment.author.get_full_name }}</strong></span>
-                                                                <small style="margin: 0 0 5% 3%">{{ comment.created_at }}</small>
-                                                                <div style="margin-left: 3%">{{ comment.comment | safe }}</div>
-                                                                <div style="margin-left: 3%;margin-bottom: 2%"><small type="button" class="text-secondary mr-3">O'chirish</small> <small type="button" class="text-secondary">Tahrirlash</small></div>
-                                                            {% endfor %}
-                                                        </div>
+                                                                {% for comment in data.comments %}
+                                                                    <div class="row">
+                                                                    <div class="col-0 mt-4">
+                                                                        <img src="{{ comment.author.avatar.url }}"
+                                                                                   height="35" width="35"
+                                                                                   style="border-radius: 40%">
+                                                                    </div>
+                                                                    <div class="col-11">
+                                                                        <div style="margin-top: 2%; display: flex; flex-direction: column;">
+                                                                            <span class="d-block"
+                                                                                  style="margin: 0;padding: 0"><b
+                                                                                    style="margin: 0;padding: 0">{{ comment.author }}</b><div class="d-inline mx-2"></div><p class="text-secondary text-sm d-inline">{{ comment.created_at | format_date_and_time_difference }}</p></span>
+                                                                            <small style="margin: 0;padding:0">{{ comment.created_at | date:'d-m-Y' }}</small>
+                                                                            <div style="margin-top: 1%">{{ comment.comment | safe }}</div>
+                                                                            <div><small type="button"
+                                                                                        class="text-secondary mr-3">O'chirish</small>
+                                                                                <small type="button"
+                                                                                       class="text-secondary">Tahrirlash</small>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                    </div>
+                                                                {% endfor %}
+                                                            <div style="margin-top: 2%">
+                                                                {% for comment in data.problems %}
+                                                                    <span class="d-block" style="margin: 0"><img
+                                                                            src="{{ comment.author.avatar.url }}"
+                                                                            height="35" width="35"
+                                                                            style="border-radius: 40%"><strong
+                                                                            class="ml-2">{{ comment.author.get_full_name }}</strong></span>
+                                                                    <small style="margin: 0 0 5% 3%">{{ comment.created_at | date:'d-m-Y' }}</small>
+                                                                    <div style="margin-left: 3%">{{ comment.comment | safe }}</div>
+                                                                    <div style="margin-left: 3%;margin-bottom: 2%">
+                                                                        <small type="button"
+                                                                               class="text-secondary mr-3">O'chirish</small>
+                                                                        <small type="button" class="text-secondary">Tahrirlash</small>
+                                                                    </div>
+                                                                {% endfor %}
+                                                            </div>
+
 
                                                         </div>
                                                         <div class="modal-footer">
@@ -233,14 +286,14 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-4 col-md-12 col-sm-12 mt-3">
+                                            <div class="col-lg-4 col-md-12 col-sm-12 mt-3">
                             <div class="card">
                                 <div class="card-header bg-light h5 p-3"><span
                                         class="text-secondary text-primary p-1 bg-warning">Jarayonda</span></div>
                                 <div class="card-body">
                                     {% for data in datas %}
-                                        {% if data.phase_done_percentage > 0 and data.phase_done_percentage != 100 %}
-                                            <div class="d-block border-bottom main-row">
+                                        {% if data.phase_done_percentage > 0 and data.phase_done_percentage < 100 %}
+                                            <div class="d-block phases-text border-bottom main-row">
                                                 <h4 type="button" data-toggle="modal"
                                                     data-target="#modal{{ data.phase_id }}" data-backdrop="static"
                                                     class="text-secondary d-inline phase_text">{{ data.phase }}</h4>
@@ -266,64 +319,67 @@
                                                                     yaratish
                                                                 </div>
                                                                 <div phase_id="{{ data.phase_id }}"
-                                                                     class="col-lg-2 add-file col-md-3 col-sm-3 mx-1 btn btn-default">
+                                                                     class="col-lg-2 col-md-3 add-file col-sm-3 mx-1 btn btn-default">
                                                                     <i
                                                                             class="fa-solid fa-paperclip"></i> Fayl
                                                                     biriktirish
                                                                 </div>
-                                                                <div phase_id="{{ data.phase_id }}" id="delete-files"
-                                                                     class="col-lg-2 col-md-3 col-sm-3 mx-1 btn btn-default">
+                                                                <form method="post" class="add-file-forms"
+                                                                      enctype="multipart/form-data"
+                                                                      id="add-file-form{{ data.phase_id }}"
+                                                                      style="display: none;margin-top: 5%">
+                                                                    {% csrf_token %}
+                                                                    {{ form.as_p }}
+                                                                    <div class="card-footer">
+                                                                        <button type="button" class="btn btn-info">
+                                                                            Yuklash
+                                                                        </button>
+                                                                    </div>
+
+                                                                </form>
+                                                                <form method="post" enctype="multipart/form-data"
+                                                                      id="delete-file-form" style="display:none;">
+                                                                    {% csrf_token %}
+                                                                    {% for document in data.documents %}
+                                                                        <div class="row">
+                                                                            <div class="col-1">
+                                                                                <input class="del-files" type="checkbox"
+                                                                                       id="{{ document.pk }}">
+                                                                            </div>
+                                                                            <div class="col">
+                                                                                {{ document.document }}
+
+                                                                            </div>
+                                                                        </div>
+                                                                    {% endfor %}
+                                                                    <div class="card-footer">
+                                                                        <button id="del-confirm" type="button"
+                                                                                class="btn btn-danger">
+                                                                            O'chirish
+                                                                        </button>
+                                                                        <button class="btn btn-primary"
+                                                                                data-dismiss="modal">Bekor
+                                                                            qilish
+                                                                        </button>
+                                                                    </div>
+
+                                                                </form>
+                                                                <div phase_id="{{ data.phase_id }}"
+                                                                     class="col-lg-2 col-md-3 col-sm-3 delete-files mx-1 btn btn-default">
                                                                     <i
                                                                             class="fa-solid fa-trash"></i> Fayllarni
                                                                     o'chirish
                                                                 </div>
-                                                                <div phase_id="{{ data.phase_id }}" id="download-all"
-                                                                     class="col-lg-2 col-md-3 col-sm-3 mx-1 btn btn-default">
+                                                                <div phase_id="{{ data.phase_id }}"
+                                                                     class=" archive-btn col-lg-2 col-md-3 col-sm-3 mx-1 btn btn-default">
                                                                     <i
                                                                             class="fa-solid fa-download"></i> Barchasini
                                                                     yuklash
                                                                 </div>
                                                             </div>
-                                                            <form method="post" enctype="multipart/form-data"
-                                                                  id="add-file-form{{ data.phase_id }}"
-                                                                  style="display: none;margin-top: 5%">
-                                                                {% csrf_token %}
-                                                                {{ form.as_p }}
-                                                                <div class="card-footer">
-                                                                    <button type="submit" class="btn btn-info">Yuklash
-                                                                    </button>
-                                                                </div>
-
-                                                            </form>
-                                                            <form method="post" enctype="multipart/form-data"
-                                                                  id="delete-file-form" style="display:none;">
-                                                                {% csrf_token %}
-                                                                {% for document in documents %}
-                                                                    <div class="row">
-                                                                        <div class="col-1">
-                                                                            <input class="del-files" type="checkbox"
-                                                                                   id="{{ document.pk }}">
-                                                                        </div>
-                                                                        <div class="col">
-                                                                            {{ document.document }}
-
-                                                                        </div>
-                                                                    </div>
-                                                                {% endfor %}
-                                                                <div class="card-footer">
-                                                                    <button id="del-confirm" type="button"
-                                                                            class="btn btn-danger">
-                                                                        O'chirish
-                                                                    </button>
-                                                                    <button class="btn btn-primary"
-                                                                            data-dismiss="modal">Bekor
-                                                                        qilish
-                                                                    </button>
-                                                                </div>
-
-                                                            </form>
-                                                            <p class="mt-4">Bajariladigan ishlar ro'yxati</p>
-                                                            <div class="row">
+                                                            <p style="margin-bottom: 0.5%;margin-top: 3%">Bajariladigan
+                                                                ishlar ro'yxati</p>
+                                                            <div class="row" style="margin-top: 0">
                                                                 <table id="{{ data.phase_id }}"
                                                                        class="table table-bordered m-0">
                                                                     <thead>
@@ -353,218 +409,113 @@
                                                                     </tbody>
                                                                 </table>
                                                             </div>
-                                                            <p class="mt-2 mb-2">Fayllar</p>
+                                                            <p class="mt-4 mb-2">Fayllar</p>
                                                             <div class="row mt-2 mb-4">
-                                                                <ul class="list-group list-group-horizontal">
-                                                                    {% for doc in documents %}
-                                                                        <li class="list-group-item">
-                                                                            {% if doc.url %}
-                                                                                <a href="{{ doc.url }}"
-                                                                                   class="btn-link text-secondary"><i
-                                                                                        class="fa-solid fa-{{ doc.type }}"
-                                                                                        style="margin-right: 2%"></i>
-                                                                                    {{ doc.url }}<br>
+                                                                <ul class="grid-container-file"
+                                                                    id="files{{ data.phase_id }}">
+                                                                    {% for doc in data.documents %}
+                                                                        {% if doc.url %}
+                                                                            <div class="card grid-item-file mx-4"
+                                                                                 style="width: 18rem;">
+                                                                                <img src="https://static.vecteezy.com/system/resources/previews/015/778/965/original/url-link-icon-hyperlink-chain-website-icon-isolated-on-white-background-free-vector.jpg"
+                                                                                     class="card-img-top">
+                                                                                <div class="card-body">
+                                                                                    <p class="text-sm">{{ doc.document }}.</p>
+                                                                                </div>
+                                                                            </div>
+                                                                        {% else %}
+                                                                            <div id="{{ doc.pk }}"
+                                                                                 class="card-file p-files card grid-item-file mx-2"
+                                                                                 style="width: 10rem;">
+                                                                                <i class="fa-solid fa-{{ doc.type }}"></i>
+                                                                                <img src=" https://telegra.ph/file/ab7d76d0b10f3fa7dcbd7.jpg"
+                                                                                     class="card-img-top">
+                                                                                <div class="card-body">
+                                                                                    <p class="card-text">{{ doc.document }}</p>
                                                                                     <small>{{ doc.created_at | format_date }}</small>
-                                                                                </a>
-                                                                            {% else %}
-                                                                                <a href="" id="{{ doc.pk }}"
-                                                                                   class="btn-link text-secondary p-files"><i
-                                                                                        class="fa-solid fa-{{ doc.type }}"
-                                                                                        style="margin-right: 2%"></i>
-                                                                                    <embed href="{{ doc.document }}">
-                                                                                    {{ doc.document }}<br>
-                                                                                    <small>{{ doc.created_at | format_date }}</small>
-                                                                                </a>
-                                                                            {% endif %}
-                                                                        </li>
+                                                                                </div>
+                                                                            </div>
+                                                                        {% endif %}
                                                                     {% endfor %}
                                                                 </ul>
                                                             </div>
-                                                            <h3>Bajarilgan ishlar</h3>
+                                                            <p>Bajarilgan ishlar</p>
                                                             <div class="row mb-2">
-                                                                <div class="col-2 mx-1 btn btn-default">Izohlar
+                                                                <div class="col-2 mx-1 btn btn-light active">Izohlar
                                                                 </div>
-                                                                <div class="col-2 mx-1 btn btn-default">Muammolar
-                                                                </div>
-                                                                <div class="col-2 mx-1 btn btn-default">So'nggi
-                                                                    harakatlar
-                                                                </div>
-                                                            </div>
-
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" id="save-changes"
-                                                                    class="btn btn-secondary" data-dismiss="modal">
-                                                                Yopish
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        {% endif %}
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-12 col-sm-12 mt-3">
-                            <div class="card">
-                                <div class="card-header bg-light h5 p-3"><span
-                                        class="text-secondary text-primary p-1 bg-success">Tugatilgan</span></div>
-                                <div class="card-body">
-                                    {% for data in datas %}
-                                        {% if data.phase_done_percentage == 100 %}
-                                            <div class="d-block border-bottom main-row">
-                                                <h4 type="button" data-toggle="modal"
-                                                    data-target="#modal{{ data.phase_id }}" data-backdrop="static"
-                                                    class="text-secondary d-inline phase_text">{{ data.phase }}</h4>
-                                            </div>
-                                            <div id="modal{{ data.phase_id }}" class="modal fade"
-                                                 style="margin-left: 20%" role="dialog">
-                                                <div class="modal-dialog modal-xl modal-dialog-scrollable  mx-2 mt-3">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h2 class="modal-title"><strong>{{ data.phase }}</strong> -
-                                                                bo'yicha batafsil ma'lumotlar</h2>
-                                                            <button type="button" class="close" data-dismiss="modal"
-                                                                    aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span>
-                                                            </button>
-                                                        </div>
-                                                        <div class="modal-body" style="height: 70vh">
-                                                            <div class="row mb-2">
-                                                                <div phase_id="{{ data.phase_id }}"
-                                                                     class="col-lg-2 col-md-3 col-sm-3 add-task mx-1 btn btn-default">
-                                                                    <i
-                                                                            class="fa-solid fa-plus"></i> Topshiriq
-                                                                    yaratish
-                                                                </div>
-                                                                <div phase_id="{{ data.phase_id }}" id="add-file"
-                                                                     class="col-lg-2 add-file col-md-3 col-sm-3 mx-1 btn btn-default">
-                                                                    <i
-                                                                            class="fa-solid fa-paperclip"></i> Fayl
-                                                                    biriktirish
-                                                                </div>
-                                                                                                                            <form method="post" enctype="multipart/form-data"
-                                                                  id="add-file-form{{ data.phase_id }}"
-                                                                  style="display: none;margin-top: 5%">
-                                                                {% csrf_token %}
-                                                                {{ form.as_p }}
-                                                                <div class="card-footer">
-                                                                    <button type="submit" class="btn btn-info">Yuklash
-                                                                    </button>
-                                                                </div>
-
-                                                            </form>
-                                                            <form method="post" enctype="multipart/form-data"
-                                                                  id="delete-file-form" style="display:none;">
-                                                                {% csrf_token %}
-                                                                {% for document in documents %}
-                                                                    <div class="row">
-                                                                        <div class="col-1">
-                                                                            <input class="del-files" type="checkbox"
-                                                                                   id="{{ document.pk }}">
-                                                                        </div>
-                                                                        <div class="col">
-                                                                            {{ document.document }}
-
-                                                                        </div>
-                                                                    </div>
-                                                                {% endfor %}
-                                                                <div class="card-footer">
-                                                                    <button id="del-confirm" type="button"
-                                                                            class="btn btn-danger">
-                                                                        O'chirish
-                                                                    </button>
-                                                                    <button class="btn btn-primary"
-                                                                            data-dismiss="modal">Bekor
-                                                                        qilish
-                                                                    </button>
-                                                                </div>
-
-                                                            </form>
-                                                                <div phase_id="{{ data.phase_id }}" id="delete-files"
-                                                                     class="col-lg-2 col-md-3 col-sm-3 mx-1 btn btn-default">
-                                                                    <i
-                                                                            class="fa-solid fa-trash"></i> Fayllarni
-                                                                    o'chirish
-                                                                </div>
-                                                                <div phase_id="{{ data.phase_id }}" id="download-all"
-                                                                     class="col-lg-2 col-md-3 col-sm-3 mx-1 btn btn-default">
-                                                                    <i
-                                                                            class="fa-solid fa-download"></i> Barchasini
-                                                                    yuklash
-                                                                </div>
-                                                            </div>
-
-                                                            <p class="mt-4">Bajariladigan ishlar ro'yxati</p>
-                                                            <div class="row">
-                                                                <table id="{{ data.phase_id }}"
-                                                                       class="table table-bordered m-0">
-                                                                    <thead>
-                                                                    <tr>
-                                                                        <th scope="col" class="col-3">Topshiriq nomi
-                                                                        </th>
-                                                                        <th scope="col" class="col-3">Ma'sul shaxs</th>
-                                                                        <th scope="col" class="col-3">Tugash sanasi</th>
-                                                                        <th scope="col" class="col-3">Bajarilganligi
-                                                                        </th>
-                                                                    </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                    {% for task in data.tasks %}
-                                                                        <tr class="task-tr" id={{ task.pk }}>
-                                                                            <td task_id="{{ task.pk }}"
-                                                                                style="cursor: pointer">{{ task.task_name }}</td>
-                                                                            <td task_id="{{ task.pk }}"
-                                                                                style="cursor: pointer">{{ task.task_manager }}</td>
-                                                                            <td task_id="{{ task.pk }}"
-                                                                                style="cursor: pointer">{{ task.task_deadline | date:"d-m-Y" }}</td>
-                                                                            <td task_id="{{ task.pk }}"
-                                                                                style="cursor: pointer">{{ task.task_done_percentage }}%
-                                                                            </td>
-                                                                        </tr>
-                                                                    {% endfor %}
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                            <p class="mt-2 mb-2">Fayllar</p>
-                                                            <div class="row mt-2 mb-4">
-                                                                <ul class="list-group list-group-horizontal">
-                                                                    {% for doc in documents %}
-                                                                        <li class="list-group-item">
-                                                                            {% if doc.url %}
-                                                                                <a href="{{ doc.url }}"
-                                                                                   class="btn-link text-secondary"><i
-                                                                                        class="fa-solid fa-{{ doc.type }}"
-                                                                                        style="margin-right: 2%"></i>
-                                                                                    {{ doc.url }}<br>
-                                                                                    <small>{{ doc.created_at | format_date }}</small>
-                                                                                </a>
-                                                                            {% else %}
-                                                                                <a href="" id="{{ doc.pk }}"
-                                                                                   class="btn-link text-secondary p-files"><i
-                                                                                        class="fa-solid fa-{{ doc.type }}"
-                                                                                        style="margin-right: 2%"></i>
-                                                                                    <embed href="{{ doc.document }}">
-                                                                                    {{ doc.document }}<br>
-                                                                                    <small>{{ doc.created_at | format_date }}</small>
-                                                                                </a>
-                                                                            {% endif %}
-                                                                        </li>
-                                                                    {% endfor %}
-                                                                </ul>
-                                                            </div>
-                                                            <h3>Bajarilgan ishlar</h3>
-                                                            <div class="row mb-2">
-                                                                <div class="col-2 mx-1 btn btn-light">Izohlar
-                                                                </div>
-                                                                <div class="col-2 mx-1 btn btn-light">Muammolar
-                                                                </div>
+                                                                <div class="col-2 mx-1 btn btn-light">Muammolar</div>
                                                                 <div class="col-2 mx-1 btn btn-light">So'nggi
                                                                     harakatlar
                                                                 </div>
                                                             </div>
+                                                            <div>
+                                                                <div class="row">
+                                                                    <div class="col-0"><span><img
+                                                                            src="{{ user.avatar.url }}" width="35"
+                                                                            height="35"
+                                                                            style="border-radius: 40%"></span></div>
+                                                                    <div class="col-8">
+                                                                        <input class="form-control comment-input"
+                                                                               type="text" placeholder="Izoh yozish">
+                                                                        <div style="display: none">
+                                                                            <form method="post"
+                                                                                  phase_id="{{ data.phase_id }}"
+                                                                                  class="post-comment"
+                                                                                  enctype="multipart/form-data">
+                                                                                {% csrf_token %}
+                                                                                {{ comment_form }}
+                                                                                <button type="submit"
+                                                                                        class="btn btn-md btn-secondary">
+                                                                                    Yozish
+                                                                                </button>
+                                                                            </form>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        <h1>{{ data.comments | safe }}</h1>
+                                                                {% for comments in data.comments %}
+                                                                    <div class="row">
+                                                                    <div class="col-0 mt-4">
+                                                                        <img src="{{ comment.comment.author.avatar.url }}"
+                                                                                   height="35" width="35"
+                                                                                   style="border-radius: 40%">
+                                                                    </div>
+                                                                    <div class="col-11">
+                                                                        <div style="margin-top: 2%; display: flex; flex-direction: column;">
+                                                                            <span class="d-block"
+                                                                                  style="margin: 0;padding: 0"><b
+                                                                                    style="margin: 0;padding: 0"></b></span>
+                                                                            <small style="margin: 0;padding:0">{{ comment.cp.created_at | date:'d-m-Y' }}</small>
+                                                                            <div style="margin-top: 1%">{{ comment | safe }}</div>
+                                                                            <div><small type="button"
+                                                                                        class="text-secondary mr-3">O'chirish</small>
+                                                                                <small type="button"
+                                                                                       class="text-secondary">Tahrirlash</small>
+                                                                                {{ comment.comment_form }}
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                    </div>
+                                                                {% endfor %}
+                                                            <div style="margin-top: 2%">
+                                                                {% for comment in data.problems %}
+                                                                    <span class="d-block" style="margin: 0"><img
+                                                                            src="{{ comment.author.avatar.url }}"
+                                                                            height="35" width="35"
+                                                                            style="border-radius: 40%"><strong
+                                                                            class="ml-2">{{ comment.author.get_full_name }}</strong></span>
+                                                                    <small style="margin: 0 0 5% 3%">{{ comment.created_at | date:'d-m-Y' }}</small>
+                                                                    <div style="margin-left: 3%">{{ comment.comment | safe }}</div>
+                                                                    <div style="margin-left: 3%;margin-bottom: 2%">
+                                                                        <small type="button"
+                                                                               class="text-secondary mr-3">O'chirish</small>
+                                                                        <small type="button" class="text-secondary">Tahrirlash</small>
+                                                                    </div>
+                                                                {% endfor %}
+                                                            </div>
+
 
                                                         </div>
                                                         <div class="modal-footer">
@@ -579,9 +530,258 @@
 
                                         {% endif %}
                                     {% endfor %}
+                                    <button id="add-phase-btn" class="btn btn-default mt-2">Qo'shish</button>
                                 </div>
                             </div>
                         </div>
+                                            <div class="col-lg-4 col-md-12 col-sm-12 mt-3">
+                            <div class="card">
+                                <div class="card-header bg-light h5 p-3"><span
+                                        class="text-secondary text-primary p-1 bg-success">Yakunlangan</span></div>
+                                <div class="card-body">
+                                    {% for data in datas %}
+                                        {% if data.phase_done_percentage == 100 %}
+                                            <div class="d-block phases-text border-bottom main-row">
+                                                <h4 type="button" data-toggle="modal"
+                                                    data-target="#modal{{ data.phase_id }}" data-backdrop="static"
+                                                    class="text-secondary d-inline phase_text">{{ data.phase }}</h4>
+                                            </div>
+                                            <div id="modal{{ data.phase_id }}" class="modal fade"
+                                                 style="margin-left: 20%" role="dialog">
+                                                <div class="modal-dialog modal-xl modal-dialog-scrollable  mx-2 mt-3">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h2 class="modal-title"><strong>{{ data.phase }}</strong> -
+                                                                bo'yicha batafsil ma'lumotlar</h2>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body" style="height: 70vh">
+                                                            <div class="row mb-2">
+                                                                <div phase_id="{{ data.phase_id }}"
+                                                                     class="col-lg-2 col-md-3 col-sm-3 add-task mx-1 btn btn-default">
+                                                                    <i
+                                                                            class="fa-solid fa-plus"></i> Topshiriq
+                                                                    yaratish
+                                                                </div>
+                                                                <div phase_id="{{ data.phase_id }}"
+                                                                     class="col-lg-2 col-md-3 add-file col-sm-3 mx-1 btn btn-default">
+                                                                    <i
+                                                                            class="fa-solid fa-paperclip"></i> Fayl
+                                                                    biriktirish
+                                                                </div>
+                                                                <form method="post" class="add-file-forms"
+                                                                      enctype="multipart/form-data"
+                                                                      id="add-file-form{{ data.phase_id }}"
+                                                                      style="display: none;margin-top: 5%">
+                                                                    {% csrf_token %}
+                                                                    {{ form.as_p }}
+                                                                    <div class="card-footer">
+                                                                        <button type="button" class="btn btn-info">
+                                                                            Yuklash
+                                                                        </button>
+                                                                    </div>
+
+                                                                </form>
+                                                                <form method="post" enctype="multipart/form-data"
+                                                                      id="delete-file-form" style="display:none;">
+                                                                    {% csrf_token %}
+                                                                    {% for document in data.documents %}
+                                                                        <div class="row">
+                                                                            <div class="col-1">
+                                                                                <input class="del-files" type="checkbox"
+                                                                                       id="{{ document.pk }}">
+                                                                            </div>
+                                                                            <div class="col">
+                                                                                {{ document.document }}
+
+                                                                            </div>
+                                                                        </div>
+                                                                    {% endfor %}
+                                                                    <div class="card-footer">
+                                                                        <button id="del-confirm" type="button"
+                                                                                class="btn btn-danger">
+                                                                            O'chirish
+                                                                        </button>
+                                                                        <button class="btn btn-primary"
+                                                                                data-dismiss="modal">Bekor
+                                                                            qilish
+                                                                        </button>
+                                                                    </div>
+
+                                                                </form>
+                                                                <div phase_id="{{ data.phase_id }}"
+                                                                     class="col-lg-2 col-md-3 col-sm-3 delete-files mx-1 btn btn-default">
+                                                                    <i
+                                                                            class="fa-solid fa-trash"></i> Fayllarni
+                                                                    o'chirish
+                                                                </div>
+                                                                <div phase_id="{{ data.phase_id }}"
+                                                                     class=" archive-btn col-lg-2 col-md-3 col-sm-3 mx-1 btn btn-default">
+                                                                    <i
+                                                                            class="fa-solid fa-download"></i> Barchasini
+                                                                    yuklash
+                                                                </div>
+                                                            </div>
+                                                            <p style="margin-bottom: 0.5%;margin-top: 3%">Bajariladigan
+                                                                ishlar ro'yxati</p>
+                                                            <div class="row" style="margin-top: 0">
+                                                                <table id="{{ data.phase_id }}"
+                                                                       class="table table-bordered m-0">
+                                                                    <thead>
+                                                                    <tr>
+                                                                        <th scope="col" class="col-3">Topshiriq nomi
+                                                                        </th>
+                                                                        <th scope="col" class="col-3">Ma'sul shaxs</th>
+                                                                        <th scope="col" class="col-3">Tugash sanasi</th>
+                                                                        <th scope="col" class="col-3">Bajarilganligi
+                                                                        </th>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                    {% for task in data.tasks %}
+                                                                        <tr class="task-tr" id={{ task.pk }}>
+                                                                            <td task_id="{{ task.pk }}"
+                                                                                style="cursor: pointer">{{ task.task_name }}</td>
+                                                                            <td task_id="{{ task.pk }}"
+                                                                                style="cursor: pointer">{{ task.task_manager }}</td>
+                                                                            <td task_id="{{ task.pk }}"
+                                                                                style="cursor: pointer">{{ task.task_deadline | date:"d-m-Y" }}</td>
+                                                                            <td task_id="{{ task.pk }}"
+                                                                                style="cursor: pointer">{{ task.task_done_percentage }}%
+                                                                            </td>
+                                                                        </tr>
+                                                                    {% endfor %}
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                            <p class="mt-4 mb-2">Fayllar</p>
+                                                            <div class="row mt-2 mb-4">
+                                                                <ul class="grid-container-file"
+                                                                    id="files{{ data.phase_id }}">
+                                                                    {% for doc in data.documents %}
+                                                                        {% if doc.url %}
+                                                                            <div class="card grid-item-file mx-4"
+                                                                                 style="width: 18rem;">
+                                                                                <img src="https://static.vecteezy.com/system/resources/previews/015/778/965/original/url-link-icon-hyperlink-chain-website-icon-isolated-on-white-background-free-vector.jpg"
+                                                                                     class="card-img-top">
+                                                                                <div class="card-body">
+                                                                                    <p class="text-sm">{{ doc.document }}.</p>
+                                                                                </div>
+                                                                            </div>
+                                                                        {% else %}
+                                                                            <div id="{{ doc.pk }}"
+                                                                                 class="card-file p-files card grid-item-file mx-2"
+                                                                                 style="width: 10rem;">
+                                                                                <i class="fa-solid fa-{{ doc.type }}"></i>
+                                                                                <img src=" https://telegra.ph/file/ab7d76d0b10f3fa7dcbd7.jpg"
+                                                                                     class="card-img-top">
+                                                                                <div class="card-body">
+                                                                                    <p class="card-text">{{ doc.document }}</p>
+                                                                                    <small>{{ doc.created_at | format_date }}</small>
+                                                                                </div>
+                                                                            </div>
+                                                                        {% endif %}
+                                                                    {% endfor %}
+                                                                </ul>
+                                                            </div>
+                                                            <p>Bajarilgan ishlar</p>
+                                                            <div class="row mb-2">
+                                                                <div class="col-2 mx-1 btn btn-light active">Izohlar
+                                                                </div>
+                                                                <div class="col-2 mx-1 btn btn-light">Muammolar</div>
+                                                                <div class="col-2 mx-1 btn btn-light">So'nggi
+                                                                    harakatlar
+                                                                </div>
+                                                            </div>
+                                                            <div>
+                                                                <div class="row">
+                                                                    <div class="col-0"><span><img
+                                                                            src="{{ user.avatar.url }}" width="35"
+                                                                            height="35"
+                                                                            style="border-radius: 40%"></span></div>
+                                                                    <div class="col-8">
+                                                                        <input class="form-control comment-input"
+                                                                               type="text" placeholder="Izoh yozish">
+                                                                        <div style="display: none">
+                                                                            <form method="post"
+                                                                                  phase_id="{{ data.phase_id }}"
+                                                                                  class="post-comment"
+                                                                                  enctype="multipart/form-data">
+                                                                                {% csrf_token %}
+                                                                                {{ comment_form }}
+                                                                                <button type="submit"
+                                                                                        class="btn btn-md btn-secondary">
+                                                                                    Yozish
+                                                                                </button>
+                                                                            </form>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                                {% for comment in data.comments %}
+                                                                    <div class="row">
+
+                                                                    <div class="col-0 mt-4">
+                                                                        <img src="{{ comment.author.avatar.url }}"
+                                                                                   height="35" width="35"
+                                                                                   style="border-radius: 40%">
+                                                                    </div>
+                                                                    <div class="col-11">
+                                                                        <div style="margin-top: 2%; display: flex; flex-direction: column;">
+                                                                            <span class="d-block"
+                                                                                  style="margin: 0;padding: 0"><b
+                                                                                    style="margin: 0;padding: 0">{{ comment.author }}</b></span>
+                                                                            <small style="margin: 0;padding:0">{{ comment.created_at | date:'d-m-Y' }}</small>
+                                                                            <div style="margin-top: 1%">{{ comment.comment | safe }}</div>
+                                                                            <div><small type="button"
+                                                                                        class="text-secondary mr-3">O'chirish</small>
+                                                                                <small type="button"
+                                                                                       class="text-secondary">Tahrirlash</small>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                    </div>
+                                                                {% endfor %}
+                                                            <div style="margin-top: 2%">
+                                                                {% for comment in data.problems %}
+                                                                    <span class="d-block" style="margin: 0"><img
+                                                                            src="{{ comment.author.avatar.url }}"
+                                                                            height="35" width="35"
+                                                                            style="border-radius: 40%"><strong
+                                                                            class="ml-2">{{ comment.author.get_full_name }}</strong></span>
+                                                                    <small style="margin: 0 0 5% 3%">{{ comment.created_at | date:'d-m-Y' }}</small>
+                                                                    <div style="margin-left: 3%">{{ comment.comment | safe }}</div>
+                                                                    <div style="margin-left: 3%;margin-bottom: 2%">
+                                                                        <small type="button"
+                                                                               class="text-secondary mr-3">O'chirish</small>
+                                                                        <small type="button" class="text-secondary">Tahrirlash</small>
+                                                                    </div>
+                                                                {% endfor %}
+                                                            </div>
+
+
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" id="save-changes"
+                                                                    class="btn btn-secondary" data-dismiss="modal">
+                                                                Yopish
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        {% endif %}
+                                    {% endfor %}
+                                    <button id="add-phase-btn" class="btn btn-default mt-2">Qo'shish</button>
+                                </div>
+                            </div>
+                        </div>
+
 
                     </div>
 

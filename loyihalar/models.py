@@ -132,8 +132,8 @@ class Problems(models.Model):
     phase = models.ForeignKey(Phase,models.CASCADE)
     problem = models.TextField()
     status = models.CharField(max_length=30, choices=status_problem_choices, default='Yangi')
-    created_at = models.DateField(auto_now=True,editable=False)
-    update_at = models.DateField(auto_now=True)
+    created_at = models.DateTimeField(auto_now=True,editable=False)
+    update_at = models.DateTimeField(auto_now=True)
 
 
 class Comments(models.Model):
@@ -142,8 +142,8 @@ class Comments(models.Model):
     project = models.ForeignKey(Project, models.CASCADE)
     phase = models.ForeignKey(Phase,models.CASCADE)
     comment = models.TextField()
-    created_at = models.DateField(auto_now=True,editable=False)
-    update_at = models.DateField(auto_now=True)
+    created_at = models.DateTimeField(auto_now=True,editable=False)
+    update_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.author.get_full_name()
