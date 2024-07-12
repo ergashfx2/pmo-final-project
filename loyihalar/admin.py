@@ -2,9 +2,13 @@ from django.contrib import admin
 from .models import Phase, Task, Project, Documents,Comments,Problems,PermittedProjects
 
 admin.site.register(Documents)
-admin.site.register(Comments)
 admin.site.register(Problems)
 admin.site.register(PermittedProjects)
+
+@admin.register(Comments)
+class CommentsAdmin(admin.ModelAdmin):
+      list_display = ['id','comment','created_at','update_at','project']
+
 
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):

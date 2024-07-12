@@ -1,6 +1,7 @@
 import uuid
 
 from django.db import models
+from django.utils import timezone
 
 from hodimlar.models import User, Blog, Department
 
@@ -52,12 +53,12 @@ class Project(models.Model):
     project_name = models.CharField(max_length=200)
     project_blog = models.ForeignKey(Blog, models.CASCADE, related_name='blog')
     project_departments = models.ManyToManyField(Department)
-    project_size = models.CharField(max_length=200,choices=size_choices)
-    project_level = models.CharField(max_length=200,choices=level_choices)
-    project_speed = models.CharField(max_length=200,choices=speed_choices)
-    project_type = models.CharField(max_length=200,choices=type_choices)
-    project_team = models.ManyToManyField(User,related_name='team')
-    project_manager = models.ManyToManyField(User,related_name='manager')
+    project_size = models.CharField(max_length=200, choices=size_choices)
+    project_level = models.CharField(max_length=200, choices=level_choices)
+    project_speed = models.CharField(max_length=200, choices=speed_choices)
+    project_type = models.CharField(max_length=200, choices=type_choices)
+    project_team = models.ManyToManyField(User, related_name='team')
+    project_manager = models.ManyToManyField(User, related_name='manager')
     project_description = models.TextField()
     project_done_percentage = models.CharField(max_length=20, default=0)
     project_start_date = models.DateTimeField(auto_now=False)
@@ -113,8 +114,8 @@ class Task(models.Model):
 
 class Documents(models.Model):
     project = models.ForeignKey(Project, models.CASCADE)
-    phase = models.ForeignKey(Phase,on_delete=models.CASCADE)
-    document = models.FileField(upload_to='', blank=True,max_length=500)
+    phase = models.ForeignKey(Phase, on_delete=models.CASCADE)
+    document = models.FileField(upload_to='', blank=True, max_length=500)
     url = models.CharField(max_length=200, blank=True)
     type = models.CharField(max_length=150, default='url')
     created_at = models.DateField(auto_now=True)
@@ -125,28 +126,33 @@ class Documents(models.Model):
 
 
 class Problems(models.Model):
-    id = models.UUIDField(primary_key=True,default=uuid.uuid4, editable=False)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     author = models.ForeignKey(User, models.CASCADE)
     title = models.CharField(max_length=250)
     project = models.ForeignKey(Project, models.CASCADE)
-    phase = models.ForeignKey(Phase,models.CASCADE)
+    phase = models.ForeignKey(Phase, models.CASCADE)
     problem = models.TextField()
     status = models.CharField(max_length=30, choices=status_problem_choices, default='Yangi')
-    created_at = models.DateTimeField(auto_now=True,editable=False)
+    created_at = models.DateTimeField(auto_now=True, editable=False)
     update_at = models.DateTimeField(auto_now=True)
 
 
 class Comments(models.Model):
-    id = models.UUIDField(primary_key=True,default=uuid.uuid4, editable=False)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     author = models.ForeignKey(User, models.CASCADE)
     project = models.ForeignKey(Project, models.CASCADE)
-    phase = models.ForeignKey(Phase,models.CASCADE)
+    phase = models.ForeignKey(Phase, models.CASCADE)
     comment = models.TextField()
-    created_at = models.DateTimeField(auto_now=True,editable=False)
+    created_at = models.DateTimeField(auto_now=True, editable=False)
     update_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.author.get_full_name()
+
+    def update_comment(self,comment):
+        self.comment = comment
+        self.update_at = timezone.now()
+        self.save(update_fields=['comment'])
 
 
 class PermittedProjects(models.Model):

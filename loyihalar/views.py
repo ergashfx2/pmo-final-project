@@ -361,8 +361,7 @@ def edit_comment(request, pk):
         comment = Comments.objects.get(pk=pk)
         project = comment.project
         updated = request.POST.get('comment')
-        comment.comment = updated
-        comment.save()
+        comment.update_comment(comment=updated)
         Action.objects.create(author_id=request.user.pk, project_id=project.pk,
                               action=f"{project.project_name} nomli loyihadagi izohni tahrirladi. <br> Izohning asl holati <strong>{comment.comment}</strong> va o'zgartirilgan holati <strong>{comment}</strong> ")
         return JsonResponse(status=200,data={'comment':comment.comment})
