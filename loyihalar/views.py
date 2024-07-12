@@ -18,7 +18,7 @@ from .formsets import TaskFormSet
 from .models import Project, Phase, Task, Documents, Comments, Problems, PermittedProjects
 from django.http import HttpResponse, JsonResponse, Http404
 from django.core import serializers
-from utils import getComments,getProblems,file_extensions
+from utils import file_extensions
 import shutil
 
 
@@ -86,10 +86,7 @@ def DetailMyProjects(request, pk):
     comments = Comments.objects.filter(project_id=project.id)
     problems = Problems.objects.filter(project_id=project.id)
     phases = Phase.objects.filter(project_id=project.id)
-    print(comments)
     for phase in phases:
-        comments = getComments(phase)
-        problems = getProblems(phase)
         datas.append({
             'phase': phase.phase_name,
             'phase_id': phase.pk,
@@ -361,15 +358,15 @@ def post_comment(request, pk):
 @login_required
 def edit_comment(request, pk):
     if request.method == 'POST':
-        comment = json.loads(request.body)['comment']
-        comment2 = Comments.objects.get(pk=pk)
-        Comments.objects.filter(pk=pk).update(comment=comment)
-        pk = Comments.objects.get(pk=pk).project.pk
-        project = Project.objects.get(pk=pk)
+        comment = Comments.objects.get(pk=pk)
+        project = comment.project
+        updated = request.POST.get('comment')
+        comment.comment = updated
+        comment.save()
         Action.objects.create(author_id=request.user.pk, project_id=project.pk,
-                              action=f"{project.project_name} nomli loyihadagi izohni tahrirladi. <br> Izohning asl holati <strong>{comment2.comment}</strong> va o'zgartirilgan holati <strong>{comment}</strong> ")
-        return redirect('my-projects-detail', pk)
-    return redirect('my-projects-detail', pk)
+                              action=f"{project.project_name} nomli loyihadagi izohni tahrirladi. <br> Izohning asl holati <strong>{comment.comment}</strong> va o'zgartirilgan holati <strong>{comment}</strong> ")
+        return JsonResponse(status=200,data={'comment':comment.comment})
+    return JsonResponse(status=404,data={'message':'Not found'})
 
 
 @login_required

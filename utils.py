@@ -41,29 +41,5 @@ file_extensions = {
 }
 
 
-def getComments(phase):
-    comments = []
-    for comment in Comments.objects.filter(phase=phase):
-        comment = Comments.objects.get(pk=comment.pk)
-        form = CommentEditForm(instance=get_object_or_404(Comments, pk=comment.pk))
-        print(form)
-        comments.append({
-            'comment': comment,
-            'comment_form': CommentEditForm(instance=get_object_or_404(Comments, pk=comment.pk))
-        })
-
-    print(comments)
-    return comments
-
-
-def getProblems(phase):
-    problems = []
-    for problem in Problems.objects.filter(phase=phase):
-        problems.append({
-            'problem': problem,
-            'problem_form': ProlemEditForm(instance=problem)
-        })
-    return problems
-
 
 currency_rate = request(url='https://cbu.uz/uz/arkhiv-kursov-valyut/json/', method='GET').json()[0]['Rate']

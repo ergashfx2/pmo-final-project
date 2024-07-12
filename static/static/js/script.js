@@ -544,6 +544,46 @@ function commentsManager() {
     })
 }
 
+function editComment(){
+    function comments_listener(e){
+        let value = e.target
+        let comment = value.parentNode.parentNode.children.item(2)
+        comment.style.display = 'none'
+        let form = value.parentNode.parentNode.querySelector('form')
+        form.style.display = 'block'
+        let summernote = form.children.item(1).children.item(4).querySelector('iframe').contentDocument.querySelector('body').getElementsByClassName('note-editing-area').item(0).children.item(2)
+        summernote.innerHTML = comment.innerHTML
+        form.id = 'edit-comment-form'
+        form.addEventListener('submit',submit_edit_comment)
+    }
+    document.querySelectorAll('.edit-comment').forEach(value => {
+        value.addEventListener('click',comments_listener)
+
+    })
+}
+editComment()
+
+
+function submit_edit_comment(e){
+    e.preventDefault()
+    let form = e.target
+            let summernote = form.children.item(1).children.item(4).querySelector('iframe').contentDocument.querySelector('body').getElementsByClassName('note-editing-area').item(0).children.item(2)
+    let c_id = form.getAttribute('comment_id')
+    let formData = new FormData(form)
+    formData.append('comment',summernote.innerHTML)
+    fetch(`edit-comment/${c_id}`,{
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': form.csrfmiddlewaretoken.value
+                },
+                body: formData,
+            }).then(res=> res.json()).then(res=>{
+        console.log(res)
+        form.style.display = 'none'
+        form.parentNode.children.item(2).innerHTML = res.comment
+        form.parentNode.children.item(2).style.display = 'block'
+    })
+}
 
 function phasesManager() {
     document.querySelectorAll('.phases-text').forEach(value => {

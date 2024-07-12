@@ -227,30 +227,43 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                                {% for comment in data.comments %}
-                                                                    <div class="row">
+                                                            {% for comment in data.comments %}
+                                                                <div class="row">
                                                                     <div class="col-0 mt-4">
                                                                         <img src="{{ comment.author.avatar.url }}"
-                                                                                   height="35" width="35"
-                                                                                   style="border-radius: 40%">
+                                                                             height="35" width="35"
+                                                                             style="border-radius: 40%">
                                                                     </div>
                                                                     <div class="col-11">
                                                                         <div style="margin-top: 2%; display: flex; flex-direction: column;">
                                                                             <span class="d-block"
                                                                                   style="margin: 0;padding: 0"><b
-                                                                                    style="margin: 0;padding: 0">{{ comment.author }}</b><div class="d-inline mx-2"></div><p class="text-secondary text-sm d-inline">{{ comment.created_at | format_date_and_time_difference }}</p></span>
+                                                                                    style="margin: 0;padding: 0">{{ comment.author }}</b><div
+                                                                                    class="d-inline mx-2"></div><p
+                                                                                    class="text-secondary text-sm d-inline">{{ comment.created_at | format_date_and_time_difference }}</p></span>
                                                                             <small style="margin: 0;padding:0">{{ comment.created_at | date:'d-m-Y' }}</small>
                                                                             <div style="margin-top: 1%">{{ comment.comment | safe }}</div>
-                                                                            <div><small type="button"
+                                                                            <form method="post" style="display: none"
+                                                                                   comment_id="{{ comment.pk }}"
+                                                                                  class="edit-comment-form"
+                                                                                  enctype="multipart/form-data">
+                                                                                {% csrf_token %}
+                                                                                {{ comment_form }}
+                                                                                <button type="submit"
+                                                                                        class="btn btn-md btn-secondary">
+                                                                                    Yuborish
+                                                                                </button>
+                                                                            </form>
+                                                                            <div><small id="delete_comment_{{ comment.pk }}" type="button"
                                                                                         class="text-secondary mr-3">O'chirish</small>
-                                                                                <small type="button"
-                                                                                       class="text-secondary">Tahrirlash</small>
+                                                                                <small id="edit_comment_{{ comment.pk }}" type="button"
+                                                                                       class="edit-comment text-secondary">Tahrirlash</small>
                                                                             </div>
                                                                         </div>
 
                                                                     </div>
-                                                                    </div>
-                                                                {% endfor %}
+                                                                </div>
+                                                            {% endfor %}
                                                             <div style="margin-top: 2%">
                                                                 {% for comment in data.problems %}
                                                                     <span class="d-block" style="margin: 0"><img
@@ -259,7 +272,7 @@
                                                                             style="border-radius: 40%"><strong
                                                                             class="ml-2">{{ comment.author.get_full_name }}</strong></span>
                                                                     <small style="margin: 0 0 5% 3%">{{ comment.created_at | date:'d-m-Y' }}</small>
-                                                                    <div style="margin-left: 3%">{{ comment.comment | safe }}</div>
+                                                                    <div style="margin-left: 3%">{{ comment.problem | safe }}</div>
                                                                     <div style="margin-left: 3%;margin-bottom: 2%">
                                                                         <small type="button"
                                                                                class="text-secondary mr-3">O'chirish</small>
@@ -286,7 +299,7 @@
                                 </div>
                             </div>
                         </div>
-                                            <div class="col-lg-4 col-md-12 col-sm-12 mt-3">
+                        <div class="col-lg-4 col-md-12 col-sm-12 mt-3">
                             <div class="card">
                                 <div class="card-header bg-light h5 p-3"><span
                                         class="text-secondary text-primary p-1 bg-warning">Jarayonda</span></div>
@@ -473,13 +486,13 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        <h1>{{ data.comments | safe }}</h1>
-                                                                {% for comments in data.comments %}
-                                                                    <div class="row">
+                                                            <h1>{{ data.comments | safe }}</h1>
+                                                            {% for comments in data.comments %}
+                                                                <div class="row">
                                                                     <div class="col-0 mt-4">
                                                                         <img src="{{ comment.comment.author.avatar.url }}"
-                                                                                   height="35" width="35"
-                                                                                   style="border-radius: 40%">
+                                                                             height="35" width="35"
+                                                                             style="border-radius: 40%">
                                                                     </div>
                                                                     <div class="col-11">
                                                                         <div style="margin-top: 2%; display: flex; flex-direction: column;">
@@ -497,8 +510,8 @@
                                                                         </div>
 
                                                                     </div>
-                                                                    </div>
-                                                                {% endfor %}
+                                                                </div>
+                                                            {% endfor %}
                                                             <div style="margin-top: 2%">
                                                                 {% for comment in data.problems %}
                                                                     <span class="d-block" style="margin: 0"><img
@@ -534,7 +547,7 @@
                                 </div>
                             </div>
                         </div>
-                                            <div class="col-lg-4 col-md-12 col-sm-12 mt-3">
+                        <div class="col-lg-4 col-md-12 col-sm-12 mt-3">
                             <div class="card">
                                 <div class="card-header bg-light h5 p-3"><span
                                         class="text-secondary text-primary p-1 bg-success">Yakunlangan</span></div>
@@ -721,13 +734,13 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                                {% for comment in data.comments %}
-                                                                    <div class="row">
+                                                            {% for comment in data.comments %}
+                                                                <div class="row">
 
                                                                     <div class="col-0 mt-4">
                                                                         <img src="{{ comment.author.avatar.url }}"
-                                                                                   height="35" width="35"
-                                                                                   style="border-radius: 40%">
+                                                                             height="35" width="35"
+                                                                             style="border-radius: 40%">
                                                                     </div>
                                                                     <div class="col-11">
                                                                         <div style="margin-top: 2%; display: flex; flex-direction: column;">
@@ -744,8 +757,8 @@
                                                                         </div>
 
                                                                     </div>
-                                                                    </div>
-                                                                {% endfor %}
+                                                                </div>
+                                                            {% endfor %}
                                                             <div style="margin-top: 2%">
                                                                 {% for comment in data.problems %}
                                                                     <span class="d-block" style="margin: 0"><img
