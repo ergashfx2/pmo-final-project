@@ -76,6 +76,7 @@ class Project(models.Model):
 
 
 class Phase(models.Model):
+    id = models.UUIDField(primary_key=True,default=uuid.uuid4,editable=False)
     project = models.ForeignKey(Project, models.CASCADE)
     phase_name = models.CharField(max_length=250)
     phase_done_percentage = models.CharField(max_length=20, default=0)
@@ -93,6 +94,7 @@ class Phase(models.Model):
 
 
 class Task(models.Model):
+    id = models.UUIDField(primary_key=True,default=uuid.uuid4,editable=False)
     project = models.ForeignKey(Project, models.CASCADE)
     task_manager = models.CharField(max_length=250)
     task_deadline = models.DateField()

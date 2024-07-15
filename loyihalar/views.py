@@ -22,8 +22,6 @@ from utils import file_extensions
 import shutil
 
 
-
-
 @login_required
 def all_projects(request):
     projects = Project.objects.all()
@@ -93,8 +91,8 @@ def DetailMyProjects(request, pk):
             'phase_done_percentage': int(phase.phase_done_percentage),
             'tasks': Task.objects.filter(phase=phase.id),
             'documents': Documents.objects.filter(phase=phase.id),
-            'comments':Comments.objects.filter(phase=phase),
-            'problems':Problems.objects.filter(phase=phase)
+            'comments': Comments.objects.filter(phase=phase),
+            'problems': Problems.objects.filter(phase=phase)
         })
     if request.method == 'POST':
         form = AddFileForm(data=request.POST, files=request.FILES)
@@ -341,18 +339,23 @@ def create_archive(request, pk):
 
 @login_required
 def post_comment(request, pk):
-    form = CommentForm(request.POST,files=request.FILES)
+    form = CommentForm(request.POST, files=request.FILES)
     if request.method == 'POST' and form.is_valid():
+        print(form)
         comment = form.save(commit=False)
         comment.project = Phase.objects.get(pk=pk).project
         comment.author = request.user
         comment.phase = Phase.objects.get(pk=pk)
         form.save()
         project = Phase.objects.get(pk=pk).project
+        print(Comments.objects.get(pk=comment.pk).pk)
         Action.objects.create(author_id=request.user.pk, project_id=project.pk,
                               action=f"{project.project_name} nomli loyihaga izoh yozdi.Izoh matni: <strong>{comment}</strong>")
-        return JsonResponse(status=200,data={'comment_id':comment.pk,'comment':comment.comment,'comment_date':comment.created_at,'author_avatar':comment.author.avatar.url,'author_name':comment.author.get_full_name()})
-    return JsonResponse(status=404,data={'success':False})
+        return JsonResponse(status=200, data={'comment_id': comment.pk, 'comment': comment.comment,
+                                              'comment_date': comment.created_at,
+                                              'author_avatar': comment.author.avatar.url,
+                                              'author_name': comment.author.get_full_name(), 'form': form.as_div()})
+    return JsonResponse(status=404, data={'success': False})
 
 
 @login_required
@@ -364,8 +367,8 @@ def edit_comment(request, pk):
         comment.update_comment(comment=updated)
         Action.objects.create(author_id=request.user.pk, project_id=project.pk,
                               action=f"{project.project_name} nomli loyihadagi izohni tahrirladi. <br> Izohning asl holati <strong>{comment.comment}</strong> va o'zgartirilgan holati <strong>{comment}</strong> ")
-        return JsonResponse(status=200,data={'comment':comment.comment})
-    return JsonResponse(status=404,data={'message':'Not found'})
+        return JsonResponse(status=200, data={'comment': comment.comment})
+    return JsonResponse(status=404, data={'message': 'Not found'})
 
 
 @login_required
@@ -373,7 +376,7 @@ def delete_comment(request, pk):
     prkey = Comments.objects.get(pk=pk).project.pk
     project = Project.objects.get(pk=prkey)
     comment = Comments.objects.get(pk=pk)
-    Comments.objects.filter(pk=pk).delete()
+    Comments.objects.get(pk=pk).delete()
     Action.objects.create(author_id=request.user.pk, project_id=prkey,
                           action=f"{project.project_name} nomli loyihadagi izohni o'chirdi.Izoh matni :<strong> {comment.comment}</strong>")
     return redirect('my-projects-detail', prkey)

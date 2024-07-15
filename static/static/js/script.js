@@ -288,6 +288,35 @@ function phase_adder() {
 phase_adder()
 
 
+function delete_comment(){
+    let comment_id
+    document.querySelectorAll('.delete-comment-btn').forEach(value => {
+        value.addEventListener('click',function (){
+            comment_id = value.id.split('_')[2]
+            let parent = value.parentNode
+            parent.style.display = 'none'
+            let newDiv = document.createElement('div')
+            newDiv.innerHTML = `<small  id="delete_comment_confirm" type="button"
+                                                                                        class="text-secondary delete-comment-btn mr-3">Tasdiqlash</small><small  id="delete_comment_cancel" type="button"
+                                                                                        class="text-secondary delete-comment-btn mr-3">Bekor qilish</small>`
+            value.parentNode.parentNode.appendChild(newDiv)
+        document.getElementById('delete_comment_cancel').addEventListener('click',function (e){
+            let value = e.target
+            value.parentNode.remove()
+            parent.style.display = 'block'
+        })
+            document.getElementById('delete_comment_confirm').addEventListener('click',function (e){
+                fetch(`delete-comment/${comment_id}`).then(res=>{
+                    let parent = e.target.parentNode.parentNode.parentNode.parentNode
+                    parent.parentNode.removeChild(parent)
+                })
+            })
+        })
+    })
+}
+
+delete_comment()
+
 function click_tr_handler(event) {
     const value = event.currentTarget;
     const original_row = value.innerHTML;
@@ -451,10 +480,8 @@ function formatDateAndTimeDifference(dateString) {
 
 function commentInputManager(event) {
     let comment = event.target
-    let parent = comment.parentNode
-    parent.firstChild.remove()
-    parent.children.item(0).style.display = 'none'
-    parent.children.item(1).style.display = 'block'
+    comment.parentNode.children.item(0).style.display = 'none'
+    comment.parentNode.children.item(1).style.display = 'block'
 
 }
 
@@ -464,6 +491,7 @@ function commentsManager() {
     let edit_comments = document.querySelectorAll('.edit-comment ');
     var comment
     var parent
+    var comment_id
     comment_inputs.forEach(comment => {
         comment.addEventListener('click', commentInputManager)
         comment.addEventListener('click', function () {
@@ -486,6 +514,7 @@ function commentsManager() {
             })
                 .then(res => res.json().then(res => {
                     console.log(res)
+                    comment_id = res.comment_id
                     let div = document.createElement('div')
                     let div1 = document.createElement('div')
                     let div2 = document.createElement('div')
@@ -500,12 +529,26 @@ function commentsManager() {
     <span class="d-block" style="margin: 0;padding: 0"><b style="margin: 0;padding: 0">${res.author_name}</b><div class="d-inline mx-2"></div><p class="text-sm text-secondary d-inline">${date[0]}</p></span>
     <small style="margin: 0;padding:0">${date[1].split('T')[0].split('-').reverse().join('-')}</small>
     <div style="margin-top: 1%">${res.comment}</div>
-    <div><small type="button" class="text-secondary mr-3">O'chirish</small>        <small type="button" class="text-secondary">Tahrirlash</small></div>
+    <div><small id="delete_comment_${res.comment_id}"  type="button" class="text-secondary delete-comment-btn  mr-3">O'chirish</small>        <small id="edit_comment_${res.comment_id}" type="button" class="text-secondary edit-comment">Tahrirlash</small></div>
 </div>
-                                                           
-                `
-
-                    console.log(form.parentNode.parentNode.parentNode.parentNode.parentNode)
+`
+                    let form2 = document.createElement('form')
+                    form2.method = 'post'
+                    form2.enctype="multipart/form-data"
+                    form2.classList.add('edit-comment-form')
+                    form2.setAttribute('comment_id',comment_id)
+                    form2.style.display = 'none'
+                    let div3 = document.createElement('div')
+                    div3.innerHTML = `${res.form.innerHTML}`
+                    form2.innerHTML = `<input type="hidden" name="csrfmiddlewaretoken" value="eUlbeAMl7MACovcIOsvIKWuYHo3i77HNENX49HRtKTrLtrzOx1gyuJkzxeof9lLC">${res.form}<button type="submit" class="btn btn-md btn-secondary">
+                                                                                    Yuborish
+                                                                                </button>`
+                    div2.children.item(0).appendChild(form2)
+                    form2.addEventListener('submit',submit_edit_comment)
+                    console.log(div2)
+                    let children = div2.children.item(0).children.item(3)
+                    children.children.item(0).addEventListener('click',delete_comment)
+                    children.children.item(1).addEventListener('click',comments_listener)
                     let comments_list = form.parentNode.parentNode.parentNode.parentNode.parentNode.children.item(8)
                     div.appendChild(div1)
                     div.appendChild(div2)
@@ -544,12 +587,12 @@ function commentsManager() {
     })
 }
 
-function editComment(){
+
     function comments_listener(e){
         let value = e.target
         let comment = value.parentNode.parentNode.children.item(2)
         comment.style.display = 'none'
-        let form = value.parentNode.parentNode.querySelector('form')
+        let form = value.parentNode.parentNode.parentNode.querySelector('form')
         form.style.display = 'block'
         let summernote = form.children.item(1).children.item(4).querySelector('iframe').contentDocument.querySelector('body').getElementsByClassName('note-editing-area').item(0).children.item(2)
         summernote.innerHTML = comment.innerHTML
@@ -560,8 +603,7 @@ function editComment(){
         value.addEventListener('click',comments_listener)
 
     })
-}
-editComment()
+
 
 
 function submit_edit_comment(e){
@@ -580,6 +622,7 @@ function submit_edit_comment(e){
             }).then(res=> res.json()).then(res=>{
         console.log(res)
         form.style.display = 'none'
+        console.log(form.parentNode)
         form.parentNode.children.item(2).innerHTML = res.comment
         form.parentNode.children.item(2).style.display = 'block'
     })

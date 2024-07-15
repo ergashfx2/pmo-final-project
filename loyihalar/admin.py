@@ -17,10 +17,10 @@ class ProjectAdmin(admin.ModelAdmin):
 
 @admin.register(Phase)
 class PhaseAdmin(admin.ModelAdmin):
-    list_display = ['phase_name']
+    list_display = ['id','phase_name']
 
 
 @admin.register(Task)
 class TaskAdmin(admin.ModelAdmin):
-    list_display = ['phase', 'task_name']
+    list_display = ['id','phase', 'task_name']
 
