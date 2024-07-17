@@ -42,4 +42,4 @@ file_extensions = {
 
 
 
-currency_rate = request(url='https://cbu.uz/uz/arkhiv-kursov-valyut/json/', method='GET').json()[0]['Rate']
+currency_rate = request(url='http://cbu.uz/uz/arkhiv-kursov-valyut/json', method='GET').json()[0]['Rate']

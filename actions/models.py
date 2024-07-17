@@ -10,5 +10,3 @@ class Action(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     project = models.ForeignKey(Project, on_delete=models.CASCADE,blank=True)
 
-    def __str__(self):
-        return f"{self.author.get_full_name}  {self.action} at {self.date}"

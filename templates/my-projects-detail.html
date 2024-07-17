@@ -16,7 +16,7 @@
             </div>
         </section>
         <div class="row bg-white">
-            <div class="col-lg-8 col-sm-12 col-md-12 col-lg-8 border" style="height: 100dvh">
+            <div class="col-lg-8 col-sm-12 col-md-12 col-lg-8 border">
                 <div class="row mt-3 p-3">
                     <div class="col-lg-4 col-md-12 col-sm-12">
                         <div class="card bg-light text-center" style="box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;">
@@ -80,7 +80,7 @@
                                                                 </div>
                                                                 <form method="post" class="add-file-forms"
                                                                       enctype="multipart/form-data"
-                                                                      id="add-file-form{{ data.phase_id }}"
+                                                                      id="add_file_form_{{ data.phase_id }}"
                                                                       style="display: none;margin-top: 5%">
                                                                     {% csrf_token %}
                                                                     {{ form.as_p }}
@@ -195,15 +195,15 @@
                                                             </div>
                                                             <p>Bajarilgan ishlar</p>
                                                             <div class="row mb-2">
-                                                                <div class="col-2 mx-1 btn btn-light active">Izohlar
+                                                                <div id="comments_{{ data.phase_id }}" class="col-2 actions-btn mx-1 btn btn-light active">Izohlar
                                                                 </div>
-                                                                <div class="col-2 mx-1 btn btn-light">Muammolar</div>
-                                                                <div class="col-2 mx-1 btn btn-light">So'nggi
+                                                                <div id="problems_{{ data.phase_id }}" class="col-2 mx-1 actions-btn btn btn-light">Muammolar</div>
+                                                                <div id="actions_{{ data.phase_id }}" class="col-2 mx-1 actions-btn btn btn-light">So'nggi
                                                                     harakatlar
                                                                 </div>
                                                             </div>
                                                             <div>
-                                                                <div class="row" style="margin-top: 2%">
+                                                                <div class="row comments-input" style="margin-top: 2%">
                                                                     <div class="col-0"><span><img
                                                                             src="{{ user.avatar.url }}" width="35"
                                                                             height="35"
@@ -217,7 +217,7 @@
                                                                                   class="post-comment"
                                                                                   enctype="multipart/form-data">
                                                                                 {% csrf_token %}
-                                                                                {{ comment_form }}
+                                                                                {{ data.comment_form.as_p }}
                                                                                 <button type="submit"
                                                                                         class="btn btn-md btn-secondary">
                                                                                     Yozish
@@ -228,7 +228,7 @@
                                                                 </div>
                                                             </div>
                                                             {% for comment in data.comments %}
-                                                                <div class="row">
+                                                                <div class="row commments">
                                                                     <div class="col-0 mt-4">
                                                                         <img src="{{ comment.author.avatar.url }}"
                                                                              height="35" width="35"
@@ -248,7 +248,7 @@
                                                                                   class="edit-comment-form"
                                                                                   enctype="multipart/form-data">
                                                                                 {% csrf_token %}
-                                                                                {{ comment_form }}
+                                                                                {{ data.comment_form }}
                                                                                 <button type="submit"
                                                                                         class="btn btn-md btn-secondary">
                                                                                     Yuborish
@@ -264,23 +264,59 @@
                                                                     </div>
                                                                 </div>
                                                             {% endfor %}
+                                                        <div id="problems_row_{{ data.phase_id }}" class="problems" style="display: none">
                                                             <div style="margin-top: 2%">
                                                                 {% for comment in data.problems %}
-                                                                    <span class="d-block" style="margin: 0"><img
-                                                                            src="{{ comment.author.avatar.url }}"
-                                                                            height="35" width="35"
-                                                                            style="border-radius: 40%"><strong
-                                                                            class="ml-2">{{ comment.author.get_full_name }}</strong></span>
-                                                                    <small style="margin: 0 0 5% 3%">{{ comment.created_at | date:'d-m-Y' }}</small>
-                                                                    <div style="margin-left: 3%">{{ comment.problem | safe }}</div>
-                                                                    <div style="margin-left: 3%;margin-bottom: 2%">
-                                                                        <small type="button"
-                                                                               class="text-secondary mr-3">O'chirish</small>
-                                                                        <small type="button" class="text-secondary">Tahrirlash</small>
+                                                                   <div class="row problems">
+                                                                    <div class="col-0 mt-4">
+                                                                        <img src="{{ comment.author.avatar.url }}"
+                                                                             height="35" width="35"
+                                                                             style="border-radius: 40%">
                                                                     </div>
+                                                                    <div class="col-11">
+                                                                        <div style="margin-top: 2%; display: flex; flex-direction: column;">
+                                                                            <span class="d-block"
+                                                                                  style="margin: 0;padding: 0"><b
+                                                                                    style="margin: 0;padding: 0">{{ comment.author }}</b><div
+                                                                                    class="d-inline mx-2"></div><p
+                                                                                    class="text-secondary text-sm d-inline">{{ comment.created_at | format_date_and_time_difference }}</p></span>
+                                                                            <small style="margin: 0;padding:0">{{ comment.created_at | date:'d-m-Y' }}</small>
+                                                                            <div style="margin-top: 1%">{{ comment.problem | safe }}</div>
+                                                                            <form method="post" style="display: none"
+                                                                                   problem_id="{{ comment.pk }}"
+                                                                                  class="edit-problem-form"
+                                                                                  enctype="multipart/form-data">
+                                                                                {% csrf_token %}
+                                                                                {{ data.comment_form }}
+                                                                                <button type="submit"
+                                                                                        class="btn btn-md btn-secondary">
+                                                                                    Yuborish
+                                                                                </button>
+                                                                            </form>
+                                                                            <div><small  id="delete_problem_{{ comment.pk }}" type="button"
+                                                                                        class="text-secondary delete-problem-btn mr-3">O'chirish</small>
+                                                                                <small id="edit_problem_{{ comment.pk }}" type="button"
+                                                                                       class="edit-problem text-secondary">Tahrirlash</small>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
                                                                 {% endfor %}
                                                             </div>
-
+                                                        </div>
+                                                        <div id="actions_row_{{ data.phase_id }}" style="display:none;">
+                                                            {% for action in data.actions %}
+                                                                <div class="row">
+                                                                <div class="col-6">
+                                                                    <li class="m-4 border-bottom-1 border-dark">{{ action.author.get_full_name }}  {{ action.action | safe }}</li>
+                                                                </div>
+                                                                <div class="col-1">
+                                                                    <small>{{ action.date | format_date_and_time_difference }}</small>
+                                                                </div>
+                                                                </div>
+                                                            {% endfor %}
+                                                        </div>
 
                                                         </div>
                                                         <div class="modal-footer">
@@ -299,7 +335,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-4 col-md-12 col-sm-12 mt-3">
+                                            <div class="col-lg-4 col-md-12 col-sm-12 mt-3">
                             <div class="card">
                                 <div class="card-header bg-light h5 p-3"><span
                                         class="text-secondary text-primary p-1 bg-warning">Jarayonda</span></div>
@@ -339,7 +375,7 @@
                                                                 </div>
                                                                 <form method="post" class="add-file-forms"
                                                                       enctype="multipart/form-data"
-                                                                      id="add-file-form{{ data.phase_id }}"
+                                                                      id="add_file_form_{{ data.phase_id }}"
                                                                       style="display: none;margin-top: 5%">
                                                                     {% csrf_token %}
                                                                     {{ form.as_p }}
@@ -454,15 +490,15 @@
                                                             </div>
                                                             <p>Bajarilgan ishlar</p>
                                                             <div class="row mb-2">
-                                                                <div class="col-2 mx-1 btn btn-light active">Izohlar
+                                                                <div id="comments_{{ data.phase_id }}" class="col-2 actions-btn mx-1 btn btn-light active">Izohlar
                                                                 </div>
-                                                                <div class="col-2 mx-1 btn btn-light">Muammolar</div>
-                                                                <div class="col-2 mx-1 btn btn-light">So'nggi
+                                                                <div id="problems_{{ data.phase_id }}" class="col-2 mx-1 actions-btn btn btn-light">Muammolar</div>
+                                                                <div id="actions_{{ data.phase_id }}" class="col-2 mx-1 actions-btn btn btn-light">So'nggi
                                                                     harakatlar
                                                                 </div>
                                                             </div>
                                                             <div>
-                                                                <div class="row">
+                                                                <div class="row comments-input" style="margin-top: 2%">
                                                                     <div class="col-0"><span><img
                                                                             src="{{ user.avatar.url }}" width="35"
                                                                             height="35"
@@ -476,7 +512,7 @@
                                                                                   class="post-comment"
                                                                                   enctype="multipart/form-data">
                                                                                 {% csrf_token %}
-                                                                                {{ comment_form }}
+                                                                                {{ data.comment_form.as_p }}
                                                                                 <button type="submit"
                                                                                         class="btn btn-md btn-secondary">
                                                                                     Yozish
@@ -486,11 +522,10 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <h1>{{ data.comments | safe }}</h1>
-                                                            {% for comments in data.comments %}
-                                                                <div class="row">
+                                                            {% for comment in data.comments %}
+                                                                <div class="row commments">
                                                                     <div class="col-0 mt-4">
-                                                                        <img src="{{ comment.comment.author.avatar.url }}"
+                                                                        <img src="{{ comment.author.avatar.url }}"
                                                                              height="35" width="35"
                                                                              style="border-radius: 40%">
                                                                     </div>
@@ -498,37 +533,85 @@
                                                                         <div style="margin-top: 2%; display: flex; flex-direction: column;">
                                                                             <span class="d-block"
                                                                                   style="margin: 0;padding: 0"><b
-                                                                                    style="margin: 0;padding: 0"></b></span>
-                                                                            <small style="margin: 0;padding:0">{{ comment.cp.created_at | date:'d-m-Y' }}</small>
-                                                                            <div style="margin-top: 1%">{{ comment | safe }}</div>
-                                                                            <div><small type="button"
-                                                                                        class="text-secondary mr-3">O'chirish</small>
-                                                                                <small type="button"
-                                                                                       class="text-secondary">Tahrirlash</small>
-                                                                                {{ comment.comment_form }}
+                                                                                    style="margin: 0;padding: 0">{{ comment.author }}</b><div
+                                                                                    class="d-inline mx-2"></div><p
+                                                                                    class="text-secondary text-sm d-inline">{{ comment.created_at | format_date_and_time_difference }}</p></span>
+                                                                            <small style="margin: 0;padding:0">{{ comment.created_at | date:'d-m-Y' }}</small>
+                                                                            <div style="margin-top: 1%">{{ comment.comment | safe }}</div>
+                                                                            <form method="post" style="display: none"
+                                                                                   comment_id="{{ comment.pk }}"
+                                                                                  class="edit-comment-form"
+                                                                                  enctype="multipart/form-data">
+                                                                                {% csrf_token %}
+                                                                                {{ data.comment_form }}
+                                                                                <button type="submit"
+                                                                                        class="btn btn-md btn-secondary">
+                                                                                    Yuborish
+                                                                                </button>
+                                                                            </form>
+                                                                            <div><small  id="delete_comment_{{ comment.pk }}" type="button"
+                                                                                        class="text-secondary delete-comment-btn mr-3">O'chirish</small>
+                                                                                <small id="edit_comment_{{ comment.pk }}" type="button"
+                                                                                       class="edit-comment text-secondary">Tahrirlash</small>
                                                                             </div>
                                                                         </div>
 
                                                                     </div>
                                                                 </div>
                                                             {% endfor %}
+                                                        <div id="problems_row_{{ data.phase_id }}" class="problems" style="display: none">
                                                             <div style="margin-top: 2%">
                                                                 {% for comment in data.problems %}
-                                                                    <span class="d-block" style="margin: 0"><img
-                                                                            src="{{ comment.author.avatar.url }}"
-                                                                            height="35" width="35"
-                                                                            style="border-radius: 40%"><strong
-                                                                            class="ml-2">{{ comment.author.get_full_name }}</strong></span>
-                                                                    <small style="margin: 0 0 5% 3%">{{ comment.created_at | date:'d-m-Y' }}</small>
-                                                                    <div style="margin-left: 3%">{{ comment.comment | safe }}</div>
-                                                                    <div style="margin-left: 3%;margin-bottom: 2%">
-                                                                        <small type="button"
-                                                                               class="text-secondary mr-3">O'chirish</small>
-                                                                        <small type="button" class="text-secondary">Tahrirlash</small>
+                                                                   <div class="row problems">
+                                                                    <div class="col-0 mt-4">
+                                                                        <img src="{{ comment.author.avatar.url }}"
+                                                                             height="35" width="35"
+                                                                             style="border-radius: 40%">
                                                                     </div>
+                                                                    <div class="col-11">
+                                                                        <div style="margin-top: 2%; display: flex; flex-direction: column;">
+                                                                            <span class="d-block"
+                                                                                  style="margin: 0;padding: 0"><b
+                                                                                    style="margin: 0;padding: 0">{{ comment.author }}</b><div
+                                                                                    class="d-inline mx-2"></div><p
+                                                                                    class="text-secondary text-sm d-inline">{{ comment.created_at | format_date_and_time_difference }}</p></span>
+                                                                            <small style="margin: 0;padding:0">{{ comment.created_at | date:'d-m-Y' }}</small>
+                                                                            <div style="margin-top: 1%">{{ comment.problem | safe }}</div>
+                                                                            <form method="post" style="display: none"
+                                                                                   problem_id="{{ comment.pk }}"
+                                                                                  class="edit-problem-form"
+                                                                                  enctype="multipart/form-data">
+                                                                                {% csrf_token %}
+                                                                                {{ data.comment_form }}
+                                                                                <button type="submit"
+                                                                                        class="btn btn-md btn-secondary">
+                                                                                    Yuborish
+                                                                                </button>
+                                                                            </form>
+                                                                            <div><small  id="delete_problem_{{ comment.pk }}" type="button"
+                                                                                        class="text-secondary delete-problem-btn mr-3">O'chirish</small>
+                                                                                <small id="edit_problem_{{ comment.pk }}" type="button"
+                                                                                       class="edit-problem text-secondary">Tahrirlash</small>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
                                                                 {% endfor %}
                                                             </div>
-
+                                                        </div>
+                                                        <div id="actions_row_{{ data.phase_id }}" style="display:none;">
+                                                            {% for action in data.actions %}
+                                                                <div class="row">
+                                                                <div class="col-6">
+                                                                    <li class="m-4 border-bottom-1 border-dark">{{ action.author.get_full_name }}  {{ action.action | safe }}</li>
+                                                                </div>
+                                                                <div class="col-1">
+                                                                    <small>{{ action.date | format_date_and_time_difference }}</small>
+                                                                </div>
+                                                                </div>
+                                                            {% endfor %}
+                                                        </div>
 
                                                         </div>
                                                         <div class="modal-footer">
@@ -547,10 +630,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-4 col-md-12 col-sm-12 mt-3">
+                                            <div class="col-lg-4 col-md-12 col-sm-12 mt-3">
                             <div class="card">
                                 <div class="card-header bg-light h5 p-3"><span
-                                        class="text-secondary text-primary p-1 bg-success">Yakunlangan</span></div>
+                                        class="text-secondary text-success p-1 bg-success">Yakunlangan</span></div>
                                 <div class="card-body">
                                     {% for data in datas %}
                                         {% if data.phase_done_percentage == 100 %}
@@ -587,7 +670,7 @@
                                                                 </div>
                                                                 <form method="post" class="add-file-forms"
                                                                       enctype="multipart/form-data"
-                                                                      id="add-file-form{{ data.phase_id }}"
+                                                                      id="add_file_form_{{ data.phase_id }}"
                                                                       style="display: none;margin-top: 5%">
                                                                     {% csrf_token %}
                                                                     {{ form.as_p }}
@@ -702,15 +785,15 @@
                                                             </div>
                                                             <p>Bajarilgan ishlar</p>
                                                             <div class="row mb-2">
-                                                                <div class="col-2 mx-1 btn btn-light active">Izohlar
+                                                                <div id="comments_{{ data.phase_id }}" class="col-2 actions-btn mx-1 btn btn-light active">Izohlar
                                                                 </div>
-                                                                <div class="col-2 mx-1 btn btn-light">Muammolar</div>
-                                                                <div class="col-2 mx-1 btn btn-light">So'nggi
+                                                                <div id="problems_{{ data.phase_id }}" class="col-2 mx-1 actions-btn btn btn-light">Muammolar</div>
+                                                                <div id="actions_{{ data.phase_id }}" class="col-2 mx-1 actions-btn btn btn-light">So'nggi
                                                                     harakatlar
                                                                 </div>
                                                             </div>
                                                             <div>
-                                                                <div class="row">
+                                                                <div class="row comments-input" style="margin-top: 2%">
                                                                     <div class="col-0"><span><img
                                                                             src="{{ user.avatar.url }}" width="35"
                                                                             height="35"
@@ -724,7 +807,7 @@
                                                                                   class="post-comment"
                                                                                   enctype="multipart/form-data">
                                                                                 {% csrf_token %}
-                                                                                {{ comment_form }}
+                                                                                {{ data.comment_form.as_p }}
                                                                                 <button type="submit"
                                                                                         class="btn btn-md btn-secondary">
                                                                                     Yozish
@@ -735,8 +818,7 @@
                                                                 </div>
                                                             </div>
                                                             {% for comment in data.comments %}
-                                                                <div class="row">
-
+                                                                <div class="row commments">
                                                                     <div class="col-0 mt-4">
                                                                         <img src="{{ comment.author.avatar.url }}"
                                                                              height="35" width="35"
@@ -746,36 +828,85 @@
                                                                         <div style="margin-top: 2%; display: flex; flex-direction: column;">
                                                                             <span class="d-block"
                                                                                   style="margin: 0;padding: 0"><b
-                                                                                    style="margin: 0;padding: 0">{{ comment.author }}</b></span>
+                                                                                    style="margin: 0;padding: 0">{{ comment.author }}</b><div
+                                                                                    class="d-inline mx-2"></div><p
+                                                                                    class="text-secondary text-sm d-inline">{{ comment.created_at | format_date_and_time_difference }}</p></span>
                                                                             <small style="margin: 0;padding:0">{{ comment.created_at | date:'d-m-Y' }}</small>
                                                                             <div style="margin-top: 1%">{{ comment.comment | safe }}</div>
-                                                                            <div><small type="button"
-                                                                                        class="text-secondary mr-3">O'chirish</small>
-                                                                                <small type="button"
-                                                                                       class="text-secondary">Tahrirlash</small>
+                                                                            <form method="post" style="display: none"
+                                                                                   comment_id="{{ comment.pk }}"
+                                                                                  class="edit-comment-form"
+                                                                                  enctype="multipart/form-data">
+                                                                                {% csrf_token %}
+                                                                                {{ data.comment_form }}
+                                                                                <button type="submit"
+                                                                                        class="btn btn-md btn-secondary">
+                                                                                    Yuborish
+                                                                                </button>
+                                                                            </form>
+                                                                            <div><small  id="delete_comment_{{ comment.pk }}" type="button"
+                                                                                        class="text-secondary delete-comment-btn mr-3">O'chirish</small>
+                                                                                <small id="edit_comment_{{ comment.pk }}" type="button"
+                                                                                       class="edit-comment text-secondary">Tahrirlash</small>
                                                                             </div>
                                                                         </div>
 
                                                                     </div>
                                                                 </div>
                                                             {% endfor %}
+                                                        <div id="problems_row_{{ data.phase_id }}" class="problems" style="display: none">
                                                             <div style="margin-top: 2%">
                                                                 {% for comment in data.problems %}
-                                                                    <span class="d-block" style="margin: 0"><img
-                                                                            src="{{ comment.author.avatar.url }}"
-                                                                            height="35" width="35"
-                                                                            style="border-radius: 40%"><strong
-                                                                            class="ml-2">{{ comment.author.get_full_name }}</strong></span>
-                                                                    <small style="margin: 0 0 5% 3%">{{ comment.created_at | date:'d-m-Y' }}</small>
-                                                                    <div style="margin-left: 3%">{{ comment.comment | safe }}</div>
-                                                                    <div style="margin-left: 3%;margin-bottom: 2%">
-                                                                        <small type="button"
-                                                                               class="text-secondary mr-3">O'chirish</small>
-                                                                        <small type="button" class="text-secondary">Tahrirlash</small>
+                                                                   <div class="row problems">
+                                                                    <div class="col-0 mt-4">
+                                                                        <img src="{{ comment.author.avatar.url }}"
+                                                                             height="35" width="35"
+                                                                             style="border-radius: 40%">
                                                                     </div>
+                                                                    <div class="col-11">
+                                                                        <div style="margin-top: 2%; display: flex; flex-direction: column;">
+                                                                            <span class="d-block"
+                                                                                  style="margin: 0;padding: 0"><b
+                                                                                    style="margin: 0;padding: 0">{{ comment.author }}</b><div
+                                                                                    class="d-inline mx-2"></div><p
+                                                                                    class="text-secondary text-sm d-inline">{{ comment.created_at | format_date_and_time_difference }}</p></span>
+                                                                            <small style="margin: 0;padding:0">{{ comment.created_at | date:'d-m-Y' }}</small>
+                                                                            <div style="margin-top: 1%">{{ comment.problem | safe }}</div>
+                                                                            <form method="post" style="display: none"
+                                                                                   problem_id="{{ comment.pk }}"
+                                                                                  class="edit-problem-form"
+                                                                                  enctype="multipart/form-data">
+                                                                                {% csrf_token %}
+                                                                                {{ data.comment_form }}
+                                                                                <button type="submit"
+                                                                                        class="btn btn-md btn-secondary">
+                                                                                    Yuborish
+                                                                                </button>
+                                                                            </form>
+                                                                            <div><small  id="delete_problem_{{ comment.pk }}" type="button"
+                                                                                        class="text-secondary delete-problem-btn mr-3">O'chirish</small>
+                                                                                <small id="edit_problem_{{ comment.pk }}" type="button"
+                                                                                       class="edit-problem text-secondary">Tahrirlash</small>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
                                                                 {% endfor %}
                                                             </div>
-
+                                                        </div>
+                                                        <div id="actions_row_{{ data.phase_id }}" style="display:none;">
+                                                            {% for action in data.actions %}
+                                                                <div class="row">
+                                                                <div class="col-6">
+                                                                    <li class="m-4 border-bottom-1 border-dark">{{ action.author.get_full_name }}  {{ action.action | safe }}</li>
+                                                                </div>
+                                                                <div class="col-1">
+                                                                    <small>{{ action.date | format_date_and_time_difference }}</small>
+                                                                </div>
+                                                                </div>
+                                                            {% endfor %}
+                                                        </div>
 
                                                         </div>
                                                         <div class="modal-footer">
@@ -804,7 +935,7 @@
             </div>
 
 
-            <div class="col-lg-4 col-md-12 col-sm-12 border" style="height: 100dvh">
+            <div class="col-lg-4 col-md-12 col-sm-12 border">
                 <table class="table table-bordered">
                     <thead>
                     <tr>

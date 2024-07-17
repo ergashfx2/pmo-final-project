@@ -101,7 +101,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {% for project in projects %}
+                        {% for project in projects.object_list %}
                              <tr class="datas" data-url="{% url 'get-project' project.pk %}">
                                 <td>{{ forloop.counter }}</td>
                                 <td class="text-center">
@@ -123,6 +123,29 @@
                         {% endfor %}
                         </tbody>
                     </table>
+<nav class="mt-3 mx-2" aria-label="Page navigation">
+  <ul class="pagination">
+    {% if projects.has_previous %}
+      <li class="page-item"><a class="page-link" href="?page={{ projects.previous_page_number }}">Oldingi</a></li>
+    {% endif %}
+    {% for i in projects.paginator.page_range %}
+      {% if i <= 10 %}
+        <li class="page-item {% if projects.number == i %}active{% endif %}">
+          <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+        </li>
+      {% endif %}
+    {% endfor %}
+  
+    {% if projects.paginator.num_pages > 13 %}
+      <li class="page-item disabled"><span class="page-link">...</span></li>
+    {% endif %}
+
+    {% if projects.has_next %}
+      <li class="page-item"><a class="page-link" href="?page={{ projects.next_page_number }}">Keyingi</a></li>
+    {% endif %}
+  </ul>
+</nav>
+
                 </div>
 
             </div>

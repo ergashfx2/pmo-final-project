@@ -130,13 +130,16 @@ class Documents(models.Model):
 class Problems(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     author = models.ForeignKey(User, models.CASCADE)
-    title = models.CharField(max_length=250)
     project = models.ForeignKey(Project, models.CASCADE)
     phase = models.ForeignKey(Phase, models.CASCADE)
     problem = models.TextField()
-    status = models.CharField(max_length=30, choices=status_problem_choices, default='Yangi')
     created_at = models.DateTimeField(auto_now=True, editable=False)
     update_at = models.DateTimeField(auto_now=True)
+
+    def update_problem(self,problem):
+        self.problem = problem
+        self.update_at = timezone.now()
+        self.save(update_fields=['problem'])
 
 
 class Comments(models.Model):

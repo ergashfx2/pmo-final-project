@@ -14,6 +14,41 @@ function getCookie(name) {
 }
 
 
+var click_to_close = false
+document.addEventListener('click', function (e) {
+    document.querySelectorAll('.post-comment').forEach(value => {
+        if (click_to_close === true) {
+            if (!e.target.classList.contains('comment-input') && !e.target.classList.contains('post-comment')) {
+                let parent = value.parentNode
+                let parent_style = parent.style.display.toString()
+                if (parent_style === 'block') {
+                    let child_1 = value.parentNode.parentNode.children.item(1)
+                    console.log(value)
+                    let child_2 = value.parentNode.parentNode.children.item(0)
+                    child_1.style.display = 'none'
+                    child_2.style.display = 'block'
+                }
+            }
+        }
+    })
+    document.querySelectorAll('.post-problem').forEach(value => {
+        if (click_to_close === true) {
+            if (!e.target.classList.contains('comment-input') && !e.target.classList.contains('post-problem')) {
+                let parent = value.parentNode
+                let parent_style = parent.style.display.toString()
+                if (parent_style === 'block') {
+                    let child_1 = value.parentNode.parentNode.children.item(1)
+                    console.log(value)
+                    let child_2 = value.parentNode.parentNode.children.item(0)
+                    child_1.style.display = 'none'
+                    child_2.style.display = 'block'
+                }
+            }
+        }
+    })
+})
+
+
 document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll('.p-files').forEach(value => {
         value.addEventListener('click', function () {
@@ -23,7 +58,6 @@ document.addEventListener("DOMContentLoaded", function () {
     redirecting()
     problemsManager();
     commentsManager();
-    deleteFiles();
     change_table();
     initTabs();
     initTaskManager();
@@ -55,6 +89,95 @@ function redirecting() {
     });
 }
 
+function delete_files() {
+
+    document.querySelectorAll('.delete-files').forEach(value => {
+        value.addEventListener('click', function () {
+            let phase_id = value.getAttribute('phase_id');
+            let files = document.getElementById(`files${phase_id}`);
+            let children = Array.from(files.children);
+
+            children.forEach(child => {
+                let input = document.createElement('input');
+                input.classList.add('del-files');
+                input.type = 'checkbox';
+                input.id = child.id;
+                files.insertBefore(input, child);
+            });
+
+            let confirm_btn = document.createElement('button')
+            let cancel_btn = document.createElement('button')
+            confirm_btn.classList.add('btn', 'btn-danger', 'del-confirm')
+            cancel_btn.classList.add('btn', 'btn-secondary', 'cancel-delete-file')
+            confirm_btn.innerText = "O'chirish"
+            cancel_btn.innerText = "Bekor qilish"
+            confirm_btn.style.marginTop = '1%'
+            cancel_btn.style.marginTop = '1%'
+            confirm_btn.style.height = '20%'
+            cancel_btn.style.height = '20%'
+            files.parentNode.appendChild(confirm_btn)
+            files.parentNode.appendChild(cancel_btn)
+            document.querySelectorAll('.del-files').forEach(value => {
+                value.addEventListener('change', listen_del_files)
+            })
+
+            confirm_btn.addEventListener('click', function (e) {
+                confirm_btn.parentNode.removeChild(confirm_btn)
+                let conf_final_btn = document.createElement('button')
+                conf_final_btn.classList.add('btn', 'btn-danger')
+                conf_final_btn.innerText = 'Tasdiqlayman'
+                conf_final_btn.style.marginTop = '1%'
+                conf_final_btn.style.height = '20%'
+                files.parentNode.insertBefore(conf_final_btn, cancel_btn)
+                conf_final_btn.addEventListener('click', function () {
+                    sendPostRequest2('delete-files/', {'datas': delFiles}).then(res => {
+                        document.querySelectorAll('.del-files').forEach(value => value.parentNode.removeChild(value))
+                        delFiles.forEach(value => {
+                            document.getElementById(value).remove()
+                            conf_final_btn.remove()
+                            cancel_btn.remove()
+                        })
+                    })
+                })
+                cancel_btn.addEventListener('click', function () {
+                    delFiles = []
+                    document.querySelectorAll('.del-files').forEach(value => value.parentNode.removeChild(value))
+                    conf_final_btn.remove()
+                    cancel_btn.remove()
+
+
+                })
+
+            })
+                            cancel_btn.addEventListener('click', function () {
+                    delFiles = []
+                    document.querySelectorAll('.del-files').forEach(value => value.parentNode.removeChild(value))
+                    confirm_btn.remove()
+                    cancel_btn.remove()
+
+
+                })
+
+        });
+    });
+}
+
+
+delete_files()
+var delFiles = []
+
+function listen_del_files(e) {
+    let file = e.target
+    if (file.checked === true) {
+        delFiles.push(file.id);
+    } else {
+        delFiles = delFiles.filter(item => item !== file.id);
+    }
+    console.log(delFiles)
+
+
+}
+
 
 function initTabs() {
     const tabs = document.querySelectorAll('.nav-tabs a[data-toggle="tab"]');
@@ -75,25 +198,6 @@ function initTabs() {
     });
 
     activateStoredTab();
-}
-
-function deleteFiles() {
-    let delFiles = [];
-    const all_delete_buttons = document.querySelectorAll('.delete-button');
-    const selectedFiles = document.querySelectorAll('.del-files');
-    selectedFiles.forEach(file => {
-        file.addEventListener('change', function () {
-            if (file.checked === true) {
-                delFiles.push(file.id);
-            } else {
-                delFiles = delFiles.filter(item => item !== file.id);
-            }
-        });
-    });
-    document.getElementById('del-confirm').addEventListener('click', function () {
-        sendPostRequest('delete-files/', {'datas': delFiles})
-        location.reload()
-    });
 }
 
 
@@ -131,7 +235,7 @@ function initTaskManager() {
 function document_listener() {
     document.querySelectorAll('.add-file').forEach(value => {
         value.addEventListener('click', function (index) {
-            let form = document.getElementById(`add-file-form${value.getAttribute('phase_id')}`)
+            let form = document.getElementById(`add_file_form_${value.getAttribute('phase_id')}`)
             let input = form.children.item(1).children.item(1)
             input.click()
             input.addEventListener('change', document_change_listener)
@@ -158,7 +262,8 @@ function document_change_listener(event) {
     })
         .then(res => res.json())
         .then(res => {
-            let phase_id = form.id.split('-').pop().match(/\d+/)[0];
+            let phase_id = form.id.split('_')[3];
+            console.log(phase_id)
             let docs = document.getElementById('files' + phase_id);
             let newDoc = document.createElement('div');
             newDoc.innerHTML = `
@@ -174,11 +279,8 @@ function document_change_listener(event) {
             docs.appendChild(newDoc);
 
             newDoc.addEventListener('click', function () {
-                downloadFile(newDoc.firstChild.id);
+                downloadFile(newDoc.children.item(0).id);
             });
-
-            form.reset();
-            console.log(formData);
         })
         .catch(error => {
             console.error('Error:', error);
@@ -257,7 +359,7 @@ function phase_adder() {
 `;
             parent.appendChild(newDiv)
             document.getElementById('add-phase-btn-submit').addEventListener('click', function () {
-                console.log('clicked')
+
                 let phase = document.getElementById('new-phase-input').value;
                 let p_array = window.location.href.split('/');
                 let p_id = p_array[p_array.length - 1]
@@ -288,10 +390,10 @@ function phase_adder() {
 phase_adder()
 
 
-function delete_comment(){
+function delete_comment() {
     let comment_id
     document.querySelectorAll('.delete-comment-btn').forEach(value => {
-        value.addEventListener('click',function (){
+        value.addEventListener('click', function () {
             comment_id = value.id.split('_')[2]
             let parent = value.parentNode
             parent.style.display = 'none'
@@ -300,13 +402,13 @@ function delete_comment(){
                                                                                         class="text-secondary delete-comment-btn mr-3">Tasdiqlash</small><small  id="delete_comment_cancel" type="button"
                                                                                         class="text-secondary delete-comment-btn mr-3">Bekor qilish</small>`
             value.parentNode.parentNode.appendChild(newDiv)
-        document.getElementById('delete_comment_cancel').addEventListener('click',function (e){
-            let value = e.target
-            value.parentNode.remove()
-            parent.style.display = 'block'
-        })
-            document.getElementById('delete_comment_confirm').addEventListener('click',function (e){
-                fetch(`delete-comment/${comment_id}`).then(res=>{
+            document.getElementById('delete_comment_cancel').addEventListener('click', function (e) {
+                let value = e.target
+                value.parentNode.remove()
+                parent.style.display = 'block'
+            })
+            document.getElementById('delete_comment_confirm').addEventListener('click', function (e) {
+                fetch(`delete-comment/${comment_id}`).then(res => {
                     let parent = e.target.parentNode.parentNode.parentNode.parentNode
                     parent.parentNode.removeChild(parent)
                 })
@@ -316,6 +418,35 @@ function delete_comment(){
 }
 
 delete_comment()
+
+function delete_problem() {
+    let problem_id
+    document.querySelectorAll('.delete-problem-btn').forEach(value => {
+        value.addEventListener('click', function () {
+            problem_id = value.id.split('_')[2]
+            let parent = value.parentNode
+            parent.style.display = 'none'
+            let newDiv = document.createElement('div')
+            newDiv.innerHTML = `<small  id="delete_problem_confirm" type="button"
+                                                                                        class="text-secondary delete-problem-btn mr-3">Tasdiqlash</small><small  id="delete_problem_cancel" type="button"
+                                                                                        class="text-secondary delete-problem-btn mr-3">Bekor qilish</small>`
+            value.parentNode.parentNode.appendChild(newDiv)
+            document.getElementById('delete_problem_cancel').addEventListener('click', function (e) {
+                let value = e.target
+                value.parentNode.remove()
+                parent.style.display = 'block'
+            })
+            document.getElementById('delete_problem_confirm').addEventListener('click', function (e) {
+                fetch(`delete-problem/${problem_id}`).then(res => {
+                    let parent = e.target.parentNode.parentNode.parentNode.parentNode
+                    parent.parentNode.removeChild(parent)
+                })
+            })
+        })
+    })
+}
+
+delete_problem()
 
 function click_tr_handler(event) {
     const value = event.currentTarget;
@@ -368,16 +499,6 @@ function click_tr_handler(event) {
 }
 
 initTaskManager()
-
-function delete_files() {
-    document.querySelectorAll('.delete-files').forEach(value => {
-        value.addEventListener('click', function () {
-            console.log(document.body.classList)
-        })
-    })
-}
-
-delete_files()
 
 function initPhaseActions() {
     let phaseId = null;
@@ -482,16 +603,13 @@ function commentInputManager(event) {
     let comment = event.target
     comment.parentNode.children.item(0).style.display = 'none'
     comment.parentNode.children.item(1).style.display = 'block'
+    click_to_close = true
 
 }
 
 function commentsManager() {
     let comment_inputs = document.querySelectorAll('.comment-input');
-    let delete_comments = document.querySelectorAll('.delete-comment');
-    let edit_comments = document.querySelectorAll('.edit-comment ');
-    var comment
     var parent
-    var comment_id
     comment_inputs.forEach(comment => {
         comment.addEventListener('click', commentInputManager)
         comment.addEventListener('click', function () {
@@ -499,32 +617,41 @@ function commentsManager() {
         })
     })
     document.querySelectorAll('.post-comment').forEach(form => {
-        form.addEventListener('submit', function (e) {
-            e.preventDefault()
-            let formData = new FormData(form)
-            let phase = e.target.getAttribute('phase_id')
-            let url = `post-comment/${phase}`
-            console.log(url)
-            fetch(`${url}`, {
-                method: 'POST',
-                headers: {
-                    'X-CSRFToken': form.csrfmiddlewaretoken.value
-                },
-                body: formData,
-            })
-                .then(res => res.json().then(res => {
-                    console.log(res)
-                    comment_id = res.comment_id
-                    let div = document.createElement('div')
-                    let div1 = document.createElement('div')
-                    let div2 = document.createElement('div')
-                    div.classList.add('row')
-                    div1.classList.add('col-0')
-                    div2.classList.add('col-11')
-                    let date = formatDateAndTimeDifference(res.comment_date).split('_')
-                    div1.innerHTML = `
+        form.addEventListener('submit', post_comment)
+    })
+
+}
+
+
+function post_comment(e) {
+    let form = e.target
+    e.preventDefault()
+    let formData = new FormData(form)
+    let summernote = form.children.item(2).querySelector('iframe').contentDocument.querySelector('body').getElementsByClassName('note-editing-area').item(0).children.item(2)
+    let phase = e.target.getAttribute('phase_id')
+    formData.append('comment', summernote.innerHTML)
+    let url = `post-comment/${phase}`
+    console.log(url)
+    fetch(`${url}`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': form.csrfmiddlewaretoken.value
+        },
+        body: formData,
+    })
+        .then(res => res.json().then(res => {
+            console.log(res)
+            comment_id = res.comment_id
+            let div = document.createElement('div')
+            let div1 = document.createElement('div')
+            let div2 = document.createElement('div')
+            div.classList.add('row')
+            div1.classList.add('col-0')
+            div2.classList.add('col-11')
+            let date = formatDateAndTimeDifference(res.comment_date).split('_')
+            div1.innerHTML = `
                                     <span><img src=${res.author_avatar} height="35" width="35" style="border-radius: 40%"></span>`
-                        div2.innerHTML = `
+            div2.innerHTML = `
                                    <div style="margin-top: 2%; display: flex; flex-direction: column;">
     <span class="d-block" style="margin: 0;padding: 0"><b style="margin: 0;padding: 0">${res.author_name}</b><div class="d-inline mx-2"></div><p class="text-sm text-secondary d-inline">${date[0]}</p></span>
     <small style="margin: 0;padding:0">${date[1].split('T')[0].split('-').reverse().join('-')}</small>
@@ -532,94 +659,109 @@ function commentsManager() {
     <div><small id="delete_comment_${res.comment_id}"  type="button" class="text-secondary delete-comment-btn  mr-3">O'chirish</small>        <small id="edit_comment_${res.comment_id}" type="button" class="text-secondary edit-comment">Tahrirlash</small></div>
 </div>
 `
-                    let form2 = document.createElement('form')
-                    form2.method = 'post'
-                    form2.enctype="multipart/form-data"
-                    form2.classList.add('edit-comment-form')
-                    form2.setAttribute('comment_id',comment_id)
-                    form2.style.display = 'none'
-                    let div3 = document.createElement('div')
-                    div3.innerHTML = `${res.form.innerHTML}`
-                    form2.innerHTML = `<input type="hidden" name="csrfmiddlewaretoken" value="eUlbeAMl7MACovcIOsvIKWuYHo3i77HNENX49HRtKTrLtrzOx1gyuJkzxeof9lLC">${res.form}<button type="submit" class="btn btn-md btn-secondary">
+            let form2 = document.createElement('form')
+            form2.method = 'post'
+            form2.enctype = "multipart/form-data"
+            form2.classList.add('edit-comment-form')
+            form2.setAttribute('comment_id', comment_id)
+            form2.style.display = 'none'
+            let div3 = document.createElement('div')
+            div3.innerHTML = `${res.form.innerHTML}`
+            form2.innerHTML = `<input type="hidden" name="csrfmiddlewaretoken" value="eUlbeAMl7MACovcIOsvIKWuYHo3i77HNENX49HRtKTrLtrzOx1gyuJkzxeof9lLC">${res.form}<button type="submit" class="btn btn-md btn-secondary">
                                                                                     Yuborish
                                                                                 </button>`
-                    div2.children.item(0).appendChild(form2)
-                    form2.addEventListener('submit',submit_edit_comment)
-                    console.log(div2)
-                    let children = div2.children.item(0).children.item(3)
-                    children.children.item(0).addEventListener('click',delete_comment)
-                    children.children.item(1).addEventListener('click',comments_listener)
-                    let comments_list = form.parentNode.parentNode.parentNode.parentNode.parentNode.children.item(8)
-                    div.appendChild(div1)
-                    div.appendChild(div2)
-                    comments_list.parentNode.appendChild(div)
-                    parent.children.item(0).style.display = 'block'
-                    parent.children.item(1).style.display = 'none'
+            div2.children.item(0).appendChild(form2)
+            form2.addEventListener('submit', submit_edit_comment)
+            console.log(div2)
+            let children = div2.children.item(0).children.item(3)
+            children.children.item(0).addEventListener('click', delete_comment)
+            children.children.item(1).addEventListener('click', comments_listener)
+            let comments_list = form.parentNode.parentNode.parentNode.parentNode.parentNode.children.item(8)
+            div.appendChild(div1)
+            div.appendChild(div2)
+            comments_list.parentNode.appendChild(div)
+            form.parentNode.parentNode.children.item(0).style.display = 'block'
+            form.parentNode.parentNode.children.item(1).style.display = 'none'
 
-                }))
-        })
-    })
-    edit_comments.forEach(value => {
-        value.addEventListener('click', function () {
-            comment = document.getElementById(value.classList[4]);
-            comment.innerHTML = `<textarea type="text" id="area${comment.id}"> ${comment.textContent.trim()} </textarea>`;
+        }))
+}
 
-            document.addEventListener('keypress', function (e) {
-                if (e.key === 'Enter') {
-                    sendPostRequest(`edit-comment/${comment.id}`, {'comment': comment.firstChild.value})
-                    comment.innerHTML = `${comment.firstChild.value}`
-                    comment = null
-                }
-            })
-        })
+function comments_listener(e) {
+    let value = e.target
+    let comment = value.parentNode.parentNode.children.item(2)
+    comment.style.display = 'none'
+    console.log(value.parentNode.parentNode.parentNode.querySelector('form').children.item(5))
+    let form = value.parentNode.parentNode.parentNode.querySelector('form')
+    form.style.display = 'block'
+    let summernote = form.children.item(5).querySelector('iframe').contentDocument.querySelector('body').getElementsByClassName('note-editing-area').item(0).children.item(2)
+    summernote.innerHTML = comment.innerHTML
+    form.id = 'edit-comment-form'
+    form.addEventListener('submit', submit_edit_comment)
+}
 
-    })
-    delete_comments.forEach(value => {
-        value.addEventListener('click', function () {
-            var comment_id = value.classList[4]
-            document.getElementById('confirm-delete-comment').addEventListener('click', function () {
-                fetch(`delete-comment/${comment_id}`).then(res => {
-                    location.reload()
-                })
-            })
+document.querySelectorAll('.edit-comment').forEach(value => {
+    value.addEventListener('click', comments_listener)
 
-        })
+})
+
+function problems_listener(e) {
+    let value = e.target
+    let comment = value.parentNode.parentNode.children.item(2)
+    comment.style.display = 'none'
+    console.log(value.parentNode.parentNode.parentNode.querySelector('form').children.item(5))
+    let form = value.parentNode.parentNode.parentNode.querySelector('form')
+    form.style.display = 'block'
+    let summernote = form.children.item(5).querySelector('iframe').contentDocument.querySelector('body').getElementsByClassName('note-editing-area').item(0).children.item(2)
+    summernote.innerHTML = comment.innerHTML
+    form.id = 'edit-problem-form'
+    form.addEventListener('submit', submit_edit_problem)
+}
+
+document.querySelectorAll('.edit-problem').forEach(value => {
+    value.addEventListener('click', problems_listener)
+
+})
+
+
+function submit_edit_comment(e) {
+    e.preventDefault()
+    let form = e.target
+    console.log(form.children.item(5).querySelector('iframe').contentDocument.querySelector('body'))
+    let summernote = form.children.item(5).querySelector('iframe').contentDocument.querySelector('body').getElementsByClassName('note-editing-area').item(0).children.item(2)
+    let c_id = form.getAttribute('comment_id')
+    let formData = new FormData(form)
+    formData.append('comment', summernote.innerHTML)
+    fetch(`edit-comment/${c_id}`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': form.csrfmiddlewaretoken.value
+        },
+        body: formData,
+    }).then(res => res.json()).then(res => {
+        console.log(res)
+        form.style.display = 'none'
+        console.log(form.parentNode)
+        form.parentNode.children.item(2).innerHTML = res.comment
+        form.parentNode.children.item(2).style.display = 'block'
     })
 }
 
-
-    function comments_listener(e){
-        let value = e.target
-        let comment = value.parentNode.parentNode.children.item(2)
-        comment.style.display = 'none'
-        let form = value.parentNode.parentNode.parentNode.querySelector('form')
-        form.style.display = 'block'
-        let summernote = form.children.item(1).children.item(4).querySelector('iframe').contentDocument.querySelector('body').getElementsByClassName('note-editing-area').item(0).children.item(2)
-        summernote.innerHTML = comment.innerHTML
-        form.id = 'edit-comment-form'
-        form.addEventListener('submit',submit_edit_comment)
-    }
-    document.querySelectorAll('.edit-comment').forEach(value => {
-        value.addEventListener('click',comments_listener)
-
-    })
-
-
-
-function submit_edit_comment(e){
+function submit_edit_problem(e) {
     e.preventDefault()
     let form = e.target
-            let summernote = form.children.item(1).children.item(4).querySelector('iframe').contentDocument.querySelector('body').getElementsByClassName('note-editing-area').item(0).children.item(2)
-    let c_id = form.getAttribute('comment_id')
+    console.log(form.children.item(5).querySelector('iframe').contentDocument.querySelector('body'))
+    let summernote = form.children.item(5).querySelector('iframe').contentDocument.querySelector('body').getElementsByClassName('note-editing-area').item(0).children.item(2)
+    console.log(summernote.innerHTML)
+    let c_id = form.getAttribute('problem_id')
     let formData = new FormData(form)
-    formData.append('comment',summernote.innerHTML)
-    fetch(`edit-comment/${c_id}`,{
-                method: 'POST',
-                headers: {
-                    'X-CSRFToken': form.csrfmiddlewaretoken.value
-                },
-                body: formData,
-            }).then(res=> res.json()).then(res=>{
+    formData.append('problem', summernote.innerHTML)
+    fetch(`edit-problem/${c_id}`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': form.csrfmiddlewaretoken.value
+        },
+        body: formData,
+    }).then(res => res.json()).then(res => {
         console.log(res)
         form.style.display = 'none'
         console.log(form.parentNode)
@@ -639,6 +781,54 @@ function phasesManager() {
 }
 
 phasesManager()
+
+function action_manager() {
+    document.querySelectorAll('.actions-btn').forEach(value => {
+        value.addEventListener('click', actions_btn)
+    })
+}
+
+action_manager()
+
+function actions_btn(e) {
+    let btn = e.target
+    let data = btn.id.split('_')
+    btn.parentNode.querySelectorAll('div').forEach(value => value.classList.remove('active'))
+    btn.classList.add('active')
+    var form
+    if (btn.parentNode.parentNode.querySelector('.post-comment')) {
+        form = btn.parentNode.parentNode.querySelector('.post-comment')
+    } else {
+        form = btn.parentNode.parentNode.querySelector('.post-problem')
+    }
+    if (data[0] === 'problems') {
+        console.log(data[0])
+        form.classList.add('post-problem')
+        form.classList.remove('post-comment')
+        form.removeEventListener('submit', post_comment)
+        form.addEventListener('submit', handle_problem_submit)
+        let row = document.getElementById(`problems_row_${data[1]}`)
+        row.parentNode.querySelectorAll('.commments').forEach(value => value.style.display = 'none')
+        document.getElementById(`problems_row_${data[1]}`).style.display = 'block'
+        document.getElementById(`actions_row_${data[1]}`).style.display = 'none'
+    }
+    if (data[0] === 'comments') {
+        console.log(data[0])
+        console.log(form)
+        let row = document.getElementById(`problems_row_${data[1]}`)
+        row.parentNode.querySelectorAll('.commments').forEach(value => value.style.display = 'flex')
+        document.getElementById(`problems_row_${data[1]}`).style.display = 'none'
+        form.removeEventListener('submit', handle_problem_submit)
+        form.addEventListener('submit', post_comment)
+        document.getElementById(`actions_row_${data[1]}`).style.display = 'none'
+    }
+    if (data[0] === 'actions') {
+        document.getElementById(`problems_row_${data[1]}`).style.display = 'none'
+        let row = document.getElementById(`actions_row_${data[1]}`)
+        row.parentNode.querySelectorAll('.commments').forEach(value => value.style.display = 'none')
+        document.getElementById(`actions_row_${data[1]}`).style.display = 'block'
+    }
+}
 
 function initTaskEdit() {
     const taskName = document.getElementById('task-edit-task-name');
@@ -729,6 +919,69 @@ function initCommentSystem() {
         sendPostRequest(`post-comment/${taskId}`, {'comment': comment.value});
         location.reload()
     });
+}
+
+function handle_problem_submit(e) {
+    let form = e.target
+    e.preventDefault()
+    let formData = new FormData(form)
+    let summernote = form.children.item(2).querySelector('iframe').contentDocument.querySelector('body').getElementsByClassName('note-editing-area').item(0).children.item(2)
+    let phase = e.target.getAttribute('phase_id')
+    formData.append('problem', summernote.innerHTML)
+    let url = `post-problem/${phase}`
+    console.log(url)
+    fetch(`${url}`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': form.csrfmiddlewaretoken.value
+        },
+        body: formData,
+    })
+        .then(res => res.json().then(res => {
+            console.log(res)
+            comment_id = res.comment_id
+            let div = document.createElement('div')
+            let div1 = document.createElement('div')
+            let div2 = document.createElement('div')
+            div.classList.add('row')
+            div1.classList.add('col-0')
+            div2.classList.add('col-11')
+            let date = formatDateAndTimeDifference(res.comment_date).split('_')
+            div1.innerHTML = `
+                                    <span><img src=${res.author_avatar} height="35" width="35" style="border-radius: 40%"></span>`
+            div2.innerHTML = `
+                                   <div style="margin-top: 2%; display: flex; flex-direction: column;">
+    <span class="d-block" style="margin: 0;padding: 0"><b style="margin: 0;padding: 0">${res.author_name}</b><div class="d-inline mx-2"></div><p class="text-sm text-secondary d-inline">${date[0]}</p></span>
+    <small style="margin: 0;padding:0">${date[1].split('T')[0].split('-').reverse().join('-')}</small>
+    <div style="margin-top: 1%">${res.comment}</div>
+    <div><small id="delete_problem_${res.comment_id}"  type="button" class="text-secondary delete-comment-btn  mr-3">O'chirish</small>        <small id="edit_problem_${res.comment_id}" type="button" class="text-secondary edit-comment">Tahrirlash</small></div>
+</div>
+`
+            let form2 = document.createElement('form')
+            form2.method = 'post'
+            form2.enctype = "multipart/form-data"
+            form2.classList.add('edit-comment-form')
+            form2.setAttribute('comment_id', comment_id)
+            form2.style.display = 'none'
+            let div3 = document.createElement('div')
+            div3.innerHTML = `${res.form.innerHTML}`
+            form2.innerHTML = `<input type="hidden" name="csrfmiddlewaretoken" value="eUlbeAMl7MACovcIOsvIKWuYHo3i77HNENX49HRtKTrLtrzOx1gyuJkzxeof9lLC">${res.form}<button type="submit" class="btn btn-md btn-secondary">
+                                                                                    Yuborish
+                                                                                </button>`
+            div2.children.item(0).appendChild(form2)
+            form2.addEventListener('submit', submit_edit_comment)
+            console.log(div2)
+            let children = div2.children.item(0).children.item(3)
+            children.children.item(0).addEventListener('click', delete_comment)
+            children.children.item(1).addEventListener('click', comments_listener)
+            let comments_list = form.parentNode.parentNode.parentNode.parentNode.parentNode.children.item(8)
+            div.appendChild(div1)
+            div.appendChild(div2)
+            comments_list.parentNode.appendChild(div)
+            form.parentNode.parentNode.children.item(0).style.display = 'block'
+            form.parentNode.parentNode.children.item(1).style.display = 'none'
+
+        }))
 }
 
 

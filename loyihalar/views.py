@@ -20,26 +20,43 @@ from django.http import HttpResponse, JsonResponse, Http404
 from django.core import serializers
 from utils import file_extensions
 import shutil
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 @login_required
 def all_projects(request):
-    projects = Project.objects.all()
+    projects = Project.objects.all().order_by('-project_start_date')
     phases = Phase.objects.all()
     tasks = Task.objects.all()
-    projects_serialized = serializers.serialize('json', projects)
+
+    p = Paginator(projects, 1)
+    page_number = request.GET.get('page')
+    try:
+        projects_page = p.get_page(page_number)
+    except PageNotAnInteger:
+        projects_page = p.page(1)
+    except EmptyPage:
+        projects_page = p.page(p.num_pages)
+
+    projects_serialized = serializers.serialize('json', projects_page.object_list)
     arr = json.loads(projects_serialized)
+
     for a in arr:
         project = Project.objects.get(pk=dict(a)['pk'])
         fields = dict(a)['fields']
-        fields['project_departments'] = [department.department_name for department in
-                                         project.project_departments.all()],
+        fields['project_departments'] = [department.department_name for department in project.project_departments.all()]
         fields['project_team'] = [man.get_full_name() for man in project.project_team.all()]
         fields['project_curator'] = project.project_curator.get_full_name()
         fields['project_blog'] = project.project_blog.blog_name
+
     projects_serialized_modified = json.dumps(arr)
-    return render(request, 'all_projects.html', context={'projects': projects, 'phases': phases, 'tasks': tasks,
-                                                         'projects_serialized': projects_serialized_modified})
+
+    return render(request, 'all_projects.html', context={
+        'projects': projects_page,
+        'phases': phases,
+        'tasks': tasks,
+        'projects_serialized': projects_serialized_modified
+    })
 
 
 @login_required
@@ -48,8 +65,16 @@ def myProjects(request):
         Q(project_manager__id=request.user.pk) |
         Q(project_curator__id=request.user.pk) |
         Q(project_team__username=request.user.username)
-    ).distinct()
-    return render(request, 'my-projects.html', context={'projects': projects})
+    ).order_by('-project_start_date').distinct()
+    p = Paginator(projects, 1)
+    page_number = request.GET.get('page')
+    try:
+        projects_page = p.get_page(page_number)
+    except PageNotAnInteger:
+        projects_page = p.page(1)
+    except EmptyPage:
+        projects_page = p.page(p.num_pages)
+    return render(request, 'my-projects.html', context={'projects': projects_page})
 
 
 @login_required
@@ -80,10 +105,11 @@ def DetailMyProjects(request, pk):
     form3 = TaskFormSet()
     project = Project.objects.get(pk=pk)
     datas = []
-    comment_form = CommentForm()
     comments = Comments.objects.filter(project_id=project.id)
     problems = Problems.objects.filter(project_id=project.id)
     phases = Phase.objects.filter(project_id=project.id)
+    comment_forms = {str(phase.id): CommentForm(initial={'phase': phase.id}) for phase in phases}
+    print(comment_forms)
     for phase in phases:
         datas.append({
             'phase': phase.phase_name,
@@ -92,7 +118,9 @@ def DetailMyProjects(request, pk):
             'tasks': Task.objects.filter(phase=phase.id),
             'documents': Documents.objects.filter(phase=phase.id),
             'comments': Comments.objects.filter(phase=phase),
-            'problems': Problems.objects.filter(phase=phase)
+            'problems': Problems.objects.filter(phase=phase),
+            'comment_form': comment_forms[str(phase.pk)],
+            'actions': Action.objects.filter(project=project.pk).order_by('-date')[:10]
         })
     if request.method == 'POST':
         form = AddFileForm(data=request.POST, files=request.FILES)
@@ -131,7 +159,7 @@ def DetailMyProjects(request, pk):
     return render(request, 'my-projects-detail.html',
                   context={'project': project, 'datas': datas, 'comments': comments, 'problems': problems,
                            'documents': documents, 'form': form, 'form2': form2,
-                           'form3': form3, 'project_id': pk, 'comment_form': comment_form})
+                           'form3': form3, 'project_id': pk})
 
 
 @login_required
@@ -185,10 +213,9 @@ def DeleteProject(request, pk):
 @login_required
 def add_phase(request, pk):
     data = json.loads(request.body)
-    print(data)
     project = get_object_or_404(Project, pk=pk)
     phase = Phase.objects.create(project=project, phase_name=data['phase_name'])
-    Action.objects.create(author_id=request.user.pk, project_id=project.pk,
+    action = Action.objects.create(author_id=request.user.pk, project_id=project.pk,
                           action=f"{project.project_name} nomli loyihaga {data['phase_name']} nomli faza qo'shdi")
     return JsonResponse(status=200, data={'phase': phase.phase_name, 'phase_id': phase.pk})
 
@@ -197,11 +224,11 @@ def add_phase(request, pk):
 def add_tasks(request, pk):
     if request.method == 'POST':
         datas = json.loads(request.body)
-        print(datas)
         for data in datas:
             task = Task.objects.create(project_id=Phase.objects.get(pk=pk).project.pk, phase_id=pk,
                                        task_name=data[0]['task_name'], task_manager=data[1]['task_manager'],
                                        task_deadline=data[2]['task_deadline'])
+            Action.objects.create(author_id=request.user.pk, project_id=task.project.pk,action=f"{task.project.project_name} loyihasiga <br>{task.task_name}</br> nomli vazifa qo'shdi")
             return JsonResponse(status=200, data={'success': True, 'task_id': task.pk})
     return JsonResponse(status=500, data={'message': "Method must be POST"})
 
@@ -241,7 +268,6 @@ def update_task(request, pk):
         data = json.loads(request.body)
         task = Task.objects.get(pk=pk)
         project = task.project
-        print(data)
         if data[3]['task_done_percentage']:
             update_task_percentage(task=task, user=request.user, phase=task.phase.pk,
                                    percentage=data[3]['task_done_percentage'], data=data)
@@ -252,7 +278,7 @@ def update_task(request, pk):
             task.task_manager = data[1]['task_manager']
             task.save()
             Action.objects.create(author_id=request.user.pk, project_id=project.pk,
-                                  action=f"{project.project_name} loyihasidagi {task.task_name} nomli taskni yangiladi.O'zgarishlar {task.task_name}=>{data[0]['task_name']},<br>{task.task_manager}=>{data[1]['task_manager']}<br>{task.task_deadline}=>{data[2]['task_deadline']}")
+                                  action=f"{project.project_name} loyihasidagi {task.task_name} nomli vazifasini yangiladi.O'zgarishlar {task.task_name}=>{data[0]['task_name']},<br>{task.task_manager}=>{data[1]['task_manager']}<br>{task.task_deadline}=>{data[2]['task_deadline']}")
             return JsonResponse(status=200, data={'status': 'ok', 'task_percentage': task.task_done_percentage})
 
 
@@ -286,7 +312,7 @@ def update_task_percentage(task, user, phase, percentage, data):
     project_obj.save()
     task = Task.objects.get(pk=task.pk)
     Action.objects.create(author_id=user.pk, project_id=task.project.pk,
-                          action=f"{task.project.project_name} loyihasidagi <strong>{task.task_name}</strong> taskini <strong>{percentage}</strong> foizga yakunladi")
+                          action=f"{task.project.project_name} loyihasidagi <strong>{task.task_name}</strong> vazifasini <strong>{percentage}</strong> foizga yakunladi")
 
 
 @login_required
@@ -294,7 +320,7 @@ def delete_task(request, pk):
     task = Task.objects.get(pk=pk)
     Task.objects.select_related(pk).filter(pk=pk).delete()
     Action.objects.create(author_id=request.user.pk, project_id=task.project.pk,
-                          action=f"{task.project.project_name} loyihasidagi <strong>{task.task_name}</strong> taskini o'chirdi")
+                          action=f"{task.project.project_name} loyihasidagi <strong>{task.task_name}</strong> vazifasini o'chirdi")
     return JsonResponse(status=200, data={'status': 'ok'})
 
 
@@ -341,16 +367,14 @@ def create_archive(request, pk):
 def post_comment(request, pk):
     form = CommentForm(request.POST, files=request.FILES)
     if request.method == 'POST' and form.is_valid():
-        print(form)
         comment = form.save(commit=False)
         comment.project = Phase.objects.get(pk=pk).project
         comment.author = request.user
         comment.phase = Phase.objects.get(pk=pk)
         form.save()
         project = Phase.objects.get(pk=pk).project
-        print(Comments.objects.get(pk=comment.pk).pk)
         Action.objects.create(author_id=request.user.pk, project_id=project.pk,
-                              action=f"{project.project_name} nomli loyihaga izoh yozdi.Izoh matni: <strong>{comment}</strong>")
+                              action=f"{project.project_name} nomli loyihaga izoh yozdi.Izoh matni: <strong>{comment.comment}</strong>")
         return JsonResponse(status=200, data={'comment_id': comment.pk, 'comment': comment.comment,
                                               'comment_date': comment.created_at,
                                               'author_avatar': comment.author.avatar.url,
@@ -366,7 +390,7 @@ def edit_comment(request, pk):
         updated = request.POST.get('comment')
         comment.update_comment(comment=updated)
         Action.objects.create(author_id=request.user.pk, project_id=project.pk,
-                              action=f"{project.project_name} nomli loyihadagi izohni tahrirladi. <br> Izohning asl holati <strong>{comment.comment}</strong> va o'zgartirilgan holati <strong>{comment}</strong> ")
+                              action=f"{project.project_name} nomli loyihadagi izohni tahrirladi. <br> Izohning asl holati <strong>{comment.comment}</strong> va o'zgartirilgan holati <strong>{comment.comment}</strong> ")
         return JsonResponse(status=200, data={'comment': comment.comment})
     return JsonResponse(status=404, data={'message': 'Not found'})
 
@@ -381,41 +405,48 @@ def delete_comment(request, pk):
                           action=f"{project.project_name} nomli loyihadagi izohni o'chirdi.Izoh matni :<strong> {comment.comment}</strong>")
     return redirect('my-projects-detail', prkey)
 
-
+from .forms import ProblemForm,ProlemEditForm
 @login_required
 def post_problem(request, pk):
-    if request.method == 'POST':
-        problem = json.loads(request.body)['problem']
-        Problems.objects.create(project_id=pk, author=request.user, problem=problem)
-        project = Project.objects.get(pk=pk)
+    form = ProblemForm(request.POST,request.FILES)
+    if request.method == 'POST' and form.is_valid():
+        phase = Phase.objects.get(pk=pk)
+        problem = form.save(commit=False)
+        problem.project = Phase.objects.get(pk=pk).project
+        problem.author = request.user
+        problem.phase =phase
+        form.save()
+        project = Project.objects.get(pk=phase.project.pk)
         Action.objects.create(author_id=request.user.pk, project_id=project.pk,
-                              action=f"{project.project_name} nomli loyihaga muammoli izoh yozdi.Izoh matni <strong>{project}</strong>")
-        return redirect('my-projects-detail', pk)
-    return redirect('my-projects-detail', pk)
+                              action=f"{project.project_name} nomli loyihaga muammoli izoh yozdi.Izoh matni <strong>{problem.problem}</strong>")
+        return JsonResponse(status=200, data={'comment_id': problem.pk, 'comment': problem.problem,
+                                              'comment_date': problem.created_at,
+                                              'author_avatar': problem.author.avatar.url,
+                                              'author_name': problem.author.get_full_name(), 'form': form.as_div()})
 
 
 @login_required
 def edit_problem(request, pk):
     if request.method == 'POST':
-        problem = json.loads(request.body)['problem']
-        problem2 = Problems.objects.get(pk=pk)
-        Problems.objects.filter(pk=pk).update(problem=problem)
-        pk = Problems.objects.get(pk=pk).project.pk
-        project = Project.objects.get(pk=pk)
+        problem = Problems.objects.get(pk=pk)
+        project = problem.project
+        updated = request.POST.get('problem')
         Action.objects.create(author_id=request.user.pk, project_id=project.pk,
-                              action=f"{project.project_name} nomli loyihadagi muammoli izohni tahrirladi. <br> Izohning asl holati <strong>{problem2.problem}</strong> va o'zgartirilgan holati <strong>{problem}</strong> ")
-        return redirect('my-projects-detail', pk)
-    return redirect('my-projects-detail', pk)
+                              action=f"{project.project_name} nomli loyihadagi izohni tahrirladi. <br> Izohning asl holati <strong>{problem.problem}</strong> va o'zgartirilgan holati <strong>{updated}</strong> ")
+        problem.update_problem(problem=updated)
+        return JsonResponse(status=200, data={'comment': problem.problem})
+    return JsonResponse(status=404, data={'message': 'Not found'})
 
 
 @login_required
 def delete_problem(request, pk):
-    pk = Problems.objects.get(pk=pk).project.pk
-    project = Project.objects.get(pk=pk)
-    Action.objects.create(author_id=request.user.pk, project_id=project.pk,
-                          action=f"{project.project_name} nomli loyihadagi muammoli izohni o'chirdi")
-    Problems.objects.filter(pk=pk).delete()
-    return redirect('my-projects-detail', pk)
+    prkey = Problems.objects.get(pk=pk).project.pk
+    project = Project.objects.get(pk=prkey)
+    problem = Problems.objects.get(pk=pk)
+    Problems.objects.get(pk=pk).delete()
+    Action.objects.create(author_id=request.user.pk, project_id=prkey,
+                          action=f"{project.project_name} nomli loyihadagi izohni o'chirdi.Izoh matni :<strong> {problem.problem}</strong>")
+    return redirect('my-projects-detail', prkey)
 
 
 @login_required
