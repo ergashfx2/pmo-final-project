@@ -1,191 +1,1084 @@
 {% extends 'base.html' %}
+{% load static %}
 {% load filters %}
 {% block content %}
+
     <div class="container-fluid">
         <section class="content-header">
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        {% for pr in project %}
-                           <h1> <strong>{{ pr.project_name }}</strong> - loyihasi haqida batafsil ma'lumot</h1>
-                        {% endfor %}
-                    </div>
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
-                        </ol>
+
+                        <h1><strong>{{ project.project_name }}</strong> - loyihasi haqida batafsil ma'lumot</h1>
+
                     </div>
                 </div>
             </div>
         </section>
-        <section class="content">
-
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Loyiha haqida</h3>
-
-                    <div class="card-tools">
-                        <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                            <i class="fas fa-minus"></i>
-                        </button>
-                        <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
-                            <i class="fas fa-times"></i>
-                        </button>
+        <div class="row bg-white">
+            <div class="col-lg-8 col-sm-12 col-md-12 col-lg-8 border">
+                <div class="row mt-3 p-3">
+                    <div class="col-lg-4 col-md-12 col-sm-12">
+                        <div class="card bg-light text-center" style="box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;">
+                            <div class="card-header"><h5 class="text-secondary">Loyiha budgeti</h5>
+                                <strong>{{ project.project_budget | format_number }}</strong></div>
+                        </div>
                     </div>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-12 col-md-12 col-lg-8 order-2 order-md-1">
-                            <div class="row">
-                                <div class="col-12 col-sm-4">
-                                    <div class="info-box bg-light">
-                                        <div class="info-box-content">
-                                            <span class="info-box-text text-center text-muted">Loyiha budjeti</span>
-                                            {% for ph in project %}
-                                                <span class="info-box-number text-center text-muted mb-0">{{ ph.project_budget | format_number }}</span>
-                                            {% endfor %}
-                                        </div>
+                    <div class="col-lg-4 col-md-12 col-sm-12">
+                        <div class="card bg-light " style="box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;">
+                            <div class="card-header text-center"><h5 class="text-secondary">Sarflangan summa</h5>
+                                <strong>{{ project.project_spent_money | format_number }}</strong></div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-12 col-sm-12">
+                        <div class="card bg-light" style="box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;">
+                            <div class="card-header text-center"><h5 class="text-secondary">Tugash sanasi</h5>
+                                <strong>{{ project.project_deadline | format_date }}</strong></div>
+
+                        </div>
+                    </div>
+                    <h4 class="text-secondary bg-light text-bold mt-4 border-top border-bottom p-2"
+                        style="width: 100dvw">Ushbu loyihaga tegishli ma'lumotlar</h4>
+                    <div class="row" style="width: 100dvw;">
+                        <div class="col-lg-4 col-md-12 col-sm-12 mt-3">
+                            <div class="card">
+                                <div class="card-header bg-light h5 p-3"><span
+                                        class="text-secondary text-primary p-1 bg-info">Yangi</span></div>
+                                <div class="card-body">
+                                    {% for data in datas %}
+                                        {% if data.phase_done_percentage == 0 %}
+                                            <div class="d-block phases-text border-bottom main-row row">
+                                                <h4 phase_id="{{ data.phase_id }}" type="button" data-toggle="modal"
+                                                    data-target="#modal{{ data.phase_id }}" data-backdrop="static"
+                                                    class="text-secondary col-10 d-inline phase_text">{{ data.phase }}</h4>
+                                                <span type="button" class="col-1 btn-group dropright"><i
+                                                        class="fa-solid fa-bars" data-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false"></i>
+                                            <div class="dropdown-menu">
+                                                <a phase_id="{{ data.phase_id }}" class="dropdown-item edit-phase-btn" ><i class="fa-solid fa-pen-to-square"></i> O'zgartirish</a>
+                                                <a phase_id="{{ data.phase_id }}" data-toggle="modal" data-target="#phase{{ data.phase_id }}" class="dropdown-item delete-phase-btn"><i class="fa-solid fa-trash"></i> O'chirish</a>
+
+                                            </div>
+                                            </span>
+                                                                                                        <div id="phase{{ data.phase_id }}" class="modal fade" role="dialog">
+                            <div class="modal-dialog modal-sm modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                        <i class="fa-solid fa-triangle-exclamation btn-lg" style="font-size: 5dvh"></i>
+                                                                                                    <h4>Chindan o'chirasizmi ?</h4>
                                     </div>
-                                </div>
-                                <div class="col-12 col-sm-4">
-                                    <div class="info-box bg-light">
-                                        <div class="info-box-content">
-                                            <span class="info-box-text text-center text-muted">Sarflangan pul</span>
-                                            {% for ph in project %}
-                                                <span class="info-box-number text-center text-muted mb-0">{{ ph.project_spent_money | format_number }}</span>
-                                            {% endfor %}
-                                        </div>
+                                    <div class="modal-footer">
+                                        <button  class="btn btn-danger delete-phase-confirm">O'chirish</button>
+                                        <button data-dismiss="modal" class="btn btn-secondary">Bekor qilish</button>
                                     </div>
-                                </div>
-                                <div class="col-12 col-sm-4">
-                                    <div class="info-box bg-light">
-                                        <div class="info-box-content">
-                                            <span class="info-box-text text-center text-muted">Tugash vaqti</span>
-                                            {% for ph in project %}
-                                                <span class="info-box-number text-center text-muted mb-0">{{ ph.project_deadline | format_date }}</span>
-                                            {% endfor %}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                                  <div class="row mt-4">
-            <nav class="w-100">
-              <div class="nav nav-tabs" id="product-tab" role="tablist">
-                <a class="nav-item nav-link active" id="product-desc-tab" data-toggle="tab" href="#product-desc" role="tab" aria-controls="product-desc" aria-selected="true">Ma'lumot</a>
-                <a class="nav-item nav-link" id="product-comments-tab" data-toggle="tab" href="#product-comments" role="tab" aria-controls="product-comments" aria-selected="false">Izohlar</a>
-                <a class="nav-item nav-link" id="product-rating-tab" data-toggle="tab" href="#product-rating" role="tab" aria-controls="product-rating" aria-selected="false">Muammolar</a>
-              </div>
-            </nav>
-            <div class="tab-content p-3" id="nav-tabContent">
-              <div class="tab-pane fade show active" id="product-desc" role="tabpanel" aria-labelledby="product-desc-tab">
-                                                              {% for data in datas %}
-                                                <div class="timeline">
-                                                    <div class="time-label">
-                                                        <div class="row bg-light" style="box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;">
-                                                            <div class="col-11">
-                               <span type="button" aria-controls="{{ data.phase_id }}" aria-expanded="false" data-toggle="collapse" data-target="#coll{{ data.phase_id }}" style="width: 100dvmin;padding: 1%">{{ data.phase }}</span>
-
-                                                            </div>
-                                                            <div class="col-1 bg-light" style="width: 10dvmin;">{{ data.phase_done_percentage }}%</div>
-                                                        </div>
-                                                    </div>
-                                                    <div>
-                                                        <div class="timeline-item" style="width: 100dvh;">
-                                                        <div class="collapse" id="coll{{ data.phase_id }}">
-                                                                                                                 <table class="table table-striped">
-                                                                <thead>
-                                                                <tr>
-                                                                    <th scope="col" class="col-6">Task nomi</th>
-                                                                    <th scope="col" class="col-2">Tugash sanasi</th>
-                                                                    <th scope="col" class="col-2">Bajaruvchi shaxs</th>
-                                                                    <th scope="col" class="col-2">Bajarilganligi</th>
-                                                                </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                            {% for task in data.tasks %}
-                                                                <tr>
-                                                                    <td>{{ task.task_name }}</td>
-                                                                    <td>{{ task.task_deadline }}</td>
-                                                                    <td>{{ task.task_manager }}</td>
-                                                                    <td>{{ task.task_done_percentage }}%</td>
-                                                                </tr>
-                                                            {% endfor %}
-                                                                                                                                                                    </tbody>
-                                                                </table>
-                                                           </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                            {% endfor %}
-              </div>
-              <div class="tab-pane fade" id="product-comments" role="tabpanel" aria-labelledby="product-comments-tab">
-                  {% for comment in comments %}
-                      <div class="card" style="padding: 30px;width: 100dvh">
-                      <h9>{{ comment.author.get_full_name }}</h9>
-                      <small>{{ comment.created_at }}</small>
-                      <p class="mt-4 text-lg">{{ comment.comment }}</p>
-
-                      </div>
-                  {% endfor %}
-              </div>
-              <div class="tab-pane fade" id="product-rating" role="tabpanel" aria-labelledby="product-rating-tab">
-                                {% for problem in problems %}
-                      <div class="card" style="padding: 30px;width: 100dvh">
-                      <h9>{{ problem.author.get_full_name }}</h9>
-                      <small>{{ problem.created_at }}</small>
-                      <p class="mt-4 text-lg">{{ problem.problem}}</p>
-
-                      </div>
-                  {% endfor %}
-              </div>
-            </div>
-          </div>
-
-
-                                        </div>
-                                    </div>
-
                                 </div>
                             </div>
                         </div>
-                        <div class="col-12 col-md-12 col-lg-4 order-1 order-md-2">
-                            {% for ph in project %}
-                                <h3 class="text-primary"><i class="fas fa-paint-brush"></i>{{ ph.project_name }} </h3>
-                                <p class="text-muted">{{ ph.project_description }}</p>
-                                <br>
-                                <div class="text-muted">
-                                    <p class="text-sm">Loyiha tashabbuskori
-                                        <b class="d-block">{% for author in  ph.author.all %}{{ author.department }} departamentidan {{ author.get_full_name }}{% endfor %}</b>
-                                    </p>
-                                    <p class="text-sm">Loyiha kuratori
-                                        <b class="d-block">{{ ph.project_curator }}</b>
-                                    </p>
-                                                                                                    <p class="text-sm">Strategiya departamentidan hodim(lar)
-                                        <b class="d-block">{% for manager in  ph.project_manager.all %}{{ manager.get_full_name }}, {% endfor %}</b>
-                                    </p>
+                                            </div>
+                                            <div id="modal{{ data.phase_id }}" class="modal fade"
+                                                 style="margin-left: 20%" role="dialog">
+                                                <div class="modal-dialog modal-xl modal-dialog-scrollable  mx-2 mt-3">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h2 class="modal-title"><strong>{{ data.phase }}</strong> -
+                                                                bo'yicha batafsil ma'lumotlar</h2>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body" style="height: 70vh">
+                                                            <div class="row mb-2">
+                                                                <div phase_id="{{ data.phase_id }}"
+                                                                     class="col-lg-2 col-md-3 col-sm-3 mx-1 btn btn-default disabled">
+                                                                    <i
+                                                                            class="fa-solid fa-plus"></i> Topshiriq
+                                                                    yaratish
+                                                                </div>
+                                                                <div phase_id="{{ data.phase_id }}"
+                                                                     class="col-lg-2 col-md-3 disabled col-sm-3 mx-1 btn btn-default">
+                                                                    <i
+                                                                            class="fa-solid fa-paperclip"></i> Fayl
+                                                                    biriktirish
+                                                                </div>
+                                                                <div phase_id="{{ data.phase_id }}"
+                                                                     class="col-lg-2 col-md-3 col-sm-3 disabled mx-1 btn btn-default">
+                                                                    <i
+                                                                            class="fa-solid fa-trash"></i> Fayllarni
+                                                                    o'chirish
+                                                                </div>
+                                                                <div phase_id="{{ data.phase_id }}"
+                                                                     class=" archive-btn col-lg-2 col-md-3 col-sm-3 mx-1 btn btn-default">
+                                                                    <i
+                                                                            class="fa-solid fa-download"></i> Barchasini
+                                                                    yuklash
+                                                                </div>
+                                                            </div>
+                                                            <p style="margin-bottom: 0.5%;margin-top: 3%">Bajariladigan
+                                                                ishlar ro'yxati</p>
+                                                            <div class="row" style="margin-top: 0">
+                                                                <table id="{{ data.phase_id }}"
+                                                                       class="table table-bordered m-0">
+                                                                    <thead>
+                                                                    <tr>
+                                                                        <th scope="col" class="col-3">Topshiriq nomi
+                                                                        </th>
+                                                                        <th scope="col" class="col-3">Ma'sul shaxs</th>
+                                                                        <th scope="col" class="col-3">Tugash sanasi</th>
+                                                                        <th scope="col" class="col-3">Bajarilganligi
+                                                                        </th>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                    {% for task in data.tasks %}
+                                                                        <tr class="task-tr" id={{ task.pk }}>
+                                                                            <td task_id="{{ task.pk }}"
+                                                                                style="cursor: pointer">{{ task.task_name }}</td>
+                                                                            <td task_id="{{ task.pk }}"
+                                                                                style="cursor: pointer">{{ task.task_manager }}</td>
+                                                                            <td task_id="{{ task.pk }}"
+                                                                                style="cursor: pointer">{{ task.task_deadline | date:"d-m-Y" }}</td>
+                                                                            <td task_id="{{ task.pk }}"
+                                                                                style="cursor: pointer">{{ task.task_done_percentage }}%
+                                                                            </td>
+                                                                        </tr>
+                                                                    {% endfor %}
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                            <p class="mt-4 mb-2">Fayllar</p>
+                                                            <div class="row mt-2 mb-4">
+                                                                <ul class="grid-container-file"
+                                                                    id="files{{ data.phase_id }}">
+                                                                    {% for doc in data.documents %}
+                                                                        {% if doc.url %}
+                                                                            <div class="card grid-item-file mx-4"
+                                                                                 style="width: 18rem;">
+                                                                                <img src="https://static.vecteezy.com/system/resources/previews/015/778/965/original/url-link-icon-hyperlink-chain-website-icon-isolated-on-white-background-free-vector.jpg"
+                                                                                     class="card-img-top">
+                                                                                <div class="card-body">
+                                                                                    <p class="text-sm">{{ doc.document }}.</p>
+                                                                                </div>
+                                                                            </div>
+                                                                        {% else %}
+                                                                            <div id="{{ doc.pk }}"
+                                                                                 class="card-file p-files card grid-item-file mx-2"
+                                                                                 style="width: 10rem;">
+                                                                                <i class="fa-solid fa-{{ doc.type }}"></i>
+                                                                                <img src=" https://telegra.ph/file/ab7d76d0b10f3fa7dcbd7.jpg"
+                                                                                     class="card-img-top">
+                                                                                <div class="card-body">
+                                                                                    <p class="card-text">{{ doc.document }}</p>
+                                                                                    <small>{{ doc.created_at | format_date }}</small>
+                                                                                </div>
+                                                                            </div>
+                                                                        {% endif %}
+                                                                    {% endfor %}
+                                                                </ul>
+                                                            </div>
+                                                            <p>Bajarilgan ishlar</p>
+                                                            <div class="row mb-2">
+                                                                <div id="comments_{{ data.phase_id }}"
+                                                                     class="col-2 actions-btn mx-1 btn btn-light active">
+                                                                    Izohlar
+                                                                </div>
+                                                                <div id="problems_{{ data.phase_id }}"
+                                                                     class="col-2 mx-1 actions-btn btn btn-light">
+                                                                    Muammolar
+                                                                </div>
+                                                                <div id="actions_{{ data.phase_id }}"
+                                                                     class="col-2 mx-1 actions-btn btn btn-light">
+                                                                    So'nggi
+                                                                    harakatlar
+                                                                </div>
+                                                            </div>
+                                                            <div>
+                                                                <div class="row comments-input" style="margin-top: 2%">
+                                                                    <div class="col-8">
+                                                                        <div style="display: none">
+                                                                            <form method="post"
+                                                                                  phase_id="{{ data.phase_id }}"
+                                                                                  class="post-comment"
+                                                                                  enctype="multipart/form-data">
+                                                                                {% csrf_token %}
+                                                                                {{ data.comment_form.as_p }}
+                                                                                <button type="submit"
+                                                                                        class="btn btn-md btn-secondary">
+                                                                                    Yozish
+                                                                                </button>
+                                                                            </form>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            {% for comment in data.comments %}
+                                                                <div class="row commments">
+                                                                    <div class="col-0 mt-4">
+                                                                        <img src="{{ comment.author.avatar.url }}"
+                                                                             height="35" width="35"
+                                                                             style="border-radius: 40%">
+                                                                    </div>
+                                                                    <div class="col-11">
+                                                                        <div style="margin-top: 2%; display: flex; flex-direction: column;">
+                                                                            <span class="d-block"
+                                                                                  style="margin: 0;padding: 0"><b
+                                                                                    style="margin: 0;padding: 0">{{ comment.author }}</b><div
+                                                                                    class="d-inline mx-2"></div><p
+                                                                                    class="text-secondary text-sm d-inline">{{ comment.created_at | format_date_and_time_difference }}</p></span>
+                                                                            <small style="margin: 0;padding:0">{{ comment.created_at | date:'d-m-Y' }}</small>
+                                                                            <div style="margin-top: 1%">{{ comment.comment | safe }}</div>
+                                                                            <form method="post" style="display: none"
+                                                                                  comment_id="{{ comment.pk }}"
+                                                                                  class="edit-comment-form"
+                                                                                  enctype="multipart/form-data">
+                                                                                {% csrf_token %}
+                                                                                {{ data.comment_form }}
+                                                                                <button type="submit"
+                                                                                        class="btn btn-md btn-secondary">
+                                                                                    Yuborish
+                                                                                </button>
+                                                                            </form>
+                                                                            <div><small
+                                                                                    id="delete_comment_{{ comment.pk }}"
+                                                                                    type="button"
+                                                                                    class="text-secondary delete-comment-btn mr-3">O'chirish</small>
+                                                                                <small id="edit_comment_{{ comment.pk }}"
+                                                                                       type="button"
+                                                                                       class="edit-comment text-secondary">Tahrirlash</small>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+                                                            {% endfor %}
+                                                            <div id="problems_row_{{ data.phase_id }}" class="problems"
+                                                                 style="display: none">
+                                                                <div style="margin-top: 2%">
+                                                                    {% for comment in data.problems %}
+                                                                        <div class="row problems">
+                                                                            <div class="col-0 mt-4">
+                                                                                <img src="{{ comment.author.avatar.url }}"
+                                                                                     height="35" width="35"
+                                                                                     style="border-radius: 40%">
+                                                                            </div>
+                                                                            <div class="col-11">
+                                                                                <div style="margin-top: 2%; display: flex; flex-direction: column;">
+                                                                            <span class="d-block"
+                                                                                  style="margin: 0;padding: 0"><b
+                                                                                    style="margin: 0;padding: 0">{{ comment.author }}</b><div
+                                                                                    class="d-inline mx-2"></div><p
+                                                                                    class="text-secondary text-sm d-inline">{{ comment.created_at | format_date_and_time_difference }}</p></span>
+                                                                                    <small style="margin: 0;padding:0">{{ comment.created_at | date:'d-m-Y' }}</small>
+                                                                                    <div style="margin-top: 1%">{{ comment.problem | safe }}</div>
+                                                                                    <form method="post"
+                                                                                          style="display: none"
+                                                                                          problem_id="{{ comment.pk }}"
+                                                                                          class="edit-problem-form"
+                                                                                          enctype="multipart/form-data">
+                                                                                        {% csrf_token %}
+                                                                                        {{ data.comment_form }}
+                                                                                        <button type="submit"
+                                                                                                class="btn btn-md btn-secondary">
+                                                                                            Yuborish
+                                                                                        </button>
+                                                                                    </form>
+                                                                                    <div><small
+                                                                                            id="delete_problem_{{ comment.pk }}"
+                                                                                            type="button"
+                                                                                            class="text-secondary delete-problem-btn mr-3">O'chirish</small>
+                                                                                        <small id="edit_problem_{{ comment.pk }}"
+                                                                                               type="button"
+                                                                                               class="edit-problem text-secondary">Tahrirlash</small>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                            </div>
+                                                                        </div>
+                                                                    {% endfor %}
+                                                                </div>
+                                                            </div>
+                                                            <div id="actions_row_{{ data.phase_id }}"
+                                                                 style="display:none;">
+                                                                {% for action in data.actions %}
+                                                                    <div class="row">
+                                                                        <div class="col-6">
+                                                                            <li class="m-4 border-bottom-1 border-dark">{{ action.author.get_full_name }} {{ action.action | safe }}</li>
+                                                                        </div>
+                                                                        <div class="col-1">
+                                                                            <small>{{ action.date | format_date_and_time_difference }}</small>
+                                                                        </div>
+                                                                    </div>
+                                                                {% endfor %}
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" id="save-changes"
+                                                                    class="btn btn-secondary" data-dismiss="modal">
+                                                                Yopish
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        {% endif %}
+                                    {% endfor %}
                                 </div>
-                            {% endfor %}
-                            <h5 class="mt-5 text-muted">Loyiha fayllari</h5>
-                            <ul class="list-unstyled">
-                                {% for doc in documents %}
-                                    <li>
-                                        <a href="" class="btn-link text-secondary" download="{{ doc.document }}"><i
-                                                class="fa-solid fa-link" style="margin-right: 2%"></i>
-                                            <embed href="{{ doc.document }}">
-                                            {{ doc.document }}
-                                        </a>
-                                    </li>
-                                {% endfor %}
-                            </ul>
+                            </div>
+                        </div>
+                    <div class="col-lg-4 col-md-12 col-sm-12 mt-3">
+                            <div class="card">
+                                <div class="card-header bg-light h5 p-3"><span
+                                        class="text-secondary text-primary p-1 bg-warning">Jarayonda</span></div>
+                                <div class="card-body">
+                                    {% for data in datas %}
+                                        {% if data.phase_done_percentage > 0 and data.phase_done_percentage < 100 %}
+                                            <div class="d-block phases-text border-bottom main-row row">
+                                                <h4 phase_id="{{ data.phase_id }}" type="button" data-toggle="modal"
+                                                    data-target="#modal{{ data.phase_id }}" data-backdrop="static"
+                                                    class="text-secondary col-10 d-inline phase_text">{{ data.phase }}</h4>
+                                                <span type="button" class="col-1 btn-group dropright"><i
+                                                        class="fa-solid fa-bars" data-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false"></i>
+                                            <div class="dropdown-menu">
+                                                <a phase_id="{{ data.phase_id }}" class="dropdown-item edit-phase-btn" ><i class="fa-solid fa-pen-to-square"></i> O'zgartirish</a>
+                                                <a phase_id="{{ data.phase_id }}" data-toggle="modal" data-target="#phase{{ data.phase_id }}" class="dropdown-item delete-phase-btn"><i class="fa-solid fa-trash"></i> O'chirish</a>
+
+                                            </div>
+                                            </span>
+                                                                                                        <div id="phase{{ data.phase_id }}" class="modal fade" role="dialog">
+                            <div class="modal-dialog modal-sm modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                        <i class="fa-solid fa-triangle-exclamation btn-lg" style="font-size: 5dvh"></i>
+                                                                                                    <h4>Chindan o'chirasizmi ?</h4>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button  class="btn btn-danger delete-phase-confirm">O'chirish</button>
+                                        <button data-dismiss="modal" class="btn btn-secondary">Bekor qilish</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                                            </div>
+                                            <div id="modal{{ data.phase_id }}" class="modal fade"
+                                                 style="margin-left: 20%" role="dialog">
+                                                <div class="modal-dialog modal-xl modal-dialog-scrollable  mx-2 mt-3">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h2 class="modal-title"><strong>{{ data.phase }}</strong> -
+                                                                bo'yicha batafsil ma'lumotlar</h2>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body" style="height: 70vh">
+                                                            <div class="row mb-2">
+                                                                <div phase_id="{{ data.phase_id }}"
+                                                                     class="col-lg-2 col-md-3 col-sm-3 disabled mx-1 btn btn-default">
+                                                                    <i
+                                                                            class="fa-solid fa-plus"></i> Topshiriq
+                                                                    yaratish
+                                                                </div>
+                                                                <div phase_id="{{ data.phase_id }}"
+                                                                     class="col-lg-2 col-md-3 disabled col-sm-3 mx-1 btn btn-default">
+                                                                    <i
+                                                                            class="fa-solid fa-paperclip"></i> Fayl
+                                                                    biriktirish
+                                                                </div>
+                                                                <form method="post" class="add-file-forms"
+                                                                      enctype="multipart/form-data"
+                                                                      id="add_file_form_{{ data.phase_id }}"
+                                                                      style="display: none;margin-top: 5%">
+                                                                    {% csrf_token %}
+                                                                    {{ form.as_p }}
+                                                                    <div class="card-footer">
+                                                                        <button type="button" class="btn btn-info">
+                                                                            Yuklash
+                                                                        </button>
+                                                                    </div>
+
+                                                                </form>
+                                                                <form method="post" enctype="multipart/form-data"
+                                                                      id="delete-file-form" style="display:none;">
+                                                                    {% csrf_token %}
+                                                                    {% for document in data.documents %}
+                                                                        <div class="row">
+                                                                            <div class="col-1">
+                                                                                <input class="del-files" type="checkbox"
+                                                                                       id="{{ document.pk }}">
+                                                                            </div>
+                                                                            <div class="col">
+                                                                                {{ document.document }}
+
+                                                                            </div>
+                                                                        </div>
+                                                                    {% endfor %}
+                                                                    <div class="card-footer">
+                                                                        <button id="del-confirm" type="button"
+                                                                                class="btn btn-danger">
+                                                                            O'chirish
+                                                                        </button>
+                                                                        <button class="btn btn-primary"
+                                                                                data-dismiss="modal">Bekor
+                                                                            qilish
+                                                                        </button>
+                                                                    </div>
+
+                                                                </form>
+                                                                <div phase_id="{{ data.phase_id }}"
+                                                                     class="col-lg-2 col-md-3 col-sm-3 disabled mx-1 btn btn-default">
+                                                                    <i
+                                                                            class="fa-solid fa-trash"></i> Fayllarni
+                                                                    o'chirish
+                                                                </div>
+                                                                <div phase_id="{{ data.phase_id }}"
+                                                                     class=" archive-btn col-lg-2 col-md-3 col-sm-3 mx-1 btn btn-default">
+                                                                    <i
+                                                                            class="fa-solid fa-download"></i> Barchasini
+                                                                    yuklash
+                                                                </div>
+                                                            </div>
+                                                            <p style="margin-bottom: 0.5%;margin-top: 3%">Bajariladigan
+                                                                ishlar ro'yxati</p>
+                                                            <div class="row" style="margin-top: 0">
+                                                                <table id="{{ data.phase_id }}"
+                                                                       class="table table-bordered m-0">
+                                                                    <thead>
+                                                                    <tr>
+                                                                        <th scope="col" class="col-3">Topshiriq nomi
+                                                                        </th>
+                                                                        <th scope="col" class="col-3">Ma'sul shaxs</th>
+                                                                        <th scope="col" class="col-3">Tugash sanasi</th>
+                                                                        <th scope="col" class="col-3">Bajarilganligi
+                                                                        </th>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                    {% for task in data.tasks %}
+                                                                        <tr class="task-tr" id={{ task.pk }}>
+                                                                            <td task_id="{{ task.pk }}"
+                                                                                style="cursor: pointer">{{ task.task_name }}</td>
+                                                                            <td task_id="{{ task.pk }}"
+                                                                                style="cursor: pointer">{{ task.task_manager }}</td>
+                                                                            <td task_id="{{ task.pk }}"
+                                                                                style="cursor: pointer">{{ task.task_deadline | date:"d-m-Y" }}</td>
+                                                                            <td task_id="{{ task.pk }}"
+                                                                                style="cursor: pointer">{{ task.task_done_percentage }}%
+                                                                            </td>
+                                                                        </tr>
+                                                                    {% endfor %}
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                            <p class="mt-4 mb-2">Fayllar</p>
+                                                            <div class="row mt-2 mb-4">
+                                                                <ul class="grid-container-file"
+                                                                    id="files{{ data.phase_id }}">
+                                                                    {% for doc in data.documents %}
+                                                                        {% if doc.url %}
+                                                                            <div class="card grid-item-file mx-4"
+                                                                                 style="width: 18rem;">
+                                                                                <img src="https://static.vecteezy.com/system/resources/previews/015/778/965/original/url-link-icon-hyperlink-chain-website-icon-isolated-on-white-background-free-vector.jpg"
+                                                                                     class="card-img-top">
+                                                                                <div class="card-body">
+                                                                                    <p class="text-sm">{{ doc.document }}.</p>
+                                                                                </div>
+                                                                            </div>
+                                                                        {% else %}
+                                                                            <div id="{{ doc.pk }}"
+                                                                                 class="card-file p-files card grid-item-file mx-2"
+                                                                                 style="width: 10rem;">
+                                                                                <i class="fa-solid fa-{{ doc.type }}"></i>
+                                                                                <img src=" https://telegra.ph/file/ab7d76d0b10f3fa7dcbd7.jpg"
+                                                                                     class="card-img-top">
+                                                                                <div class="card-body">
+                                                                                    <p class="card-text">{{ doc.document }}</p>
+                                                                                    <small>{{ doc.created_at | format_date }}</small>
+                                                                                </div>
+                                                                            </div>
+                                                                        {% endif %}
+                                                                    {% endfor %}
+                                                                </ul>
+                                                            </div>
+                                                            <p>Bajarilgan ishlar</p>
+                                                            <div class="row mb-2">
+                                                                <div id="comments_{{ data.phase_id }}"
+                                                                     class="col-2 actions-btn mx-1 btn btn-light active">
+                                                                    Izohlar
+                                                                </div>
+                                                                <div id="problems_{{ data.phase_id }}"
+                                                                     class="col-2 mx-1 actions-btn btn btn-light">
+                                                                    Muammolar
+                                                                </div>
+                                                                <div id="actions_{{ data.phase_id }}"
+                                                                     class="col-2 mx-1 actions-btn btn btn-light">
+                                                                    So'nggi
+                                                                    harakatlar
+                                                                </div>
+                                                            </div>
+                                                            <div>
+                                                                <div class="row comments-input" style="margin-top: 2%">
+                                                                    <div class="col-8">
+                                                                        <div style="display: none">
+                                                                            <form method="post"
+                                                                                  phase_id="{{ data.phase_id }}"
+                                                                                  class="post-comment"
+                                                                                  enctype="multipart/form-data">
+                                                                                {% csrf_token %}
+                                                                                {{ data.comment_form.as_p }}
+                                                                                <button type="submit"
+                                                                                        class="btn btn-md btn-secondary">
+                                                                                    Yozish
+                                                                                </button>
+                                                                            </form>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            {% for comment in data.comments %}
+                                                                <div class="row commments">
+                                                                    <div class="col-0 mt-4">
+                                                                        <img src="{{ comment.author.avatar.url }}"
+                                                                             height="35" width="35"
+                                                                             style="border-radius: 40%">
+                                                                    </div>
+                                                                    <div class="col-11">
+                                                                        <div style="margin-top: 2%; display: flex; flex-direction: column;">
+                                                                            <span class="d-block"
+                                                                                  style="margin: 0;padding: 0"><b
+                                                                                    style="margin: 0;padding: 0">{{ comment.author }}</b><div
+                                                                                    class="d-inline mx-2"></div><p
+                                                                                    class="text-secondary text-sm d-inline">{{ comment.created_at | format_date_and_time_difference }}</p></span>
+                                                                            <small style="margin: 0;padding:0">{{ comment.created_at | date:'d-m-Y' }}</small>
+                                                                            <div style="margin-top: 1%">{{ comment.comment | safe }}</div>
+                                                                            <form method="post" style="display: none"
+                                                                                  comment_id="{{ comment.pk }}"
+                                                                                  class="edit-comment-form"
+                                                                                  enctype="multipart/form-data">
+                                                                                {% csrf_token %}
+                                                                                {{ data.comment_form }}
+                                                                                <button type="submit"
+                                                                                        class="btn btn-md btn-secondary">
+                                                                                    Yuborish
+                                                                                </button>
+                                                                            </form>
+                                                                            <div><small
+                                                                                    id="delete_comment_{{ comment.pk }}"
+                                                                                    type="button"
+                                                                                    class="text-secondary delete-comment-btn mr-3">O'chirish</small>
+                                                                                <small id="edit_comment_{{ comment.pk }}"
+                                                                                       type="button"
+                                                                                       class="edit-comment text-secondary">Tahrirlash</small>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+                                                            {% endfor %}
+                                                            <div id="problems_row_{{ data.phase_id }}" class="problems"
+                                                                 style="display: none">
+                                                                <div style="margin-top: 2%">
+                                                                    {% for comment in data.problems %}
+                                                                        <div class="row problems">
+                                                                            <div class="col-0 mt-4">
+                                                                                <img src="{{ comment.author.avatar.url }}"
+                                                                                     height="35" width="35"
+                                                                                     style="border-radius: 40%">
+                                                                            </div>
+                                                                            <div class="col-11">
+                                                                                <div style="margin-top: 2%; display: flex; flex-direction: column;">
+                                                                            <span class="d-block"
+                                                                                  style="margin: 0;padding: 0"><b
+                                                                                    style="margin: 0;padding: 0">{{ comment.author }}</b><div
+                                                                                    class="d-inline mx-2"></div><p
+                                                                                    class="text-secondary text-sm d-inline">{{ comment.created_at | format_date_and_time_difference }}</p></span>
+                                                                                    <small style="margin: 0;padding:0">{{ comment.created_at | date:'d-m-Y' }}</small>
+                                                                                    <div style="margin-top: 1%">{{ comment.problem | safe }}</div>
+                                                                                    <form method="post"
+                                                                                          style="display: none"
+                                                                                          problem_id="{{ comment.pk }}"
+                                                                                          class="edit-problem-form"
+                                                                                          enctype="multipart/form-data">
+                                                                                        {% csrf_token %}
+                                                                                        {{ data.comment_form }}
+                                                                                        <button type="submit"
+                                                                                                class="btn btn-md btn-secondary">
+                                                                                            Yuborish
+                                                                                        </button>
+                                                                                    </form>
+                                                                                    <div><small
+                                                                                            id="delete_problem_{{ comment.pk }}"
+                                                                                            type="button"
+                                                                                            class="text-secondary delete-problem-btn mr-3">O'chirish</small>
+                                                                                        <small id="edit_problem_{{ comment.pk }}"
+                                                                                               type="button"
+                                                                                               class="edit-problem text-secondary">Tahrirlash</small>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                            </div>
+                                                                        </div>
+                                                                    {% endfor %}
+                                                                </div>
+                                                            </div>
+                                                            <div id="actions_row_{{ data.phase_id }}"
+                                                                 style="display:none;">
+                                                                {% for action in data.actions %}
+                                                                    <div class="row">
+                                                                        <div class="col-6">
+                                                                            <li class="m-4 border-bottom-1 border-dark">{{ action.author.get_full_name }} {{ action.action | safe }}</li>
+                                                                        </div>
+                                                                        <div class="col-1">
+                                                                            <small>{{ action.date | format_date_and_time_difference }}</small>
+                                                                        </div>
+                                                                    </div>
+                                                                {% endfor %}
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" id="save-changes"
+                                                                    class="btn btn-secondary" data-dismiss="modal">
+                                                                Yopish
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    <div class="col-lg-4 col-md-12 col-sm-12 mt-3">
+                            <div class="card">
+                                <div class="card-header bg-light h5 p-3"><span
+                                        class="text-secondary text-primary p-1 bg-success">Yakunlangan</span></div>
+                                <div class="card-body">
+                                    {% for data in datas %}
+                                        {% if data.phase_done_percentage == 100 %}
+                                            <div class="d-block phases-text border-bottom main-row row">
+                                                <h4 phase_id="{{ data.phase_id }}" type="button" data-toggle="modal"
+                                                    data-target="#modal{{ data.phase_id }}" data-backdrop="static"
+                                                    class="text-secondary col-10 d-inline phase_text">{{ data.phase }}</h4>
+                                                <span type="button" class="col-1 btn-group dropright"><i
+                                                        class="fa-solid fa-bars" data-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false"></i>
+                                            <div class="dropdown-menu">
+                                                <a phase_id="{{ data.phase_id }}" class="dropdown-item edit-phase-btn" ><i class="fa-solid fa-pen-to-square"></i> O'zgartirish</a>
+                                                <a phase_id="{{ data.phase_id }}" data-toggle="modal" data-target="#phase{{ data.phase_id }}" class="dropdown-item delete-phase-btn"><i class="fa-solid fa-trash"></i> O'chirish</a>
+
+                                            </div>
+                                            </span>
+                                                                                                        <div id="phase{{ data.phase_id }}" class="modal fade" role="dialog">
+                            <div class="modal-dialog modal-sm modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                        <i class="fa-solid fa-triangle-exclamation btn-lg" style="font-size: 5dvh"></i>
+                                                                                                    <h4>Chindan o'chirasizmi ?</h4>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button  class="btn btn-danger delete-phase-confirm">O'chirish</button>
+                                        <button data-dismiss="modal" class="btn btn-secondary">Bekor qilish</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                                            </div>
+                                            <div id="modal{{ data.phase_id }}" class="modal fade"
+                                                 style="margin-left: 20%" role="dialog">
+                                                <div class="modal-dialog modal-xl modal-dialog-scrollable  mx-2 mt-3">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h2 class="modal-title"><strong>{{ data.phase }}</strong> -
+                                                                bo'yicha batafsil ma'lumotlar</h2>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body" style="height: 70vh">
+                                                            <div class="row mb-2">
+                                                                <div phase_id="{{ data.phase_id }}"
+                                                                     class="col-lg-2 col-md-3 col-sm-3 disabled mx-1 btn btn-default">
+                                                                    <i
+                                                                            class="fa-solid fa-plus"></i> Topshiriq
+                                                                    yaratish
+                                                                </div>
+                                                                <div phase_id="{{ data.phase_id }}"
+                                                                     class="col-lg-2 col-md-3 disabled col-sm-3 mx-1 btn btn-default">
+                                                                    <i
+                                                                            class="fa-solid fa-paperclip"></i> Fayl
+                                                                    biriktirish
+                                                                </div>
+                                                                <form method="post" class="add-file-forms"
+                                                                      enctype="multipart/form-data"
+                                                                      id="add_file_form_{{ data.phase_id }}"
+                                                                      style="display: none;margin-top: 5%">
+                                                                    {% csrf_token %}
+                                                                    {{ form.as_p }}
+                                                                    <div class="card-footer">
+                                                                        <button type="button" class="btn btn-info">
+                                                                            Yuklash
+                                                                        </button>
+                                                                    </div>
+
+                                                                </form>
+                                                                <form method="post" enctype="multipart/form-data"
+                                                                      id="delete-file-form" style="display:none;">
+                                                                    {% csrf_token %}
+                                                                    {% for document in data.documents %}
+                                                                        <div class="row">
+                                                                            <div class="col-1">
+                                                                                <input class="del-files" type="checkbox"
+                                                                                       id="{{ document.pk }}">
+                                                                            </div>
+                                                                            <div class="col">
+                                                                                {{ document.document }}
+
+                                                                            </div>
+                                                                        </div>
+                                                                    {% endfor %}
+                                                                    <div class="card-footer">
+                                                                        <button id="del-confirm" type="button"
+                                                                                class="btn btn-danger">
+                                                                            O'chirish
+                                                                        </button>
+                                                                        <button class="btn btn-primary"
+                                                                                data-dismiss="modal">Bekor
+                                                                            qilish
+                                                                        </button>
+                                                                    </div>
+
+                                                                </form>
+                                                                <div phase_id="{{ data.phase_id }}"
+                                                                     class="col-lg-2 col-md-3 col-sm-3 disabled mx-1 btn btn-default">
+                                                                    <i
+                                                                            class="fa-solid fa-trash"></i> Fayllarni
+                                                                    o'chirish
+                                                                </div>
+                                                                <div phase_id="{{ data.phase_id }}"
+                                                                     class=" archive-btn col-lg-2 col-md-3 col-sm-3 mx-1 btn btn-default">
+                                                                    <i
+                                                                            class="fa-solid fa-download"></i> Barchasini
+                                                                    yuklash
+                                                                </div>
+                                                            </div>
+                                                            <p style="margin-bottom: 0.5%;margin-top: 3%">Bajariladigan
+                                                                ishlar ro'yxati</p>
+                                                            <div class="row" style="margin-top: 0">
+                                                                <table id="{{ data.phase_id }}"
+                                                                       class="table table-bordered m-0">
+                                                                    <thead>
+                                                                    <tr>
+                                                                        <th scope="col" class="col-3">Topshiriq nomi
+                                                                        </th>
+                                                                        <th scope="col" class="col-3">Ma'sul shaxs</th>
+                                                                        <th scope="col" class="col-3">Tugash sanasi</th>
+                                                                        <th scope="col" class="col-3">Bajarilganligi
+                                                                        </th>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                    {% for task in data.tasks %}
+                                                                        <tr class="task-tr" id={{ task.pk }}>
+                                                                            <td task_id="{{ task.pk }}"
+                                                                                style="cursor: pointer">{{ task.task_name }}</td>
+                                                                            <td task_id="{{ task.pk }}"
+                                                                                style="cursor: pointer">{{ task.task_manager }}</td>
+                                                                            <td task_id="{{ task.pk }}"
+                                                                                style="cursor: pointer">{{ task.task_deadline | date:"d-m-Y" }}</td>
+                                                                            <td task_id="{{ task.pk }}"
+                                                                                style="cursor: pointer">{{ task.task_done_percentage }}%
+                                                                            </td>
+                                                                        </tr>
+                                                                    {% endfor %}
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                            <p class="mt-4 mb-2">Fayllar</p>
+                                                            <div class="row mt-2 mb-4">
+                                                                <ul class="grid-container-file"
+                                                                    id="files{{ data.phase_id }}">
+                                                                    {% for doc in data.documents %}
+                                                                        {% if doc.url %}
+                                                                            <div class="card grid-item-file mx-4"
+                                                                                 style="width: 18rem;">
+                                                                                <img src="https://static.vecteezy.com/system/resources/previews/015/778/965/original/url-link-icon-hyperlink-chain-website-icon-isolated-on-white-background-free-vector.jpg"
+                                                                                     class="card-img-top">
+                                                                                <div class="card-body">
+                                                                                    <p class="text-sm">{{ doc.document }}.</p>
+                                                                                </div>
+                                                                            </div>
+                                                                        {% else %}
+                                                                            <div id="{{ doc.pk }}"
+                                                                                 class="card-file p-files card grid-item-file mx-2"
+                                                                                 style="width: 10rem;">
+                                                                                <i class="fa-solid fa-{{ doc.type }}"></i>
+                                                                                <img src=" https://telegra.ph/file/ab7d76d0b10f3fa7dcbd7.jpg"
+                                                                                     class="card-img-top">
+                                                                                <div class="card-body">
+                                                                                    <p class="card-text">{{ doc.document }}</p>
+                                                                                    <small>{{ doc.created_at | format_date }}</small>
+                                                                                </div>
+                                                                            </div>
+                                                                        {% endif %}
+                                                                    {% endfor %}
+                                                                </ul>
+                                                            </div>
+                                                                                                                                                                <p class="text-secondary">Tugatilganlik darajasi</p>
+                                                        <div class="row mb-3">
+                                                            <div class="col-12">
+                                                                <div class="progress">
+                                                                    <div class="progress-bar" role="progressbar" style="width: {{ data.phase_done_percentage }}%;" aria-valuenow="{{ data.phase_done_percentage }}" aria-valuemin="0" aria-valuemax="100">{{ data.phase_done_percentage }}%</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                            <p>Bajarilgan ishlar</p>
+                                                            <div class="row mb-2">
+                                                                <div id="comments_{{ data.phase_id }}"
+                                                                     class="col-2 actions-btn mx-1 btn btn-light active">
+                                                                    Izohlar
+                                                                </div>
+                                                                <div id="problems_{{ data.phase_id }}"
+                                                                     class="col-2 mx-1 actions-btn btn btn-light">
+                                                                    Muammolar
+                                                                </div>
+                                                                <div id="actions_{{ data.phase_id }}"
+                                                                     class="col-2 mx-1 actions-btn btn btn-light">
+                                                                    So'nggi
+                                                                    harakatlar
+                                                                </div>
+                                                            </div>
+                                                            <div>
+                                                                <div class="row comments-input" style="margin-top: 2%">
+                                                                    <div class="col-8">
+
+                                                                        <div style="display: none">
+                                                                            <form method="post"
+                                                                                  phase_id="{{ data.phase_id }}"
+                                                                                  class="post-comment"
+                                                                                  enctype="multipart/form-data">
+                                                                                {% csrf_token %}
+                                                                                {{ data.comment_form.as_p }}
+                                                                                <button type="submit"
+                                                                                        class="btn btn-md btn-secondary">
+                                                                                    Yozish
+                                                                                </button>
+                                                                            </form>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            {% for comment in data.comments %}
+                                                                <div class="row commments">
+                                                                    <div class="col-0 mt-4">
+                                                                        <img src="{{ comment.author.avatar.url }}"
+                                                                             height="35" width="35"
+                                                                             style="border-radius: 40%">
+                                                                    </div>
+                                                                    <div class="col-11">
+                                                                        <div style="margin-top: 2%; display: flex; flex-direction: column;">
+                                                                            <span class="d-block"
+                                                                                  style="margin: 0;padding: 0"><b
+                                                                                    style="margin: 0;padding: 0">{{ comment.author }}</b><div
+                                                                                    class="d-inline mx-2"></div><p
+                                                                                    class="text-secondary text-sm d-inline">{{ comment.created_at | format_date_and_time_difference }}</p></span>
+                                                                            <small style="margin: 0;padding:0">{{ comment.created_at | date:'d-m-Y' }}</small>
+                                                                            <div style="margin-top: 1%">{{ comment.comment | safe }}</div>
+                                                                            <form method="post" style="display: none"
+                                                                                  comment_id="{{ comment.pk }}"
+                                                                                  class="edit-comment-form"
+                                                                                  enctype="multipart/form-data">
+                                                                                {% csrf_token %}
+                                                                                {{ data.comment_form }}
+                                                                                <button type="submit"
+                                                                                        class="btn btn-md btn-secondary">
+                                                                                    Yuborish
+                                                                                </button>
+                                                                            </form>
+                                                                            <div><small
+                                                                                    id="delete_comment_{{ comment.pk }}"
+                                                                                    type="button"
+                                                                                    class="text-secondary delete-comment-btn mr-3">O'chirish</small>
+                                                                                <small id="edit_comment_{{ comment.pk }}"
+                                                                                       type="button"
+                                                                                       class="edit-comment text-secondary">Tahrirlash</small>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+                                                            {% endfor %}
+                                                            <div id="problems_row_{{ data.phase_id }}" class="problems"
+                                                                 style="display: none">
+                                                                <div style="margin-top: 2%">
+                                                                    {% for comment in data.problems %}
+                                                                        <div class="row problems">
+                                                                            <div class="col-0 mt-4">
+                                                                                <img src="{{ comment.author.avatar.url }}"
+                                                                                     height="35" width="35"
+                                                                                     style="border-radius: 40%">
+                                                                            </div>
+                                                                            <div class="col-11">
+                                                                                <div style="margin-top: 2%; display: flex; flex-direction: column;">
+                                                                            <span class="d-block"
+                                                                                  style="margin: 0;padding: 0"><b
+                                                                                    style="margin: 0;padding: 0">{{ comment.author }}</b><div
+                                                                                    class="d-inline mx-2"></div><p
+                                                                                    class="text-secondary text-sm d-inline">{{ comment.created_at | format_date_and_time_difference }}</p></span>
+                                                                                    <small style="margin: 0;padding:0">{{ comment.created_at | date:'d-m-Y' }}</small>
+                                                                                    <div style="margin-top: 1%">{{ comment.problem | safe }}</div>
+                                                                                    <form method="post"
+                                                                                          style="display: none"
+                                                                                          problem_id="{{ comment.pk }}"
+                                                                                          class="edit-problem-form"
+                                                                                          enctype="multipart/form-data">
+                                                                                        {% csrf_token %}
+                                                                                        {{ data.comment_form }}
+                                                                                        <button type="submit"
+                                                                                                class="btn btn-md btn-secondary">
+                                                                                            Yuborish
+                                                                                        </button>
+                                                                                    </form>
+                                                                                    <div><small
+                                                                                            id="delete_problem_{{ comment.pk }}"
+                                                                                            type="button"
+                                                                                            class="text-secondary delete-problem-btn mr-3">O'chirish</small>
+                                                                                        <small id="edit_problem_{{ comment.pk }}"
+                                                                                               type="button"
+                                                                                               class="edit-problem text-secondary">Tahrirlash</small>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                            </div>
+                                                                        </div>
+                                                                    {% endfor %}
+                                                                </div>
+                                                            </div>
+                                                            <div id="actions_row_{{ data.phase_id }}"
+                                                                 style="display:none;">
+                                                                {% for action in data.actions %}
+                                                                    <div class="row">
+                                                                        <div class="col-6">
+                                                                            <li class="m-4 border-bottom-1 border-dark">{{ action.author.get_full_name }} {{ action.action | safe }}</li>
+                                                                        </div>
+                                                                        <div class="col-1">
+                                                                            <small>{{ action.date | format_date_and_time_difference }}</small>
+                                                                        </div>
+                                                                    </div>
+                                                                {% endfor %}
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" id="save-changes"
+                                                                    class="btn btn-secondary" data-dismiss="modal">
+                                                                Yopish
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+
                     </div>
+
                 </div>
+
+
             </div>
+
+
+            <div class="col-lg-4 col-md-12 col-sm-12 border">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th scope="col" class="col-6">Loyiha nomi</th>
+                        <td scope="col" class="col-6">{{ project.project_name }}</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th>Boshlangan sanasi</th>
+                        <td>{{ project.project_start_date | format_date }}</td>
+                    </tr>
+                    <tr>
+                        <th>Loyiha kuratori</th>
+                        <td>{{ project.project_curator }}</td>
+                    </tr>
+                    <tr>
+                        <th>Qisqacha ma'lumot</th>
+                        <td>{{ project.project_description }}</td>
+                    </tr>
+                    <tr>
+                        <th>Loyiha tashabbuskori</th>
+                        <td>
+                            {% for author in project.author.all %}
+                                {{ author.get_full_name }}<br>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Ma'sul departamentlar</th>
+                        <td>
+                            {% for dept in project.project_departments.all %}
+                                {{ dept.department_name }}<br>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Loyiha menejerlari</th>
+                        <td>
+                            {% for manager in project.project_manager.all %}
+                                {{ manager.get_full_name }}<br>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Biriktirilgan hodimlar</th>
+                        <td>
+                            {% for person in project.project_team.all %}
+                                {{ person.get_full_name }}<br>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Muhimlilik darajasi</th>
+                        <td>{{ project.project_level }}</td>
+                    </tr>
+                    <tr>
+                        <th>Muddati</th>
+                        <td>{{ project.project_speed }}</td>
+                    </tr>
+                    <tr>
+                        <th>Loyiha turi</th>
+                        <td>{{ project.project_type }}</td>
+                    </tr>
+                    <tr>
+                        <th>Loyiha hajmi</th>
+                        <td>{{ project.project_size }}</td>
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
             </div>
-        </section>
+        </div>
     </div>
+
+
+
+    <script src="{% static 'static/js/script.js' %}"></script>
 {% endblock content %}

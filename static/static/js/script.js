@@ -89,6 +89,61 @@ function redirecting() {
     });
 }
 
+function edit_phase(){
+    let input = document.createElement('input')
+    document.querySelectorAll('.edit-phase-btn').forEach(value => {
+        value.addEventListener('click',function (){
+            let parent = value.parentNode.parentNode.parentNode
+            let phase = parent.children.item(0)
+            input.classList.add('form-control')
+            input.value = phase.textContent.trim()
+            phase.classList.remove('d-inline')
+            phase.classList.add('d-none')
+            parent.children.item(1).style.display = 'none'
+            parent.appendChild(input)
+            document.addEventListener('keypress',function (e) {
+                if(e.key==='Enter'){
+                    sendPostRequest2(`update-phase/${phase.getAttribute('phase_id')}`,{'phase_name':input.value}).then(res=>{
+                        if(res.status === 'ok'){
+                            phase.innerText = input.value
+                            phase.classList.remove('d-none')
+                            phase.classList.add('d-inline')
+                            parent.children.item(1).style.display = 'inline'
+                            input.remove()
+
+                        }
+                    })
+                }
+
+            })
+
+        })
+    })
+}
+
+edit_phase()
+
+function delete_phase(){
+    document.querySelectorAll('.delete-phase-btn').forEach(value => {
+        value.addEventListener('click',function (){
+            let parent = value.parentNode.parentNode.parentNode
+            let phase = parent.children.item(0)
+            let confirm_btn = parent.querySelector('.delete-phase-confirm')
+            confirm_btn.addEventListener('click',function (){
+                fetch(`delete-phase/${phase.getAttribute('phase_id')}`).then(res=>{
+                    if(res.status === 200){
+                        confirm_btn.parentNode.children.item(1).click()
+                        parent.parentNode.removeChild(parent)
+
+                    }
+                })
+            })
+        })
+    })
+}
+
+delete_phase()
+
 function delete_files() {
 
     document.querySelectorAll('.delete-files').forEach(value => {

@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
     {% load filters %}
-    <section class="content">
+    <section class="content bg-light">
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Loyihalar</h3>
@@ -11,61 +12,71 @@
                             class="fa-solid fa-circle-plus btn btn-outline-dark"></i></a>
                 </div>
             </div>
-            <div class="card-body p-0">
+            <div class="card-body p-0" style="overflow-x: auto">
                 <table class="table table-striped projects">
                     <thead>
-                    <tr>
-                        <th style="width: 1%" class="text-center">
+                    <tr data-url="">
+                        <th scope="col">
                             No
                         </th>
-                        <th style="width: 20%" class="text-center">
+                        <th scope="col">
                             Loyiha nomi
                         </th>
-                        <th style="width: 30%" class="text-center">
-                            Loyiha kuratori
+                        <th scope="col">
+                            Loyiha haqida
                         </th>
-                        <th class="text-center">
-                            Loyiha bajarilganlik darajasi
+                        <th scope="col">
+                            Departamentlar
                         </th>
-                        <th style="width: 8%" class="text-center">
-                            Budgeti
+                                                                  <th scope="col" class="text-center" style="width: 20%">
+                            Summasi
+
                         </th>
-                        <th style="width: 20%" class="text-center">
+                                                                                          <th scope="col" class="text-center">
+                            Biriktirilgan xodim
+
+                        </th>
+                        <th scope="col" class="text-center">
+                            Holati
                         </th>
 
                     </tr>
                     </thead>
                     <tbody>
                     {% for project in projects %}
-                        <tr>
+                        <tr class="datas" data-url="{% url 'my-projects-detail' project.pk %}">
                             <td>
                                 {{ forloop.counter }}
                             </td>
                             <td>
-                                <a>
+                                <a href="{% url 'my-projects-detail' project.pk %}" style="color: black">
                                     {{ project.project_name }}
                                 </a>
-                                <br/>
-                                <small>
-                                    <strong>Boshlandi : </strong> {{ project.project_start_date | format_date }}<br>
-                                    <strong>Tugaydi : </strong> {{ project.project_deadline | format_date }}
-                                </small>
                             </td>
                             <td>
-                                <div class="list-inline row">
-                                    <div class="col-2 text-center">
-                                        <img style="max-width: 40px" src="{{ project.project_curator.avatar.url }}">
-
-                                    </div>
-                                    <div class="col-10">
-                                        <p>{{ project.project_curator.get_full_name }}</p>
-
-                                    </div>
-                                </div>
+                                                           <a href="{% url 'my-projects-detail' project.pk %}"
+                                                              style="color: black"> {{ project.project_description }} </a>
                             </td>
-                            <td class="project_progress">
+                            <td >
+                                                        <a href="{% url 'my-projects-detail' project.pk %}"
+                                       style="color: black">
+                                {% for department in project.project_departments.all %}
+                                    {{ department.department_name}},
+                                {% endfor %}</a>
+                            </td>
+
+                                                                                                         <td class="project-state">
+                                <p>                             <a href="{% url 'my-projects-detail' project.pk %}"
+                                                                   style="color: black">{{ project.project_budget | format_number}} </a></p>
+                            </td>
+
+                                                                                                                            <td class="project-state">
+                                <p>                            <a href="{% url 'my-projects-detail' project.pk %}"
+                                                                  style="color: black">{{ project.project_curator.get_full_name}} </a></p>
+                            </td>
+                                                        <td class="project_progress" style="width: 10%;">
                                 <div class="progress progress-sm">
-                                    <div class="progress-bar {% if project.project_status == 'Yangi' %} bg-white {% elif project.project_status == 'Jarayonda' %} bg-yellow {% elif project.project_status == 'Tugatilgan' %}bg-green{% endif %}"
+                                    <div class="progress-bar {% if project.project_status == 'Yangi' %} bg-light {% elif project.project_status == 'Jarayonda' %} bg-yellow {% elif project.project_status == 'Tugatilgan' %}bg-green{% endif %}"
                                          role="progressbar" aria-valuenow="{{ project.project_done_percentage }}"
                                          aria-valuemin="0" aria-valuemax="100"
                                          style="width: {{ project.project_done_percentage }}%">
@@ -76,52 +87,83 @@
                                     <strong>{{ project.project_status }}</strong>
                                 </small>
                             </td>
-                            <td class="project-state">
-                                <p>{{ project.project_budget }}</p>
-                            </td>
+
                             <td class="project-actions text-right">
-                                <a class="btn btn-primary btn-sm" href="{% url 'my-projects-detail' project.pk %}">
-                                    <i class="fas fa-folder">
-                                    </i>
-                                    Batafsil
-                                </a>
-                                <a class="btn btn-info btn-sm" href="{% url 'update-project' project.pk %}">
-                                    <i class="fas fa-pencil-alt">
-                                    </i>
-                                    Tahrirlash
-                                </a>
-                                <button id="{{ project.pk }}" type="button" class="btn btn-danger btn-sm delete-button" data-toggle="modal"
-                                        data-target="#myModal">
-                                    <i class="fas fa-trash">
-                                    </i>
-                                    O'chirish
-                                </button>
+<ul style="list-style: none">
+    <li>
+        <a class="btn btn-primary btn-sm mb-1" href="{% url 'my-projects-detail' project.pk %}">
+            <i class="fas fa-folder"></i>
+        </a>
+    </li>
+    <li>
+        <a class="btn btn-info btn-sm mb-1" href="{% url 'update-project' project.pk %}">
+            <i class="fas fa-pencil-alt"></i>
+        </a>
+    </li>
+    <li>
+        <button id="{{ project.pk }}" type="button" class="btn btn-danger btn-sm delete-button no-url" data-toggle="modal" data-target="#myModal">
+            <i class="fas fa-trash"></i>
+        </button>
+    </li>
+</ul>
+
                             </td>
                         </tr>
                     {% endfor %}
                     </tbody>
                 </table>
+            <nav class="mt-3 mx-2" aria-label="Page navigation">
+  <ul class="pagination">
+    {% if projects.has_previous %}
+      <li class="page-item"><a class="page-link" href="?page={{ projects.previous_page_number }}"><i class="fa fa-chevron-left" aria-hidden="true"></i></a></li>
+    {% endif %}
+    {% for i in projects.paginator.page_range %}
+      {% if i <= 10 %}
+        <li class="page-item {% if projects.number == i %}active{% endif %}">
+          <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+        </li>
+      {% endif %}
+              {% if i > 10 %}
+        <li class="page-item {% if projects.number == i %}active{% endif %}">
+          <p class="mx-2">..........</p>
+        </li>
+                                    <li class="page-item {% if projects.number == i %}active{% endif %}">
+                  <a class="page-link" href="?page={{ projects.paginator.num_pages | add:'12' }}">{{ i }}</a>
+                  </li>
+                                    <li class="page-item {% if projects.number == i %}active{% endif %}">
+                  <a class="page-link" href="?page={{ projects.paginator.num_pages | add:'21' }}">{{ i }}</a>
+                  </li>
+                  <li class="page-item {% if projects.number == i %}active{% endif %}">
+                  <a class="page-link" href="?page={{ projects.paginator.num_pages }}">{{ i }}</a>
+                  </li>
+      {% endif %}
+    {% endfor %}
+
+    {% if projects.has_next %}
+      <li class="page-item"><a class="page-link" href="?page={{ projects.next_page_number }}"><i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>
+    {% endif %}
+  </ul>
+</nav>
             </div>
         </div>
-<div id="myModal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
+        <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
 
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Chindan ham loyihani o'chirasizmi ?</h4>
-      </div>
-      <div class="modal-footer">
-        <button id="confirm" type="button" class="btn btn-primary" data-dismiss="modal">Ha</button>
-        <button id="cancel" type="button" class="btn btn-danger" data-dismiss="modal">Bekor qilish</button>
-      </div>
-    </div>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Chindan ham loyihani o'chirasizmi ?</h4>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="confirm-delete-project" type="button" class="btn btn-primary">Ha</button>
+                        <button id="cancel-delete-project" type="button" class="btn btn-danger" data-dismiss="modal">Bekor qilish
+                        </button>
+                    </div>
+                </div>
 
-  </div>
-</div>
+            </div>
+        </div>
+        <script src="{% static 'static/js/script.js' %}"></script>
+
 
     </section>
-
-
-
-
 {% endblock content %}

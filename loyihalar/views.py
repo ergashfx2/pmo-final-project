@@ -29,7 +29,7 @@ def all_projects(request):
     phases = Phase.objects.all()
     tasks = Task.objects.all()
 
-    p = Paginator(projects, 1)
+    p = Paginator(projects, 10)
     page_number = request.GET.get('page')
     try:
         projects_page = p.get_page(page_number)
@@ -79,23 +79,22 @@ def myProjects(request):
 
 @login_required
 def get_project(request, pk):
-    project = Project.objects.filter(pk=pk)
-    comments = Comments.objects.filter(project_id=pk)
-    problems = Problems.objects.filter(project_id=pk)
+    project = Project.objects.get(pk=pk)
     datas = []
-    form = AddFileForm
-    phases = Phase.objects.filter(project_id=project[0].id)
+    phases = Phase.objects.filter(project_id=project.id)
     for phase in phases:
         datas.append({
             'phase': phase.phase_name,
             'phase_id': phase.pk,
             'phase_done_percentage': int(phase.phase_done_percentage),
-            'tasks': Task.objects.filter(phase=phase.id)
+            'tasks': Task.objects.filter(phase=phase.id),
+            'documents': Documents.objects.filter(phase=phase.id),
+            'comments': Comments.objects.filter(phase=phase),
+            'problems': Problems.objects.filter(phase=phase),
+            'actions': Action.objects.filter(project=project.pk).order_by('-date')[:10]
         })
-    documents = Documents.objects.filter(project=project[0].id)
     return render(request, 'project_detail.html',
-                  context={'project': project, 'datas': datas, 'documents': documents, 'comments': comments,
-                           'problems': problems})
+                  context={'project': project, 'datas': datas,})
 
 
 @login_required
@@ -254,11 +253,11 @@ def update_phase(request, pk):
 
 @login_required
 def delete_phase(request, pk):
-    Phase.objects.select_related(pk).filter(pk=pk).delete()
-    project = Phase.objects.get(pk=pk).project
     phase = Phase.objects.get(pk=pk)
+    project = phase.project
     Action.objects.create(author_id=request.user.pk, project_id=project.pk,
                           action=f"{project.project_name} nomli loyihadagi <strong>{phase.phase_name}</strong> fazasini o'chirib yubordi")
+    phase.delete()
     return JsonResponse(status=200, data={'status': 'ok'})
 
 

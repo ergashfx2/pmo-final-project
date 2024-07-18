@@ -21,7 +21,7 @@ urlpatterns = [
     path('my-projects/delete/<pk>', DeleteProject, name='delete-my-project'),
     path('my-projects/detail/create-archive/<pk>', create_archive, name='create-archive'),
     path('my-projects/detail/download-file/<pk>', download_file, name='create-archive'),
-    path('my-projects/delete-phase/<pk>', delete_phase, name='delete-phase'),
+    path('my-projects/detail/delete-phase/<pk>', delete_phase, name='delete-phase'),
     path('my-projects/detail/delete-task/<pk>', delete_task, name='delete-task'),
     path('my-projects/detail/add-phase/<pk>', add_phase, name='add-phase'),
     path('my-projects/detail/get-task/<pk>', get_task, name='get-task'),
@@ -31,5 +31,7 @@ urlpatterns = [
     path('my-projects/detail/delete-files/', delete_files, name='delete-files'),
     path('my-projects/detail/update-task-percentage/<pk>', update_task_percentage, name='update-task-percentage'),
     path('my-projects/create/', CreateProject, name='create-project'),
-    path('<pk>/', get_project, name='get-project'),
+    path('<pk>', get_project, name='get-project'),
+    path('download-file/<pk>', download_file, name='download-file'),
+    path('create-archive/<pk>', create_archive, name='create-archive'),
 ]

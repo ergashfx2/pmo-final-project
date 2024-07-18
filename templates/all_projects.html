@@ -123,6 +123,7 @@
                         {% endfor %}
                         </tbody>
                     </table>
+                {% if projects.has_next %}
 <nav class="mt-3 mx-2" aria-label="Page navigation">
   <ul class="pagination">
     {% if projects.has_previous %}
@@ -135,7 +136,7 @@
         </li>
       {% endif %}
     {% endfor %}
-  
+
     {% if projects.paginator.num_pages > 13 %}
       <li class="page-item disabled"><span class="page-link">...</span></li>
     {% endif %}
@@ -145,6 +146,7 @@
     {% endif %}
   </ul>
 </nav>
+                {% endif %}
 
                 </div>
 
@@ -160,9 +162,20 @@ document.addEventListener('DOMContentLoaded', function () {
         var offcanvasElement = document.querySelector(toggleButton.getAttribute('data-target'));
         var closeButton = offcanvasElement.querySelector('.close');
 
-        toggleButton.addEventListener('click', function () {
-            offcanvasElement.classList.toggle('show');
-        });
+toggleButton.addEventListener('click', function (event) {
+    console.log('clicked');
+    offcanvasElement.classList.add('show');
+    event.stopPropagation();
+    setTimeout(() => {
+        document.addEventListener('click', function (e) {
+            let canvas = document.getElementById('offcanvasRight');
+            if (!canvas.contains(e.target)) {
+                offcanvasElement.classList.remove('show');
+            }
+        }, { once: true });
+    }, 0);
+});
+
 
         closeButton.addEventListener('click', function () {
             offcanvasElement.classList.remove('show');
