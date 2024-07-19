@@ -134,7 +134,7 @@ function delete_phase(){
                     if(res.status === 200){
                         confirm_btn.parentNode.children.item(1).click()
                         parent.parentNode.removeChild(parent)
-
+                        parent.removeChild(parent.children.item(1))
                     }
                 })
             })

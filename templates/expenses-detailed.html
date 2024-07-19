@@ -47,9 +47,11 @@
                             <input class="form-control {{ project.pk }}" type="text" id="budget">
                         </div>
                         <div class="btn-group w-100" role="group">
-                        <button class="btn btn-primary" type="button" id="budget-expand-btn">Qo'shish
+                        <button class="btn btn-primary" data-toggle="modal"
+                                       data-target="#expanding-budget-btn" type="button">Qo'shish
                         </button>
-                                         <button class="btn btn-danger" type="button" id="budget-decrease-btn">Kamaytirish
+                                         <button data-toggle="modal"
+                                       data-target="#decreasing-budget-btn" class="btn btn-danger" type="button">Kamaytirish
                         </button>
                         </div>
                     </form>
@@ -84,20 +86,22 @@
                             <input name="file" type="file" id="file">
                         </div>
 
-                        <button id="add-expense-button" type="submit" class="btn btn-primary form-control">Qo'shish
+                        <button data-toggle="modal"
+                                       data-target="#add-expense-btn" type="button" class="btn btn-primary form-control">Qo'shish
                         </button>
-                                        <button data-toggle="modal" data-target="#delete-all-btn" class="btn btn-danger form-control mt-2">Reset
-                    All
+                                        <button data-toggle="modal" data-target="#delete-all-btn" class="btn btn-danger form-control mt-2">Barchasini o'chirish
                 </button>
                     </form>
                 </div>
                 </div>
-                
+
                 <div class="row">
 
-                    <div class="col-11"></div>
-                    <div class="col-1 d-flex justify-content-end">
-                        <button id="expense-menu-toggle" class="btn btn-default"><i class="fa-solid fa-receipt"></i> Yaratish</button>
+                    <div class="col-lg-1 col-md-2 col-sm-2 d-flex justify-content-start">
+                        <button id="expense-menu-toggle" class="btn btn-primary ml-2" style="font-size: 120%"><i class="fa-solid fa-receipt"></i> Yaratish</button>
+                    </div>
+                    <div class="col-lg-8 col-md-3 col-sm-3">
+                        <input class="search" placeholder="Qidirish....." type="text">
                     </div>
                     <div class="row">
                         <div class="col-3 column-canvas"></div>
@@ -140,7 +144,7 @@
                         {% for expense in expenses %}
                             <tr>
                                 <td>{{ expense.description }}</td>
-                                <td>{{ expense.quantity }}</td>
+                                <td>{{ expense.quantity | format_number }}</td>
                                 <td>{{ expense.date |  date:"d-m-Y" }}</td>
                                 <td><i style="color: red;cursor: pointer" data-toggle="modal"
                                        data-target="#delete-expense-btn" id="{{ expense.id }}"
@@ -174,7 +178,7 @@
                 </div>
                 </div>
     </div>
-    
+
     <div id="add-expense-btn"
                                  class="modal fade"
                                  tabindex="-1" role="dialog"
@@ -185,12 +189,11 @@
                                         <div class="modal-body text-center">
                                             <i class="fa-solid fa-triangle-exclamation btn-lg"
                                                style="font-size: 5dvh"></i>
-                                            <h4>Chindan o'chirasizmi ?</h4></div>
+                                            <h4>Tasdiqlaysizmi ?</h4></div>
                                         <div class="d-flex justify-content-center mb-2">
-                                            <button id="confirm-delete-expense-btn" class="btn btn-danger mr-2"><i
-                                                    class="fa-solid fa-trash-can"></i> O'chirish
+                                            <button id="add-expense-button" class="btn btn-danger mr-2"><i class="fa-solid fa-square-check"></i> Tasdiqlash
                                             </button>
-                                            <button id="cancel-expense-btn" class="btn btn-secondary" data-dismiss="modal">Bekor qilish</button>
+                                            <button id="add-expense-cancel" class="btn btn-secondary" data-dismiss="modal">Bekor qilish</button>
                                             <br>
                                         </div>
                                     </div>
@@ -207,12 +210,11 @@
                                         <div class="modal-body text-center">
                                             <i class="fa-solid fa-triangle-exclamation btn-lg"
                                                style="font-size: 5dvh"></i>
-                                            <h4>Chindan o'chirasizmi ?</h4></div>
+                                            <h4>Tasdiqlaysizmi ?</h4></div>
                                         <div class="d-flex justify-content-center mb-2">
-                                            <button id="confirm-delete-expense-btn" class="btn btn-danger mr-2"><i
-                                                    class="fa-solid fa-trash-can"></i> O'chirish
+                                            <button id="budget-expand-btn" class="btn btn-danger mr-2"><i class="fa-solid fa-square-check"></i> Qo'shish
                                             </button>
-                                            <button id="cancel-expense-btn" class="btn btn-secondary" data-dismiss="modal">Bekor qilish</button>
+                                            <button id="budget-expand-cancel" class="btn btn-secondary" data-dismiss="modal">Bekor qilish</button>
                                             <br>
                                         </div>
                                     </div>
@@ -229,12 +231,11 @@
                                         <div class="modal-body text-center">
                                             <i class="fa-solid fa-triangle-exclamation btn-lg"
                                                style="font-size: 5dvh"></i>
-                                            <h4>Chindan o'chirasizmi ?</h4></div>
+                                            <h4>Chindan kamaytirasizmi ?</h4></div>
                                         <div class="d-flex justify-content-center mb-2">
-                                            <button id="confirm-delete-expense-btn" class="btn btn-danger mr-2"><i
-                                                    class="fa-solid fa-trash-can"></i> O'chirish
+                                            <button id="budget-decrease-btn" class="btn bg-green mr-2"><i class="fa-solid fa-square-check"></i> Tasdiqlash
                                             </button>
-                                            <button id="cancel-expense-btn" class="btn btn-secondary" data-dismiss="modal">Bekor qilish</button>
+                                            <button id="budget-decrease-cancel" class="btn btn-secondary" data-dismiss="modal">Bekor qilish</button>
                                             <br>
                                         </div>
                                     </div>
@@ -250,23 +251,23 @@
         var offcanvasElement = document.querySelector(toggleButton.getAttribute('data-target'));
         var closeButton = offcanvasElement.querySelector('.close');
 
-toggleButton.addEventListener('click', function (event) {
-    console.log('clicked');
-    offcanvasElement.classList.add('show');
-    event.stopPropagation();
-    setTimeout(() => {
-        document.addEventListener('click', function (e) {
-            let canvas = document.getElementById('offcanvasRight');
-            if (!canvas.contains(e.target)) {
-                offcanvasElement.classList.remove('show');
-            }
-        }, { once: true });
-    }, 0);
-});
-
+        toggleButton.addEventListener('click', function (event) {
+            console.log('clicked');
+            offcanvasElement.classList.add('show');
+            event.stopPropagation();
+            setTimeout(() => {
+                document.addEventListener('click', function (e) {
+                    let canvas = document.getElementById('offcanvasRight');
+                    if (!canvas.contains(e.target)) {
+                        offcanvasElement.classList.remove('show');
+                    }
+                }, {once: true});
+            }, 0);
+        });
 
         closeButton.addEventListener('click', function () {
             offcanvasElement.classList.remove('show');
         });
+    });
     </script>
 {% endblock content %}

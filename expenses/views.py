@@ -2,12 +2,13 @@ import json
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.sites import requests
+from django.core import serializers
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.utils import timezone
 from utils import currency_rate
 from actions.models import Action
-from loyihalar.models import Project, Documents
+from loyihalar.models import Project, Documents, Phase
 from .models import Expense
 from loyihalar.views import file_extensions
 from config.views import getExpensesAll
@@ -41,11 +42,10 @@ def add_expense(request, pk):
         data = json.loads(data)
         project = Project.objects.get(pk=pk)
         if request.FILES.get('file'):
+            print(request.FILES.get('file'))
             doc_type = str(request.FILES.get('file')).split('.')[-1]
             Documents.objects.create(document=request.FILES.get('file'), project_id=pk, type=file_extensions[doc_type])
             Action.objects.create(author_id=request.user.pk, project_id=project.pk,action=f"{request.FILES.get('file')} nomli fayl qo'shdi")
-        else:
-            pass
         q = str(data['amount']).replace(' ','')
         if data['currency'] == 'usd':
             quantity = float(q) * float(currency_rate)
@@ -125,3 +125,9 @@ def deleteAll(request, pk):
                           action=f"{project.project_name} loyihasidagi barcha xarajatlarni o'chirib yubordi. Bu xarajatlar : <br><br>{expenses_list}")
     expenses.delete()
     return JsonResponse(status=200, data={'success': True})
+
+
+@login_required
+def get_phases(request,pk):
+    phases = Phase.objects.filter(pk=pk)
+    return JsonResponse(status=200,data=serializers.serialize('json',phases))

@@ -61,6 +61,23 @@ function change_table() {
 }
 
 change_table()
+function expandBudget() {
+    document.getElementById('budget-expand-btn').addEventListener('click', function () {
+        console.log('clicked')
+        var budget = document.getElementById('budget');
+        var res = sendPostRequest(`expand-budget/${budget.classList[1]}`, {'data': budget.value})
+        res.then(res => {
+            var total = res.spent_money
+            var left = res.total_money - res.spent_money
+            document.getElementById('totalExpenses').textContent = `${formatNumber(total)}`
+            document.getElementById('totalBudget').textContent = `${formatNumber(res.total_money)}`
+            document.getElementById('budgetLeft').textContent = `${formatNumber(left)}`
+            document.getElementById('budget-expand-cancel').click()
+        })
+    })
+}
+
+expandBudget()
 
 
 function offcanvas_manager(){
@@ -91,6 +108,8 @@ function formatNumber(val) {
 
     return formatted;
 }
+
+
 
 function add_listeners() {
     var delete_expense_modal = document.getElementById('delete-expense-btn');
@@ -136,21 +155,6 @@ function redirecting() {
 redirecting()
 
 
-function expandBudget() {
-    document.getElementById('budget-expand-btn').addEventListener('click', function () {
-        var budget = document.getElementById('budget');
-        var res = sendPostRequest(`expand-budget/${budget.classList[1]}`, {'data': budget.value})
-        res.then(res => {
-            var total = res.spent_money
-            var left = res.total_money - res.spent_money
-            document.getElementById('totalExpenses').textContent = `${formatNumber(total)}`
-            document.getElementById('totalBudget').textContent = `${formatNumber(res.total_money)}`
-            document.getElementById('budgetLeft').textContent = `${formatNumber(left)}`
-        })
-    })
-}
-
-expandBudget()
 
 
 function decreaseBudget() {
@@ -163,27 +167,40 @@ function decreaseBudget() {
             document.getElementById('totalExpenses').textContent = `${formatNumber(total)}`
             document.getElementById('totalBudget').textContent = `${formatNumber(res.total_money)}`
             document.getElementById('budgetLeft').textContent = `${formatNumber(left)}`
+            document.getElementById('budget-decrease-cancel').click()
         })
     })
 }
 
 decreaseBudget()
+function document_listen(){
+    let file = document.getElementById('file')
+                let input_file = file.files[0]
+                let form = document.getElementById('add-expense')
+            file.addEventListener('change',function () {
+                let div = document.createElement('div')
+                div.classList.add('form-group')
+                div.innerHTML = `<label for="phase">Bu fayl qaysi fazaga tegishli:</label><input name="phase" class="form-control" type="text" id="phase"/>`
+                let button = form.children.item(6)
+                button.insertBefore(button,div)
+            })
+}
+
+document_listen()
+
 
 function add_expense() {
-    document.getElementById('add-expense').addEventListener('submit', function (e) {
-        e.preventDefault(); // Prevent form submission
+    document.getElementById('add-expense-button').addEventListener('click', function (e) {
         let expense = document.getElementById('expense').value;
         let amount = document.getElementById('amount').value;
         let date = document.getElementById('date').value;
-        let p_id = e.target.classList[0];
+        let p_id = document.getElementById('add-expense').classList[0];
         let file = document.getElementById('file');
         let currency = document.querySelector('input[name="currency"]:checked').value;
         let input_file = file.files[0] || null;
-
         let csrfToken = getCookie('csrftoken');
         let formData = new FormData();
         let data = {'expense': expense, 'amount': amount, 'date': date, 'file': input_file, 'currency': currency};
-
         formData.append('file', input_file);
         formData.append('data', JSON.stringify(data));
 
@@ -196,12 +213,12 @@ function add_expense() {
                 body: formData,
             })
                 .then(res => res.json().then(response => {
-                    console.log(response);
                     let tbody = document.getElementById('expenses-body');
+                    console.log(response)
                     tbody.innerHTML += `
                 <tr>
                     <td>${expense}</td>
-                    <td>${response.quantity}</td>
+                    <td>${formatNumber(response.quantity)}</td>
                     <td>${date}</td>
                     <td>
                         <i style="color: red; cursor: pointer" id="${response.id}" data-toggle="modal" data-target="#delete-expense-btn" class="fa-regular delete-expense fa-trash-can text-center"></i>
@@ -228,6 +245,7 @@ function add_expense() {
                     let left = parseFloat(response.total_money.replace(/ /g, '')) - parseFloat(response.spent_money.replace(/ /g, ''));
                     document.getElementById('totalExpenses').textContent = formatNumber(total);
                     document.getElementById('budgetLeft').textContent = formatNumber(left);
+                    document.getElementById('add-expense-cancel').click()
                 }));
         }
     });

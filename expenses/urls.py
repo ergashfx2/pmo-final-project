@@ -5,6 +5,7 @@ urlpatterns = [
     path('', spending, name='spending'),
     path('detailed/<pk>', detailedExpenses, name='detailed-expanses'),
     path('detailed/add-expense/<pk>',add_expense,name='add-expense'),
+    path('detailed/get-phases/<pk>',add_expense,name='add-expense'),
     path('detailed/expand-budget/<pk>',updateBudget,name='expand-budget'),
     path('detailed/decrease-budget/<pk>',decreaseBudget,name='decrease-budget'),
     path('detailed/delete-expense/<pk>',delete_expense,name='delete-expense'),

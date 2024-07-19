@@ -83,7 +83,7 @@
                                         <tr data-url="{% url 'get-project' project.pk %}" class="datas" style="cursor: pointer;">
                                             <td>{{ forloop.counter }}</td>
                                             <td class="text-flow text-center">{{ project.project_name }}</td>
-                                            <td class="text-center">{% if project.project_status == 'Jarayonda' %}<div class="alert alert-warning">{{ project.project_status }}</div>{% elif project.project_status == 'Yangi' %}<div class="alert alert-primary">{{ project.project_status }}{% else %}<div class="alert alert-success">{{ project.project_status }}</div>{% endif %}</div></td>
+                                            <td class="text-center">{{ project.project_status }}</td>
                                             <td class="text-flow text-center">{{ project.project_done_percentage }}%</td>
                                         </tr>
                                     {% endfor %}
@@ -95,9 +95,7 @@
                 <div class="col-md-5 col-lg-5 col-sm-12">
                     <div class="card h-100">
                 <div class="mb-8">
-                  <!-- card -->
                   <div class="card bg-gray-300 shadow-none mb-4">
-                    <!-- card body -->
                     <div class="card-body">
                       <div class="d-flex justify-content-between
                         align-items-center">
@@ -162,4 +160,5 @@
 <script src="{% static 'plugins/bower_components/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js' %}"></script>
 <script src="{% static 'js/pages/dashboards/dashboard1.js' %}"></script>
 <script src="{% static 'static/js/expense.js' %}"></script>
+<script src="{% static 'static/js/script.js' %}"></script>
 {% endblock content %}

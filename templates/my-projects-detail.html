@@ -66,7 +66,7 @@
                                                                                                     <h4>Chindan o'chirasizmi ?</h4>
                                     </div>
                                     <div class="modal-footer">
-                                        <button class="btn btn-danger delete-phase-confirm">O'chirish</button>
+                                        <button class="btn btn-danger">O'chirish</button>
                                         <button data-dismiss="modal" class="btn btn-secondary">Bekor qilish</button>
                                     </div>
                                 </div>
@@ -76,8 +76,8 @@
                                             </span>
                                             </div>
 
-                                            <div id="modal{{ data.phase_id }}" class="modal fade"
-                                                  role="dialog">
+                                            <div id="modal{{ data.phase_id }}" class="modal fade modal-custom"
+                                                 role="dialog">
                                                 <div class="modal-dialog modal-xl modal-dialog-scrollable  mx-2 mt-3">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
@@ -220,15 +220,15 @@
                                                             <p>Bajarilgan ishlar</p>
                                                             <div class="row mb-2">
                                                                 <div id="comments_{{ data.phase_id }}"
-                                                                     class="col-2 actions-btn mx-1 btn btn-light active">
+                                                                     class="col-lg-2 col-md-4 col-sm-4 actions-btn mx-1 btn btn-light active">
                                                                     Izohlar
                                                                 </div>
                                                                 <div id="problems_{{ data.phase_id }}"
-                                                                     class="col-2 mx-1 actions-btn btn btn-light">
+                                                                     class="col-lg-2 col-md-4 col-sm-4 mx-1 actions-btn btn btn-light">
                                                                     Muammolar
                                                                 </div>
                                                                 <div id="actions_{{ data.phase_id }}"
-                                                                     class="col-2 mx-1 actions-btn btn btn-light">
+                                                                     class="col-lg-2 col-md-4 col-sm-4 mx-1 actions-btn btn btn-light">
                                                                     So'nggi
                                                                     harakatlar
                                                                 </div>
@@ -528,18 +528,26 @@
                                                                     {% endfor %}
                                                                 </ul>
                                                             </div>
+                                                                                                                                                                                                                        <p class="text-secondary">Tugatilganlik darajasi</p>
+                                                        <div class="row mb-3">
+                                                            <div class="col-12">
+                                                                <div class="progress">
+                                                                    <div class="progress-bar" role="progressbar" style="width: {{ data.phase_done_percentage }}%;" aria-valuenow="{{ data.phase_done_percentage }}" aria-valuemin="0" aria-valuemax="100">{{ data.phase_done_percentage }}%</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                             <p>Bajarilgan ishlar</p>
                                                             <div class="row mb-2">
                                                                 <div id="comments_{{ data.phase_id }}"
-                                                                     class="col-2 actions-btn mx-1 btn btn-light active">
+                                                                     class="col-lg-2 col-md-4 col-sm-4 actions-btn mx-1 btn btn-light active">
                                                                     Izohlar
                                                                 </div>
                                                                 <div id="problems_{{ data.phase_id }}"
-                                                                     class="col-2 mx-1 actions-btn btn btn-light">
+                                                                     class="col-lg-2 col-md-4 col-sm-4 mx-1 actions-btn btn btn-light">
                                                                     Muammolar
                                                                 </div>
                                                                 <div id="actions_{{ data.phase_id }}"
-                                                                     class="col-2 mx-1 actions-btn btn btn-light">
+                                                                     class="col-lg-2 col-md-4 col-sm-4 mx-1 actions-btn btn btn-light">
                                                                     So'nggi
                                                                     harakatlar
                                                                 </div>
@@ -698,8 +706,7 @@
                                                     data-target="#modal{{ data.phase_id }}" data-backdrop="static"
                                                     class="text-secondary d-inline phase_text">{{ data.phase }}</h4>
                                             </div>
-                                            <div id="modal{{ data.phase_id }}" class="modal fade"
-                                                  role="dialog">
+                                            <div id="modal{{ data.phase_id }}" class="modal fade modal-custom"  role="dialog">
                                                 <div class="modal-dialog modal-xl modal-dialog-scrollable  mx-2 mt-3">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
@@ -839,6 +846,14 @@
                                                                     {% endfor %}
                                                                 </ul>
                                                             </div>
+                                                                                                                                                                <p class="text-secondary">Tugatilganlik darajasi</p>
+                                                        <div class="row mb-3">
+                                                            <div class="col-12">
+                                                                <div class="progress">
+                                                                    <div class="progress-bar" role="progressbar" style="width: {{ data.phase_done_percentage }}%;" aria-valuenow="{{ data.phase_done_percentage }}" aria-valuemin="0" aria-valuemax="100">{{ data.phase_done_percentage }}%</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                             <p>Bajarilgan ishlar</p>
                                                             <div class="row mb-2">
                                                                 <div id="comments_{{ data.phase_id }}"
@@ -846,11 +861,11 @@
                                                                     Izohlar
                                                                 </div>
                                                                 <div id="problems_{{ data.phase_id }}"
-                                                                     class="col-lg-2 col-md-4 col-sm-4 mx-lg-1 actions-btn btn btn-light">
+                                                                     class="col-lg-2 col-md-4 col-sm-4 mx-1 actions-btn btn btn-light">
                                                                     Muammolar
                                                                 </div>
                                                                 <div id="actions_{{ data.phase_id }}"
-                                                                     class="col-lg-2 col-md-4 col-sm-4 mx-lg-1 actions-btn btn btn-light">
+                                                                     class="col-lg-2 col-md-4 col-sm-4 mx-1 actions-btn btn btn-light">
                                                                     So'nggi
                                                                     harakatlar
                                                                 </div>

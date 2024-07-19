@@ -51,14 +51,7 @@
                                                 <h4 phase_id="{{ data.phase_id }}" type="button" data-toggle="modal"
                                                     data-target="#modal{{ data.phase_id }}" data-backdrop="static"
                                                     class="text-secondary col-10 d-inline phase_text">{{ data.phase }}</h4>
-                                                <span type="button" class="col-1 btn-group dropright"><i
-                                                        class="fa-solid fa-bars" data-toggle="dropdown"
-                                                        aria-haspopup="true" aria-expanded="false"></i>
-                                            <div class="dropdown-menu">
-                                                <a phase_id="{{ data.phase_id }}" class="dropdown-item edit-phase-btn" ><i class="fa-solid fa-pen-to-square"></i> O'zgartirish</a>
-                                                <a phase_id="{{ data.phase_id }}" data-toggle="modal" data-target="#phase{{ data.phase_id }}" class="dropdown-item delete-phase-btn"><i class="fa-solid fa-trash"></i> O'chirish</a>
-
-                                            </div>
+                                                <span type="button" class="col-1 btn-group dropright">
                                             </span>
                                                                                                         <div id="phase{{ data.phase_id }}" class="modal fade" role="dialog">
                             <div class="modal-dialog modal-sm modal-dialog-centered">
@@ -338,14 +331,7 @@
                                                 <h4 phase_id="{{ data.phase_id }}" type="button" data-toggle="modal"
                                                     data-target="#modal{{ data.phase_id }}" data-backdrop="static"
                                                     class="text-secondary col-10 d-inline phase_text">{{ data.phase }}</h4>
-                                                <span type="button" class="col-1 btn-group dropright"><i
-                                                        class="fa-solid fa-bars" data-toggle="dropdown"
-                                                        aria-haspopup="true" aria-expanded="false"></i>
-                                            <div class="dropdown-menu">
-                                                <a phase_id="{{ data.phase_id }}" class="dropdown-item edit-phase-btn" ><i class="fa-solid fa-pen-to-square"></i> O'zgartirish</a>
-                                                <a phase_id="{{ data.phase_id }}" data-toggle="modal" data-target="#phase{{ data.phase_id }}" class="dropdown-item delete-phase-btn"><i class="fa-solid fa-trash"></i> O'chirish</a>
-
-                                            </div>
+                                                <span type="button" class="col-1 btn-group dropright">
                                             </span>
                                                                                                         <div id="phase{{ data.phase_id }}" class="modal fade" role="dialog">
                             <div class="modal-dialog modal-sm modal-dialog-centered">
@@ -665,14 +651,7 @@
                                                 <h4 phase_id="{{ data.phase_id }}" type="button" data-toggle="modal"
                                                     data-target="#modal{{ data.phase_id }}" data-backdrop="static"
                                                     class="text-secondary col-10 d-inline phase_text">{{ data.phase }}</h4>
-                                                <span type="button" class="col-1 btn-group dropright"><i
-                                                        class="fa-solid fa-bars" data-toggle="dropdown"
-                                                        aria-haspopup="true" aria-expanded="false"></i>
-                                            <div class="dropdown-menu">
-                                                <a phase_id="{{ data.phase_id }}" class="dropdown-item edit-phase-btn" ><i class="fa-solid fa-pen-to-square"></i> O'zgartirish</a>
-                                                <a phase_id="{{ data.phase_id }}" data-toggle="modal" data-target="#phase{{ data.phase_id }}" class="dropdown-item delete-phase-btn"><i class="fa-solid fa-trash"></i> O'chirish</a>
-
-                                            </div>
+                                                <span type="button" class="col-1 btn-group dropright">
                                             </span>
                                                                                                         <div id="phase{{ data.phase_id }}" class="modal fade" role="dialog">
                             <div class="modal-dialog modal-sm modal-dialog-centered">
@@ -1080,5 +1059,5 @@
 
 
 
-    <script src="{% static 'static/js/script.js' %}"></script>
+    <script src="{% static 'static/js/detailed.js' %}"></script>
 {% endblock content %}
