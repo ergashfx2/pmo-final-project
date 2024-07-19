@@ -39,6 +39,50 @@ function sendPostRequest(url, data) {
 }
 
 
+function change_table() {
+    document.querySelectorAll('.change-table').forEach(value => {
+        value.addEventListener('change', function (e) {
+            console.log('changed')
+            let selectedId = value.selectedOptions[0].id;
+            if (selectedId === 'blog') {
+                document.querySelectorAll('.d_datas').forEach(el => el.style.display = 'none')
+                document.querySelectorAll('.b_datas').forEach(el => el.style.display = '')
+                document.getElementById('table-title').innerText = 'Loyihalar boklar kesimida'
+
+            }
+
+            if (selectedId === 'dept') {
+                document.querySelectorAll('.d_datas').forEach(el => el.style.display = '')
+                document.querySelectorAll('.b_datas').forEach(el => el.style.display = 'none')
+                document.getElementById('table-title').innerText = 'Loyihalar departamentlar kesimida'
+            }
+        })
+    })
+}
+
+change_table()
+
+
+function offcanvas_manager(){
+    let btn = document.getElementById('expense-menu-toggle')
+    btn.addEventListener('click',function (){
+        let offcanvas = document.getElementById('expanse-container')
+        offcanvas.classList.add('slide-in-right')
+        setTimeout(()=>{
+                    offcanvas.style.display = 'block'
+            offcanvas.classList.add('visible')
+            btn.style.zIndex = '-1'
+        })
+        document.getElementById('cancel-expense').addEventListener('click',function (){
+            offcanvas.style.display = 'none'
+            btn.style.zIndex = '1'
+
+        })
+    })
+}
+
+offcanvas_manager()
+
 function formatNumber(val) {
     val = parseInt(val);
     let formatted = val.toLocaleString();
@@ -79,6 +123,8 @@ function add_listeners() {
     })
 }
 
+add_listeners()
+
 function redirecting() {
     document.querySelectorAll('.datas').forEach(value => {
         value.addEventListener('click', function () {
@@ -88,28 +134,6 @@ function redirecting() {
 }
 
 redirecting()
-
-function change_table() {
-    document.querySelectorAll('.change-table').forEach(value => {
-        value.addEventListener('change', function (e) {
-            let selectedId = value.selectedOptions[0].id;
-            if (selectedId === 'blog') {
-                document.querySelectorAll('.d_datas').forEach(el => el.style.display = 'none')
-                document.querySelectorAll('.b_datas').forEach(el => el.style.display = '')
-                document.getElementById('table-title').innerText = 'Loyihalar boklar kesimida'
-
-            }
-
-            if (selectedId === 'dept') {
-                document.querySelectorAll('.d_datas').forEach(el => el.style.display = '')
-                document.querySelectorAll('.b_datas').forEach(el => el.style.display = 'none')
-                document.getElementById('table-title').innerText = 'Loyihalar departamentlar kesimida'
-            }
-        })
-    })
-}
-
-change_table()
 
 
 function expandBudget() {
@@ -128,66 +152,89 @@ function expandBudget() {
 
 expandBudget()
 
-document.getElementById('add-expense').addEventListener('submit', function (e) {
-    e.preventDefault()
-    let expense = document.getElementById('expense').value
-    let amount = document.getElementById('amount').value
-    let date = document.getElementById('date').value
-    let p_id = e.target.classList[0];
-    let file = document.getElementById('file')
-    let currency = document.querySelector('input[name="currency"]:checked').value;
-    var input_file
-    if (file.files[0]) {
-        input_file = file.files[0]
-    }
-    let csrfToken = getCookie('csrftoken')
-    let formData = new FormData()
-    let data = {'expense': expense, 'amount': amount, 'date': date, 'file': file.files[0], 'currency': currency}
-    formData.append('file', input_file)
-    formData.append('data', JSON.stringify(data))
-    if (expense) {
-        console.log(input_file)
-        fetch(`add-expense/${p_id}`, {
-            method: 'POST',
-            headers: {
-                'X-CSRFToken': csrfToken,
-            },
-            body: formData,
-        }).then(res => {
-            if (res.status === 200) {
-                res.json().then(response => {
-                    let tbody = document.getElementById('expenses-body')
-                    tbody.innerHTML = `${tbody.innerHTML} <tr ><td>${expense}</td><td >${response.quantity}</td><td >${date}</td> <td ><i style="color: red;cursor: pointer" id="${response.id}" data-toggle="modal" data-target="#delete-expense-btn" class="fa-regular delete-expense fa-trash-can text-center"></i></td></tr><div id="delete-expense-btn"
-                                                                                         class="modal fade"
-                                                                                         tabindex="-1" role="dialog"
-                                                                                         aria-hidden="true">
-                                                                                        <div class="modal-dialog modal-sm modal-dialog-centered"
-                                                                                             role="document">
-                                                                                            <div class="modal-content">
-                                                                                                <div class="modal-body text-center">
-                                                                                                    <i class="fa-solid fa-triangle-exclamation btn-lg" style="font-size: 5dvh"></i>
-                                                                                                    <h4>Chindan o'chirasizmi ?</h4></div>
-                                                                                                <div class="d-flex justify-content-center mb-2">
-                                                                                                    <button id="confirm-delete-expense-btn" class="btn btn-danger mr-2"><i class="fa-solid fa-trash-can"></i> O'chirish</button>
-                                                                                                    <button class="btn btn-secondary" data-dismiss="modal">Bekor qilish</button>
-                                                                                                    <br>
-                                                                                                </div>
-                                                                                            </div>
 
-                                                                                        </div>
-                                                                                    </div>`
-                    add_listeners()
-                    var total = response.spent_money
-                    var left = response.total_money.replaceAll(' ', '') - response.spent_money.replaceAll(' ', '')
-                    document.getElementById('totalExpenses').textContent = `${formatNumber(total)}`
-                    document.getElementById('budgetLeft').textContent = `${formatNumber(left)}`
-                })
-            } else {
-                alert("error occured")
-            }
+function decreaseBudget() {
+    document.getElementById('budget-decrease-btn').addEventListener('click', function () {
+        var budget = document.getElementById('budget');
+        var res = sendPostRequest(`decrease-budget/${budget.classList[1]}`, {'data': budget.value})
+        res.then(res => {
+            var total = res.spent_money
+            var left = res.total_money - res.spent_money
+            document.getElementById('totalExpenses').textContent = `${formatNumber(total)}`
+            document.getElementById('totalBudget').textContent = `${formatNumber(res.total_money)}`
+            document.getElementById('budgetLeft').textContent = `${formatNumber(left)}`
         })
-    }
-})
+    })
+}
+
+decreaseBudget()
+
+function add_expense() {
+    document.getElementById('add-expense').addEventListener('submit', function (e) {
+        e.preventDefault(); // Prevent form submission
+        let expense = document.getElementById('expense').value;
+        let amount = document.getElementById('amount').value;
+        let date = document.getElementById('date').value;
+        let p_id = e.target.classList[0];
+        let file = document.getElementById('file');
+        let currency = document.querySelector('input[name="currency"]:checked').value;
+        let input_file = file.files[0] || null;
+
+        let csrfToken = getCookie('csrftoken');
+        let formData = new FormData();
+        let data = {'expense': expense, 'amount': amount, 'date': date, 'file': input_file, 'currency': currency};
+
+        formData.append('file', input_file);
+        formData.append('data', JSON.stringify(data));
+
+        if (expense) {
+            fetch(`add-expense/${p_id}`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrfToken,
+                },
+                body: formData,
+            })
+                .then(res => res.json().then(response => {
+                    console.log(response);
+                    let tbody = document.getElementById('expenses-body');
+                    tbody.innerHTML += `
+                <tr>
+                    <td>${expense}</td>
+                    <td>${response.quantity}</td>
+                    <td>${date}</td>
+                    <td>
+                        <i style="color: red; cursor: pointer" id="${response.id}" data-toggle="modal" data-target="#delete-expense-btn" class="fa-regular delete-expense fa-trash-can text-center"></i>
+                    </td>
+                </tr>
+                <div id="delete-expense-btn" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-body text-center">
+                                <i class="fa-solid fa-triangle-exclamation btn-lg" style="font-size: 5dvh"></i>
+                                <h4>Chindan o'chirasizmi ?</h4>
+                            </div>
+                            <div class="d-flex justify-content-center mb-2">
+                                <button id="confirm-delete-expense-btn" class="btn btn-danger mr-2">
+                                    <i class="fa-solid fa-trash-can"></i> O'chirish
+                                </button>
+                                <button class="btn btn-secondary" data-dismiss="modal">Bekor qilish</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+                    add_listeners();
+                    let total = response.spent_money;
+                    let left = parseFloat(response.total_money.replace(/ /g, '')) - parseFloat(response.spent_money.replace(/ /g, ''));
+                    document.getElementById('totalExpenses').textContent = formatNumber(total);
+                    document.getElementById('budgetLeft').textContent = formatNumber(left);
+                }));
+        }
+    });
+}
+
+add_expense()
+
 
 function deleteAll() {
     let button = document.getElementById('reset-all');

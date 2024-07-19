@@ -12,6 +12,7 @@ from .models import Expense
 from loyihalar.views import file_extensions
 from config.views import getExpensesAll
 
+
 @login_required
 def spending(request):
     projects = Project.objects.all()
@@ -22,7 +23,8 @@ def spending(request):
         total_budget += float(project.project_budget)
         spent_budget += float(project.project_spent_money)
     return render(request, 'spendings.html',
-                  {'projects': projects, 'total_budget': str(total_budget), 'spent_budget': str(spent_budget),'expenses':totalExpense})
+                  {'projects': projects, 'total_budget': str(total_budget), 'spent_budget': str(spent_budget),
+                   'expenses': totalExpense})
 
 
 @login_required
@@ -32,13 +34,11 @@ def detailedExpenses(request, pk):
     return render(request, 'expenses-detailed.html', {'project': project, 'expenses': expenses})
 
 
-
 @login_required
 def add_expense(request, pk):
     if request.method == 'POST':
-        d = json.dumps(request.POST)
-        data = json.loads(d).get('data')
-        data  = json.loads(data)
+        data = request.POST.get('data')
+        data = json.loads(data)
         project = Project.objects.get(pk=pk)
         if request.FILES.get('file'):
             doc_type = str(request.FILES.get('file')).split('.')[-1]
@@ -74,20 +74,23 @@ def delete_expense(request, pk):
     project.project_spent_money = float(project.project_spent_money) - float(amount)
     project.save()
     expense.delete()
-    Action.objects.create(author_id=request.user.pk, project_id=project.pk, action=f"{project.project_name} loyihasidagi {expense.quantity} so'mlik xarajatni o'chirdi")
+    Action.objects.create(author_id=request.user.pk, project_id=project.pk,
+                          action=f"{project.project_name} loyihasidagi {expense.quantity} so'mlik xarajatni o'chirdi")
     return JsonResponse(status=200,
                         data={'succuss': True, 'spent_money': Project.objects.get(pk=project.pk).project_spent_money,
                               'total_money': project.project_budget})
 
 
 @login_required
-def updateBudget(request,pk):
+def updateBudget(request, pk):
     if request.method == 'POST':
         project = Project.objects.get(pk=pk)
         data = json.loads(request.body)
-        project.project_budget = int(project.project_budget) + int(data['data'])
+        budget = str(data['data']).replace(" ","")
+        project.project_budget = int(project.project_budget) + int(budget)
         project.save()
-        Action.objects.create(author_id=request.user.pk,project_id=project.pk,action=f"{project.project_name} loyihasining budgeti {data['data']} so'mga oshirdi")
+        Action.objects.create(author_id=request.user.pk, project_id=project.pk,
+                              action=f"{project.project_name} loyihasining budgeti {data['data']} so'mga oshirdi")
         return JsonResponse(status=200,
                             data={'succuss': True,
                                   'spent_money': Project.objects.get(pk=project.pk).project_spent_money,
@@ -95,14 +98,30 @@ def updateBudget(request,pk):
 
 
 @login_required
-def deleteAll(request,pk):
+def decreaseBudget(request, pk):
+    if request.method == 'POST':
+        project = Project.objects.get(pk=pk)
+        data = json.loads(request.body)
+        budget = str(data['data']).replace(" ","")
+        project.project_budget = int(project.project_budget) - int(budget)
+        project.save()
+        Action.objects.create(author_id=request.user.pk, project_id=project.pk,
+                              action=f"{project.project_name} loyihasining budgeti {data['data']} so'mga oshirdi")
+        return JsonResponse(status=200,
+                            data={'succuss': True,
+                                  'spent_money': Project.objects.get(pk=project.pk).project_spent_money,
+                                  'total_money': project.project_budget})
+
+@login_required
+def deleteAll(request, pk):
     expenses = Expense.objects.filter(project_id=pk)
     project = Project.objects.get(pk=pk)
     project.project_spent_money = '0'
     project.save()
     expenses_list = ''
     for expense in expenses:
-        expenses_list+= f" {expense.description} uchun {expense.quantity} so'm\n"
-    Action.objects.create(project_id=pk,author_id=request.user.pk,action=f"{project.project_name} loyihasidagi barcha xarajatlarni o'chirib yubordi. Bu xarajatlar : <br><br>{expenses_list}")
+        expenses_list += f" {expense.description} uchun {expense.quantity} so'm\n"
+    Action.objects.create(project_id=pk, author_id=request.user.pk,
+                          action=f"{project.project_name} loyihasidagi barcha xarajatlarni o'chirib yubordi. Bu xarajatlar : <br><br>{expenses_list}")
     expenses.delete()
-    return JsonResponse(status=200,data={'success':True})
+    return JsonResponse(status=200, data={'success': True})
