@@ -119,7 +119,7 @@ svg {
     border-radius: 10px;
     background-color: white;
     width: 50dvmax;
-    height: 75dvh;
+    height: 150%;
     margin-left: 20%;
     margin-right: 25%;
 }
@@ -320,6 +320,7 @@ a:hover {
     .add-expense-container {
        margin: 0;
         width: 100dvw;
+        height: 100%;
     }
 
     .modal-custom {
@@ -335,6 +336,7 @@ a:hover {
     .add-expense-container {
         margin: 0;
         width: 100dvw;
+                height: 100%;
     }
 
         .modal-custom {
@@ -351,6 +353,7 @@ a:hover {
     .add-expense-container {
         margin: 0;
         width: 100dvw;
+                height: 100%;
     }
         .modal-custom {
         margin: 0;!important;
@@ -358,7 +361,7 @@ a:hover {
 }
 
 .search[type=text] {
-  width: 130px;
+  width: 20%;
   box-sizing: border-box;
   border: 2px solid #ccc;
   border-radius: 4px;
@@ -367,9 +370,10 @@ a:hover {
   background-position: 10px 10px;
   background-repeat: no-repeat;
   padding: 12px 20px 12px 40px;
-  transition: width 0.4s ease-in-out;
+  transition: width 0.2s ease-in-out;
+    height: 100%;
 }
 
 .search[type=text]:focus {
-  width: 100%;
+  width: 90%;
 }
