@@ -27,29 +27,28 @@
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
-    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-        <div class="row" style="width: 100dvw">
-            <div class="col-lg-9 col-md-1 col-sm-1">
-                <ul class="navbar-nav">
-                    <div></div>
-                    <li class="nav-item">
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light" style="width: 100dvw">
+        <div class="row" style="width: 100%">
+                <div class="navbar-nav col-12">
+                   <li class="nav-item mt-1 text-start w-75">
                         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i
                                 class="fas fa-bars"></i></a>
                     </li>
-                </ul>
-            </div>
-            <div class="col-lg-3 col-sm-10 col-md-10">
-                {% if user.is_authenticated %}
-                    <div class="dropdown rounded-border-gradient">
-                    <img src="{{ user.avatar.url }}" width="30" height="30">
-                        <span class="border rounded-pill " style="padding: 5%">{{ user.get_full_name}}</span>
+                    <li class="nav-item mt-2">
+                                                                        {% if user.is_authenticated %}
+                    <div class="dropdown rounded-border-gradient" style="width: 150%">
+                    <img style="border-radius: 30%" src="{{ user.avatar.url }}" width="22" height="30">
+                        <button class="btn btn-outline-light text-dark">Profil <i class="fa-solid fa-chevron-down"></i></button>
                         <div class="dropdown-content">
-                            <p>Hello World!</p>
+                            <a class="d-block" href="{% url 'hodimlar:profile' %}"><i class="fa-solid fa-user"></i> Profilim</a>
+                            <a class="d-block" href="{% url 'hodimlar:update-user' user.pk %}"><i class="fa-solid fa-gear"></i> Sozlamalar</a>
+                            <a class="d-block" href="{% url 'hodimlar:logout' %}"><i class="fa-solid fa-right-from-bracket"></i> Chiqish</a>
                         </div>
                     </div>
                 {% endif %}
-            </div>
-        </div>
+                    </li>
+                </div>
+                </div>
     </nav>
 
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
@@ -63,7 +62,7 @@
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                     data-accordion="false">
                     {% if user.role == 'Admin' %}
-                        <li class="nav-item">
+                        <li class="nav-item" style="margin-top: 0">
                             <a href="{% url 'hodimlar:users' %}" class="nav-link">
                                 <i class="fa-solid fa-users" style="color: #fafafa;margin-right: 2%"></i>
                                 <p>Foydalanuvchilar</p>

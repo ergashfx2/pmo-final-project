@@ -60,7 +60,11 @@ function change_table() {
     })
 }
 
-change_table()
+try {
+    change_table()
+} catch (e){
+    console.log(e)
+}
 function expandBudget() {
     document.getElementById('budget-expand-btn').addEventListener('click', function () {
         console.log('clicked')
@@ -77,7 +81,12 @@ function expandBudget() {
     })
 }
 
-expandBudget()
+
+try {
+    expandBudget()
+} catch (e){
+    console.log(e)
+}
 
 
 function offcanvas_manager(){
@@ -98,7 +107,12 @@ function offcanvas_manager(){
     })
 }
 
-offcanvas_manager()
+
+try {
+    offcanvas_manager()
+} catch (e){
+    console.log(e)
+}
 
 function formatNumber(val) {
     val = parseInt(val);
@@ -142,7 +156,12 @@ function add_listeners() {
     })
 }
 
-add_listeners()
+
+try {
+    add_expense()
+} catch (e){
+    console.log(e)
+}
 
 function redirecting() {
     document.querySelectorAll('.datas').forEach(value => {
@@ -152,7 +171,12 @@ function redirecting() {
     });
 }
 
-redirecting()
+
+try {
+    redirecting()
+} catch (e){
+    console.log(e)
+}
 
 
 
@@ -172,7 +196,12 @@ function decreaseBudget() {
     })
 }
 
-decreaseBudget()
+
+try {
+    decreaseBudget()
+} catch (e){
+    console.log(e)
+}
 function document_listen(){
     let file = document.getElementById('file')
                 let input_file = file.files[0]
@@ -181,12 +210,17 @@ function document_listen(){
                 let div = document.createElement('div')
                 div.classList.add('form-group')
                 div.innerHTML = `<label for="phase">Bu fayl qaysi fazaga tegishli:</label><input name="phase" class="form-control" type="text" id="phase"/>`
-                let button = form.children.item(6)
-                button.insertBefore(button,div)
+                let child = document.querySelector('#add-expense > button.btn.btn-primary.form-control')
+                document.getElementById('add-expense').insertBefore(div,child)
             })
 }
 
-document_listen()
+
+try {
+    document_listen()
+} catch (e){
+    console.log(e)
+}
 
 
 function add_expense() {
@@ -251,7 +285,12 @@ function add_expense() {
     });
 }
 
-add_expense()
+
+try {
+    add_expense()
+} catch (e){
+    console.log(e)
+}
 
 
 function deleteAll() {
@@ -264,5 +303,10 @@ function deleteAll() {
     })
 }
 
-deleteAll()
-add_listeners()
+
+try {
+   deleteAll()
+    add_listeners()
+} catch (e){
+    console.log(e)
+}
