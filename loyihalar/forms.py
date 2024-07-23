@@ -37,7 +37,7 @@ class CreateProjectForm(ModelForm):
         }
         widgets = {
             'project_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'author': forms.CheckboxSelectMultiple(
+            'author': forms.SelectMultiple(
                 attrs={'class': 'form-control', 'id': 'project_author', 'size': '15'}),
             'project_size': forms.Select(attrs={'class': 'form-control'}, choices=size_choices),
             'project_level': forms.Select(attrs={'class': 'form-control'}, choices=level_choices),
@@ -50,9 +50,9 @@ class CreateProjectForm(ModelForm):
             'project_status': forms.Select(attrs={'class': 'form-control'}, choices=status_choices),
             'project_spent_money': forms.TextInput(attrs={'class': 'form-control'}),
             'project_curator': forms.Select(attrs={'class': 'form-control'}),
-            'project_manager': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'size': '15'}),
+            'project_manager': forms.SelectMultiple(attrs={'class': 'form-control', 'size': '15'}),
             'project_blog': forms.Select(attrs={'class': 'form-control'}),
-            'project_team': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'size': '15'}),
+            'project_team': forms.SelectMultiple(attrs={'class': 'form-control', 'size': '15'}),
             'project_departments': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'size': '15'}),
         }
 
