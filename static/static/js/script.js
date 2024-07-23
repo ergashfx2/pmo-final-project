@@ -59,12 +59,7 @@ document.addEventListener("DOMContentLoaded", function () {
     problemsManager();
     commentsManager();
     change_table();
-    initTabs();
     initTaskManager();
-    initPhaseActions();
-    initTaskEdit();
-    initTaskDelete();
-    initTaskCompletion();
     initCommentSystem();
     initFilterToggle();
     initMultiSelect();
@@ -234,26 +229,6 @@ function listen_del_files(e) {
 }
 
 
-function initTabs() {
-    const tabs = document.querySelectorAll('.nav-tabs a[data-toggle="tab"]');
-    const storeActiveTab = (tabId) => localStorage.setItem('activeTab', tabId);
-
-    const activateStoredTab = () => {
-        const activeTabId = localStorage.getItem('activeTab');
-        if (activeTabId) {
-            const tabLink = document.querySelector(`.nav-tabs a[href="${activeTabId}"]`);
-            if (tabLink) tabLink.click();
-        }
-    };
-
-    tabs.forEach(tab => {
-        tab.addEventListener('click', function () {
-            storeActiveTab(this.getAttribute('href'));
-        });
-    });
-
-    activateStoredTab();
-}
 
 
 let task_id;
@@ -555,36 +530,7 @@ function click_tr_handler(event) {
 
 initTaskManager()
 
-function initPhaseActions() {
-    let phaseId = null;
-    document.querySelectorAll('.trash-icon').forEach(icon => {
-        icon.addEventListener('click', function () {
-            phaseId = icon.id;
-        });
-    });
 
-    document.getElementById('delete-icon-confirm').addEventListener('click', function () {
-        fetch(`/projects/my-projects/delete-phase/${phaseId}`).then(() => location.reload());
-    });
-
-    document.querySelectorAll('.icon-buttons').forEach(value => {
-        value.addEventListener('click', function () {
-            let phaseId = value.classList[3];
-            const el = document.getElementById(`phase${phaseId}`);
-            let element = el.textContent.trim();
-            document.getElementById(`phase${phaseId}`).innerHTML = `<input type="text" value="${element}"/>`;
-            document.getElementById(`icons-panel${phaseId}`).innerHTML = `<i id="icon-save" class="fa-solid fa-circle-check" style="color: green;cursor: pointer"></i>`;
-
-            document.getElementById('icon-save').addEventListener('click', function () {
-                const newInput = document.getElementById(`phase${phaseId}`).children.item(0).value;
-                sendPostRequest(`update-phase/${phaseId}`, {phase_name: newInput});
-                location.reload()
-            });
-        })
-    })
-
-
-}
 
 function problemsManager() {
     let edit_problems = document.querySelectorAll('.edit-problem ');
@@ -885,79 +831,6 @@ function actions_btn(e) {
     }
 }
 
-function initTaskEdit() {
-    const taskName = document.getElementById('task-edit-task-name');
-    const taskDeadline = document.getElementById('task-edit-deadline');
-    const taskManager = document.getElementById('task-edit-task-manager');
-
-    document.querySelectorAll('.edit-task-icon').forEach(task => {
-        task.addEventListener('click', function () {
-            const taskId = task.classList[3];
-            fetch(`get-task/${taskId}`).then(res => res.json()).then(data => {
-                const taskData = JSON.parse(data)[0].fields;
-                taskName.value = taskData.task_name;
-                taskDeadline.value = taskData.task_deadline;
-                taskManager.value = taskData.task_manager;
-            });
-
-            document.getElementById('confirm-task-update').addEventListener('click', function () {
-                const updatedData = {
-                    task_name: taskName.value,
-                    task_deadline: taskDeadline.value,
-                    task_manager: taskManager.value
-                };
-                sendPostRequest(`update-task/${taskId}`, updatedData);
-                location.reload()
-            });
-        });
-    });
-}
-
-
-function initTaskDelete() {
-    let taskId = null;
-
-    document.querySelectorAll('.delete-task-icon').forEach(task => {
-        task.addEventListener('click', function () {
-            taskId = task.id;
-        });
-    });
-
-    document.getElementById('delete-task-confirm').addEventListener('click', function () {
-        fetch(`/projects/my-projects/delete-task/${taskId}`).then(() => location.reload());
-    });
-}
-
-function initTaskCompletion() {
-    const rangeInput = document.getElementById('task-done');
-    const label = document.getElementById('task-done-percentage');
-    let taskId = null;
-    let newVal = 0;
-
-    const updateValue = (value) => {
-        label.textContent = `Completion Percentage: ${value}%`;
-        rangeInput.value = value;
-    };
-
-    document.querySelectorAll('.task-finish').forEach(button => {
-        button.addEventListener('click', function () {
-            taskId = this.classList[3];
-            const percentage = parseInt(document.getElementById(`task-percentage${taskId}`).textContent.trim());
-            updateValue(percentage);
-
-        });
-    });
-
-    rangeInput.addEventListener('change', function (e) {
-        newVal = Math.min(Math.round(e.target.value / 5) * 5, 100);
-        updateValue(newVal);
-    });
-
-    document.getElementById('finish-task-confirm').addEventListener('click', function () {
-        sendPostRequest(`update-task-percentage/${taskId}`, {task_done_percentage: newVal});
-        location.reload()
-    });
-}
 
 
 function initCommentSystem() {
@@ -1179,38 +1052,6 @@ function formatNumber(val) {
     return formatted;
 }
 
-function add_listeners() {
-    var delete_expense_modal = document.getElementById('delete-expense-btn');
-    var e_id
-    document.querySelectorAll('.delete-expense').forEach(value => {
-        value.addEventListener('click', function () {
-            e_id = value.id
-
-        })
-    })
-    var delete_expense_btn = document.getElementById('confirm-delete-expense-btn');
-    delete_expense_btn.addEventListener('click', function () {
-        fetch(`delete-expense/${e_id}}`).then(res => {
-            var child = document.getElementById(e_id);
-            if (child) {
-                var parent = child.closest('tr');
-                if (parent) {
-                    parent.remove()
-                    res.json().then(response => {
-                        var total = response.spent_money
-                        var left = response.total_money.replaceAll(' ', '') - response.spent_money.replaceAll(' ', '')
-                        document.getElementById('totalExpenses').textContent = `${formatNumber(total)}`
-                        document.getElementById('budgetLeft').textContent = `${formatNumber(left)}`
-                        delete_expense_modal.classList.remove('show');
-                        delete_expense_modal.style.display = 'none';
-                        document.body.classList.remove('modal-open');
-                        document.querySelector('.modal-backdrop').remove();
-                    })
-                }
-            }
-        })
-    })
-}
 
 function change_table() {
     console.log('table working')
@@ -1234,66 +1075,6 @@ function change_table() {
 }
 
 
-document.getElementById('add-expense').addEventListener('submit', function (e) {
-    e.preventDefault()
-    let expense = document.getElementById('expense').value
-    let amount = document.getElementById('amount').value
-    let date = document.getElementById('date').value
-    let p_id = e.target.classList[0];
-    let file = document.getElementById('file')
-    var input_file
-    if (file.files[0]) {
-        input_file = file.files[0]
-    }
-    let csrfToken = getCookie('csrftoken')
-    let formData = new FormData()
-    let data = {'expense': expense, 'amount': amount, 'date': date, 'file': file.files[0]}
-    formData.append('file', input_file)
-    formData.append('data', JSON.stringify(data))
-    if (expense) {
-        console.log(input_file)
-        fetch(`add-expense/${p_id}`, {
-            method: 'POST',
-            headers: {
-                'X-CSRFToken': csrfToken,
-            },
-            body: formData,
-        }).then(res => {
-            if (res.status === 200) {
-                res.json().then(response => {
-                    console.log(response)
-                    let tbody = document.getElementById('expenses-body')
-                    tbody.innerHTML = `${tbody.innerHTML} <tr class="text-center"><td class="text-center">${expense}</td><td class="text-center">${amount}</td><td class="text-center">${date}</td> <td class="text-center"><i style="color: red;cursor: pointer" id="${response.id}" data-toggle="modal" data-target="#delete-expense-btn" class="fa-regular delete-expense fa-trash-can text-center"></i></td></tr><div id="delete-expense-btn"
-                                                                                         class="modal fade"
-                                                                                         tabindex="-1" role="dialog"
-                                                                                         aria-hidden="true">
-                                                                                        <div class="modal-dialog modal-sm modal-dialog-centered"
-                                                                                             role="document">
-                                                                                            <div class="modal-content">
-                                                                                                <div class="modal-body text-center">
-                                                                                                    <i class="fa-solid fa-triangle-exclamation btn-lg" style="font-size: 5dvh"></i>
-                                                                                                    <h4>Chindan o'chirasizmi ?</h4></div>
-                                                                                                <div class="d-flex justify-content-center mb-2">
-                                                                                                    <button id="confirm-delete-expense-btn" class="btn btn-danger mr-2"><i class="fa-solid fa-trash-can"></i> O'chirish</button>
-                                                                                                    <button class="btn btn-secondary" data-dismiss="modal">Bekor qilish</button>
-                                                                                                    <br>
-                                                                                                </div>
-                                                                                            </div>
-
-                                                                                        </div>
-                                                                                    </div>`
-                    add_listeners()
-                    var total = response.spent_money
-                    var left = response.total_money.replaceAll(' ', '') - response.spent_money.replaceAll(' ', '')
-                    document.getElementById('totalExpenses').textContent = `${formatNumber(total)}`
-                    document.getElementById('budgetLeft').textContent = `${formatNumber(left)}`
-                })
-            } else {
-                alert("error occured")
-            }
-        })
-    }
-})
 
 
 function downloadArchive(pk) {

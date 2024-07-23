@@ -12,6 +12,7 @@ class Expense(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     date = models.DateField(default=timezone.now)
     description = models.TextField(blank=True)
+    document = models.FileField(blank=True)
 
     def __str__(self):
         return self.project.project_name

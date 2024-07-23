@@ -510,3 +510,10 @@ a:hover {
   width: 90%;
 >>>>>>> 0b32268278a00f850a1a0060d2efa9dfebdd94d7
 }
+
+.search-results {
+    position: absolute;
+    width: 100%;
+    z-index: 1000;
+}
+

@@ -1,10 +1,12 @@
 from django.urls import path
-from .views import spending,detailedExpenses,add_expense,delete_expense,updateBudget,deleteAll,decreaseBudget
+from .views import spending, detailedExpenses, add_expense, delete_expense, updateBudget, deleteAll, decreaseBudget, \
+    download_file_expense
 
 urlpatterns = [
     path('', spending, name='spending'),
     path('detailed/<pk>', detailedExpenses, name='detailed-expanses'),
     path('detailed/add-expense/<pk>',add_expense,name='add-expense'),
+    path('detailed/download-file/<pk>',download_file_expense,name='download-file'),
     path('detailed/get-phases/<pk>',add_expense,name='add-expense'),
     path('detailed/expand-budget/<pk>',updateBudget,name='expand-budget'),
     path('detailed/decrease-budget/<pk>',decreaseBudget,name='decrease-budget'),

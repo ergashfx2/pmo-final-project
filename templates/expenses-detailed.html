@@ -98,9 +98,12 @@
                     <div class="col-lg-1 col-md-2 col-sm-2 d-flex justify-content-start">
                         <button id="expense-menu-toggle" class="btn btn-primary ml-2" style="font-size: 120%"><i class="fa-solid fa-receipt"></i> Yaratish</button>
                     </div>
-                    <div class="col-lg-9 col-md-3 col-sm-3 position-relative form-control h-100">
+                    <div class="col-lg-9 col-md-3 col-sm-3 position-relative h-100">
                         <i class="fa-solid fa-magnifying-glass text-center d-inline"></i>
-                        <input class="search d-inline border-0" placeholder="Qidirish....." type="text">
+                        <input id="search-expense" class="search d-inline border-0 form-control" placeholder="Qidirish....." type="text">
+                        <div class="d-none border search-results bg-white">
+                            <h1>Hello</h1>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-3 column-canvas"></div>
@@ -130,21 +133,23 @@
                 </div>
 
             </div>
-                    <table class="table mt-2" style="z-index: -1">
+                    <table id="expenses-list-table" class="table mt-2" style="z-index: -1">
                         <thead>
                         <tr>
                             <th scope="col">Xarajat nomi</th>
                             <th scope="col">Summasi</th>
                             <th scope="col">Sana</th>
+                            <th scope="col" class="col-1">document</th>
                             <th scope="col">#</th>
                         </tr>
                         </thead>
                         <tbody id="expenses-body">
                         {% for expense in expenses %}
                             <tr>
-                                <td>{{ expense.description }}</td>
+                                <td id="expense_name">{{ expense.description }}</td>
                                 <td>{{ expense.quantity | format_number }}</td>
                                 <td>{{ expense.date |  date:"d-m-Y" }}</td>
+                                <td class="text-center">{% if expense.document %} <i type="button" expense_id="{{ expense.pk }}" style="font-size: 150%" class="fa-solid fa-{{ expense.document | get_extension }} expense_files"></i> {% else %}  {% endif %}
                                 <td><i style="color: red;cursor: pointer" data-toggle="modal"
                                        data-target="#delete-expense-btn" id="{{ expense.id }}"
                                        class="fa-regular delete-expense fa-trash-can"></i></td>
@@ -245,28 +250,6 @@
 
     <script src="{% static 'static/js/expense.js' %}"></script>
     <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var toggleButton = document.querySelector('[data-toggle="offcanvas"]');
-        var offcanvasElement = document.querySelector(toggleButton.getAttribute('data-target'));
-        var closeButton = offcanvasElement.querySelector('.close');
-
-        toggleButton.addEventListener('click', function (event) {
-            console.log('clicked');
-            offcanvasElement.classList.add('show');
-            event.stopPropagation();
-            setTimeout(() => {
-                document.addEventListener('click', function (e) {
-                    let canvas = document.getElementById('offcanvasRight');
-                    if (!canvas.contains(e.target)) {
-                        offcanvasElement.classList.remove('show');
-                    }
-                }, {once: true});
-            }, 0);
-        });
-
-        closeButton.addEventListener('click', function () {
-            offcanvasElement.classList.remove('show');
-        });
-    });
+        var expenses_list = {{ serialized_expenses | safe }}
     </script>
 {% endblock content %}

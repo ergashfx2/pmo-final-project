@@ -2,17 +2,36 @@
 {% load static %}
 {% block content %}
     {% load filters %}
-    <section class="content bg-light">
+
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Loyihalar</h3>
-
-                <div class="card-tools">
-                    <a style="border-radius: 10%" class="btn btn-outline-dark" href="{% url 'create-project' %}"><i class="fa-solid fa-folder-plus"></i> Yaratish</a>
-                </div>
-            </div>
+            <div class="card-header">
+<div class="form-row align-items-center">
+    <div class="col-lg-7  col-sm-3 my-1">
+      <label class="sr-only" for="inlineFormInputGroupUsername">Qidirish</label>
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="input-group-text"><i class="fa-solid fa-magnifying-glass text-center d-inline"></i></div>
+        </div>
+       <input id="search-project" class="search-projects d-inline form-control" placeholder="Qidirish....." type="text">
+      </div>
+    </div>
+    <div class="col-auto ">
+            <div class="col-auto">
+      <select class="custom-select " id="filter-all-projects">
+        <option value="all" selected>Barchasi</option>
+        <option value="Yangi">Boshlanmagan</option>
+        <option value="Jarayonda">Jaraonda</option>
+        <option value="Tugatilgan">Tugatilgan</option>
+        <option value="least7">7 kun qolgan</option>
+        <option value="least30">1 oy qolgan</option>
+        <option value="least90">3 oy qolgan</option>
+      </select>
+    </div>
+    </div>
+  </div>
             <div class="card-body p-0" style="overflow-x: auto">
-                <table class="table table-striped projects">
+                <table class="table table-striped projects-table projects">
                     <thead>
                     <tr data-url="">
                         <th scope="col">
@@ -41,13 +60,13 @@
 
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="projects-body">
                     {% for project in projects %}
                         <tr class="datas" data-url="{% url 'my-projects-detail' project.pk %}">
                             <td>
                                 {{ forloop.counter }}
                             </td>
-                            <td>
+                            <td id="project-name">
                                 <a href="{% url 'my-projects-detail' project.pk %}" style="color: black">
                                     {{ project.project_name }}
                                 </a>
@@ -161,8 +180,9 @@
 
             </div>
         </div>
-        <script src="{% static 'static/js/script.js' %}"></script>
+        <script src="{% static 'static/js/expense.js' %}"></script>
 
+            </div>
+        </div>
 
-    </section>
 {% endblock content %}

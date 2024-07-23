@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
+from django.utils import timezone
 from django.views.generic import CreateView, DetailView, DeleteView, UpdateView
 from zipfile import ZipFile
 
@@ -28,7 +29,7 @@ def all_projects(request):
     projects = Project.objects.all().order_by('-project_start_date')
     phases = Phase.objects.all()
     tasks = Task.objects.all()
-
+    all_projects_serialized = serializers.serialize('json',projects)
     p = Paginator(projects, 10)
     page_number = request.GET.get('page')
     try:
@@ -55,7 +56,8 @@ def all_projects(request):
         'projects': projects_page,
         'phases': phases,
         'tasks': tasks,
-        'projects_serialized': projects_serialized_modified
+        'projects_serialized': projects_serialized_modified,
+        'all_serialized':all_projects_serialized
     })
 
 
@@ -66,6 +68,7 @@ def myProjects(request):
         Q(project_curator__id=request.user.pk) |
         Q(project_team__username=request.user.username)
     ).order_by('-project_start_date').distinct()
+    projects_serialized = serializers.serialize('json',projects)
     p = Paginator(projects, 1)
     page_number = request.GET.get('page')
     try:
@@ -74,7 +77,7 @@ def myProjects(request):
         projects_page = p.page(1)
     except EmptyPage:
         projects_page = p.page(p.num_pages)
-    return render(request, 'my-projects.html', context={'projects': projects_page})
+    return render(request, 'my-projects.html', context={'projects': projects_page,'my_projects_serialized':projects_serialized})
 
 
 @login_required
@@ -480,9 +483,26 @@ def remove_team_member(request, pk):
 
 
 @login_required
-def filter_table(request):
-    cols = str(request.GET.get('cols')).split(',')
-    datas = []
-    for col in cols:
-        datas.append(Project.objects.values_list(col, flat=True))
-    return render(request, 'all_projects.html')
+def filter_table(request,status):
+    global projects
+    global arr
+    if status == 'all':
+        projects = Project.objects.all()
+    elif str(status).startswith('least'):
+        days = status.split('t')[-1]
+        start_date = timezone.now()
+        end_date = start_date + timezone.timedelta(days=int(days))
+        projects = Project.objects.filter(project_deadline__range=(start_date, end_date))
+    else:
+        projects = Project.objects.filter(project_status=status)
+    arr = json.loads(serializers.serialize('json',projects))
+    for a in arr:
+        project = Project.objects.get(pk=dict(a)['pk'])
+        fields = dict(a)['fields']
+        fields['project_departments'] = [department.department_name for department in project.project_departments.all()]
+        fields['project_team'] = [man.get_full_name() for man in project.project_team.all()]
+        fields['project_curator'] = project.project_curator.get_full_name()
+        fields['project_blog'] = project.project_blog.blog_name
+
+    projects_serialized_modified = json.dumps(arr)
+    return JsonResponse(status=200,data={'success':True,'projects':projects_serialized_modified})

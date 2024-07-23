@@ -4,7 +4,7 @@ from django import template
 from datetime import datetime
 from django.utils.translation import gettext as _
 from datetime import datetime
-
+from loyihalar.views import file_extensions
 register = template.Library()
 
 uzbek_month = {
@@ -37,10 +37,12 @@ uzbek_month_names = {
     12: _("dekabr"),
 }
 
+
 @register.filter
 def format_date(value):
     month = uzbek_month[value.month]
     return f"{value.day}-{month} {value.year} yil"
+
 
 @register.filter
 def format_number(value):
@@ -49,6 +51,7 @@ def format_number(value):
         return f"{float_value:,.2f}".replace(",", " ").replace(".00", "")
     except ValueError:
         return value
+
 
 @register.filter
 def to_int(value):
@@ -81,6 +84,7 @@ def multiple_args_tag(a, b):
     except ValueError:
         return "Invalid Input"
 
+
 @register.filter
 def uzbek_format(value):
     if isinstance(value, datetime):
@@ -90,6 +94,11 @@ def uzbek_format(value):
         time = value.strftime("%H:%M")
         return f"{day} - {month}, {year}, {time}"
     return value
+
+
+@register.filter
+def get_extension(value):
+    return file_extensions[str(value).split('.')[-1]]
 
 
 @register.filter

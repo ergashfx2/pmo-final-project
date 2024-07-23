@@ -3,8 +3,8 @@ import json
 from django.contrib.auth.decorators import login_required
 from django.contrib.sites import requests
 from django.core import serializers
-from django.http import JsonResponse
-from django.shortcuts import render
+from django.http import JsonResponse, HttpResponse, Http404
+from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 from utils import currency_rate
 from actions.models import Action
@@ -32,7 +32,8 @@ def spending(request):
 def detailedExpenses(request, pk):
     project = Project.objects.get(pk=pk)
     expenses = Expense.objects.filter(project_id=pk)
-    return render(request, 'expenses-detailed.html', {'project': project, 'expenses': expenses})
+    expenses_serialized = serializers.serialize('json',expenses)
+    return render(request, 'expenses-detailed.html', {'project': project, 'expenses': expenses,'serialized_expenses':expenses_serialized})
 
 
 @login_required
@@ -41,29 +42,26 @@ def add_expense(request, pk):
         data = request.POST.get('data')
         data = json.loads(data)
         project = Project.objects.get(pk=pk)
-        if request.FILES.get('file'):
-            print(request.FILES.get('file'))
-            doc_type = str(request.FILES.get('file')).split('.')[-1]
-            Documents.objects.create(document=request.FILES.get('file'), project_id=pk, type=file_extensions[doc_type])
-            Action.objects.create(author_id=request.user.pk, project_id=project.pk,action=f"{request.FILES.get('file')} nomli fayl qo'shdi")
+        file = request.FILES.get('file')
         q = str(data['amount']).replace(' ','')
         if data['currency'] == 'usd':
             quantity = float(q) * float(currency_rate)
             project.project_spent_money = float(project.project_spent_money) + quantity
             project.save()
             expense = Expense.objects.create(project_id=pk, description=data['expense'], quantity=str(quantity),
-                                         date=data['date'])
+                                         date=data['date'],document=file)
+
             Action.objects.create(author_id=request.user.pk, project_id=project.pk,action=f"{project.project_name} loyihasiga <strong>{expense.quantity}</strong> so'mlik miqdordagi xarajat qo'shdi")
             return JsonResponse({'id': expense.id, 'spent_money': Project.objects.get(pk=pk).project_spent_money,
-                             'total_money': project.project_budget,'quantity':float(quantity)})
+                             'total_money': project.project_budget,'quantity':float(quantity),'file': file.name if file is not  None else None})
         else:
             project.project_spent_money = float(project.project_spent_money) + float(str(data['amount']).replace(' ', ''))
             project.save()
             expense = Expense.objects.create(project_id=pk, description=data['expense'], quantity=str(data['amount']).replace(' ',''),
-                                         date=data['date'])
+                                         date=data['date'],document=file)
             Action.objects.create(author_id=request.user.pk, project_id=project.pk,action=f"{project.project_name} loyihasiga <strong>{expense.quantity}</strong> so'mlik miqdordagi xarajat qo'shdi")
             return JsonResponse({'id': expense.id, 'spent_money': Project.objects.get(pk=pk).project_spent_money,
-                             'total_money': project.project_budget,'quantity':str(data['amount']).replace(' ','')})
+                             'total_money': project.project_budget,'quantity':str(data['amount']).replace(' ',''),'file': file.name if file is not  None else None})
 
 
 @login_required
@@ -131,3 +129,18 @@ def deleteAll(request, pk):
 def get_phases(request,pk):
     phases = Phase.objects.filter(pk=pk)
     return JsonResponse(status=200,data=serializers.serialize('json',phases))
+
+
+@login_required
+def download_file_expense(request, pk):
+    print('keldi')
+    expense = get_object_or_404(Expense, id=pk)
+    file_path = expense.document.path
+    print(expense.document.name)
+    try:
+        with open(file_path, 'rb') as f:
+            response = HttpResponse(f.read(), content_type="application/octet-stream")
+            response['Content-Disposition'] = f'attachment; filename="{expense.document.name}"'
+            return response
+    except FileNotFoundError:
+        raise Http404("Dokument topilmadi")
