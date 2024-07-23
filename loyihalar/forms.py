@@ -38,7 +38,7 @@ class CreateProjectForm(ModelForm):
         widgets = {
             'project_name': forms.TextInput(attrs={'class': 'form-control'}),
             'author': forms.SelectMultiple(
-                attrs={'class': 'form-control', 'id': 'project_author', 'size': '15'}),
+                attrs={'class': 'form-control'}),
             'project_size': forms.Select(attrs={'class': 'form-control'}, choices=size_choices),
             'project_level': forms.Select(attrs={'class': 'form-control'}, choices=level_choices),
             'project_speed': forms.Select(attrs={'class': 'form-control'}, choices=speed_choices),
