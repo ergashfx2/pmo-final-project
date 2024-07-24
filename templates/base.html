@@ -34,21 +34,6 @@
                         <a class="nav-link mx-0 d-lg-none" data-widget="pushmenu" href="#" role="button"><i
                                 class="fas fa-bars"></i></a>
                     </li>
-                    <li class="nav-item mt-2 float-right w-25">
-                                                                        {% if user.is_authenticated %}
-                    <div class="dropdown rounded-border-gradient" style="width: 150%">
-                    <img style="border-radius: 30%" src="{{ user.avatar.url }}" width="22" height="30">
-                        <button class="btn btn-default text-dark">Profil <i class="fa-solid fa-chevron-down ml-2"></i></button>
-                        <div class="dropdown-content">
-                            <a class="d-block" href="{% url 'hodimlar:profile' %}"><i class="fa-solid fa-user"></i> Profilim</a>
-                            <a class="d-block" href="{% url 'hodimlar:update-user' user.pk %}"><i class="fa-solid fa-gear"></i> Sozlamalar</a>
-                            <a class="d-block" href="{% url 'hodimlar:logout' %}"><i class="fa-solid fa-right-from-bracket"></i> Chiqish</a>
-                        </div>
-                    </div>
-                                                                            {% else %}
-                                                                            <a class="btn btn-primary" href="{% url 'hodimlar:login' %}">Kirish</a>
-                {% endif %}
-                    </li>
                 </div>
                 </div>
     </nav>
@@ -59,8 +44,18 @@
                  style="opacity: .8">
             <span class="brand-text font-weight-light">PMO system</span>
         </a>
-        <div class="sidebar" style="padding-top: 10%">
-            <nav class="mt-2">
+        <div class="sidebar">
+      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <div class="image">
+          <img src="{{ user.avatar.url }}" class="img-circle elevation-2" alt="User Image">
+        </div>
+        <div class="info">
+          <a href="{% url 'hodimlar:profile' %}" class="d-block">{{ user.last_name }}</a>
+        </div>
+      </div>
+      </div>
+        <div class="sidebar">
+            <nav>
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                     data-accordion="false">
                     {% if user.role == 'Admin' %}
