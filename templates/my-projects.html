@@ -185,6 +185,9 @@
 
 
         <script src="{% static 'static/js/expense.js' %}"></script>
+    <script> 
+    var projects_serialized = {{ my_projects_serialized | safe }}
+    </script>
 
 
 {% endblock content %}
