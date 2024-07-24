@@ -315,6 +315,10 @@ a:hover {
         margin-left: 20%;
     }
 
+ .content-wrapper {
+     background-color: white;!important;
+ }
+
 @media (min-width: 768px) and (max-width: 991px) {
     .add-expense-container {
        margin: 0;

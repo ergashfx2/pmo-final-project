@@ -3,22 +3,17 @@
 {% block content %}
     {% load filters %}
 
-        <div class="card">
-            <div class="card-header">
-            <div class="card-header">
-<div class="form-row align-items-center">
-    <div class="col-lg-7  col-sm-3 my-1">
+
+<div class="row border-0 align-items-center mt-3">
+    <div class="col-lg-12  col-sm-3 mb-4">
       <label class="sr-only" for="inlineFormInputGroupUsername">Qidirish</label>
       <div class="input-group">
-        <div class="input-group-prepend">
+        <div class="input-group-prepend" style="margin-left: 10%">
           <div class="input-group-text"><i class="fa-solid fa-magnifying-glass text-center d-inline"></i></div>
         </div>
-       <input id="search-project" class="search-projects d-inline form-control" placeholder="Qidirish....." type="text">
-      </div>
-    </div>
-    <div class="col-auto ">
-            <div class="col-auto">
-      <select class="custom-select " id="filter-all-projects">
+          <label for="search-project"></label><input id="search-project" class="search-projects d-inline form-control w-25" placeholder="Qidirish....." type="text">
+              <div class="col">
+      <select class="form-control w-50" id="filter-all-projects">
         <option value="all" selected>Barchasi</option>
         <option value="Yangi">Boshlanmagan</option>
         <option value="Jarayonda">Jaraonda</option>
@@ -27,11 +22,12 @@
         <option value="least30">1 oy qolgan</option>
         <option value="least90">3 oy qolgan</option>
       </select>
+
     </div>
+      </div>
     </div>
-                               <a class="text-end btn btn-primary" style="margin-left: 25%" href="{% url 'create-project' %}"><i class="fa-solid fa-square-plus"></i> Yaratish</a>
   </div>
-            <div class="card-body p-0" style="overflow-x: auto">
+
                 <table class="table table-striped projects-table projects">
                     <thead>
                     <tr data-url="">
@@ -178,14 +174,11 @@
     {% endif %}
   </ul>
 </nav>
-            </div>
-        </div>
-            </div>
-        </div>
+
 
 
         <script src="{% static 'static/js/expense.js' %}"></script>
-    <script> 
+    <script>
     var projects_serialized = {{ my_projects_serialized | safe }}
     </script>
 
