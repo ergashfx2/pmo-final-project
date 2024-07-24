@@ -31,20 +31,22 @@
         <div class="row" style="width: 100%">
                 <div class="navbar-nav col-12">
                    <li class="nav-item mt-1 text-start w-75">
-                        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i
+                        <a class="nav-link" style="margin-left: 2%" data-widget="pushmenu" href="#" role="button"><i
                                 class="fas fa-bars"></i></a>
                     </li>
-                    <li class="nav-item mt-2">
+                    <li class="nav-item mt-2 float-right w-25">
                                                                         {% if user.is_authenticated %}
                     <div class="dropdown rounded-border-gradient" style="width: 150%">
                     <img style="border-radius: 30%" src="{{ user.avatar.url }}" width="22" height="30">
-                        <button class="btn btn-outline-light text-dark">Profil <i class="fa-solid fa-chevron-down"></i></button>
+                        <button class="btn btn-default text-dark">Profil <i class="fa-solid fa-chevron-down ml-2"></i></button>
                         <div class="dropdown-content">
                             <a class="d-block" href="{% url 'hodimlar:profile' %}"><i class="fa-solid fa-user"></i> Profilim</a>
                             <a class="d-block" href="{% url 'hodimlar:update-user' user.pk %}"><i class="fa-solid fa-gear"></i> Sozlamalar</a>
                             <a class="d-block" href="{% url 'hodimlar:logout' %}"><i class="fa-solid fa-right-from-bracket"></i> Chiqish</a>
                         </div>
                     </div>
+                                                                            {% else %}
+                                                                            <a class="btn btn-primary" href="{% url 'hodimlar:login' %}">Kirish</a>
                 {% endif %}
                     </li>
                 </div>

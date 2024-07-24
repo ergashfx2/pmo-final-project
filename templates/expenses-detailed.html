@@ -34,12 +34,12 @@
 
                         </div>
                     </div>
-                                        <div style="z-index: 1000;position: absolute;" id="expanse-container" class="add-expense-container box card mt-4">
+                                        <div style="z-index: 1000;position: absolute;height: fit-content" id="expanse-container" class="add-expense-container box card mt-4">
                                                                     <div class="row">
                                                                         <div class="col-11"></div>
                                                                         <div class="col-1 d-flex justify-content-end"><i type="button" id="cancel-expense" class="fa-solid fa-x"></i></div>
                                                                     </div>
-                                    <div class="add-budget-container">
+                                    <div class="add-budget-container" style="height: fit-content">
                     <h4 class="text-secondary">Qo'shimcha budjet</h4>
                     <form>
                         <div class="form-group">
@@ -55,7 +55,6 @@
                         </button>
                         </div>
                     </form>
-                </div>
                         <h4 class="text-secondary mt-3">Xarajat qo'shish</h4>
                         <form id="add-expense" method="post" class="{{ project.pk }}"
                           action="{% url 'add-expense' project.pk %}">
@@ -92,7 +91,8 @@
                     </form>
                 </div>
                 </div>
-
+                </div>
+                
                 <div class="row">
 
                     <div class="col-lg-1 col-md-2 col-sm-2 d-flex justify-content-start">
@@ -101,9 +101,6 @@
                     <div class="col-lg-9 col-md-3 col-sm-3 position-relative h-100">
                         <i class="fa-solid fa-magnifying-glass text-center d-inline"></i>
                         <input id="search-expense" class="search d-inline border-0 form-control" placeholder="Qidirish....." type="text">
-                        <div class="d-none border search-results bg-white">
-                            <h1>Hello</h1>
-                        </div>
                     </div>
                     <div class="row">
                         <div class="col-3 column-canvas"></div>

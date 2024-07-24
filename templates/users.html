@@ -15,13 +15,11 @@
                             <option value="delete-user">O'chirish</option>
                         </select>
                     </div>
-                    <div class="col-0">
-                        <button id="do-button-users" class="btn btn-primary">Bajarish</button>
-                    </div>
                     <div class="col">
-                                                                <button onclick="location.href='{% url 'hodimlar:create-user' %}'" id="add-user"
-                   class="btn btn-warning mb-4" style="float: right">                <i
-                   class="fa-solid fa-user-plus "></i> Yaratish</button>
+                        <button id="do-button-users" class="btn btn-primary w-sm-100">Bajarish</button>
+                                                                                        <button onclick="location.href='{% url 'hodimlar:create-user' %}'" id="add-user"
+                   class="btn btn-warning float-lg-right create-user-btn"><i
+                   class="fa-solid fa-user-plus w-sm-100"></i> Yaratish</button>
                     </div>
                 </div>
             </div>
