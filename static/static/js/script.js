@@ -76,13 +76,7 @@ function download_all() {
 
 download_all()
 
-function redirecting() {
-    document.querySelectorAll('.datas').forEach(value => {
-        value.addEventListener('click', function () {
-            window.location.href = value.getAttribute('data-url');
-        })
-    });
-}
+
 
 function edit_phase(){
     let input = document.createElement('input')
@@ -229,6 +223,49 @@ function listen_del_files(e) {
 }
 
 
+function usersManager(){
+    let action = document.getElementById('input-select-action')
+    let do_btn = document.getElementById('do-button-users')
+    let checks = document.querySelectorAll('.check-input-users')
+    let selected_action
+    let checked_users = []
+    let loop_count = 0
+    action.addEventListener('change',function (e){
+        selected_action = e.target.value
+    })
+    checks.forEach(check=>{
+        check.addEventListener('click',function (){
+                if (check.checked === true) {
+                    checked_users.push(check.value)
+                }
+                if (check.checked === false) {
+                    checked_users = checked_users.filter(item => item !== check.value)
+                }
+            console.log(checked_users)
+        })
+    })
+    do_btn.addEventListener('click',function (){
+        if (!selected_action || checked_users.length===0 ){
+            alert('Bajariladigan harakat yoki foydalanuvchi tanlanmagan')
+            return
+        }
+        checked_users.forEach(value=>{
+            fetch(`${selected_action}/${value}`).then(res=>{})
+            loop_count +=1
+            if (loop_count === checked_users.length){
+                location.reload()
+            }
+        })
+    })
+
+
+}
+
+try {
+    usersManager()
+}catch (e){
+
+}
 
 
 let task_id;

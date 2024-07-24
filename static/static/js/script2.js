@@ -3,7 +3,6 @@ function delete_project(){
     document.querySelectorAll('.delete-button').forEach(value => {
         value.addEventListener('click',function (){
             p_id = value.id
-            console.log('clicked')
         })
     })
     document.getElementById('confirm-delete-project').addEventListener('click',function (){
@@ -14,5 +13,9 @@ function delete_project(){
     })
 }
 
-delete_project()
+try {
+    delete_project()
+}catch (e){
+
+}
 

@@ -43,6 +43,9 @@ def profileView2(request,pk):
 class UsersView(ListView):
     model = User
     template_name = 'users.html'
+    paginate_by = 10
+    page_kwarg = 'page'
+
 
 
 def login_view(request):
@@ -100,7 +103,6 @@ def create_user(request):
 
 @login_required
 def block_user(request, pk):
-    if request.method == "POST":
         user = User.objects.get(pk=pk)
         user.block()
         return redirect('hodimlar:users')
@@ -108,7 +110,6 @@ def block_user(request, pk):
 
 @login_required
 def unblock_user(request, pk):
-    if request.method == "POST":
         user = get_object_or_404(User, pk=pk)
         user.unblock()
         return redirect('hodimlar:users')
@@ -116,7 +117,6 @@ def unblock_user(request, pk):
 
 @login_required
 def delete_user(request, pk):
-    if request.method == "POST":
         user = User.objects.get(pk=pk)
         user.delete()
         return redirect('hodimlar:users')

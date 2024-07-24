@@ -328,6 +328,9 @@ a:hover {
     .custom-w {
         width: 50%;
     }
+        #select-label-users {
+        display: none;
+    }
 }
 
 @media (min-width: 576px) and (max-width: 767px) {
@@ -347,12 +350,18 @@ a:hover {
             .custom-w {
         width: 50%;
     }
+                #select-label-users {
+        display: none;
+    }
 }
 
 
 @media (max-width: 575px) {
         .custom-w {
         width: 50%;
+    }
+    #select-label-users {
+        display: none;
     }
 
 .column-canvas {

@@ -64,7 +64,7 @@ function change_table() {
 try {
     change_table()
 } catch (e) {
-    console.log(e)
+
 }
 
 function expandBudget() {
@@ -87,7 +87,7 @@ function expandBudget() {
 try {
     expandBudget()
 } catch (e) {
-    console.log(e)
+
 }
 
 
@@ -113,7 +113,7 @@ function offcanvas_manager() {
 try {
     offcanvas_manager()
 } catch (e) {
-    console.log(e)
+
 }
 
 function formatNumber(val) {
@@ -164,6 +164,7 @@ function delete_expense(e) {
 }
 
 function redirecting() {
+    let tbody = document.getElementById('projects-body')
     document.querySelectorAll('.datas').forEach(value => {
         value.addEventListener('click', function () {
             window.location.href = value.getAttribute('data-url');
@@ -175,7 +176,7 @@ function redirecting() {
 try {
     redirecting()
 } catch (e) {
-    console.log(e)
+
 }
 
 
@@ -198,7 +199,7 @@ function decreaseBudget() {
 try {
     decreaseBudget()
 } catch (e) {
-    console.log(e)
+
 }
 
 function document_listen() {
@@ -218,7 +219,7 @@ function document_listen() {
 try {
     document_listen()
 } catch (e) {
-    console.log(e)
+
 }
 
 
@@ -296,7 +297,7 @@ function add_expense() {
 try {
     add_expense()
 } catch (e) {
-    console.log(e)
+
 }
 
 
@@ -315,7 +316,7 @@ try {
     deleteAll()
     add_listeners()
 } catch (e) {
-    console.log(e)
+
 }
 
 function download_file_listener() {
@@ -327,7 +328,7 @@ function download_file_listener() {
 try {
  download_file_listener()
 }catch (e){
-    console.error(e)
+
 }
 
 
@@ -355,7 +356,7 @@ function downloadFile_expense(e) {
             window.URL.revokeObjectURL(url);
         })
         .catch(error => {
-            console.error('Error:', error);
+
         });
 }
 
@@ -378,15 +379,12 @@ function search() {
             })
         };
         let proxy = ProxyArr(expenses_filtered, handler);
-        console.log(proxy)
         let body = document.getElementById('expenses-body')
         value.addEventListener('input', function (e) {
                             if(e.target.value.length === 0){
                                 document.getElementById('expenses-body').querySelectorAll('tr').forEach(value => value.style.display = 'table-row')
 
                 }
-            console.log(expenses_filtered)
-            console.log(e.target.value.length)
             for (const expense in expenses_list) {
                 let expense_arr = expenses_list[expense].fields
                 expenses_all.push(expense_arr)
@@ -401,7 +399,7 @@ function search() {
 try {
 search()
 }catch (e){
-    console.error(e)
+
 }
 
 function search_project() {
@@ -416,7 +414,6 @@ function search_project() {
             document.getElementById('projects-body').querySelectorAll('tr').forEach(tr => {
                 tr.querySelectorAll('td').forEach(td => {
                     let search = document.getElementById('search-project')
-                    console.log(td.textContent.toLowerCase().trim().includes())
                     if (td.id === 'project_name' && !td.textContent.toLowerCase().trim().includes(search.value.toLowerCase())) {
                         tr.style.display = 'none'
                     }
@@ -444,7 +441,7 @@ function search_project() {
 try {
 search_project()
 }catch (e){
-    console.error(e)
+
 }
 
 function filter_all_projects(){
@@ -454,7 +451,6 @@ function filter_all_projects(){
         fetch(`filter/${e.target.value}`).then(res => res.json().then(res=> {
             let projects = res.projects
             projects = JSON.parse(projects)
-            console.log(projects)
             for (const project in projects) {
                 projects[project]['fields']['project_id'] = projects[project]['pk']
                 projects_all.push(projects[project]['fields'])
@@ -466,7 +462,6 @@ function filter_all_projects(){
                 let departments = projects_all[project].project_departments.join(',')
                 tr.classList.add('datas')
                 tr.setAttribute('data-url',`/projects/${projects_all[project]['project_id']}`)
-                console.log(tr)
                 tr.innerHTML = `<td>${parseInt(project) + 1}</td>
                                 <td class="text-center" id="project_name">
                                                               <a href="/projects/${projects_all[project]['project_id']}"
@@ -492,4 +487,8 @@ function filter_all_projects(){
     })
 }
 
-filter_all_projects()
+try {
+    filter_all_projects()
+}catch (e){
+
+}

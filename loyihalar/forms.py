@@ -38,7 +38,7 @@ class CreateProjectForm(ModelForm):
         widgets = {
             'project_name': forms.TextInput(attrs={'class': 'form-control'}),
             'author': forms.SelectMultiple(
-                attrs={'class': 'form-control'}),
+                attrs={'class': 'select2 w-100'}),
             'project_size': forms.Select(attrs={'class': 'form-control'}, choices=size_choices),
             'project_level': forms.Select(attrs={'class': 'form-control'}, choices=level_choices),
             'project_speed': forms.Select(attrs={'class': 'form-control'}, choices=speed_choices),
@@ -50,10 +50,10 @@ class CreateProjectForm(ModelForm):
             'project_status': forms.Select(attrs={'class': 'form-control'}, choices=status_choices),
             'project_spent_money': forms.TextInput(attrs={'class': 'form-control'}),
             'project_curator': forms.Select(attrs={'class': 'form-control'}),
-            'project_manager': forms.SelectMultiple(attrs={'class': 'form-control', 'size': '15'}),
+            'project_manager': forms.SelectMultiple(attrs={'class': 'select2 w-100'}),
             'project_blog': forms.Select(attrs={'class': 'form-control'}),
-            'project_team': forms.SelectMultiple(attrs={'class': 'form-control', 'size': '15'}),
-            'project_departments': forms.CheckboxSelectMultiple(attrs={'class': 'form-control', 'size': '15'}),
+            'project_team': forms.SelectMultiple(attrs={'class': 'select2 w-100'}),
+            'project_departments': forms.SelectMultiple(attrs={'class': 'select2 w-100'}),
         }
 
     def clean_spent_money(self):
@@ -104,10 +104,10 @@ class EditProjectForm(ModelForm):
             'project_status': forms.Select(attrs={'class': 'form-control'}, choices=status_choices),
             'project_spent_money': forms.TextInput(attrs={'class': 'form-control'}),
             'project_curator': forms.Select(attrs={'class': 'form-control'}),
-            'project_manager': forms.SelectMultiple(attrs={'class': 'form-control'}),
+            'project_manager': forms.SelectMultiple(attrs={'class': 'select2 w-100'}),
             'project_blog': forms.Select(attrs={'class': 'form-control'}),
-            'project_team': forms.SelectMultiple(attrs={'class': 'form-control'}),
-            'project_departments': forms.SelectMultiple(attrs={'class': 'form-control'}),
+            'project_team': forms.SelectMultiple(attrs={'class': 'select2 w-100'}),
+            'project_departments': forms.SelectMultiple(attrs={'class': 'select2 w-100'}),
         }
 
     def clean_spent_money(self):
