@@ -5,9 +5,7 @@
     <div class="col-12">
         <div class="card shadow-2-strong" style="background-color: #ffffff; height: 100dvh">
             <div class="card-header">
-                <i onclick="location.href='{% url 'hodimlar:create-user' %}'" id="add-user"
-                   class="fa-solid fa-user-plus btn btn-light mb-4" style="float: right"></i>
-                <div class="row" style="margin-top: 4%">
+                <div class="row">
                     <label id="select-label-users" for="input-select" class="col-0 col-form-label">Tanlang</label>
                     <div class="col-8">
                         <select class="form-control" id="input-select-action">
@@ -19,6 +17,11 @@
                     </div>
                     <div class="col-0">
                         <button id="do-button-users" class="btn btn-primary">Bajarish</button>
+                    </div>
+                    <div class="col">
+                                                                <button onclick="location.href='{% url 'hodimlar:create-user' %}'" id="add-user"
+                   class="btn btn-warning mb-4" style="float: right">                <i
+                   class="fa-solid fa-user-plus "></i> Yaratish</button>
                     </div>
                 </div>
             </div>
