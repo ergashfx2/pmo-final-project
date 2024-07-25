@@ -114,68 +114,84 @@
                     <table class="table table-striped" id="table-projects">
                         <thead>
                         <tr>
-                            <th class="text-center">№</th>
-                            <th class="text-center">Loyiha nomi</th>
-                            <th class="text-center">Loyiha haqida</th>
-                            <th class="text-center">Departamenti</th>
-                            <th class="text-center">Ma'sul xodim</th>
-                            <th class="text-center">Bajarilganligi</th>
+                            <th>№</th>
+                            <th>Loyiha nomi</th>
+                            <th>Loyiha haqida</th>
+                            <th >Departamenti</th>
+                            <th >Ma'sul xodim</th>
+                            <th >Bajarilganligi</th>
                         </tr>
                         </thead>
                         <tbody id="projects-body">
                         {% for project in projects.object_list %}
                              <tr class="datas" data-url="{% url 'get-project' project.pk %}">
                                 <td>{{ forloop.counter }}</td>
-                                <td class="text-center" id="project_name">
+                                <td id="project_name">
                                                               <a href="{% url 'get-project' project.pk %}"
                                                                  style="color: black"> {{ project.project_name }} </a>
                                 </td>
-                                <td class="text-center">                             <a href="{% url 'get-project' project.pk %}"
+                                <td>                             <a href="{% url 'get-project' project.pk %}"
                                                                                         style="color: black">{{ project.project_description }} </a></td>
-                            <td class="text-center">                            <a href="{% url 'get-project' project.pk %}"
+                            <td>                            <a href="{% url 'get-project' project.pk %}"
                                        style="color: black">
                                 {% for department in project.project_departments.all %}
                                     {{ department.department_name }},
                                     {% endfor %}
                             </a>
                             </td>
-                                <td class="text-center">                            <a href="{% url 'get-project' project.pk %}"
+                                <td>                            <a href="{% url 'get-project' project.pk %}"
                                                                                        style="color: black">{{ project.project_curator.get_full_name }}</a></td>
-                                                             <td class="text-center">                            <a href="{% url 'get-project' project.pk %}"
+                                                             <td>                            <a href="{% url 'get-project' project.pk %}"
                                                                                        style="color: black">{{ project.project_done_percentage }}%</a></td>
                             </tr>
                         {% endfor %}
                         </tbody>
                     </table>
                 {% if projects.has_next %}
-<nav class="mt-3 mx-2" aria-label="Page navigation">
-  <ul class="pagination">
-    {% if projects.has_previous %}
-      <li class="page-item"><a class="page-link" href="?page={{ projects.previous_page_number }}">Oldingi</a></li>
-    {% endif %}
-    {% for i in projects.paginator.page_range %}
-      {% if i <= 10 %}
-        <li class="page-item {% if projects.number == i %}active{% endif %}">
-          <a class="page-link" href="?page={{ i }}">{{ i }}</a>
-        </li>
-      {% endif %}
-    {% endfor %}
+<div class="card-footer clearfix">
+    <ul class="pagination pagination-sm m-0 float-right">
+        {% if projects.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ projects.previous_page_number }}">&laquo; Previous</a>
+            </li>
+            {% if projects.number > 3 %}
+                <li class="page-item"><a class="page-link" href="?page=1">1</a></li>
+                {% if projects.number > 4 %}
+                    <li class="page-item"><span class="page-link">...</span></li>
+                {% endif %}
+            {% endif %}
+        {% endif %}
 
-    {% if projects.paginator.num_pages > 13 %}
-      <li class="page-item disabled"><span class="page-link">...</span></li>
-    {% endif %}
+        {% for num in projects.paginator.page_range %}
+            {% if projects.number == num %}
+                <li class="page-item active">
+                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                </li>
+            {% elif num > projects.number|add:'-3' and num < projects.number|add:'7' %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                </li>
+            {% endif %}
+        {% endfor %}
 
-    {% if projects.has_next %}
-      <li class="page-item"><a class="page-link" href="?page={{ projects.next_page_number }}">Keyingi</a></li>
-    {% endif %}
-  </ul>
-</nav>
+        {% if projects.has_next %}
+            {% if projects.number < projects.paginator.num_pages|add:'-3' %}
+                <li class="page-item"><span class="page-link">...</span></li>
+                <li class="page-item"><a class="page-link" href="?page={{ projects.paginator.num_pages }}">{{ projects.paginator.num_pages }}</a></li>
+            {% elif projects.number < projects.paginator.num_pages|add:'-6' %}
+                <li class="page-item"><a class="page-link" href="?page={{ projects.paginator.num_pages }}">{{ projects.paginator.num_pages }}</a></li>
+            {% endif %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ projects.next_page_number }}">Next &raquo;</a>
+            </li>
+        {% endif %}
+    </ul>
+</div>
                 {% endif %}
 
                 </div>
 
             </div>
-        </div>
     </section>
     <script type="text/javascript">
         var projects_s = {{ projects_serialized | safe }};

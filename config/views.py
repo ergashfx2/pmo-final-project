@@ -85,7 +85,7 @@ def home(request):
         projects_done = Project.objects.filter(project_status='Tugatilgan').count()
         projects_process = Project.objects.filter(project_status='Jarayonda').count()
         return render(request, 'index.html',
-                      {'projects': projects, 'projects_count': projects_count, 'project_done': projects_done,
+                      {'projects': projects[:5], 'projects_count': projects_count, 'project_done': projects_done,
                        'projects_process': projects_process, 'expenses': totalExpense})
     else:
         return render(request, 'index.html')

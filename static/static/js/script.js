@@ -1211,26 +1211,7 @@ function add_listeners() {
     })
 }
 
-function change_table() {
-    console.log('table working')
-    document.querySelectorAll('.change-table').forEach(value => {
-        value.addEventListener('change', function (e) {
-            let selectedId = value.selectedOptions[0].id;
-            if (selectedId === 'blog') {
-                document.querySelectorAll('.d_datas').forEach(el => el.style.display = 'none')
-                document.querySelectorAll('.b_datas').forEach(el => el.style.display = '')
-                document.getElementById('table-title').innerText = 'Loyihalar boklar kesimida'
 
-            }
-
-            if (selectedId === 'dept') {
-                document.querySelectorAll('.d_datas').forEach(el => el.style.display = '')
-                document.querySelectorAll('.b_datas').forEach(el => el.style.display = 'none')
-                document.getElementById('table-title').innerText = 'Loyihalar departamentlar kesimida'
-            }
-        })
-    })
-}
 
 
 document.getElementById('add-expense').addEventListener('submit', function (e) {

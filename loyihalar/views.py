@@ -69,7 +69,7 @@ def myProjects(request):
         Q(project_team__username=request.user.username)
     ).order_by('-project_start_date').distinct()
     projects_serialized = serializers.serialize('json',projects)
-    p = Paginator(projects, 1)
+    p = Paginator(projects, 10)
     page_number = request.GET.get('page')
     try:
         projects_page = p.get_page(page_number)
@@ -486,8 +486,16 @@ def remove_team_member(request, pk):
 def filter_table(request,status):
     global projects
     global arr
+
     if status == 'all':
-        projects = Project.objects.all()
+        if 'my-projects' in request.path:
+            projects = Project.objects.filter(
+                Q(project_manager__id=request.user.pk) |
+                Q(project_curator__id=request.user.pk) |
+                Q(project_team__username=request.user.username)
+            ).order_by('-project_start_date').distinct()
+        else:
+            projects = Project.objects.all()
     elif str(status).startswith('least'):
         days = status.split('t')[-1]
         start_date = timezone.now()
@@ -506,3 +514,5 @@ def filter_table(request,status):
 
     projects_serialized_modified = json.dumps(arr)
     return JsonResponse(status=200,data={'success':True,'projects':projects_serialized_modified})
+
+

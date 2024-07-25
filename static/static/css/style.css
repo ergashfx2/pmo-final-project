@@ -148,6 +148,17 @@ svg {
     border-bottom-right-radius: 0.375rem !important;
 }
 
+.projects-table td {
+    padding: 0.3%;
+    margin: 0;
+}
+.projects-table ul,li,button,a {
+    margin: 0;
+    padding: 0;
+}
+
+
+
 .avatar-xxl {
     height: 7.5rem;
     width: 7.5rem;
