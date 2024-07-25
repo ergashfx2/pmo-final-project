@@ -1,38 +1,32 @@
-def get_page_numbers(total_pages):
-    # 30% of total pages
-    initial_count = int(total_pages * 0.3)
+def get_page_numbers(current_page, total_pages):
+    # Number of pages to show
+    display_count = 30
     # Last 3 pages
     last_pages = 3
 
-    # Pages to display at the beginning
-    beginning_pages = list(range(1, initial_count + 1))
-    # Pages to display at the end
-    ending_pages = list(range(total_pages - last_pages + 1, total_pages + 1))
+    # Calculate start and end page numbers
+    start_page = current_page
+    end_page = current_page + display_count - 1
 
-    # Combine and add "..."
-    if initial_count + last_pages < total_pages:
-        pages = beginning_pages + ["..."] + ending_pages
+    # Adjust if end_page exceeds total_pages
+    if end_page > total_pages:
+        end_page = total_pages
+        start_page = max(1, total_pages - display_count + 1)
+
+    # Pages to display
+    pages = list(range(start_page, end_page + 1))
+
+    # Add "..." if there's a gap between start and end pages
+    if start_page > 1:
+        pages = ["..."] + pages
+    if end_page < total_pages:
+        pages = pages + ["..."]
+
+    # Add last 3 pages if not already included
+    if end_page < total_pages - last_pages + 1:
+        pages += list(range(total_pages - last_pages + 1, total_pages + 1))
     else:
-        pages = list(range(1, total_pages + 1))  # If total pages are very few
+        if "..." in pages:
+            pages.remove("...")  # Remove one "..." if overlap
 
     return pages
-
-
-def my_view(request):
-    total_pages = 100  # Example total pages
-    pages = get_page_numbers(total_pages)
-    return render(request, 'my_template.html', {'pages': pages})
-
-
-
-
-<!-- my_template.html -->
-<div class="pagination">
-    {% for page in pages %}
-        {% if page == "..." %}
-            <span>{{ page }}</span>
-        {% else %}
-            <a href="?page={{ page }}">{{ page }}</a>
-        {% endif %}
-    {% endfor %}
-</div>
