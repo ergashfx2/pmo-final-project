@@ -1,38 +1,38 @@
-<!-- index.html -->
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Download Document</title>
-</head>
-<body>
-    <button onclick="downloadFile(1)">Download Document</button> <!-- Replace 1 with the actual document ID -->
-    <script>
-        function downloadFile(documentId) {
-            const downloadUrl = `/download/${documentId}/`;
+def get_page_numbers(total_pages):
+    # 30% of total pages
+    initial_count = int(total_pages * 0.3)
+    # Last 3 pages
+    last_pages = 3
 
-            fetch(downloadUrl)
-                .then(response => {
-                    if (response.ok) {
-                        const contentDisposition = response.headers.get('Content-Disposition');
-                        const filename = contentDisposition ? contentDisposition.split('filename=')[1].replace(/"/g, '') : 'downloaded_file';
-                        return response.blob().then(blob => ({ filename, blob }));
-                    }
-                    throw new Error('Network response was not ok.');
-                })
-                .then(({ filename, blob }) => {
-                    const url = window.URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.style.display = 'none';
-                    a.href = url;
-                    a.download = filename;  // Use the actual filename from the response
-                    document.body.appendChild(a);
-                    a.click();
-                    window.URL.revokeObjectURL(url);
-                })
-                .catch(error => {
-                    console.error('There was a problem with the fetch operation:', error);
-                });
-        }
-    </script>
-</body>
-</html>
+    # Pages to display at the beginning
+    beginning_pages = list(range(1, initial_count + 1))
+    # Pages to display at the end
+    ending_pages = list(range(total_pages - last_pages + 1, total_pages + 1))
+
+    # Combine and add "..."
+    if initial_count + last_pages < total_pages:
+        pages = beginning_pages + ["..."] + ending_pages
+    else:
+        pages = list(range(1, total_pages + 1))  # If total pages are very few
+
+    return pages
+
+
+def my_view(request):
+    total_pages = 100  # Example total pages
+    pages = get_page_numbers(total_pages)
+    return render(request, 'my_template.html', {'pages': pages})
+
+
+
+
+<!-- my_template.html -->
+<div class="pagination">
+    {% for page in pages %}
+        {% if page == "..." %}
+            <span>{{ page }}</span>
+        {% else %}
+            <a href="?page={{ page }}">{{ page }}</a>
+        {% endif %}
+    {% endfor %}
+</div>
