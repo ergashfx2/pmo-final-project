@@ -69,6 +69,9 @@ def myProjects(request):
         Q(project_team__username=request.user.username)
     ).order_by('-project_start_date').distinct()
     projects_serialized = serializers.serialize('json',projects)
+    arr = json.loads(projects_serialized)
+    for a in arr:
+        a['fields']['project_id'] = a['pk']
     p = Paginator(projects, 10)
     page_number = request.GET.get('page')
     try:
@@ -77,7 +80,7 @@ def myProjects(request):
         projects_page = p.page(1)
     except EmptyPage:
         projects_page = p.page(p.num_pages)
-    return render(request, 'my-projects.html', context={'projects': projects_page,'my_projects_serialized':projects_serialized})
+    return render(request, 'my-projects.html', context={'projects': projects_page,'my_projects_serialized':arr})
 
 
 @login_required

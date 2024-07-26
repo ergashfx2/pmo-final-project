@@ -3,30 +3,22 @@
 
 {% block content %}
     <div class="col-12">
-        <div class="card shadow-2-strong" style="background-color: #ffffff; height: 100dvh">
-            <div class="card-header">
-                <div class="row">
-                    <label id="select-label-users" for="input-select" class="col-0 col-form-label">Tanlang</label>
-                    <div class="col-8">
-                        <select class="form-control" id="input-select-action">
-                            <option>Hech nima tanlanmagan</option>
-                            <option value="block">Bloklash</option>
-                            <option value="unblock">Blokdan ochish</option>
-                            <option value="delete-user">O'chirish</option>
-                        </select>
-                    </div>
-                    <div class="col">
-                        <button id="do-button-users" class="btn btn-primary w-sm-100">Bajarish</button>
-                                                                                        <button onclick="location.href='{% url 'hodimlar:create-user' %}'" id="add-user"
-                   class="btn btn-warning float-lg-right create-user-btn"><i
-                   class="fa-solid fa-user-plus w-sm-100"></i> Yaratish</button>
-                    </div>
+                <div class="card mt-2">
+              <div class="card-header">
+                                  <div class="card-tools">
+                      <div class="input-group mb-3">
+  <div class="input-group-prepend">
+      <input type="text" placeholder="Qidirish..." class="form-control">
+<i class="btn btn-default fa-solid fa-magnifying-glass"></i>
+  </div>
+                                <a href="{% url 'hodimlar:create-user' %}" class="btn btn-primary ml-2">Yaratish</a>
+</div>
+
                 </div>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive table-bordered table-striped">
-                    <table class="table table-borderless mb-0">
-                        <thead>
+              </div>
+              <div class="card-body p-0">
+                <table class="table table-striped">
+                  <thead>
                         <tr class="no-url">
                             <th scope="col" class="no-center"></th>
                             <th scope="col" class="no-center">№</th>
@@ -35,9 +27,9 @@
                             <th scope="col" class="no-center">ROLI</th>
                             <th scope="col" class="no-center">RAQAMI</th>
                         </tr>
-                        </thead>
-                        <tbody>
-                        {% with num=0 %}
+                  </thead>
+                  <tbody>
+                                          {% with num=0 %}
                             {% for user in object_list %}
                                 <tr class="no-url">
                                     <th scope="row" class="no-center">
@@ -51,19 +43,25 @@
                                                              style="color:#000;">{{ user.get_full_name }}</a></td>
                                     <td class="no-center">
                                         {% if user.status == 'Active' %}
-                                            <i class="fa-solid fa-circle" style="color: green; margin-left: 10%;"></i>
+                                            <i class="fa-solid fa-circle" data-toggle="tooltip" data-placement="top" title="Tooltip on top" style="color: green; margin-left: 10%;"></i>
                                         {% else %}
                                             <i class="fa-solid fa-circle" style="color: red; margin-left: 10%;"></i>
                                         {% endif %}
                                     </td>
                                     <td class="no-center">{{ user.role }}</td>
                                     <td class="no-center">{{ user.phone }}</td>
+                                    <td class="no-center"><i class="btn fa-solid text-danger fa-trash" data-toggle="tooltip" data-placement="top" title="O'chirish"></i>                                        {% if user.status == 'Active' %}
+                                            <i class="fa-solid btn fa-lock" data-toggle="tooltip" data-placement="top" title="Bloklash"></i>
+                                        {% else %}
+                                           <i class="fa-solid btn fa-unlock" data-toggle="tooltip" data-placement="top" title="Blokdan ochish"></i>
+                                        {% endif %}</td>
                                 </tr>
                             {% endfor %}
                         {% endwith %}
-                        </tbody>
-                    </table>
-<div class="card-footer clearfix">
+                  </tbody>
+                </table>
+              </div>
+                <div class="card-footer clearfix">
     <ul class="pagination pagination-sm m-0 float-right">
         {% if page_obj.has_previous %}
             <li class="page-item">
@@ -102,9 +100,7 @@
         {% endif %}
     </ul>
 </div>
-                </div>
             </div>
-        </div>
-    </div>
+                </div>
     <script src="{% static 'static/js/script.js' %}"></script>
 {% endblock content %}

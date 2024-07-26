@@ -62,51 +62,66 @@
         </button>
     </div>
     <div class="offcanvas-body">
-                           <div class="grid-container mt-3" id="filter-container">
-                        <label class="grid-item">
-                            <input class="cols" name="project_name" type="checkbox"> Loyiha nomi
-                        </label>
-                        <label class="grid-item">
-                            <input class="cols" name="project_description" type="checkbox"> Loyiha haqida
-                        </label>
-                        <label class="grid-item">
-                            <input class="cols" name="project_blog" type="checkbox"> Blok
-                        </label>
-                        <label class="grid-item">
-                            <input class="cols" name="project_type" type="checkbox"> Loyiha turi
-                        </label>
-                        <label class="grid-item">
-                            <input class="cols" name="project_size" type="checkbox"> Masshtab
-                        </label>
-                        <label class="grid-item">
-                            <input class="cols" name="project_level" type="checkbox"> Muhimlilik darajasi
-                        </label>
-                        <label class="grid-item">
-                            <input class="cols" name="project_speed" type="checkbox"> Muddat darajasi
-                        </label>
-                        <label class="grid-item">
-                            <input class="cols" name="project_departments" type="checkbox"> Mas'ul departament(lar)
-                        </label>
-                        <label class="grid-item">
-                            <input class="cols" name="project_team" type="checkbox"> Mas'ul xodim(lar)
-                        </label>
-                        <label class="grid-item">
-                            <input class="cols" name="project_budget" type="checkbox"> Umumiy loyiha summasi
-                        </label>
-                        <label class="grid-item">
-                            <input class="cols" name="project_deadline" type="checkbox"> Taxminiy yakunlash sanasi
-                        </label>
-                        <label class="grid-item">
-                            <input class="cols" name="project_status" type="checkbox"> Loyiha statusi
-                        </label>
-                        <label class="grid-item">
-                            <input class="cols" name="project_curator" type="checkbox"> Strategiya departamentida
-                            biriktirilgan xodim
-                        </label>
-                        <label class="grid-item">
-                            <input class="cols" name="project_spent_money" type="checkbox"> Sarflangan xarajat
-                        </label>
-                    </div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Filter</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                <label>
+                    <input class="cols" name="project_name" type="checkbox"> Loyiha nomi
+                </label><br>
+                <label>
+                    <input class="cols" name="project_description" type="checkbox"> Loyiha haqida
+                </label><br>
+                <label>
+                    <input class="cols" name="project_blog" type="checkbox"> Blok
+                </label><br>
+                <label>
+                    <input class="cols" name="project_type" type="checkbox"> Loyiha turi
+                </label><br>
+                <label>
+                    <input class="cols" name="project_size" type="checkbox"> Masshtab
+                </label><br>
+                <label>
+                    <input class="cols" name="project_level" type="checkbox"> Muhimlilik darajasi
+                </label><br>
+                <label>
+                    <input class="cols" name="project_speed" type="checkbox"> Muddat darajasi
+                </label><br>
+            </td>
+            <td>
+                <label>
+                    <input class="cols" name="project_departments" type="checkbox"> Mas'ul departament(lar)
+                </label><br>
+                <label>
+                    <input class="cols" name="project_team" type="checkbox"> Mas'ul xodim(lar)
+                </label><br>
+                <label>
+                    <input class="cols" name="project_budget" type="checkbox"> Umumiy loyiha summasi
+                </label><br>
+                <label>
+                    <input class="cols" name="project_deadline" type="checkbox"> Taxminiy yakunlash sanasi
+                </label><br>
+                <label>
+                    <input class="cols" name="project_status" type="checkbox"> Loyiha statusi
+                </label><br>
+                <label>
+                    <input class="cols" name="project_curator" type="checkbox"> Strategiya departamentida biriktirilgan xodim
+                </label><br>
+                <label>
+                    <input class="cols" name="project_spent_money" type="checkbox"> Sarflangan xarajat
+                </label>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+
         <button id="apply-changes" class="btn btn-primary" style="width: 95%;margin: 3%">Qo'llash</button>
     </div>
 </div>
@@ -229,6 +244,7 @@ toggleButton.addEventListener('click', function (event) {
             value.addEventListener('change', function (e) {
                 var checked = e.target.checked
                 if (checked) {
+                    console.log(value.parentNode.textContent.trim())
                     cols.push(value.parentNode.textContent.trim())
                     colNames.push(value.name)
                 } else {

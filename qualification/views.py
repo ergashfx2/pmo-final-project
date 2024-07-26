@@ -14,57 +14,53 @@ def qualification(request):
     global total_budget
     dep_datas = []
     blog_datas = []
+
+    # Processing blog data
     for blog in Blog.objects.all():
-        total_budget_blog = \
-            Project.objects.filter(project_blog=blog).aggregate(total_budget=Sum('project_budget'))[
-                'total_budget']
-        total_spent_blog = \
-            Project.objects.filter(project_blog=blog).aggregate(
-                total_budget=Sum('project_spent_money'))[
-                'total_budget']
+        total_budget_blog = Project.objects.filter(project_blog=blog).aggregate(total_budget=Sum('project_budget'))['total_budget']
+        total_spent_blog = Project.objects.filter(project_blog=blog).aggregate(total_budget=Sum('project_spent_money'))['total_budget']
         if total_spent_blog is None:
             total_spent_blog = 0
         if total_budget_blog is None:
             total_budget_blog = 0
-        data = {'blog_id':blog.pk,'blog_name': blog.blog_name, 'projects_count_blog': Project.objects.filter(project_blog=blog).count(),
-                'new_projects_blog': Project.objects.filter(project_status='Yangi', project_blog=blog).count(),
-                'projects_processing_blog': Project.objects.filter(project_status='Jarayonda',
-                                                                   project_blog=blog).count(),
-                'projects_finished_blog': Project.objects.filter(project_status='Tugatilgan',
-                                                            project_blog=blog).count(),
-                'total_budget_blog': total_budget_blog, 'total_spent_blog': total_spent_blog
-                }
+        data = {
+            'blog_id': blog.pk,
+            'blog_name': blog.blog_name,
+            'projects_count_blog': Project.objects.filter(project_blog=blog).count(),
+            'new_projects_blog': Project.objects.filter(project_status='Yangi', project_blog=blog).count(),
+            'projects_processing_blog': Project.objects.filter(project_status='Jarayonda', project_blog=blog).count(),
+            'projects_finished_blog': Project.objects.filter(project_status='Tugatilgan', project_blog=blog).count(),
+            'total_budget_blog': total_budget_blog,
+            'total_spent_blog': total_spent_blog
+        }
         blog_datas.append(data)
 
+    # Processing department data
     for department in Department.objects.all():
-        total_budget = \
-            Project.objects.filter(project_departments__department_name__contains=department.department_name).aggregate(
-                total_budget=Sum('project_budget'))[
-                'total_budget']
-        total_spent = \
-            Project.objects.filter(project_departments__department_name__contains=department.department_name).aggregate(
-                total_budget=Sum('project_spent_money'))[
-                'total_budget']
-        if total_budget is not None:
-            pass
+        total_budget = Project.objects.filter(project_departments__department_name__contains=department.department_name).aggregate(total_budget=Sum('project_budget'))['total_budget']
+        total_spent = Project.objects.filter(project_departments__department_name__contains=department.department_name).aggregate(total_budget=Sum('project_spent_money'))['total_budget']
         if total_budget is None:
             total_budget = 0
         if total_spent is None:
             total_spent = 0
-        data = {'department_id':department.pk,'department_name': department.department_name, 'projects_count': Project.objects.filter(
-            project_departments__department_name__contains=department).count(),
-                'new_projects': Project.objects.filter(project_status='Yangi',
-                                                       project_departments__department_name__contains=department).count(),
-                'projects_processing': Project.objects.filter(project_status='Jarayonda',
-                                                              project_departments__department_name__contains=department.department_name).count(),
-                'projects_finished': Project.objects.filter(project_status='Tugatilgan',
-                                                            project_departments__department_name__contains=department.department_name).count(),
-                'total_budget': total_budget, 'total_spent': total_spent
-                }
-
+        data = {
+            'department_id': department.pk,
+            'department_name': department.department_name,
+            'projects_count': Project.objects.filter(project_departments__department_name__contains=department.department_name).count(),
+            'new_projects': Project.objects.filter(project_status='Yangi', project_departments__department_name__contains=department.department_name).count(),
+            'projects_processing': Project.objects.filter(project_status='Jarayonda', project_departments__department_name__contains=department.department_name).count(),
+            'projects_finished': Project.objects.filter(project_status='Tugatilgan', project_departments__department_name__contains=department.department_name).count(),
+            'total_budget': total_budget,
+            'total_spent': total_spent
+        }
         dep_datas.append(data)
 
-    return render(request, 'qualification.html', context={'dept_data': dep_datas,'b_data':blog_datas})
+    if request.GET.get('qualification') == 'blog':
+        return render(request, 'qualification.html', context={'b_data': blog_datas})
+    elif request.GET.get('qualification=')=='dept':
+        return render(request, 'qualification.html', context={'dept_data': dep_datas})
+    else:
+        return render(request, 'qualification.html', context={'dept_data': dep_datas})
 
 
 @login_required

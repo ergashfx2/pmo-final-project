@@ -315,7 +315,7 @@
                                                                                     style="margin: 0;padding: 0">{{ comment.author }}</b><div
                                                                                     class="d-inline mx-2"></div><p
                                                                                     class="text-secondary text-sm d-inline">{{ comment.created_at | format_date_and_time_difference }}</p></span>
-                                                                                    <small style="margin: 0;padding:0">{{ comment.created_at | date:'d-m-Y' }}</small>
+                                                                                    <small class="time-ago" style="margin: 0;padding:0">{{ comment.created_at | date:'d-m-Y' }}</small>
                                                                                     <div style="margin-top: 1%">{{ comment.problem | safe }}</div>
                                                                                     <form method="post"
                                                                                           style="display: none"
@@ -333,7 +333,7 @@
                                                                                             id="delete_problem_{{ comment.pk }}"
                                                                                             type="button"
                                                                                             class="text-secondary delete-problem-btn mr-3">O'chirish</small>
-                                                                                        <small id="edit_problem_{{ comment.pk }}"
+                                                                                        <small class="time-ago" id="edit_problem_{{ comment.pk }}"
                                                                                                type="button"
                                                                                                class="edit-problem text-secondary">Tahrirlash</small>
                                                                                     </div>
@@ -352,7 +352,7 @@
                                                                             <li class="m-4 border-bottom-1 border-dark">{{ action.author.get_full_name }} {{ action.action | safe }}</li>
                                                                         </div>
                                                                         <div class="col-1">
-                                                                            <small>{{ action.date | format_date_and_time_difference }}</small>
+                                                                            <small class="time-ago">{{ action.date | format_date_and_time_difference }}</small>
                                                                         </div>
                                                                     </div>
                                                                 {% endfor %}

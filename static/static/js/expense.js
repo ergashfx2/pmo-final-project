@@ -326,8 +326,8 @@ function download_file_listener() {
 }
 
 try {
- download_file_listener()
-}catch (e){
+    download_file_listener()
+} catch (e) {
 
 }
 
@@ -362,6 +362,7 @@ function downloadFile_expense(e) {
 
 function search() {
     document.querySelectorAll('.search').forEach(value => {
+        console.log('Working')
         let expenses_all = []
         let expenses_filtered = []
         const ProxyArr = (arr, fn) => new Proxy(arr, {
@@ -381,10 +382,11 @@ function search() {
         let proxy = ProxyArr(expenses_filtered, handler);
         let body = document.getElementById('expenses-body')
         value.addEventListener('input', function (e) {
-                            if(e.target.value.length === 0){
-                                document.getElementById('expenses-body').querySelectorAll('tr').forEach(value => value.style.display = 'table-row')
+            console.log('working')
+            if (e.target.value.length === 0) {
+                document.getElementById('expenses-body').querySelectorAll('tr').forEach(value => value.style.display = 'table-row')
 
-                }
+            }
             for (const expense in expenses_list) {
                 let expense_arr = expenses_list[expense].fields
                 expenses_all.push(expense_arr)
@@ -397,58 +399,81 @@ function search() {
 }
 
 try {
-search()
-}catch (e){
+    search()
+} catch (e) {
 
+}
+
+function return_bg_color(status){
+    let colors = {'Yangi':"bg-light","Jarayonda":'bg-warning','Tugatilgan':"bg-success"}
+    return colors[status]
 }
 
 function search_project() {
     document.querySelectorAll('.search-projects').forEach(value => {
-        let projects_all = []
-        let projects_filtered = []
+        let projects_all = [];
+        let projects_filtered = [];
+        let inital_tbody = document.getElementById('projects-body').innerHTML;
         const ProxyArr = (arr, fn) => new Proxy(arr, {
             get: (arr, key) => arr[key],
             set: (arr, key, val) => fn(arr[key] = val, key, arr) || 1
         });
         let handler = (arr) => {
-            document.getElementById('projects-body').querySelectorAll('tr').forEach(tr => {
-                tr.querySelectorAll('td').forEach(td => {
-                    let search = document.getElementById('search-project')
-                    if (td.id === 'project_name' && !td.textContent.toLowerCase().trim().includes(search.value.toLowerCase())) {
-                        tr.style.display = 'none'
-                    }
-                })
-            })
+            let tbody = document.getElementById('projects-body');
+            tbody.innerHTML = '';
+            let row = '';
+            let count = 1;
+            let href = window.location.href
+            projects_filtered.forEach(value => {
+                let bg = return_bg_color(value.project_status)
+                let search = document.getElementById('search-project');
+                if (value.project_name.toLowerCase().includes(search.value.toLowerCase())) {
+                    let tr1 = document.createElement('tr')
+                    let tr = document.createElement('tr')
+                    let p_name = document.createElement('td')
+                    let p_desc = document.createElement('td')
+                    let p_dept = document.createElement('td')
+                    let p_budget = document.createElement('td')
+                    let p_curator = document.createElement('td')
+                    tr.appendChild(p_name,p_desc,p_dept,p_budget,p_curator)
+                    tr1.appendChild(tr)
+                    row += tr1.innerHTML
+                    count += 1;
+                }
+            });
+            console.log(row);
+            tbody.innerHTML = row;
         };
         let proxy = ProxyArr(projects_filtered, handler);
-        let body = document.getElementById('projects-body')
+        let body = document.getElementById('projects-body');
         value.addEventListener('input', function (e) {
-                            if(e.target.value.length === 0){
-                                document.getElementById('projects-body').querySelectorAll('tr').forEach(value => value.style.display = 'table-row')
-
-                }
-            for (const project in projects_serialized) {
-                let project_arr = projects_serialized[project].fields
-                projects_all.push(project_arr)
-                if (project_arr.project_name.toLowerCase().includes(e.target.value.toLowerCase())) {
-                    proxy.push(project_arr)
+            projects_filtered.length = 0;
+            if (e.target.value.length === 0) {
+                document.getElementById('projects-body').innerHTML = inital_tbody
+            } else {
+                for (const project in projects_serialized) {
+                    let project_arr = projects_serialized[project].fields;
+                    if (project_arr.project_name.toLowerCase().includes(e.target.value.toLowerCase())) {
+                        proxy.push(project_arr);
+                    }
                 }
             }
-        })
-    })
+        });
+    });
 }
+
 
 try {
-search_project()
-}catch (e){
+    search_project()
+} catch (e) {
 
 }
 
-function filter_all_projects(){
+function filter_all_projects() {
     let projects_all = []
-    document.getElementById('filter-all-projects').addEventListener('change',function (e){
+    document.getElementById('filter-all-projects').addEventListener('change', function (e) {
         projects_all = []
-        fetch(`filter/${e.target.value}`).then(res => res.json().then(res=> {
+        fetch(`filter/${e.target.value}`).then(res => res.json().then(res => {
             let projects = res.projects
             projects = JSON.parse(projects)
             for (const project in projects) {
@@ -461,7 +486,7 @@ function filter_all_projects(){
                 let tr = document.createElement('tr')
                 let departments = projects_all[project].project_departments.join(',')
                 tr.classList.add('datas')
-                tr.setAttribute('data-url',`/projects/${projects_all[project]['project_id']}`)
+                tr.setAttribute('data-url', `/projects/${projects_all[project]['project_id']}`)
                 tr.innerHTML = `<td>${parseInt(project) + 1}</td>
                                 <td class="text-center" id="project_name">
                                                               <a href="/projects/${projects_all[project]['project_id']}"
@@ -479,8 +504,8 @@ function filter_all_projects(){
                                 <td class="text-center">                            <a href="#"
                                                                                        style="color: black">${projects_all[project]['project_done_percentage']}%</a></td>`
 
-                            tbody.appendChild(tr)
-                tr.addEventListener('click',redirecting)
+                tbody.appendChild(tr)
+                tr.addEventListener('click', redirecting)
             }
 
         }))
@@ -489,6 +514,6 @@ function filter_all_projects(){
 
 try {
     filter_all_projects()
-}catch (e){
+} catch (e) {
 
 }

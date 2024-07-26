@@ -157,6 +157,10 @@ svg {
     padding: 0;
 }
 
+#div_id_author > span > span.selection > span > ul > li.select2-selection__choice,#div_id_project_team > span > span.selection > span > ul > li.select2-selection__choice,#div_id_project_departments > span > span.selection > span > ul > li.select2-selection__choice,#div_id_project_manager > span > span.selection > span > ul > li.select2-selection__choice {
+    background-color: #007bff;
+}
+
 
 
 .avatar-xxl {
@@ -349,7 +353,9 @@ a:hover {
 }
 
 @media (min-width: 576px) and (max-width: 767px) {
-
+    .time-ago {
+        display: none;
+    }
 .column-canvas {
     display: none;
 }
@@ -376,6 +382,9 @@ a:hover {
         width: 50%;
     }
     #select-label-users {
+        display: none;
+    }
+    .time-ago {
         display: none;
     }
 

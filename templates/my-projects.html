@@ -9,15 +9,12 @@
               <div class="card-header">
                 <h3 class="card-title d-inline">Barcha loyihalar</h3>
 
-                <div class="card-tools" style="margin-right: 0.02%;width: 20%">
-                  <div class="input-group input-group-sm" style="width: 150px;">
-                    <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+                <div class="card-tools" style="margin-right: 0.02%;width: 34.5%">
+                  <div class="input-group input-group-sm" style="width: 99.2%;">
+                    <input type="text" id="search-project" name="table_search" class="form-control float-right search-projects" placeholder="Qidirish">
 
                     <div class="input-group-append">
-                      <button type="button" class="btn btn-default">
-                        <i class="fas fa-search"></i>
-                      </button>
-                        <a href="{% url 'create-project' %}" type="button" class="btn btn-default mx-1"><i class="fa-solid fa-folder-plus"></i></a>
+                       <a href="{% url 'create-project' %}" type="button" class="btn btn-default fa-solid fa-folder-plus"></a>
                     </div>
                   </div>
                 </div>
@@ -85,7 +82,7 @@
                             <td class="project-actions text-end">
 <ul style="list-style: none" class="d-flex flex-column justify-content-end">
     <li>
-        <a class="btn-sm btn-light mb-2 no-datas" href="{% url 'my-projects-detail' project.pk %}">
+        <a class="btn-sm btn-primary mb-2 no-datas" href="{% url 'my-projects-detail' project.pk %}">
             <i class="fas fa-folder"></i>
         </a>
     </li>
@@ -128,7 +125,7 @@
     <ul class="pagination pagination-sm m-0 float-right">
         {% if projects.has_previous %}
             <li class="page-item">
-                <a class="page-link" href="?page={{ projects.previous_page_number }}">&laquo; Previous</a>
+                <a class="page-link" href="?page={{ projects.previous_page_number }}">&laquo; Oldingi</a>
             </li>
             {% if projects.number > 3 %}
                 <li class="page-item"><a class="page-link" href="?page=1">1</a></li>
@@ -158,7 +155,7 @@
                 <li class="page-item"><a class="page-link" href="?page={{ projects.paginator.num_pages }}">{{ projects.paginator.num_pages }}</a></li>
             {% endif %}
             <li class="page-item">
-                <a class="page-link" href="?page={{ projects.next_page_number }}">Next &raquo;</a>
+                <a class="page-link" href="?page={{ projects.next_page_number }}">Keyingi &raquo;</a>
             </li>
         {% endif %}
     </ul>

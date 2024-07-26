@@ -41,7 +41,7 @@ class CreateUserForm(forms.ModelForm):
         choices=departments,
         widget=forms.Select(attrs={'class': 'form-control'})
     )
-    image = forms.ImageField(label="Rasm yuklang", max_length=150, required=False, widget=forms.FileInput(attrs={'class': 'form-control'}))
+    image = forms.ImageField(label="Rasm yuklang", max_length=150, required=False, widget=forms.FileInput(attrs={'class': 'custom-file-input'}))
     password = forms.CharField(
         label='Parolni kiriting',
         max_length=150,

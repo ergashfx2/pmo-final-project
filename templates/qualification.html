@@ -9,39 +9,49 @@
     }
     </style>
 
-                  <table class="table table-responsive table-hover mb-0" id="departments-based">
+                  <table class="table table-responsive table-striped w-100 mb-0" id="departments-based">
                     <thead>
                       <tr>
-                        <th scope="col"></th>
+<th scope="col">
+    <a href="" class="btn-sm btn-light" role="button" data-toggle="dropdown" aria-expanded="false">
+        <i class="fa-solid fa-retweet btn"></i>
+    </a>
+    <div class="dropdown-menu">
+        <a class="dropdown-item" href="?qualification=dept">Departamentlar bo'yicha</a>
+        <a class="dropdown-item" href="?qualification=blog">Bloklar bo'yicha</a>
+    </div>
+</th>
+
                         <th scope="col">Loyihalar soni</th>
                         <th scope="col">Yangi loyihalar</th>
-                        <th scope="col">Jarayondagi loyihalar</th>
-                        <th scope="col">Tugatilgan loyihalar</th>
-                        <th scope="col">Budget summasi</th>
-                        <th scope="col">Sarflangan xarajatlar</th>
+                        <th scope="col">Jarayondagi</th>
+                        <th scope="col">Tugatilgan</th>
+                        <th scope="col">Budget</th>
+                        <th scope="col">Xarajatlar</th>
                       </tr>
                     </thead>
                     <tbody>
+
                     {% for data in dept_data %}
                       <tr class="d_datas datas" data-url="{% url 'department-detailed' data.department_id %}">
-                        <th class="no-center" scope="row">{{ data.department_name }}</th>
-                        <td>{{ data.projects_count }}</td>
-                        <td>{{ data.new_projects }}</td>
-                        <td>{{ data.projects_processing }}</td>
-                        <td>{{ data.projects_finished }}</td>
-                        <td>{{ data.total_budget | format_number  }}</td>
-                        <td>{{ data.total_spent | format_number }}</td>
+                        <th class="no-center col-7">{{ data.department_name }}</th>
+                        <td class="col-1">{{ data.projects_count }}</td>
+                        <td class="col-1">{{ data.new_projects }}</td>
+                        <td class="col-1">{{ data.projects_processing }}</td>
+                        <td class="col-1">{{ data.projects_finished }}</td>
+                        <td class="col-1">{{ data.total_budget | format_number  }}</td>
+                        <td class="col-1">{{ data.total_spent | format_number }}</td>
                       </tr>
                     {% endfor %}
                     {% for data in b_data %}
-                      <tr class="b_datas datas" style="display: none" data-url="{% url 'blog-detailed' data.blog_id %}">
-                        <th class="no-center" scope="row">{{ data.blog_name }}</th>
-                        <td>{{ data.projects_count_blog }}</td>
-                        <td>{{ data.new_projects_blog }}</td>
-                        <td>{{ data.projects_processing_blog }}</td>
-                        <td>{{ data.projects_finished_blog }}</td>
-                        <td>{{ data.total_budget_blog | format_number }}</td>
-                        <td>{{ data.total_spent_blog | format_number }}</td>
+                      <tr class="b_datas datas" data-url="{% url 'blog-detailed' data.blog_id %}">
+                        <th class="no-center col-7" scope="row">{{ data.blog_name }}</th>
+                        <td class="col-1">{{ data.projects_count_blog }}</td>
+                        <td class="col-1">{{ data.new_projects_blog }}</td>
+                        <td class="col-1">{{ data.projects_processing_blog }}</td>
+                        <td class="col-1">{{ data.projects_finished_blog }}</td>
+                        <td class="col-1">{{ data.total_budget_blog | format_number }}</td>
+                        <td class="col-1">{{ data.total_spent_blog | format_number }}</td>
                       </tr>
                     {% endfor %}
                     </tbody>

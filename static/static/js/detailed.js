@@ -236,32 +236,6 @@ function downloadArchive(pk) {
     });
 }
 
-function downloadFile(documentId) {
-    const downloadUrl = `download-file/${documentId}`;
-
-    fetch(downloadUrl)
-        .then(response => {
-            if (response.ok) {
-                const contentDisposition = response.headers.get('Content-Disposition');
-                const filename = contentDisposition ? contentDisposition.split('filename=')[1].replace(/"/g, '') : 'downloaded_file';
-                return response.blob().then(blob => ({filename, blob}));
-            }
-            throw new Error('Network response was not ok.');
-        })
-        .then(({filename, blob}) => {
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.style.display = 'none';
-            a.href = url;
-            a.download = filename;
-            document.body.appendChild(a);
-            a.click();
-            window.URL.revokeObjectURL(url);
-        })
-        .catch(error => {
-            console.error('There was a problem with the fetch operation:', error);
-        });
-}
 
 function downloadFile(documentId) {
     const downloadUrl = `download-file/${documentId}`;

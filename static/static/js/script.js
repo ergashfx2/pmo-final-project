@@ -58,7 +58,6 @@ document.addEventListener("DOMContentLoaded", function () {
     redirecting()
     problemsManager();
     commentsManager();
-    change_table();
     initTabs();
     initTaskManager();
     initPhaseActions();
@@ -1211,7 +1210,9 @@ function add_listeners() {
     })
 }
 
-
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
 
 
 document.getElementById('add-expense').addEventListener('submit', function (e) {
