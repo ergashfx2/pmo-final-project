@@ -129,9 +129,9 @@ class Documents(models.Model):
 
 class Problems(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    author = models.ForeignKey(User, models.CASCADE)
-    project = models.ForeignKey(Project, models.CASCADE)
-    phase = models.ForeignKey(Phase, models.CASCADE)
+    author = models.ForeignKey(User, models.DO_NOTHING)
+    project = models.ForeignKey(Project, models.DO_NOTHING)
+    phase = models.ForeignKey(Phase, models.DO_NOTHING)
     problem = models.TextField()
     created_at = models.DateTimeField(auto_now=True, editable=False)
     update_at = models.DateTimeField(auto_now=True)
@@ -144,9 +144,9 @@ class Problems(models.Model):
 
 class Comments(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    author = models.ForeignKey(User, models.CASCADE)
-    project = models.ForeignKey(Project, models.CASCADE)
-    phase = models.ForeignKey(Phase, models.CASCADE)
+    author = models.ForeignKey(User, models.DO_NOTHING)
+    project = models.ForeignKey(Project, models.DO_NOTHING)
+    phase = models.ForeignKey(Phase, models.DO_NOTHING)
     comment = models.TextField()
     created_at = models.DateTimeField(auto_now=True, editable=False)
     update_at = models.DateTimeField(auto_now=True)
@@ -161,8 +161,8 @@ class Comments(models.Model):
 
 
 class PermittedProjects(models.Model):
-    user = models.ForeignKey(User, models.CASCADE)
-    project = models.ForeignKey(Project, models.CASCADE)
+    user = models.ForeignKey(User, models.DO_NOTHING)
+    project = models.ForeignKey(Project, models.DO_NOTHING)
 
     def __str__(self):
         return self.project.project_name

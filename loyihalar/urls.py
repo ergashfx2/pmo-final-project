@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import all_projects, get_project, myProjects, DetailMyProjects, CreateProject, UpdateProject, DeleteProject, \
+from .views import get_project, all_projects, my_projects, DetailMyProjects, CreateProject, UpdateProject, DeleteProject, \
     add_phase, update_phase, delete_phase, update_task, delete_task, update_task_percentage, delete_files, \
     owned_projects,create_archive,post_comment,post_problem,edit_comment,edit_problem,delete_comment,delete_problem,add_team_member,remove_team_member,filter_table,get_task,download_file,add_tasks
 urlpatterns = [
@@ -7,7 +7,7 @@ urlpatterns = [
     path('all/filter/<str:status>', filter_table, name='filter-table'),
     path('add-team-member/<pk>', add_team_member, name='add-team-member'),
     path('remove-team-member/<pk>', remove_team_member, name='remove-team-member'),
-    path('my-projects/', myProjects, name='my-projects'),
+    path('my-projects/', my_projects, name='my-projects'),
     path('owner-projects/', owned_projects, name='owned-projects'),
     path('my-projects/edit/<pk>', UpdateProject.as_view(), name='update-project'),
     path('my-projects/filter/<str:status>', filter_table, name='filter_table'),
@@ -17,7 +17,7 @@ urlpatterns = [
     path('my-projects/detail/post-problem/<pk>', post_problem, name='post-problem'),
     path('my-projects/detail/edit-problem/<pk>', edit_problem, name='edit-problem'),
     path('my-projects/detail/delete-problem/<pk>', delete_problem, name='delete-problem'),
-    path('my-projects/add-file/<pk>', myProjects, name='add-file'),
+    path('my-projects/add-file/<pk>', my_projects, name='add-file'),
     path('my-projects/detail/add-task/<pk>', add_tasks, name='add-tasks'),
     path('my-projects/delete/<pk>', DeleteProject, name='delete-my-project'),
     path('my-projects/detail/create-archive/<pk>', create_archive, name='create-archive'),

@@ -8,6 +8,9 @@
      font-family: sans-serif;
  }
 
+.custom-select {
+    width: 100px !important;
+}
 
 .grid-container {
   display: grid;

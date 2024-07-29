@@ -39,48 +39,65 @@ def all_projects(request):
     except EmptyPage:
         projects_page = p.page(p.num_pages)
 
-    projects_serialized = serializers.serialize('json', projects_page.object_list)
-    arr = json.loads(projects_serialized)
+    projects_serialized = serialize_projects(projects)
 
+    return render(request, 'all_projects.html', context={
+        'projects': projects_page,
+        'phases': phases,
+        'tasks': tasks,
+        'projects_serialized': projects_serialized,
+        'all_serialized':projects_serialized
+    })
+
+
+@login_required
+def my_projects(request):
+    projects = get_user_projects(request.user)
+    projects_page = paginate_projects(request, projects)
+    projects_serialized = serialize_projects(projects)
+
+    return render(request, 'my-projects.html', context={
+        'projects': projects_page,
+        'my_projects_serialized': projects_serialized
+    })
+
+
+def get_user_projects(user):
+    return Project.objects.filter(
+        Q(project_manager__id=user.pk) |
+        Q(project_curator__id=user.pk) |
+        Q(project_team__username=user.username)
+    ).order_by('-project_start_date').distinct()
+
+
+def paginate_projects(request, projects, items_per_page=10):
+    paginator = Paginator(projects, items_per_page)
+    page_number = request.GET.get('page')
+
+    try:
+        projects_page = paginator.get_page(page_number)
+    except PageNotAnInteger:
+        projects_page = paginator.page(10)
+    except EmptyPage:
+        projects_page = paginator.page(paginator.num_pages)
+
+    return projects_page
+
+
+def serialize_projects(projects):
+    projects_serialized = serializers.serialize('json', projects)
+    arr = json.loads(projects_serialized)
     for a in arr:
         project = Project.objects.get(pk=dict(a)['pk'])
         fields = dict(a)['fields']
+        fields['project_id'] = str(project.pk)
         fields['project_departments'] = [department.department_name for department in project.project_departments.all()]
         fields['project_team'] = [man.get_full_name() for man in project.project_team.all()]
         fields['project_curator'] = project.project_curator.get_full_name()
         fields['project_blog'] = project.project_blog.blog_name
 
     projects_serialized_modified = json.dumps(arr)
-
-    return render(request, 'all_projects.html', context={
-        'projects': projects_page,
-        'phases': phases,
-        'tasks': tasks,
-        'projects_serialized': projects_serialized_modified,
-        'all_serialized':all_projects_serialized
-    })
-
-
-@login_required
-def myProjects(request):
-    projects = Project.objects.filter(
-        Q(project_manager__id=request.user.pk) |
-        Q(project_curator__id=request.user.pk) |
-        Q(project_team__username=request.user.username)
-    ).order_by('-project_start_date').distinct()
-    projects_serialized = serializers.serialize('json',projects)
-    arr = json.loads(projects_serialized)
-    for a in arr:
-        a['fields']['project_id'] = a['pk']
-    p = Paginator(projects, 10)
-    page_number = request.GET.get('page')
-    try:
-        projects_page = p.get_page(page_number)
-    except PageNotAnInteger:
-        projects_page = p.page(1)
-    except EmptyPage:
-        projects_page = p.page(p.num_pages)
-    return render(request, 'my-projects.html', context={'projects': projects_page,'my_projects_serialized':arr})
+    return projects_serialized_modified
 
 
 @login_required
@@ -345,7 +362,8 @@ def delete_files(request):
 @login_required
 def owned_projects(request):
     projects = Project.objects.filter(project_curator=request.user)
-    return render(request, 'owned_projects.html', context={'projects': projects})
+    projects_serialized = serialize_projects(projects)
+    return render(request, 'owned_projects.html', context={'projects': projects,'my_projects_serialized':projects_serialized})
 
 
 @login_required

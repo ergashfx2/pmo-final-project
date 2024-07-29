@@ -1,9 +1,12 @@
+import json
+
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
+from django.core import serializers
 from django.db.models import Q,Count
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
@@ -105,18 +108,34 @@ def create_user(request):
 def block_user(request, pk):
         user = User.objects.get(pk=pk)
         user.block()
-        return redirect('hodimlar:users')
+        return JsonResponse(status=200, data={'success': True})
 
 
 @login_required
 def unblock_user(request, pk):
         user = get_object_or_404(User, pk=pk)
         user.unblock()
-        return redirect('hodimlar:users')
+        return JsonResponse(status=200, data={'success': True})
 
 
 @login_required
 def delete_user(request, pk):
-        user = User.objects.get(pk=pk)
-        user.delete()
-        return redirect('hodimlar:users')
+    user = User.objects.get(pk=pk)
+    try:
+        if hasattr(user, 'profile'):
+            user.profile.delete()
+    except Exception as e:
+        print(e)
+    return JsonResponse(status=200,data={'success':True})
+
+@login_required
+def get_users_serialized(request):
+    users = serializers.serialize('json', User.objects.all())
+    users_array = json.loads(users)
+    for user in users_array:
+        fields = dict(user)['fields']
+        fields['user_id'] = dict(user).get('pk')
+
+    users = json.dumps(users_array)
+    return JsonResponse(data=users, safe=False, status=200)
+

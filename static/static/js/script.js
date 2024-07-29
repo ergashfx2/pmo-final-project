@@ -81,13 +81,18 @@ function download_all() {
 download_all()
 
 function redirecting() {
-    document.querySelectorAll('.datas').forEach(value => {
-        value.addEventListener('click', function () {
+    const tbody = document.getElementById('projects-body');
+    const datas = document.querySelectorAll('.datas');
+    datas.forEach((value, index) => {
+        if (index === datas.length - 1) return;
+        for (let i = 0; i < value.children.length ; i++) {
+            if (i === value.children.length-1 ) return;
+                 value.children.item(i).addEventListener('click', function () {
             window.location.href = value.getAttribute('data-url');
-        })
+        });
+        }
     });
 }
-
 function edit_phase(){
     let input = document.createElement('input')
     document.querySelectorAll('.edit-phase-btn').forEach(value => {

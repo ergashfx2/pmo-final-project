@@ -25,33 +25,6 @@
     <section class="bg-white mx-1">
         <div>
             <div>
-<div class="form-row align-items-center mt-3">
-    <div class="col-lg-10  col-sm-3 my-1">
-      <label class="sr-only" for="inlineFormInputGroupUsername">Qidirish</label>
-      <div class="input-group">
-        <div class="input-group-prepend">
-          <div class="input-group-text"><i class="fa-solid fa-magnifying-glass text-center d-inline"></i></div>
-        </div>
-       <input id="search-project" class="search-projects d-inline form-control" placeholder="Qidirish....." type="text">
-      </div>
-    </div>
-    <div class="col-auto ">
-            <div class="col-auto">
-      <select class="custom-select " id="filter-all-projects">
-        <option value="all" selected>Barchasi</option>
-        <option value="Yangi">Boshlanmagan</option>
-        <option value="Jarayonda">Jaraonda</option>
-        <option value="Tugatilgan">Tugatilgan</option>
-        <option value="least7">7 kun qolgan</option>
-        <option value="least30">1 oy qolgan</option>
-        <option value="least90">3 oy qolgan</option>
-      </select>
-    </div>
-    </div>
-    <div class="col-auto my-1">
-<i style="rotate: 90deg" id="filter-table" class="fa-solid fa-sliders btn border border-dark" data-toggle="offcanvas" data-target="#offcanvasRight"></i>
-    </div>
-  </div>
   </div>
 
 <div class="offcanvas-collapse" id="offcanvasRight">
@@ -125,49 +98,98 @@
         <button id="apply-changes" class="btn btn-primary" style="width: 95%;margin: 3%">Qo'llash</button>
     </div>
 </div>
+                    <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title d-inline">Barcha loyihalar</h3>
+
+                <div class="card-tools" style="margin-right: 0.02%;width: 32.5%">
+                  <div class="input-group input-group-sm" style="width: 99.2%;">
+                    <input type="text" id="search-project" name="table_search" class="form-control float-right search-projects" placeholder="Qidirish">
+                            <select class="custom-select input-sm" id="filter-all-projects">
+        <option value="all" selected>Barchasi</option>
+        <option value="Yangi">Boshlanmagan</option>
+        <option value="Jarayonda">Jarayonda</option>
+        <option value="Tugatilgan">Tugatilgan</option>
+        <option value="least7">7 kun qolgan</option>
+        <option value="least30">1 oy qolgan</option>
+        <option value="least90">3 oy qolgan</option>
+      </select>
+                      <button style="rotate: 90deg" id="filter-table" class="fa-solid fa-sliders btn-sm border border-dark" data-toggle="offcanvas" data-target="#offcanvasRight"></button>
+                  </div>
+                </div>
+              </div>
                 <div class="table-responsive mt-4">
-                    <table class="table table-striped" id="table-projects">
-                        <thead>
-                        <tr>
-                            <th>№</th>
-                            <th>Loyiha nomi</th>
-                            <th>Loyiha haqida</th>
-                            <th >Departamenti</th>
-                            <th >Ma'sul xodim</th>
-                            <th >Bajarilganligi</th>
-                        </tr>
-                        </thead>
-                        <tbody id="projects-body">
-                        {% for project in projects.object_list %}
-                             <tr class="datas" data-url="{% url 'get-project' project.pk %}">
-                                <td>{{ forloop.counter }}</td>
-                                <td id="project_name">
-                                                              <a href="{% url 'get-project' project.pk %}"
-                                                                 style="color: black"> {{ project.project_name }} </a>
-                                </td>
-                                <td>                             <a href="{% url 'get-project' project.pk %}"
-                                                                                        style="color: black">{{ project.project_description }} </a></td>
-                            <td>                            <a href="{% url 'get-project' project.pk %}"
+                <table id="table-projects" class="table table-striped table-bordered projects-table projects">
+                  <thead>
+                    <tr>
+                      <th scope="col" class="col-0">№</th>
+                      <th scope="col" class="col-2">Loyiha nomi</th>
+                      <th scope="col" class="col-3">Loyiha haqida</th>
+                      <th scope="col" class="col-3">Departamentlar</th>
+                      <th scope="col" class="col-1">Summasi</th>
+                      <th scope="col" class="col-2">Hodim</th>
+                      <th scope="col" class="col-3">Holati</th>
+                    </tr>
+                  </thead>
+                    <tbody id="projects-body">
+                    {% for project in projects %}
+                        <tr class="datas" data-url="{% url 'get-project' project.pk %}">
+                            <td>
+                                {{ forloop.counter }}
+                            </td>
+                            <td id="project-name">
+                                <a href="{% url 'get-project' project.pk %}" style="color: black">
+                                    {{ project.project_name }}
+                                </a>
+                            </td>
+                            <td>
+                                                           <a href="{% url 'get-project' project.pk %}"
+                                                              style="color: black"> {{ project.project_description }} </a>
+                            </td>
+                            <td >
+                                                        <a href="{% url 'get-project' project.pk %}"
                                        style="color: black">
                                 {% for department in project.project_departments.all %}
-                                    {{ department.department_name }},
-                                    {% endfor %}
-                            </a>
+                                    {{ department.department_name}},
+                                {% endfor %}</a>
                             </td>
-                                <td>                            <a href="{% url 'get-project' project.pk %}"
-                                                                                       style="color: black">{{ project.project_curator.get_full_name }}</a></td>
-                                                             <td>                            <a href="{% url 'get-project' project.pk %}"
-                                                                                       style="color: black">{{ project.project_done_percentage }}%</a></td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                {% if projects.has_next %}
-<div class="card-footer clearfix">
+
+                                                                                                         <td class="project-state">
+                                <p>                             <a href="{% url 'get-project' project.pk %}"
+                                                                   style="color: black">{{ project.project_budget | format_number}} </a></p>
+                            </td>
+
+                                                                                                                            <td class="text-start">
+                                                                                                                                <a href="{% url 'my-projects-detail' project.pk %}"
+                                                                  style="color: black">{{ project.project_curator.get_full_name}} </a>
+                            </td>
+                                                        <td class="project_progress" style="width: 10%;">
+                                <div class="progress progress-sm">
+                                    <div class="progress-bar {% if project.project_status == 'Yangi' %} bg-light {% elif project.project_status == 'Jarayonda' %} bg-yellow {% elif project.project_status == 'Tugatilgan' %}bg-green{% endif %}"
+                                         role="progressbar" aria-valuenow="{{ project.project_done_percentage }}"
+                                         aria-valuemin="0" aria-valuemax="100"
+                                         style="width: {{ project.project_done_percentage }}%">
+                                    </div>
+                                </div>
+                                <p>
+                                    {{ project.project_done_percentage }}%<br>
+                                    <p class="badge {% if project.project_status == 'Yangi' %}badge-info{% elif project.project_status == 'Jarayonda'  %}badge-warning {% else %}badge-success{% endif %}">{{ project.project_status }}</p>
+                                </p>
+
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+                </div>
+        <div class="card-footer clearfix">
     <ul class="pagination pagination-sm m-0 float-right">
         {% if projects.has_previous %}
             <li class="page-item">
-                <a class="page-link" href="?page={{ projects.previous_page_number }}">&laquo; Previous</a>
+                <a class="page-link" href="?page={{ projects.previous_page_number }}">&laquo; Oldingi</a>
             </li>
             {% if projects.number > 3 %}
                 <li class="page-item"><a class="page-link" href="?page=1">1</a></li>
@@ -197,15 +219,15 @@
                 <li class="page-item"><a class="page-link" href="?page={{ projects.paginator.num_pages }}">{{ projects.paginator.num_pages }}</a></li>
             {% endif %}
             <li class="page-item">
-                <a class="page-link" href="?page={{ projects.next_page_number }}">Next &raquo;</a>
+                <a class="page-link" href="?page={{ projects.next_page_number }}">Keyingi &raquo;</a>
             </li>
         {% endif %}
     </ul>
 </div>
-                {% endif %}
 
-                </div>
-
+            </div>
+          </div>
+                    </div>
             </div>
     </section>
     <script type="text/javascript">

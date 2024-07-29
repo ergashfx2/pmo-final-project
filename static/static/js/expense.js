@@ -40,32 +40,6 @@ function sendPostRequest(url, data) {
 }
 
 
-function change_table() {
-    document.querySelectorAll('.change-table').forEach(value => {
-        value.addEventListener('change', function (e) {
-            console.log('changed')
-            let selectedId = value.selectedOptions[0].id;
-            if (selectedId === 'blog') {
-                document.querySelectorAll('.d_datas').forEach(el => el.style.display = 'none')
-                document.querySelectorAll('.b_datas').forEach(el => el.style.display = '')
-                document.getElementById('table-title').innerText = 'Loyihalar boklar kesimida'
-
-            }
-
-            if (selectedId === 'dept') {
-                document.querySelectorAll('.d_datas').forEach(el => el.style.display = '')
-                document.querySelectorAll('.b_datas').forEach(el => el.style.display = 'none')
-                document.getElementById('table-title').innerText = 'Loyihalar departamentlar kesimida'
-            }
-        })
-    })
-}
-
-try {
-    change_table()
-} catch (e) {
-
-}
 
 function expandBudget() {
     document.getElementById('budget-expand-btn').addEventListener('click', function () {
@@ -164,13 +138,23 @@ function delete_expense(e) {
 }
 
 function redirecting() {
-    let tbody = document.getElementById('projects-body')
-    document.querySelectorAll('.datas').forEach(value => {
-        value.addEventListener('click', function () {
-            window.location.href = value.getAttribute('data-url');
-        })
+    const tbody = document.getElementById('projects-body');
+    const datas = document.querySelectorAll('.datas');
+    datas.forEach((value, index) => {
+        if (index === datas.length - 1) return;
+        for (let i = 0; i < value.children.length ; i++) {
+            if (i === value.children.length-1 ) return;
+                 value.children.item(i).addEventListener('click', redirect);
+        }
     });
 }
+
+function redirect(e) {
+            window.location.href = e.target.getAttribute('data-url');
+        }
+
+
+
 
 
 try {
@@ -406,57 +390,69 @@ try {
 
 function return_bg_color(status){
     let colors = {'Yangi':"bg-light","Jarayonda":'bg-warning','Tugatilgan':"bg-success"}
-    return colors[status]
+    let badge = {'Yangi':"badge-info","Jarayonda":'badge-warning','Tugatilgan':"badge-success"}
+    return [colors[status],badge[status]]
 }
 
 function search_project() {
-    document.querySelectorAll('.search-projects').forEach(value => {
-        let projects_all = [];
-        let projects_filtered = [];
-        let inital_tbody = document.getElementById('projects-body').innerHTML;
-        const ProxyArr = (arr, fn) => new Proxy(arr, {
-            get: (arr, key) => arr[key],
-            set: (arr, key, val) => fn(arr[key] = val, key, arr) || 1
-        });
-        let handler = (arr) => {
-            let tbody = document.getElementById('projects-body');
+    document.querySelectorAll('.search-projects').forEach(input => {
+        const projects_filtered = [];
+        const initial_tbody = document.getElementById('projects-body').innerHTML;
+        const table = document.getElementById('projects-body');
+        const cloned_tr = table.children.item(1).cloneNode(true);
+
+        const updateTable = () => {
+            const tbody = document.getElementById('projects-body');
             tbody.innerHTML = '';
-            let row = '';
-            let count = 1;
-            let href = window.location.href
-            projects_filtered.forEach(value => {
-                let bg = return_bg_color(value.project_status)
-                let search = document.getElementById('search-project');
-                if (value.project_name.toLowerCase().includes(search.value.toLowerCase())) {
-                    let tr1 = document.createElement('tr')
-                    let tr = document.createElement('tr')
-                    let p_name = document.createElement('td')
-                    let p_desc = document.createElement('td')
-                    let p_dept = document.createElement('td')
-                    let p_budget = document.createElement('td')
-                    let p_curator = document.createElement('td')
-                    tr.appendChild(p_name,p_desc,p_dept,p_budget,p_curator)
-                    tr1.appendChild(tr)
-                    row += tr1.innerHTML
-                    count += 1;
+
+            projects_filtered.forEach((project, index) => {
+                const new_cloned_tr = cloned_tr.cloneNode(true);
+                new_cloned_tr.children.item(0).innerText = index + 1;
+                new_cloned_tr.children.item(1).innerText = project.project_name;
+                new_cloned_tr.children.item(2).innerText = project.project_description;
+                new_cloned_tr.children.item(3).innerText = project.project_departments;
+                new_cloned_tr.children.item(4).innerText = project.project_budget;
+                new_cloned_tr.children.item(5).innerText = project.project_curator;
+                                    let bg = return_bg_color(project.project_status);
+                    new_cloned_tr.children.item(6).children.item(0).children.item(0).classList.add(bg[0]);
+                    new_cloned_tr.children.item(6).children.item(0).children.item(0).setAttribute('aria-valuenow', project.project_done_percentage);
+                    new_cloned_tr.children.item(6).children.item(0).children.item(0).style.width = project.project_done_percentage + '%';
+                    new_cloned_tr.children.item(6).children.item(1).innerText = project.project_done_percentage + '%';
+                    new_cloned_tr.children.item(6).children.item(2).removeAttribute('class');
+                    new_cloned_tr.children.item(6).children.item(2).classList.add('badge', bg[1]);
+                    new_cloned_tr.children.item(6).children.item(2).innerText = `${project.project_status}`;
+                if (window.location.href.includes('my-projects')) {
+                    console.log('working')
+                    new_cloned_tr.children.item(7).children.item(0).children.item(0).children.item(0).href = `/projects/my-projects/detail/${project.project_id}`;
+                    new_cloned_tr.children.item(7).children.item(0).children.item(1).children.item(0).href = `/projects/my-projects/edit/${project.project_id}`;
+                    console.log(new_cloned_tr.children.item(7).children.item(0).children.item(2).children.item(0).id = project.project_id);
                 }
+                tbody.appendChild(new_cloned_tr);
             });
-            console.log(row);
-            tbody.innerHTML = row;
         };
-        let proxy = ProxyArr(projects_filtered, handler);
-        let body = document.getElementById('projects-body');
-        value.addEventListener('input', function (e) {
+
+        const proxyHandler = {
+            set(target, key, value) {
+                target[key] = value;
+                updateTable();
+                return true;
+            }
+        };
+
+        const proxy = new Proxy(projects_filtered, proxyHandler);
+
+        input.addEventListener('input', (e) => {
             projects_filtered.length = 0;
+
             if (e.target.value.length === 0) {
-                document.getElementById('projects-body').innerHTML = inital_tbody
+                document.getElementById('projects-body').innerHTML = initial_tbody;
             } else {
-                for (const project in projects_serialized) {
-                    let project_arr = projects_serialized[project].fields;
-                    if (project_arr.project_name.toLowerCase().includes(e.target.value.toLowerCase())) {
-                        proxy.push(project_arr);
+                projects_serialized.forEach(project => {
+                    const projectData = project.fields;
+                    if (projectData.project_name.toLowerCase().includes(e.target.value.toLowerCase())) {
+                        proxy.push(projectData);
                     }
-                }
+                });
             }
         });
     });
@@ -471,8 +467,12 @@ try {
 
 function filter_all_projects() {
     let projects_all = []
+                        const table = document.getElementById('projects-body');
+        const cloned_tr = table.children.item(1).cloneNode(true);
     document.getElementById('filter-all-projects').addEventListener('change', function (e) {
         projects_all = []
+        console.log(cloned_tr)
+        console.log(projects_all)
         fetch(`filter/${e.target.value}`).then(res => res.json().then(res => {
             let projects = res.projects
             projects = JSON.parse(projects)
@@ -482,31 +482,25 @@ function filter_all_projects() {
             }
             let tbody = document.getElementById('projects-body')
             tbody.innerHTML = ``
-            for (const project in projects_all) {
-                let tr = document.createElement('tr')
-                let departments = projects_all[project].project_departments.join(',')
-                tr.classList.add('datas')
-                tr.setAttribute('data-url', `/projects/${projects_all[project]['project_id']}`)
-                tr.innerHTML = `<td>${parseInt(project) + 1}</td>
-                                <td class="text-center" id="project_name">
-                                                              <a href="/projects/${projects_all[project]['project_id']}"
-                                                                 style="color: black"> ${projects_all[project]['project_name']} </a>
-                                </td>
-                                <td class="text-center">                             <a href="#"
-                                                                                        style="color: black">${projects_all[project]['project_description']} </a></td>
-                            <td class="text-center">                            <a href="#"
-                                       style="color: black">
-                                       ${departments}
-                            </a>
-                            </td>
-                                <td class="text-center">                            <a href="#"
-                                                                                       style="color: black">${projects_all[project]['project_curator']}</a></td>
-                                <td class="text-center">                            <a href="#"
-                                                                                       style="color: black">${projects_all[project]['project_done_percentage']}%</a></td>`
+            projects_all.forEach((project,index)=>{
+                let new_cloned_tr = cloned_tr.cloneNode(true);
+                new_cloned_tr.children.item(0).innerText = index + 1;
+                new_cloned_tr.children.item(1).innerText = project.project_name;
+                new_cloned_tr.children.item(2).innerText = project.project_description;
+                new_cloned_tr.children.item(3).innerText = project.project_departments;
+                new_cloned_tr.children.item(4).innerText = project.project_budget;
+                new_cloned_tr.children.item(5).innerText = project.project_curator;
+                let bg = return_bg_color(project.project_status);
+                new_cloned_tr.children.item(6).children.item(0).children.item(0).classList.add(bg[0]);
+                new_cloned_tr.children.item(6).children.item(0).children.item(0).setAttribute('aria-valuenow', project.project_done_percentage);
+                new_cloned_tr.children.item(6).children.item(0).children.item(0).style.width = project.project_done_percentage + '%';
+                new_cloned_tr.children.item(6).children.item(1).innerText = project.project_done_percentage + '%';
+                new_cloned_tr.children.item(6).children.item(2).removeAttribute('class');
+                new_cloned_tr.children.item(6).children.item(2).classList.add('badge', bg[1]);
+                new_cloned_tr.children.item(6).children.item(2).innerText = `${project.project_status}`;
+            tbody.appendChild(new_cloned_tr)
+            })
 
-                tbody.appendChild(tr)
-                tr.addEventListener('click', redirecting)
-            }
 
         }))
     })

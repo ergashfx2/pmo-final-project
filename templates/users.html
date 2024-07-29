@@ -8,7 +8,7 @@
                                   <div class="card-tools">
                       <div class="input-group mb-3">
   <div class="input-group-prepend">
-      <input type="text" placeholder="Qidirish..." class="form-control">
+      <input id="search-users" type="text" placeholder="Qidirish..." class="form-control">
 <i class="btn btn-default fa-solid fa-magnifying-glass"></i>
   </div>
                                 <a href="{% url 'hodimlar:create-user' %}" class="btn btn-primary ml-2">Yaratish</a>
@@ -20,7 +20,6 @@
                 <table class="table table-striped">
                   <thead>
                         <tr class="no-url">
-                            <th scope="col" class="no-center"></th>
                             <th scope="col" class="no-center">№</th>
                             <th scope="col" class="no-center">FIO</th>
                             <th scope="col" class="no-center">STATUS</th>
@@ -28,16 +27,10 @@
                             <th scope="col" class="no-center">RAQAMI</th>
                         </tr>
                   </thead>
-                  <tbody>
+                  <tbody id="users_list_body">
                                           {% with num=0 %}
                             {% for user in object_list %}
                                 <tr class="no-url">
-                                    <th scope="row" class="no-center">
-                                        <div class="form-check">
-                                            <input class="form-check-input check-input-users" type="checkbox"
-                                                   value="{{ user.id }}"/>
-                                        </div>
-                                    </th>
                                     <td class="no-center">{{ forloop.counter }}</td>
                                     <td class="no-center"><a href="{% url 'hodimlar:profile2' user.id %}"
                                                              style="color:#000;">{{ user.get_full_name }}</a></td>
@@ -50,10 +43,10 @@
                                     </td>
                                     <td class="no-center">{{ user.role }}</td>
                                     <td class="no-center">{{ user.phone }}</td>
-                                    <td class="no-center"><i class="btn fa-solid text-danger fa-trash" data-toggle="tooltip" data-placement="top" title="O'chirish"></i>                                        {% if user.status == 'Active' %}
-                                            <i class="fa-solid btn fa-lock" data-toggle="tooltip" data-placement="top" title="Bloklash"></i>
+                                    <td class="no-center"><i user_id="{{ user.pk }}" data-toggle="modal" data-target="#action" action="delete-user" class="btn user-tools fa-solid text-danger fa-trash" data-toggle="tooltip" data-placement="top" title="O'chirish"></i>                                        {% if user.status == 'Active' %}
+                                            <i user_id="{{ user.pk }}" data-toggle="modal" data-target="#action" action="block" class="fa-solid user-tools btn fa-lock" data-toggle="tooltip" data-placement="top" title="Bloklash"></i>
                                         {% else %}
-                                           <i class="fa-solid btn fa-unlock" data-toggle="tooltip" data-placement="top" title="Blokdan ochish"></i>
+                                           <i user_id="{{ user.pk }}" data-toggle="modal" data-target="#action" action="unblock" class="fa-solid user-tools btn fa-unlock" data-toggle="tooltip" data-placement="top" title="Blokdan ochish"></i>
                                         {% endif %}</td>
                                 </tr>
                             {% endfor %}
@@ -61,6 +54,26 @@
                   </tbody>
                 </table>
               </div>
+                                <div id="action"
+                     class="modal fade"
+                     tabindex="-1" role="dialog"
+                     aria-hidden="true">
+                    <div class="modal-dialog modal-sm modal-dialog-centered"
+                         role="document">
+                        <div class="modal-content">
+                            <div class="modal-body text-center">
+                                <i class="fa-solid fa-triangle-exclamation btn-lg" style="font-size: 5dvh"></i>
+                                <h4>Chindan tasdiqlaysizmi ?</h4></div>
+                            <div class="d-flex justify-content-center mb-2">
+                                <button id="confirm-action-users" class="btn btn-danger mr-2"> Tasdiqlash
+                                </button>
+                                <button id="cancel-action" class="btn btn-secondary" data-dismiss="modal">Bekor qilish</button>
+                                <br>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
                 <div class="card-footer clearfix">
     <ul class="pagination pagination-sm m-0 float-right">
         {% if page_obj.has_previous %}
@@ -103,4 +116,5 @@
             </div>
                 </div>
     <script src="{% static 'static/js/script.js' %}"></script>
+    <script src="{% static 'static/js/user.js' %}"></script>
 {% endblock content %}

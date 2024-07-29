@@ -11,7 +11,7 @@
 
                 <div class="card-tools" style="margin-right: 0.02%;width: 34.5%">
                   <div class="input-group input-group-sm" style="width: 99.2%;">
-                    <input type="text" name="table_search" class="form-control float-right" placeholder="Qidirish">
+                    <input type="text" id="search-project" name="table_search" class="form-control float-right search-projects" placeholder="Qidirish">
 
                     <div class="input-group-append">
                        <a href="{% url 'create-project' %}" type="button" class="btn btn-default fa-solid fa-folder-plus"></a>
@@ -75,19 +75,20 @@
                                 </div>
                                 <p>
                                     {{ project.project_done_percentage }}%<br>
-                                    <span class="badge {% if project.project_status == 'Yangi' %}badge-info{% elif project.project_status == 'Jarayonda'  %}badge-warning {% else %}badge-success{% endif %}">{{ project.project_status }}</span>
+                                    <p class="badge {% if project.project_status == 'Yangi' %}badge-info{% elif project.project_status == 'Jarayonda'  %}badge-warning {% else %}badge-success{% endif %}">{{ project.project_status }}</p>
                                 </p>
+
                             </td>
 
                             <td class="project-actions text-end">
 <ul style="list-style: none" class="d-flex flex-column justify-content-end">
     <li>
-        <a class="btn-sm btn-primary mb-2 no-datas" href="{% url 'my-projects-detail' project.pk %}">
+        <a class="btn-sm btn-primary actions-btn-my mb-2 no-datas" href="{% url 'my-projects-detail' project.pk %}">
             <i class="fas fa-folder"></i>
         </a>
     </li>
     <li>
-        <a class="btn-sm btn-info no-datas" href="{% url 'update-project' project.pk %}">
+        <a class="btn-sm btn-info actions-btn-my no-datas" href="{% url 'update-project' project.pk %}">
             <i class="fas fa-pencil-alt"></i>
         </a>
     </li>
