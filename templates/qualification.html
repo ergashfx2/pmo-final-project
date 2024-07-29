@@ -9,7 +9,7 @@
     }
     </style>
 
-                  <table class="table table-responsive table-striped w-100 mb-0" id="departments-based">
+                  <table class="table table-responsive table-bordered table-striped w-100 mb-0" id="departments-based">
                     <thead>
                       <tr>
 <th scope="col">
@@ -34,24 +34,24 @@
 
                     {% for data in dept_data %}
                       <tr class="d_datas datas" data-url="{% url 'department-detailed' data.department_id %}">
-                        <th class="no-center col-7">{{ data.department_name }}</th>
+                        <th class="no-center col-4">{{ data.department_name }}</th>
                         <td class="col-1">{{ data.projects_count }}</td>
                         <td class="col-1">{{ data.new_projects }}</td>
                         <td class="col-1">{{ data.projects_processing }}</td>
                         <td class="col-1">{{ data.projects_finished }}</td>
-                        <td class="col-1">{{ data.total_budget | format_number  }}</td>
-                        <td class="col-1">{{ data.total_spent | format_number }}</td>
+                        <td class="col-2">{{ data.total_budget | format_number  }}</td>
+                        <td class="col-2">{{ data.total_spent | format_number }}</td>
                       </tr>
                     {% endfor %}
                     {% for data in b_data %}
                       <tr class="b_datas datas" data-url="{% url 'blog-detailed' data.blog_id %}">
-                        <th class="no-center col-7" scope="row">{{ data.blog_name }}</th>
+                        <th class="no-center col-4" scope="row">{{ data.blog_name }}</th>
                         <td class="col-1">{{ data.projects_count_blog }}</td>
                         <td class="col-1">{{ data.new_projects_blog }}</td>
                         <td class="col-1">{{ data.projects_processing_blog }}</td>
                         <td class="col-1">{{ data.projects_finished_blog }}</td>
-                        <td class="col-1">{{ data.total_budget_blog | format_number }}</td>
-                        <td class="col-1">{{ data.total_spent_blog | format_number }}</td>
+                        <td class="col-2">{{ data.total_budget_blog | format_number }}</td>
+                        <td class="col-2">{{ data.total_spent_blog | format_number }}</td>
                       </tr>
                     {% endfor %}
                     </tbody>
