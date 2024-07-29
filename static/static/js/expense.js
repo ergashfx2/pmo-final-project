@@ -150,7 +150,7 @@ function redirecting() {
 }
 
 function redirect(e) {
-            window.location.href = e.target.getAttribute('data-url');
+            window.location.href = e.target.parentNode.getAttribute('data-url');
         }
 
 

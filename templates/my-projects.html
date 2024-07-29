@@ -32,13 +32,13 @@
                   <thead>
                     <tr>
                       <th scope="col" class="col-0">№</th>
-                      <th scope="col" class="col-2">Loyiha nomi</th>
+                      <th scope="col" class="col-1">Loyiha nomi</th>
                       <th scope="col" class="col-3">Loyiha haqida</th>
                       <th scope="col" class="col-3">Departamentlar</th>
                       <th scope="col" class="col-1">Summasi</th>
-                      <th scope="col" class="col-2">Hodim</th>
-                      <th scope="col" class="col-3">Holati</th>
-                      <th scope="col" class="col-"></th>
+                      <th scope="col" class="col-1">Hodim</th>
+                      <th scope="col" class="col-2">Holati</th>
+                      <th scope="col" class="col-1"></th>
                     </tr>
                   </thead>
                     <tbody id="projects-body">
@@ -64,7 +64,7 @@
                                 {% endfor %}</a>
                             </td>
 
-                                                                                                         <td class="project-state">
+                                                                                                         <td >
                                 <p>                             <a href="{% url 'my-projects-detail' project.pk %}"
                                                                    style="color: black">{{ project.project_budget | format_number}} </a></p>
                             </td>
@@ -89,40 +89,11 @@
                             </td>
 
                             <td class="project-actions text-end">
-<ul style="list-style: none" class="d-flex flex-column justify-content-end">
-    <li>
-        <a class="btn-sm btn-primary actions-btn-my mb-2 no-datas" href="{% url 'my-projects-detail' project.pk %}">
-            <i class="fas fa-folder"></i>
-        </a>
-    </li>
-    <li>
-        <a class="btn-sm btn-info actions-btn-my no-datas" href="{% url 'update-project' project.pk %}">
-            <i class="fas fa-pencil-alt"></i>
-        </a>
-    </li>
-    <li>
-        <a id="{{ project.pk }}" width="35" height="35" type="button" class="btn-sm btn-danger delete-button" data-toggle="modal" data-target="#myModal">
-            <i class="fas fa-trash no-datas"></i>
-        </a>
-    </li>
-            <div id="myModal" class="modal fade" role="dialog">
-            <div class="modal-dialog">
-
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Chindan ham loyihani o'chirasizmi ?</h4>
-                    </div>
-                    <div class="modal-footer">
-                        <button id="confirm-delete-project" type="button" class="btn btn-primary">Ha</button>
-                        <button id="cancel-delete-project" type="button" class="btn btn-danger" data-dismiss="modal">Bekor qilish
-                        </button>
-                    </div>
-                </div>
-
-            </div>
-            </div>
-</ul>
-
+                                <div class="btn-group-sm" style="padding: 10%" role="group">
+  <a href="{% url 'my-projects-detail' project.pk %}" type="button" class="btn-sm btn-primary"><i class="fa-regular fa-folder"></i>Batafsil</a>
+  <a type="button" class="btn-sm btn-info mt-1" href="{% url 'update-project' project.pk %}"><i class="fa-regular fa-pen-to-square"></i>Tahrirlash</a>
+  <a type="button" class="btn-sm btn-danger mt-1"><i class="fa-regular fa-trash-can"></i> O'chirish</a>
+                                </div>
                             </td>
                         </tr>
                     {% endfor %}
