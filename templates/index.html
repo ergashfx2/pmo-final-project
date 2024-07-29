@@ -11,11 +11,11 @@
                 <div class="row justify-content-center">
                 <div class="row">
                                     <div class="col-lg-4 col-md-12 col-sm-12">
-                                <div class="small-box bg-info">
+                                <div class="small-box" style="background-color: #0066cc">
               <div class="inner">
                 <h3>{{ projects_count }}<sup style="font-size: 20px"></sup></h3>
 
-                <p>Loyihalar soni</p>
+                <p style="font-size: 20px">Loyihalar soni</p>
               </div>
               <div class="icon">
                 <i class="ion ion-stats-bars"></i>
@@ -26,11 +26,11 @@
             </div>
                 </div>
                                     <div class="col-lg-4 col-md-12 col-sm-12">
-                     <div class="small-box bg-warning">
+                     <div class="small-box" style="background-color: #ff6600">
               <div class="inner">
                 <h3>{{ projects_process }}<sup style="font-size: 20px"></sup></h3>
 
-                <p>Jarayonda</p>
+                <p style="font-size: 20px">Jarayonda</p>
               </div>
               <div class="icon">
                 <i class="ion ion-stats-bars"></i>
@@ -41,11 +41,11 @@
             </div>
           </div>
                                     <div class="col-lg-4 col-md-12 col-sm-12">
-              <div class="small-box bg-success">
+              <div class="small-box" style="background-color: #339933">
               <div class="inner">
                 <h3>{{ project_done }}<sup style="font-size: 20px"></sup></h3>
 
-                <p>Tugatilgan</p>
+                <p style="font-size: 20px">Tugatilgan</p>
               </div>
               <div class="icon">
                 <i class="ion ion-stats-bars"></i>
@@ -76,7 +76,7 @@
                                 <h3 class="box-title mb-0">Barcha loyihalar</h3>
                             </div>
                             <div class="table-responsive">
-                                <table class="table no-wrap">
+                                <table id="table-index-projects" class="table no-wrap">
                                     <thead>
                                         <tr>
                                             <th class="border-top-0">#</th>
@@ -103,8 +103,6 @@
                         </div>
                     </div>
                 </div>
-        </div>
-        </div>
         </div>
 
 <script src="{% static 'plugins/bower_components/jquery/dist/jquery.min.js' %}"></script>

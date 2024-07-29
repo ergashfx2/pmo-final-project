@@ -54,51 +54,51 @@
         </div>
       </div>
       </div>
-        <div class="sidebar">
-            <nav>
-                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
-                    data-accordion="false">
-                    {% if user.role == 'Admin' %}
-                        <li class="nav-item" style="margin-top: 0">
-                            <a href="{% url 'hodimlar:users' %}" class="nav-link">
-                                <i class="fa-solid fa-users" style="color: #fafafa;margin-right: 2%"></i>
-                                <p>Foydalanuvchilar</p>
-                            </a>
-                        </li>
-                    {% endif %}
-                    <li class="nav-item">
-                        <a href="{% url 'all-projects' %}" class="nav-link">
-                            <i class="fa-solid fa-file-invoice" style="color: #fafafa;margin-right: 2%"></i>
-                            <p>Barcha loyihalar</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{% url 'my-projects' %}" class="nav-link">
-                            <i class="fa-solid fa-file-contract" style="color: #fafafa;margin-right: 2%"></i>
-                            <p>Mening loyihalarim</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{% url 'owned-projects' %}" class="nav-link">
-                            <i class="fa-solid fa-briefcase" style="color: #fafafa;margin-right: 2%"></i>
-                            <p>Loyiha egasi</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{% url 'qualification' %}" class="nav-link">
-                            <i class="fa-solid fa-square-poll-vertical" style="color: #fafafa;margin-right: 2%"></i>
-                            <p>Kvalifikatsiya</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{% url 'spending' %}" class="nav-link">
-                            <i class="fa-solid fa-building-columns" style="color: #fafafa;margin-right: 2%"></i>
-                            <p>Xarajatlar</p>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
+<div class="sidebar">
+    <nav>
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+            {% if user.role == 'Admin' %}
+                <li class="nav-item">
+                    <a href="{% url 'hodimlar:users' %}" class="nav-link">
+                        <i class="fa-solid fa-users" style="color: #fafafa; margin-right: 10px;"></i>
+                        <p>Foydalanuvchilar</p>
+                    </a>
+                </li>
+            {% endif %}
+            <li class="nav-item">
+                <a href="{% url 'all-projects' %}" class="nav-link">
+                    <i class="fa-solid fa-file-invoice" style="color: #fafafa; margin-right: 10px;"></i>
+                    <p>Barcha loyihalar</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'my-projects' %}" class="nav-link">
+                    <i class="fa-solid fa-file-contract" style="color: #fafafa; margin-right: 10px;"></i>
+                    <p>Mening loyihalarim</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'owned-projects' %}" class="nav-link">
+                    <i class="fa-solid fa-briefcase" style="color: #fafafa; margin-right: 10px;"></i>
+                    <p>Loyiha egasi</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'qualification' %}" class="nav-link">
+                    <i class="fa-solid fa-square-poll-vertical" style="color: #fafafa; margin-right: 10px;"></i>
+                    <p>Kvalifikatsiya</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'spending' %}" class="nav-link">
+                    <i class="fa-solid fa-building-columns" style="color: #fafafa; margin-right: 10px;"></i>
+                    <p>Xarajatlar</p>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
     </aside>
     <div class="content-wrapper">
         {% block content %}

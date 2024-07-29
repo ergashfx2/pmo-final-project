@@ -2,119 +2,112 @@
 {% load static %}
 
 {% block content %}
-    <div class="col-12">
-                <div class="card mt-2">
-              <div class="card-header">
-                                  <div class="card-tools">
-                      <div class="input-group mb-3">
-  <div class="input-group-prepend">
-      <input id="search-users" type="text" placeholder="Qidirish..." class="form-control">
-<i class="btn btn-default fa-solid fa-magnifying-glass"></i>
-  </div>
-                                <a href="{% url 'hodimlar:create-user' %}" class="btn btn-primary ml-2">Yaratish</a>
-</div>
-
-                </div>
-              </div>
-              <div class="card-body p-0">
-                <table class="table table-striped">
-                  <thead>
-                        <tr class="no-url">
-                            <th scope="col" class="no-center">№</th>
-                            <th scope="col" class="no-center">FIO</th>
-                            <th scope="col" class="no-center">STATUS</th>
-                            <th scope="col" class="no-center">ROLI</th>
-                            <th scope="col" class="no-center">RAQAMI</th>
-                        </tr>
-                  </thead>
-                  <tbody id="users_list_body">
-                                          {% with num=0 %}
-                            {% for user in object_list %}
-                                <tr class="no-url">
-                                    <td class="no-center">{{ forloop.counter }}</td>
-                                    <td class="no-center"><a href="{% url 'hodimlar:profile2' user.id %}"
-                                                             style="color:#000;">{{ user.get_full_name }}</a></td>
-                                    <td class="no-center">
-                                        {% if user.status == 'Active' %}
-                                            <i class="fa-solid fa-circle" data-toggle="tooltip" data-placement="top" title="Tooltip on top" style="color: green; margin-left: 10%;"></i>
-                                        {% else %}
-                                            <i class="fa-solid fa-circle" style="color: red; margin-left: 10%;"></i>
-                                        {% endif %}
-                                    </td>
-                                    <td class="no-center">{{ user.role }}</td>
-                                    <td class="no-center">{{ user.phone }}</td>
-                                    <td class="no-center"><i user_id="{{ user.pk }}" data-toggle="modal" data-target="#action" action="delete-user" class="btn user-tools fa-solid text-danger fa-trash" data-toggle="tooltip" data-placement="top" title="O'chirish"></i>                                        {% if user.status == 'Active' %}
-                                            <i user_id="{{ user.pk }}" data-toggle="modal" data-target="#action" action="block" class="fa-solid user-tools btn fa-lock" data-toggle="tooltip" data-placement="top" title="Bloklash"></i>
-                                        {% else %}
-                                           <i user_id="{{ user.pk }}" data-toggle="modal" data-target="#action" action="unblock" class="fa-solid user-tools btn fa-unlock" data-toggle="tooltip" data-placement="top" title="Blokdan ochish"></i>
-                                        {% endif %}</td>
-                                </tr>
-                            {% endfor %}
-                        {% endwith %}
-                  </tbody>
-                </table>
-              </div>
-                                <div id="action"
-                     class="modal fade"
-                     tabindex="-1" role="dialog"
-                     aria-hidden="true">
-                    <div class="modal-dialog modal-sm modal-dialog-centered"
-                         role="document">
-                        <div class="modal-content">
-                            <div class="modal-body text-center">
-                                <i class="fa-solid fa-triangle-exclamation btn-lg" style="font-size: 5dvh"></i>
-                                <h4>Chindan tasdiqlaysizmi ?</h4></div>
-                            <div class="d-flex justify-content-center mb-2">
-                                <button id="confirm-action-users" class="btn btn-danger mr-2"> Tasdiqlash
-                                </button>
-                                <button id="cancel-action" class="btn btn-secondary" data-dismiss="modal">Bekor qilish</button>
-                                <br>
-                            </div>
-                        </div>
-
+    <link rel="stylesheet" href="{% static 'static/css/users.css' %}">
+<div class="col-12">
+    <div class="card mt-2">
+        <div class="card-header">
+            <div class="card-tools">
+                <div class="input-group mb-3">
+                    <input id="search-users" type="text" placeholder="Qidirish..." class="form-control">
+                    <div class="input-group-append">
+                        <button class="btn btn-default"><i class="fa-solid fa-magnifying-glass"></i></button>
                     </div>
+                    <a href="{% url 'hodimlar:create-user' %}" class="btn btn-primary ml-2">Yaratish</a>
                 </div>
-                <div class="card-footer clearfix">
-    <ul class="pagination pagination-sm m-0 float-right">
-        {% if page_obj.has_previous %}
-            <li class="page-item">
-                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">&laquo; Previous</a>
-            </li>
-            {% if page_obj.number > 3 %}
+            </div>
+        </div>
+        <div class="card-body p-0">
+            <table class="table table-striped user-table">
+                <thead>
+                    <tr>
+                        <th scope="col">№</th>
+                        <th scope="col">FIO</th>
+                        <th scope="col">STATUS</th>
+                        <th scope="col">ROLI</th>
+                        <th scope="col">RAQAMI</th>
+                        <th scope="col">ACTIONS</th>
+                    </tr>
+                </thead>
+                <tbody id="users_list_body">
+                    {% for user in object_list %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td><a href="{% url 'hodimlar:profile2' user.id %}" class="user-link">{{ user.get_full_name }}</a></td>
+                        <td class="text-center">
+                            {% if user.status == 'Active' %}
+                            <span class="status-indicator active"></span>
+                            {% else %}
+                            <span class="status-indicator inactive"></span>
+                            {% endif %}
+                        </td>
+                        <td>{{ user.role }}</td>
+                        <td>{{ user.phone }}</td>
+                        <td class="text-center">
+                            <i user_id="{{ user.pk }}" class="btn user-tools fa-solid fa-trash text-danger" data-toggle="modal" data-target="#action" action="delete-user" title="O'chirish"></i>
+                            {% if user.status == 'Active' %}
+                            <i user_id="{{ user.pk }}" class="btn user-tools fa-solid fa-lock" data-toggle="modal" data-target="#action" action="block" title="Bloklash"></i>
+                            {% else %}
+                            <i user_id="{{ user.pk }}" class="btn user-tools fa-solid fa-unlock" data-toggle="modal" data-target="#action" action="unblock" title="Blokdan ochish"></i>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer clearfix">
+            <ul class="pagination pagination-sm m-0 float-right">
+                {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}">&laquo; Previous</a>
+                </li>
+                {% if page_obj.number > 3 %}
                 <li class="page-item"><a class="page-link" href="?page=1">1</a></li>
                 {% if page_obj.number > 4 %}
-                    <li class="page-item"><span class="page-link">...</span></li>
+                <li class="page-item"><span class="page-link">...</span></li>
                 {% endif %}
-            {% endif %}
-        {% endif %}
+                {% endif %}
+                {% endif %}
 
-        {% for num in page_obj.paginator.page_range %}
-            {% if page_obj.number == num %}
+                {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
                 <li class="page-item active">
                     <a class="page-link" href="?page={{ num }}">{{ num }}</a>
                 </li>
-            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'7' %}
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
                 <li class="page-item">
                     <a class="page-link" href="?page={{ num }}">{{ num }}</a>
                 </li>
-            {% endif %}
-        {% endfor %}
+                {% endif %}
+                {% endfor %}
 
-        {% if page_obj.has_next %}
-            {% if page_obj.number < page_obj.paginator.num_pages|add:'-3' %}
+                {% if page_obj.has_next %}
+                {% if page_obj.number < page_obj.paginator.num_pages|add:'-3' %}
                 <li class="page-item"><span class="page-link">...</span></li>
                 <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a></li>
-            {% elif page_obj.number < page_obj.paginator.num_pages|add:'-6' %}
-                <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a></li>
-            {% endif %}
-            <li class="page-item">
-                <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next &raquo;</a>
-            </li>
-        {% endif %}
-    </ul>
+                {% endif %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next &raquo;</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
 </div>
+<div id="action" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+                <i class="fa-solid fa-triangle-exclamation btn-lg" style="font-size: 5dvh"></i>
+                <h4>Chindan tasdiqlaysizmi ?</h4>
             </div>
-                </div>
-    <script src="{% static 'static/js/script.js' %}"></script>
-    <script src="{% static 'static/js/user.js' %}"></script>
+            <div class="d-flex justify-content-center mb-2">
+                <button id="confirm-action-users" class="btn btn-danger mr-2">Tasdiqlash</button>
+                <button id="cancel-action" class="btn btn-secondary" data-dismiss="modal">Bekor qilish</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="{% static 'static/js/script.js' %}"></script>
+<script src="{% static 'static/js/user.js' %}"></script>
 {% endblock content %}
