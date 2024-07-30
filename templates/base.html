@@ -45,12 +45,12 @@
             <span class="brand-text font-weight-light">PMO system</span>
         </a>
         <div class="sidebar">
-      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+      <div class="user-panel pb-3  d-flex">
         <div class="image">
-          <img src="{{ user.avatar.url }}" class="img-circle elevation-2" alt="User Image">
+          <img src="{{ user.avatar.url }}" style="width: 25px;height: 25px;border-radius: 50%" alt="User Image">
         </div>
         <div class="info">
-          <a href="{% url 'hodimlar:profile' %}" class="d-block">{{ user.last_name }}</a>
+          <a style="font-size: 18px" href="{% url 'hodimlar:profile' %}" class="d-block">{{ user.last_name }}</a>
         </div>
       </div>
       </div>
@@ -60,38 +60,38 @@
             {% if user.role == 'Admin' %}
                 <li class="nav-item">
                     <a href="{% url 'hodimlar:users' %}" class="nav-link">
-                        <i class="fa-solid fa-users" style="color: #fafafa; margin-right: 10px;"></i>
+                       <i class="fa-solid fa-user-group"></i>
                         <p>Foydalanuvchilar</p>
                     </a>
                 </li>
             {% endif %}
             <li class="nav-item">
                 <a href="{% url 'all-projects' %}" class="nav-link">
-                    <i class="fa-solid fa-file-invoice" style="color: #fafafa; margin-right: 10px;"></i>
+                   <i class="fas fa-folder-open"></i>
                     <p>Barcha loyihalar</p>
                 </a>
             </li>
             <li class="nav-item">
                 <a href="{% url 'my-projects' %}" class="nav-link">
-                    <i class="fa-solid fa-file-contract" style="color: #fafafa; margin-right: 10px;"></i>
+                    <i class="fas fa-folder"></i>
                     <p>Mening loyihalarim</p>
                 </a>
             </li>
             <li class="nav-item">
                 <a href="{% url 'owned-projects' %}" class="nav-link">
-                    <i class="fa-solid fa-briefcase" style="color: #fafafa; margin-right: 10px;"></i>
+                    <i class="fa-solid fa-user-large"></i>
                     <p>Loyiha egasi</p>
                 </a>
             </li>
             <li class="nav-item">
                 <a href="{% url 'qualification' %}" class="nav-link">
-                    <i class="fa-solid fa-square-poll-vertical" style="color: #fafafa; margin-right: 10px;"></i>
+                    <i class="fas fa-check-circle"></i>
                     <p>Kvalifikatsiya</p>
                 </a>
             </li>
             <li class="nav-item">
                 <a href="{% url 'spending' %}" class="nav-link">
-                    <i class="fa-solid fa-building-columns" style="color: #fafafa; margin-right: 10px;"></i>
+                    <i class="fa-solid fa-coins"></i>
                     <p>Xarajatlar</p>
                 </a>
             </li>

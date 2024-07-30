@@ -6,13 +6,15 @@
 <div class="col-12">
     <div class="card mt-2">
         <div class="card-header">
-            <div class="card-tools">
+            <div class="card-tools w-100">
                 <div class="input-group mb-3">
                     <input id="search-users" type="text" placeholder="Qidirish..." class="form-control">
                     <div class="input-group-append">
                         <button class="btn btn-default"><i class="fa-solid fa-magnifying-glass"></i></button>
+                                            <a href="{% url 'hodimlar:create-user' %}" class="btn-sm btn-primary form-control ml-2">Yaratish</a>
                     </div>
-                    <a href="{% url 'hodimlar:create-user' %}" class="btn btn-primary ml-2">Yaratish</a>
+                                        <div class="input-group-append">
+                    </div>
                 </div>
             </div>
         </div>
@@ -21,11 +23,11 @@
                 <thead>
                     <tr>
                         <th scope="col">№</th>
-                        <th scope="col">FIO</th>
+                        <th scope="col" class="col-4">FIO</th>
                         <th scope="col">STATUS</th>
                         <th scope="col">ROLI</th>
                         <th scope="col">RAQAMI</th>
-                        <th scope="col">ACTIONS</th>
+                        <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody id="users_list_body">
@@ -33,7 +35,7 @@
                     <tr>
                         <td>{{ forloop.counter }}</td>
                         <td><a href="{% url 'hodimlar:profile2' user.id %}" class="user-link">{{ user.get_full_name }}</a></td>
-                        <td class="text-center">
+                        <td>
                             {% if user.status == 'Active' %}
                             <span class="status-indicator active"></span>
                             {% else %}
@@ -43,11 +45,11 @@
                         <td>{{ user.role }}</td>
                         <td>{{ user.phone }}</td>
                         <td class="text-center">
-                            <i user_id="{{ user.pk }}" class="btn user-tools fa-solid fa-trash text-danger" data-toggle="modal" data-target="#action" action="delete-user" title="O'chirish"></i>
+                            <i user_id="{{ user.pk }}" class="btn user-tools fa-regular fa-trash-can" data-toggle="modal" data-target="#action" action="delete-user" title="O'chirish"></i>
                             {% if user.status == 'Active' %}
-                            <i user_id="{{ user.pk }}" class="btn user-tools fa-solid fa-lock" data-toggle="modal" data-target="#action" action="block" title="Bloklash"></i>
+                                <i user_id="{{ user.pk }}" class="btn user-tools fa-solid fa-unlock" style="color:orange;" data-toggle="modal" data-target="#action" action="block" title="Bloklash"></i>
                             {% else %}
-                            <i user_id="{{ user.pk }}" class="btn user-tools fa-solid fa-unlock" data-toggle="modal" data-target="#action" action="unblock" title="Blokdan ochish"></i>
+                                                            <i user_id="{{ user.pk }}" class="btn user-tools fa-solid fa-lock" style="color: red" data-toggle="modal" data-target="#action" action="unblock" title="Blokdan ochish"></i>
                             {% endif %}
                         </td>
                     </tr>

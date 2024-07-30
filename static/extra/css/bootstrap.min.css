@@ -5269,7 +5269,6 @@ input[type="button"].btn-block {
   display: inline-block;
   padding: 0.25em 0.4em;
   font-size: 75%;
-  font-weight: 700;
   line-height: 1;
   text-align: center;
   white-space: nowrap;
@@ -6025,7 +6024,7 @@ a.badge-dark:focus, a.badge-dark.focus {
   line-height: 1;
   color: #000;
   text-shadow: 0 1px 0 #fff;
-  opacity: .5;
+  opacity: 1!important;
 }
 
 .close:hover {

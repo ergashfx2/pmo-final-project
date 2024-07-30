@@ -3,6 +3,7 @@ import json
 from django.contrib.auth.decorators import login_required
 from django.contrib.sites import requests
 from django.core import serializers
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import JsonResponse, HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
@@ -32,8 +33,24 @@ def spending(request):
 def detailedExpenses(request, pk):
     project = Project.objects.get(pk=pk)
     expenses = Expense.objects.filter(project_id=pk)
-    expenses_serialized = serializers.serialize('json',expenses)
-    return render(request, 'expenses-detailed.html', {'project': project, 'expenses': expenses,'serialized_expenses':expenses_serialized})
+    expenses_paginated = paginate_expenses(request, expenses)
+    expenses_serialized = serializers.serialize('json', expenses)
+    return render(request, 'expenses-detailed.html',
+                  {'project': project, 'expenses': expenses_paginated, 'serialized_expenses': expenses_serialized})
+
+
+def paginate_expenses(request, expenses, items_per_page=10):
+    paginator = Paginator(expenses, items_per_page)
+    page_number = request.GET.get('page')
+
+    try:
+        expenses_page = paginator.get_page(page_number)
+    except PageNotAnInteger:
+        expenses_page = paginator.page(10)
+    except EmptyPage:
+        expenses_page = paginator.page(paginator.num_pages)
+
+    return expenses_page
 
 
 @login_required
@@ -43,25 +60,32 @@ def add_expense(request, pk):
         data = json.loads(data)
         project = Project.objects.get(pk=pk)
         file = request.FILES.get('file')
-        q = str(data['amount']).replace(' ','')
+        q = str(data['amount']).replace(' ', '')
         if data['currency'] == 'usd':
             quantity = float(q) * float(currency_rate)
             project.project_spent_money = float(project.project_spent_money) + quantity
             project.save()
             expense = Expense.objects.create(project_id=pk, description=data['expense'], quantity=str(quantity),
-                                         date=data['date'],document=file)
+                                             date=data['date'], document=file)
 
-            Action.objects.create(author_id=request.user.pk, project_id=project.pk,action=f"{project.project_name} loyihasiga <strong>{expense.quantity}</strong> so'mlik miqdordagi xarajat qo'shdi")
+            Action.objects.create(author_id=request.user.pk, project_id=project.pk,
+                                  action=f"{project.project_name} loyihasiga <strong>{expense.quantity}</strong> so'mlik miqdordagi xarajat qo'shdi")
             return JsonResponse({'id': expense.id, 'spent_money': Project.objects.get(pk=pk).project_spent_money,
-                             'total_money': project.project_budget,'quantity':float(quantity),'file': file.name if file is not  None else None})
+                                 'total_money': project.project_budget, 'quantity': float(quantity),
+                                 'file': file.name if file is not None else None})
         else:
-            project.project_spent_money = float(project.project_spent_money) + float(str(data['amount']).replace(' ', ''))
+            project.project_spent_money = float(project.project_spent_money) + float(
+                str(data['amount']).replace(' ', ''))
             project.save()
-            expense = Expense.objects.create(project_id=pk, description=data['expense'], quantity=str(data['amount']).replace(' ',''),
-                                         date=data['date'],document=file)
-            Action.objects.create(author_id=request.user.pk, project_id=project.pk,action=f"{project.project_name} loyihasiga <strong>{expense.quantity}</strong> so'mlik miqdordagi xarajat qo'shdi")
+            expense = Expense.objects.create(project_id=pk, description=data['expense'],
+                                             quantity=str(data['amount']).replace(' ', ''),
+                                             date=data['date'], document=file)
+            Action.objects.create(author_id=request.user.pk, project_id=project.pk,
+                                  action=f"{project.project_name} loyihasiga <strong>{expense.quantity}</strong> so'mlik miqdordagi xarajat qo'shdi")
             return JsonResponse({'id': expense.id, 'spent_money': Project.objects.get(pk=pk).project_spent_money,
-                             'total_money': project.project_budget,'quantity':str(data['amount']).replace(' ',''),'file': file.name if file is not  None else None})
+                                 'total_money': project.project_budget,
+                                 'quantity': str(data['amount']).replace(' ', ''),
+                                 'file': file.name if file is not None else None})
 
 
 @login_required
@@ -84,7 +108,7 @@ def updateBudget(request, pk):
     if request.method == 'POST':
         project = Project.objects.get(pk=pk)
         data = json.loads(request.body)
-        budget = str(data['data']).replace(" ","")
+        budget = str(data['data']).replace(" ", "")
         project.project_budget = int(project.project_budget) + int(budget)
         project.save()
         Action.objects.create(author_id=request.user.pk, project_id=project.pk,
@@ -100,7 +124,7 @@ def decreaseBudget(request, pk):
     if request.method == 'POST':
         project = Project.objects.get(pk=pk)
         data = json.loads(request.body)
-        budget = str(data['data']).replace(" ","")
+        budget = str(data['data']).replace(" ", "")
         project.project_budget = int(project.project_budget) - int(budget)
         project.save()
         Action.objects.create(author_id=request.user.pk, project_id=project.pk,
@@ -109,6 +133,7 @@ def decreaseBudget(request, pk):
                             data={'succuss': True,
                                   'spent_money': Project.objects.get(pk=project.pk).project_spent_money,
                                   'total_money': project.project_budget})
+
 
 @login_required
 def deleteAll(request, pk):
@@ -126,9 +151,9 @@ def deleteAll(request, pk):
 
 
 @login_required
-def get_phases(request,pk):
+def get_phases(request, pk):
     phases = Phase.objects.filter(pk=pk)
-    return JsonResponse(status=200,data=serializers.serialize('json',phases))
+    return JsonResponse(status=200, data=serializers.serialize('json', phases))
 
 
 @login_required

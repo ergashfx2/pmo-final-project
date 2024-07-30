@@ -102,14 +102,22 @@ function formatNumber(val) {
 
 var e_id
 
+
+
 function add_listeners() {
     var delete_expense_modal = document.getElementById('delete-expense-btn');
-
     document.querySelectorAll('.delete-expense').forEach(value => {
+
         value.addEventListener('click', detect_eid)
     })
     var delete_expense_btn = document.getElementById('confirm-delete-expense-btn');
     delete_expense_btn.addEventListener('click', delete_expense)
+}
+
+try {
+    add_listeners()
+}catch (e){
+
 }
 
 function detect_eid(e) {
@@ -138,6 +146,7 @@ function delete_expense(e) {
 }
 
 function redirecting() {
+    console.log('workinh redirect')
     const tbody = document.getElementById('projects-body');
     const datas = document.querySelectorAll('.datas');
     datas.forEach((value, index) => {
@@ -344,49 +353,6 @@ function downloadFile_expense(e) {
         });
 }
 
-function search() {
-    document.querySelectorAll('.search').forEach(value => {
-        console.log('Working')
-        let expenses_all = []
-        let expenses_filtered = []
-        const ProxyArr = (arr, fn) => new Proxy(arr, {
-            get: (arr, key) => arr[key],
-            set: (arr, key, val) => fn(arr[key] = val, key, arr) || 1
-        });
-        let handler = (arr) => {
-            document.getElementById('expenses-body').querySelectorAll('tr').forEach(tr => {
-                tr.querySelectorAll('td').forEach(td => {
-                    let search = document.getElementById('search-expense')
-                    if (td.id === 'expense_name' && !td.textContent.toLowerCase().trim().startsWith(search.value.toLowerCase())) {
-                        tr.style.display = 'none'
-                    }
-                })
-            })
-        };
-        let proxy = ProxyArr(expenses_filtered, handler);
-        let body = document.getElementById('expenses-body')
-        value.addEventListener('input', function (e) {
-            console.log('working')
-            if (e.target.value.length === 0) {
-                document.getElementById('expenses-body').querySelectorAll('tr').forEach(value => value.style.display = 'table-row')
-
-            }
-            for (const expense in expenses_list) {
-                let expense_arr = expenses_list[expense].fields
-                expenses_all.push(expense_arr)
-                if (expense_arr.description.toLowerCase().startsWith(e.target.value.toLowerCase())) {
-                    proxy.push(expense_arr)
-                }
-            }
-        })
-    })
-}
-
-try {
-    search()
-} catch (e) {
-
-}
 
 function return_bg_color(status){
     let colors = {'Yangi':"bg-light","Jarayonda":'bg-warning','Tugatilgan':"bg-success"}
@@ -423,10 +389,12 @@ function search_project() {
                     new_cloned_tr.children.item(6).children.item(2).innerText = `${project.project_status}`;
                 if (window.location.href.includes('my-projects')) {
                     console.log('working')
-                    new_cloned_tr.children.item(7).children.item(0).children.item(0).children.item(0).href = `/projects/my-projects/detail/${project.project_id}`;
-                    new_cloned_tr.children.item(7).children.item(0).children.item(1).children.item(0).href = `/projects/my-projects/edit/${project.project_id}`;
-                    console.log(new_cloned_tr.children.item(7).children.item(0).children.item(2).children.item(0).id = project.project_id);
+                    new_cloned_tr.children.item(7).children.item(0).children.item(0).href = `detail/${project.project_id}`;
+                    new_cloned_tr.children.item(7).children.item(0).children.item(1).href = `edit/${project.project_id}`;
+                    new_cloned_tr.removeAttribute('data-url')
+                    new_cloned_tr.setAttribute('data-url',`/detail/${project.project_id}`)
                 }
+                                redirecting()
                 tbody.appendChild(new_cloned_tr);
             });
         };
@@ -443,7 +411,7 @@ function search_project() {
 
         input.addEventListener('input', (e) => {
             projects_filtered.length = 0;
-
+            console.log('searching')
             if (e.target.value.length === 0) {
                 document.getElementById('projects-body').innerHTML = initial_tbody;
             } else {
@@ -511,3 +479,85 @@ try {
 } catch (e) {
 
 }
+
+function search_expense(){
+    document.querySelectorAll('.search-expense-input').forEach(value => {
+                const expense_filtered = [];
+
+        const initial_tbody = document.getElementById('expenses-body').innerHTML;
+        const table = document.getElementById('expenses-body');
+        const cloned_tr = table.children.item(1).cloneNode(true);
+        const updateTable = () => {
+            const tbody = document.getElementById('expenses-body');
+            tbody.innerHTML = '';
+
+            expense_filtered.forEach((expense, index) => {
+                const new_cloned_tr = cloned_tr.cloneNode(true);
+                new_cloned_tr.children.item(0).innerText = expense['fields'].description;
+                new_cloned_tr.children.item(1).innerText = expense['fields'].quantity;
+                new_cloned_tr.children.item(2).innerText = expense['fields'].date;
+                new_cloned_tr.children.item(3).innerText = expense['fields'].document;
+                new_cloned_tr.children.item(4).children.item(0).id = expense.pk;
+                tbody.appendChild(new_cloned_tr);
+                add_listeners()
+            });
+        };
+
+        const proxyHandler = {
+            set(target, key, value) {
+                target[key] = value;
+                updateTable();
+                return true;
+            }
+        };
+
+        const proxy = new Proxy(expense_filtered, proxyHandler);
+
+        value.addEventListener('input', (e) => {
+            expense_filtered.length = 0;
+            console.log('searching')
+            if (e.target.value.length === 0) {
+                document.getElementById('expenses-body').innerHTML = initial_tbody;
+            } else {
+                expenses_list.forEach(expense => {
+                    const expenseData = expense.fields;
+                    if (expenseData.description.toLowerCase().includes(e.target.value.toLowerCase())) {
+                        proxy.push(expense);
+                    }
+                });
+            }
+        });
+        value.addEventListener('input',function (e){
+        })
+    })
+}
+
+try {
+    search_project()
+}catch (e){
+
+}
+
+
+function search_projects_spendings(){
+    console.log('working')
+    document.getElementById('search-spendings-projects').addEventListener('input',function (e){
+        let table_body = document.getElementById('spendings_table_body')
+        filter_search_input(table_body.children.length,table_body,e.target.value)
+
+    })
+}
+
+
+function filter_search_input(children_length,table_body,input){
+            for (let i = 0; i < children_length; i++) {
+            if (!table_body.children.item(i).children.item(1).innerText.toLowerCase().includes(input.toLowerCase())){
+               table_body.children.item(i).style.display = 'none'
+            }else {
+                table_body.children.item(i).style.display = 'table-row'
+            }
+
+        }
+}
+
+search_projects_spendings()

@@ -2,116 +2,109 @@
 {% load static %}
 {% load filters %}
 {% block content %}
-    <link href="{% static 'plugins/bower_components/chartist/dist/chartist.min.css' %}" rel="stylesheet">
+<link href="{% static 'plugins/bower_components/chartist/dist/chartist.min.css' %}" rel="stylesheet">
 <link rel="stylesheet" href="{% static 'plugins/bower_components/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.css' %}">
 
-<link href="{% static 'css/style.min.css' %}" rel="stylesheet">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="card mt-3">
-                            <div class="card-body">
-                                <h4 class="card-title">Jami budget</h4>
-                                <div class="text-end">
-                                    <h2 class="font-light mb-0"><i class="ti-arrow-up text-success"></i>{{ total_budget | format_number }}</h2>
-                                    <span class="text-muted">So'm</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="card mt-3">
-                            <div class="card-body">
-                                <h4 class="card-title">Jami sarflangan pul</h4>
-                                <div class="text-end">
-                                    <h2 class="font-light mb-0"><i class="ti-arrow-up text-info"></i>{{ spent_budget | format_number }}</h2>
-                                    <span class="text-muted">So'm</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                </div>
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <h4 class="card-title">Xarajatlar diagrammasi</h4>
-                            <div id="ct-visits" style="height: 405px;">
-                                <div class="chartist-tooltip" style="top: -17px; left: -12px;"><span
-                                        class="chartist-tooltip-value">6</span>
-                                </div>
-                            </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="overflow-auto card-header bg-white"
-  style="width: 100%; height: 600px;">
-                                        <div class="card-tools" style="margin-right: 0.02%;width: 26%">
-                  <div class="input-group input-group-sm" style="width: 99.2%;">
-                    <input type="text" name="table_search" class="form-control float-right" placeholder="Qidirish">
 
-                    <div class="input-group-append">
-                       <i class="btn btn-default fa-solid fa-magnifying-glass"></i>
-                    </div>
-                  </div>
+<div class="container-fluid">
+<div class="row ml-2 mr-3">
+                                    <div class="col-lg-6 col-md-12 col-sm-12">
+                     <div class="small-box" style="background-color: #007bff">
+              <div class="inner">
+                <h3>{{ total_budget | format_number }}<sup style="font-size: 20px"></sup></h3>
+
+                <p style="font-size: 20px">Jami budget</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-stats-bars"></i>
+              </div>
+              <a href="/projects/all/" class="small-box-footer">
+                Batafsil <i class="fas fa-arrow-circle-right"></i>
+              </a>
+            </div>
+          </div>
+                                    <div class="col-lg-6 col-md-12 col-sm-12">
+              <div class="small-box" style="background-color: #28a745">
+              <div class="inner">
+                <h3>{{ spent_budget | format_number }}<sup style="font-size: 20px"></sup></h3>
+
+                <p style="font-size: 20px">Sarflangan budget</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-stats-bars"></i>
+              </div>
+              <a href="/projects/all/" class="small-box-footer">
+                Batafsil <i class="fas fa-arrow-circle-right"></i>
+              </a>
+            </div>
+          </div>
                 </div>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table stylish-table no-wrap">
-                                        <thead>
-                                            <tr>
-                                                <th class="border-top-0" colspan="2">Loyihalar</th>
-                                                <th class="border-top-0">Egasi</th>
-                                                <th class="border-top-0">Jami xarajatlar</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                        {% for project in projects %}
-                                            <tr data-url="{% url 'get-project' project.pk %}">
-                                                <td style="width:50px;"><span class="round">P</span></td>
-                                                <td class="no-center">
-                                                    <a href="{% url 'detailed-expanses' project.pk %}"><h6>{{ project.project_name }}</h6><small class="text-muted">{{ project.project_description }}</small></a>
-                                                </td>
-                                                <td class="align-middle">{% for author in project.author.all %}{{ author.get_full_name }},{% endfor %}</td>
-                                                <td class="align-middle">{{ project.project_spent_money | format_number }}</td>
-                                            </tr>
-                                        {% endfor %}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card ml-4 mr-4">
+                <div class="card-body">
+                    <h4 class="card-title">Xarajatlar diagrammasi</h4>
+                    <div id="ct-visits" style="height: 405px;">
+                        <div class="chartist-tooltip" style="top: -17px; left: -12px;">
+                            <span class="chartist-tooltip-value">6</span>
                         </div>
                     </div>
                 </div>
-    <script src="{% static 'plugins/bower_components/jquery/dist/jquery.min.js' %}"></script>
-
+            </div>
+        </div>
+    </div>
+    <div class="row mr-2">
+        <div class="col-sm-12">
+            <div class="card-header bg-white overflow-auto" style="width: 100%; height: 600px;">
+                <div class="card-tools" style="margin-right: 0.02%; width: 26%">
+                    <div class="input-group input-group-sm" style="width: 99.2%;">
+                        <input id="search-spendings-projects" type="text" name="table_search" class="form-control float-right search-expense-input" placeholder="Qidirish">
+                        <div class="input-group-append">
+                            <i class="btn btn-default fa-solid fa-magnifying-glass"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body table-responsive" style="width: 103%;margin-left: -1%">
+                    <table class="table table-bordered table-striped border border-top-1">
+                        <thead>
+                        <tr>
+                            <th>Loyiha nomi</th>
+                            <th>Loyiha egasi</th>
+                            <th>Jami xarajatlar</th>
+                        </tr>
+                        </thead>
+                        <tbody id="spendings_table_body">
+                        {% for project in projects %}
+                            <tr class="datas" data-url="{% url 'detailed-expanses' project.pk %}">
+                            <td>{{ project.project_name }}</td>
+                            <td>
+                                                                {% for author in project.author.all %}
+                            {{ author.get_full_name }},
+                                    {% endfor %}
+                            </td>
+                            <td>{{ project.project_spent_money | format_number }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <script src="{% static 'static/js/expense.js' %}"></script>
+<script src="{% static 'plugins/bower_components/jquery/dist/jquery.min.js' %}"></script>
 <script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-
-
 <script src="{% static 'js/app-style-switcher.js' %}"></script>
-
-
 <script src="{% static 'plugins/bower_components/jquery-sparkline/jquery.sparkline.min.js' %}"></script>
-
-
 <script src="{% static 'js/waves.js' %}"></script>
-
-
 <script src="{% static 'js/sidebarmenu.js' %}"></script>
-
-
 <script src="{% static 'js/custom.js' %}"></script>
-
 <script>
-    window.total = {{ expenses | safe }};
-
+    var total = {{ expenses | safe }};
 </script>
 <script src="{% static 'plugins/bower_components/chartist/dist/chartist.min.js' %}"></script>
 <script src="{% static 'plugins/bower_components/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js' %}"></script>
 <script src="{% static 'js/pages/dashboards/dashboard1.js' %}"></script>
-
 {% endblock content %}

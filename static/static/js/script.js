@@ -1183,16 +1183,19 @@ function formatNumber(val) {
 }
 
 function add_listeners() {
+    console.log('working listeners')
     var delete_expense_modal = document.getElementById('delete-expense-btn');
     var e_id
     document.querySelectorAll('.delete-expense').forEach(value => {
         value.addEventListener('click', function () {
             e_id = value.id
+            console.log('working')
 
         })
     })
     var delete_expense_btn = document.getElementById('confirm-delete-expense-btn');
     delete_expense_btn.addEventListener('click', function () {
+        console.log('licked')
         fetch(`delete-expense/${e_id}}`).then(res => {
             var child = document.getElementById(e_id);
             if (child) {

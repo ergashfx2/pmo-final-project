@@ -4785,7 +4785,7 @@ input[type="button"].btn-block {
     color: #000;
     text-decoration: none; }
   .close:not(:disabled):not(.disabled):hover, .close:not(:disabled):not(.disabled):focus {
-    opacity: .75; }
+    opacity: 1; }
 
 button.close {
   padding: 0;

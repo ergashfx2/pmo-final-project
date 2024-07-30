@@ -10,7 +10,7 @@
                     <div class="card card-primary card-outline">
                         <div class="card-body box-profile">
                             <div class="text-center">
-                                <img class="profile-user-img img-fluid img-circle"
+                                <img style="width: 100px;height: 100px;border-radius: 50%"
                                      src="{{ user.avatar.url }}"
                                      alt="User profile picture">
                             </div>
@@ -27,9 +27,8 @@
                                     <b>Ro'li</b> <a class="float-right">{{ user.role }}</a>
                                 </li>
                             </ul>
-
-                            <a href="{% url 'hodimlar:update-user' user.pk %}" class="btn btn-primary btn-block"><b>Yangilash</b></a>
                         </div>
+                                                    <a href="{% url 'hodimlar:update-user' user.pk %}" class="btn btn-primary btn-block"><b>Yangilash</b></a>
                     </div>
                     <div class="card card-primary">
                         <div class="card-header">

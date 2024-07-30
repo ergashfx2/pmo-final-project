@@ -1,9 +1,9 @@
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: 'Roboto', sans-serif;
 }
 
 .col-12 {
-    max-width: 1200px;
+    max-width: 100%;
     margin: 0 auto;
 }
 
@@ -86,7 +86,6 @@ body {
     width: 12px;
     height: 12px;
     border-radius: 50%;
-    margin-left: 10%;
 }
 
 .status-indicator.active {

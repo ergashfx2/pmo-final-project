@@ -2,251 +2,240 @@
 {% load static %}
 {% load filters %}
 {% block content %}
+    <link rel="stylesheet" href="{% static 'static/css/expense.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
-<div class="bg-white">
-    <div class="w-100 h-100 mt-3 row">
-                <div class="col-lg-12 col-sm-12 col-md-12 col-lg-8 border">
-                <div class="row mt-3 p-3">
-                    <div class="col-lg-3 col-md-12 col-sm-12">
-                        <div class="card bg-light text-center" style="box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;">
-                            <div class="card-header"><h5 class="text-secondary">Loyiha budgeti</h5>
-                                <span id="totalBudget">{{ project.project_budget | format_number }}</span></div>
-                        </div>
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="card text-center shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        Loyiha budgeti
                     </div>
-                    <div class="col-lg-3 col-md-12 col-sm-12">
-                        <div class="card bg-light " style="box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;">
-                            <div class="card-header text-center"><h5 class="text-secondary">Jami xarajatlar</h5>
-                                <span
-                            id="totalExpenses">{{ project.project_spent_money | format_number }}</span></div>
-                        </div>
-                    </div>
-                                  <div class="col-lg-3 col-md-12 col-sm-12">
-                        <div class="card bg-light " style="box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;">
-                            <div class="card-header text-center"><h5 class="text-secondary">Qolgan budget</h5>
-                                <span
-                            id="budgetLeft">{% multiple_args_tag project.project_budget project.project_spent_money %}</span></div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-12 col-sm-12">
-                        <div class="card bg-light" style="box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;">
-                            <div class="card-header text-center"><h5 class="text-secondary">Tugash sanasi</h5>
-                                <span>{{ project.project_deadline | format_date }}</span></div>
-
-                        </div>
-                    </div>
-                                        <div style="z-index: 1000;position: absolute;height: fit-content" id="expanse-container" class="add-expense-container box card mt-4">
-                                                                    <div class="row">
-                                                                        <div class="col-11"></div>
-                                                                        <div class="col-1 d-flex justify-content-end"><i type="button" id="cancel-expense" class="fa-solid fa-x"></i></div>
-                                                                    </div>
-                                    <div class="add-budget-container" style="height: fit-content">
-                    <h4 class="text-secondary">Qo'shimcha budjet</h4>
-                    <form>
-                        <div class="form-group">
-                            <label for="budget">Summa:</label>
-                            <input class="form-control {{ project.pk }}" type="text" id="budget">
-                        </div>
-                        <div class="btn-group w-100" role="group">
-                        <button class="btn btn-primary" data-toggle="modal"
-                                       data-target="#expanding-budget-btn" type="button">Qo'shish
-                        </button>
-                                         <button data-toggle="modal"
-                                       data-target="#decreasing-budget-btn" class="btn btn-danger" type="button">Kamaytirish
-                        </button>
-                        </div>
-                    </form>
-                        <h4 class="text-secondary mt-3">Xarajat qo'shish</h4>
-                        <form id="add-expense" method="post" class="{{ project.pk }}"
-                          action="{% url 'add-expense' project.pk %}">
-
-                        {% csrf_token %}
-                        <div class="form-group">
-                            <label for="expense">Qisqacha:</label>
-                            <input name="expense" class="form-control" type="text" id="expense">
-                        </div>
-                        <div class="form-group">
-                            <label for="amount">Summasi:</label>
-                            <input name="amount" class="form-control" type="text" id="amount">
-                        </div>
-                        <div class="form-group">
-                            <label for="amount">Sanasi:</label>
-                            <input name="date" class="form-control" type="date" id="date">
-                        </div>
-                        <div class="form-group">
-                            <input class="currency" checked type="radio" id="uzs" name="currency" value="uzs">
-                            <label for="uzs">UZS</label>
-
-                            <input class="ml-4 currency" type="radio" id="usd" name="currency" value="usd">
-                            <label for="usd">USD</label>
-                        </div>
-                            <div class="form-group">
-                            <label for="file">Fayl:</label>
-                            <input name="file" type="file" id="file">
-                        </div>
-                            <button data-toggle="modal"
-                                       data-target="#add-expense-btn" type="button" class="btn btn-primary form-control">Qo'shish
-                            </button>
-                                        <button data-toggle="modal" data-target="#delete-all-btn" class="btn btn-danger form-control mt-2">Barchasini o'chirish
-                </button>
-                    </form>
-                </div>
-                </div>
-                </div>
-                
-                <div class="row">
-
-                    <div class="col-lg-1 col-md-2 col-sm-2 d-flex justify-content-start">
-                        <button id="expense-menu-toggle" class="btn btn-primary ml-2" style="font-size: 120%"><i class="fa-solid fa-receipt"></i> Yaratish</button>
-                    </div>
-                    <div class="col-lg-9 col-md-3 col-sm-3 position-relative h-100">
-                        <i class="fa-solid fa-magnifying-glass text-center d-inline"></i>
-                        <input id="search-expense" class="search d-inline border-0 form-control" placeholder="Qidirish....." type="text">
-                    </div>
-                    <div class="row">
-                        <div class="col-3 column-canvas"></div>
-                        <div></div>
-                        <div class="col-3 column-canvas"></div>
-                    </div>
-                <div id="delete-all-btn"
-                     class="modal fade"
-                     tabindex="-1" role="dialog"
-                     aria-hidden="true">
-                    <div class="modal-dialog modal-sm modal-dialog-centered"
-                         role="document">
-                        <div class="modal-content">
-                            <div class="modal-body text-center">
-                                <i class="fa-solid fa-triangle-exclamation btn-lg" style="font-size: 5dvh"></i>
-                                <h4>Chindan o'chirasizmi ?</h4></div>
-                            <div class="d-flex justify-content-center mb-2">
-                                <button id="reset-all" project_id="{{ project.pk }}" class="btn btn-danger mr-2"><i
-                                        class="fa-solid fa-trash-can"></i> O'chirish
-                                </button>
-                                <button class="btn btn-secondary" data-dismiss="modal">Bekor qilish</button>
-                                <br>
-                            </div>
-                        </div>
-
+                    <div class="card-body">
+                        <h5 class="card-title">{{ project.project_budget | format_number }}</h5>
                     </div>
                 </div>
-
             </div>
-                    <table id="expenses-list-table" class="table mt-2" style="z-index: -1">
-                        <thead>
-                        <tr>
-                            <th scope="col">Xarajat nomi</th>
-                            <th scope="col">Summasi</th>
-                            <th scope="col">Sana</th>
-                            <th scope="col" class="col-1">document</th>
-                            <th scope="col">#</th>
-                        </tr>
-                        </thead>
-                        <tbody id="expenses-body">
-                        {% for expense in expenses %}
-                            <tr>
-                                <td id="expense_name">{{ expense.description }}</td>
-                                <td>{{ expense.quantity | format_number }}</td>
-                                <td>{{ expense.date |  date:"d-m-Y" }}</td>
-                                <td class="text-center">{% if expense.document %} <i type="button" expense_id="{{ expense.pk }}" style="font-size: 150%" class="fa-solid fa-{{ expense.document | get_extension }} expense_files"></i> {% else %}  {% endif %}
-                                <td><i style="color: red;cursor: pointer" data-toggle="modal"
-                                       data-target="#delete-expense-btn" id="{{ expense.id }}"
-                                       class="fa-regular delete-expense fa-trash-can"></i></td>
-                            </tr>
-                            <div id="delete-expense-btn"
-                                 class="modal fade"
-                                 tabindex="-1" role="dialog"
-                                 aria-hidden="true">
-                                <div class="modal-dialog modal-sm modal-dialog-centered"
-                                     role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-body text-center">
-                                            <i class="fa-solid fa-triangle-exclamation btn-lg"
-                                               style="font-size: 5dvh"></i>
-                                            <h4>Chindan o'chirasizmi ?</h4></div>
-                                        <div class="d-flex justify-content-center mb-2">
-                                            <button id="confirm-delete-expense-btn" class="btn btn-danger mr-2"><i
-                                                    class="fa-solid fa-trash-can"></i> O'chirish
-                                            </button>
-                                            <button id="cancel-expense-btn" class="btn btn-secondary" data-dismiss="modal">Bekor qilish</button>
-                                            <br>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        {% endfor %}
-                        </tbody>
-                    </table>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="card text-center shadow-sm">
+                    <div class="card-header bg-warning text-white">
+                        Jami xarajatlar
+                    </div>
+                    <div class="card-body">
+                        <h5 id="totalExpenses" class="card-title">{{ project.project_spent_money | format_number }}</h5>
+                    </div>
                 </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="card text-center shadow-sm">
+                    <div class="card-header bg-success text-white">
+                        Qolgan budget
+                    </div>
+                    <div class="card-body">
+                        <h5 id="budgetLeft"
+                            class="card-title">{% multiple_args_tag project.project_budget project.project_spent_money %}</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="card text-center shadow-sm">
+                    <div class="card-header bg-danger text-white">
+                        Tugash sanasi
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ project.project_deadline | format_date }}</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="z-index: 1000;position: absolute;height: fit-content" id="expanse-container"
+             class="add-expense-container container box card mt-4">
+            <div class="row">
+                <div class="col-11"></div>
+                <div class="col-1 d-flex justify-content-end"><i type="button" id="cancel-expense"
+                                                                 class="fa-solid fa-x"></i></div>
+            </div>
+            <div class="add-budget-container" style="height: fit-content">
+                <h4 class="text-secondary">Qo'shimcha budjet</h4>
+                <form>
+                    <div class="form-group">
+                        <label for="budget">Summa:</label>
+                        <input class="form-control {{ project.pk }}" type="text" id="budget">
+                    </div>
+                    <div class="btn-group w-100" role="group">
+                        <button class="btn btn-primary" data-toggle="modal"
+                                data-target="#expanding-budget-btn" type="button">Qo'shish
+                        </button>
+                        <button data-toggle="modal"
+                                data-target="#decreasing-budget-btn" class="btn btn-danger" type="button">Kamaytirish
+                        </button>
+                    </div>
+                </form>
+                <h4 class="text-secondary mt-3">Xarajat qo'shish</h4>
+                <form id="add-expense" method="post" class="{{ project.pk }}"
+                      action="{% url 'add-expense' project.pk %}">
+
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="expense">Qisqacha:</label>
+                        <input name="expense" class="form-control" type="text" id="expense">
+                    </div>
+                    <div class="form-group">
+                        <label for="amount">Summasi:</label>
+                        <input name="amount" class="form-control" type="text" id="amount">
+                    </div>
+                    <div class="form-group">
+                        <label for="amount">Sanasi:</label>
+                        <input name="date" class="form-control" type="date" id="date">
+                    </div>
+                    <div class="form-group">
+                        <input class="currency" checked type="radio" id="uzs" name="currency" value="uzs">
+                        <label for="uzs">UZS</label>
+
+                        <input class="ml-4 currency" type="radio" id="usd" name="currency" value="usd">
+                        <label for="usd">USD</label>
+                    </div>
+                    <div class="form-group">
+                        <label for="file">Fayl:</label>
+                        <input name="file" type="file" id="file">
+                    </div>
+                    <button data-toggle="modal"
+                            data-target="#add-expense-btn" type="button" class="btn btn-primary form-control">Qo'shish
+                    </button>
+                    <button data-toggle="modal" data-target="#delete-all-btn" class="btn btn-danger form-control mt-2">
+                        Barchasini o'chirish
+                    </button>
+                </form>
+            </div>
+        </div>
+
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <button id="expense-menu-toggle" class="btn btn-primary"><i class="fa-solid fa-receipt"></i> Yaratish
+            </button>
+            <div class="input-group w-50">
+                <input id="search-expense" type="text" class="form-control search-expense-input" placeholder="Qidirish.....">
+                <div class="input-group-append">
+                    <span class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></span>
+                </div>
+            </div>
+        </div>
+
+        <table id="expenses-list-table" class="table table-hover">
+            <thead>
+            <tr>
+                <th>Xarajat nomi</th>
+                <th>Summasi</th>
+                <th>Sana</th>
+                <th class="text-center">Document</th>
+                <th class="text-center">#</th>
+            </tr>
+            </thead>
+            <tbody id="expenses-body">
+            {% for expense in expenses %}
+                <tr>
+                    <td>{{ expense.description }}</td>
+                    <td>{{ expense.quantity | format_number }}</td>
+                    <td>{{ expense.date | date:"d-m-Y" }}</td>
+                    <td class="text-center">
+                        {% if expense.document %}
+                            <i class="fa-solid fa-file-alt" style="font-size: 1.5rem;"></i>
+                        {% endif %}
+                    </td>
+                    <td class="text-center">
+                        <i class="fa-regular fa-trash-can text-danger delete-expense" data-toggle="modal"
+                           data-target="#delete-expense-btn" id="{{ expense.id }}" style="cursor: pointer;"></i>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+                    <div class="card-footer clearfix">
+                    <ul class="pagination pagination-sm m-0 float-right">
+                        {% if expenses.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ expenses.previous_page_number }}">&laquo; Oldingi</a>
+                            </li>
+                            {% if expenses.number > 3 %}
+                                <li class="page-item"><a class="page-link" href="?page=1">1</a></li>
+                                {% if expenses.number > 4 %}
+                                    <li class="page-item"><span class="page-link">...</span></li>
+                                {% endif %}
+                            {% endif %}
+                        {% endif %}
+
+                        {% for num in expenses.paginator.page_range %}
+                            {% if expenses.number == num %}
+                                <li class="page-item active">
+                                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                                </li>
+                            {% elif num > expenses.number|add:'-3' and num < expenses.number|add:'3' %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if expenses.has_next %}
+                            {% if expenses.number < expenses.paginator.num_pages|add:'-2' %}
+                                {% if expenses.number < expenses.paginator.num_pages|add:'-3' %}
+                                    <li class="page-item"><span class="page-link">...</span></li>
+                                {% endif %}
+                                <li class="page-item"><a class="page-link" href="?page={{ expenses.paginator.num_pages }}">{{ expenses.paginator.num_pages }}</a></li>
+                            {% endif %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ expenses.next_page_number }}">Keyingi &raquo;</a>
+                            </li>
+                        {% endif %}
+                    </ul>
                 </div>
     </div>
 
-    <div id="add-expense-btn"
-                                 class="modal fade"
-                                 tabindex="-1" role="dialog"
-                                 aria-hidden="true">
-                                <div class="modal-dialog modal-sm modal-dialog-centered"
-                                     role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-body text-center">
-                                            <i class="fa-solid fa-triangle-exclamation btn-lg"
-                                               style="font-size: 5dvh"></i>
-                                            <h4>Tasdiqlaysizmi ?</h4></div>
-                                        <div class="d-flex justify-content-center mb-2">
-                                            <button id="add-expense-button" class="btn btn-danger mr-2"><i class="fa-solid fa-square-check"></i> Tasdiqlash
-                                            </button>
-                                            <button id="add-expense-cancel" class="btn btn-secondary" data-dismiss="modal">Bekor qilish</button>
-                                            <br>
-                                        </div>
-                                    </div>
 
-                                </div>
-                            </div>
-        <div id="expanding-budget-btn"
-                                 class="modal fade"
-                                 tabindex="-1" role="dialog"
-                                 aria-hidden="true">
-                                <div class="modal-dialog modal-sm modal-dialog-centered"
-                                     role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-body text-center">
-                                            <i class="fa-solid fa-triangle-exclamation btn-lg"
-                                               style="font-size: 5dvh"></i>
-                                            <h4>Tasdiqlaysizmi ?</h4></div>
-                                        <div class="d-flex justify-content-center mb-2">
-                                            <button id="budget-expand-btn" class="btn btn-danger mr-2"><i class="fa-solid fa-square-check"></i> Qo'shish
-                                            </button>
-                                            <button id="budget-expand-cancel" class="btn btn-secondary" data-dismiss="modal">Bekor qilish</button>
-                                            <br>
-                                        </div>
-                                    </div>
+    <div class="modal fade" id="add-expense-btn" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    <i class="fa-solid fa-triangle-exclamation fa-3x text-danger mb-3"></i>
+                    <h4>Tasdiqlaysizmi ?</h4>
+                    <div class="d-flex justify-content-center mt-3">
+                        <button id="add-expense-button" class="btn btn-danger mr-2"><i
+                                class="fa-solid fa-square-check"></i> Tasdiqlash
+                        </button>
+                        <button id="add-expense-cancel" class="btn btn-secondary" data-dismiss="modal">Bekor qilish
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-                                </div>
-                            </div>
-        <div id="decreasing-budget-btn"
-                                 class="modal fade"
-                                 tabindex="-1" role="dialog"
-                                 aria-hidden="true">
-                                <div class="modal-dialog modal-sm modal-dialog-centered"
-                                     role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-body text-center">
-                                            <i class="fa-solid fa-triangle-exclamation btn-lg"
-                                               style="font-size: 5dvh"></i>
-                                            <h4>Chindan kamaytirasizmi ?</h4></div>
-                                        <div class="d-flex justify-content-center mb-2">
-                                            <button id="budget-decrease-btn" class="btn bg-green mr-2"><i class="fa-solid fa-square-check"></i> Tasdiqlash
-                                            </button>
-                                            <button id="budget-decrease-cancel" class="btn btn-secondary" data-dismiss="modal">Bekor qilish</button>
-                                            <br>
-                                        </div>
-                                    </div>
 
-                                </div>
-                            </div>
+    <div class="modal fade" id="delete-expense-btn" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    <i class="fa-solid fa-triangle-exclamation fa-3x text-danger mb-3"></i>
+                    <h4>Chindan o'chirasizmi ?</h4>
+                    <div class="d-flex justify-content-center mt-3">
+                        <button id="confirm-delete-expense-btn" class="btn btn-danger mr-2"><i
+                                class="fa-solid fa-trash-can"></i> O'chirish
+                        </button>
+                        <button id="cancel-expense-btn" class="btn btn-secondary" data-dismiss="modal">Bekor qilish
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
     <script src="{% static 'static/js/expense.js' %}"></script>
     <script>
-        var expenses_list = {{ serialized_expenses | safe }}
+        var expenses_list = {{ serialized_expenses | safe }};
+    </script>
+    <script>
+        console.log(expenses_list)
     </script>
 {% endblock content %}

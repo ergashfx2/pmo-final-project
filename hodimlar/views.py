@@ -1,5 +1,5 @@
 import json
-
+from loyihalar.views import get_user_projects
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib.auth.decorators import login_required
@@ -121,11 +121,10 @@ def unblock_user(request, pk):
 @login_required
 def delete_user(request, pk):
     user = User.objects.get(pk=pk)
-    try:
-        if hasattr(user, 'profile'):
-            user.profile.delete()
-    except Exception as e:
-        print(e)
+    projects = get_user_projects(user)
+    for project in projects:
+        project.delete()
+    user.delete()
     return JsonResponse(status=200,data={'success':True})
 
 @login_required

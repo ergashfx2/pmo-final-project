@@ -32,7 +32,7 @@ urlpatterns = [
     path('my-projects/detail/delete-files/', delete_files, name='delete-files'),
     path('my-projects/detail/update-task-percentage/<pk>', update_task_percentage, name='update-task-percentage'),
     path('my-projects/create/', CreateProject, name='create-project'),
-    path('<pk>', get_project, name='get-project'),
+    path('<pk>/', get_project, name='get-project'),
     path('download-file/<pk>', download_file, name='download-file'),
     path('create-archive/<pk>', create_archive, name='create-archive'),
 ]
