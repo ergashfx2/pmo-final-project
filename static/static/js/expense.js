@@ -1,3 +1,9 @@
+document.querySelectorAll("input").forEach(value => {
+    value.addEventListener('input',function (){
+        redirecting()
+    })
+})
+
 function getCookie(name) {
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {
@@ -560,4 +566,8 @@ function filter_search_input(children_length,table_body,input){
         }
 }
 
-search_projects_spendings()
+try {
+    search_projects_spendings()
+}catch (e){
+
+}

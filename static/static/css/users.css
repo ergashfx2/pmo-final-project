@@ -57,29 +57,7 @@ body {
     background-color: #0056b3;
 }
 
-.table-striped {
-    width: 100%;
-    border-collapse: collapse;
-}
 
-.table-striped th, .table-striped td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-}
-
-.table-striped thead {
-    background-color: #f9f9f9;
-    font-weight: bold;
-}
-
-.table-striped tbody tr:nth-child(odd) {
-    background-color: #f9f9f9;
-}
-
-.table-striped tbody tr:hover {
-    background-color: #f1f1f1;
-}
 
 .status-indicator {
     display: inline-block;

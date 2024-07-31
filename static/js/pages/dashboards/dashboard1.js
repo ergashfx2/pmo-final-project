@@ -10,9 +10,21 @@ $(function () {
         low: 0,
         showPoint: true,
         fullWidth: true,
+        chartPadding: {
+            right: 40
+        },
         plugins: [
             Chartist.plugins.tooltip()
         ],
+        axisX: {
+            labelOffset: {
+                x: -10,
+                y: 0
+            },
+            labelInterpolationFnc: function(value, index) {
+                return value;
+            }
+        },
         axisY: {
             labelInterpolationFnc: function (value) {
                 return (value / 1) + 'M';

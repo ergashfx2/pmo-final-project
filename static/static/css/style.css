@@ -20,11 +20,30 @@ body {
 
 .ct-label {
     font-size: 14px !important;
+    margin-top: 10%;
+
 }
+
+.small-box {
+    padding: 3%;
+}
+
+.small-box-footer {
+    width: 95%;
+    margin-left: 1.6%;
+}
+
 
 .ct-horizontal {
     font-size: 20px;
+    text-anchor: middle!important;
 }
+
+.ct-label.ct-horizontal {
+    transform: translateX(-5%);
+    margin-top: 4%;
+}
+
 
 #table-index-projects th,td {
     font-size: 18px;
@@ -37,6 +56,11 @@ body {
 
 .nav-sidebar .nav-item {
     margin: 0;
+}
+
+
+.expenses-table thead tr {
+  font-size: 1.25rem;
 }
 
     .offcanvas-collapse {
@@ -58,6 +82,10 @@ body {
 
 p input {
     margin-right: 10px;
+}
+
+.box-title {
+    margin-bottom: 1%;
 }
 
 .offcanvas-body table p {
@@ -123,9 +151,9 @@ p input {
     }
 
     .card-title {
-        margin-bottom: 0;
         font-size: 1.25rem;
         font-weight: 400;
+        margin-bottom: 2%;
     }
 
     .btn-sm {
@@ -821,4 +849,5 @@ a:hover {
     width: 100%;
     z-index: 1000;
 }
+
 

@@ -78,7 +78,11 @@ function download_all() {
     })
 }
 
-download_all()
+try {
+    download_all()
+}catch (e){
+
+}
 
 function redirecting() {
     const tbody = document.getElementById('projects-body');
@@ -125,7 +129,10 @@ function edit_phase(){
     })
 }
 
-edit_phase()
+try {
+    edit_phase()
+}catch (e){}
+
 
 function delete_phase(){
     document.querySelectorAll('.delete-phase-btn').forEach(value => {
@@ -146,7 +153,11 @@ function delete_phase(){
     })
 }
 
-delete_phase()
+try {
+    delete_phase()
+}catch (e){
+
+}
 
 function delete_files() {
 
@@ -221,8 +232,11 @@ function delete_files() {
     });
 }
 
+try {
+    delete_files()
+}catch (e){
 
-delete_files()
+}
 var delFiles = []
 
 function listen_del_files(e) {
@@ -302,8 +316,11 @@ function document_listener() {
     })
 }
 
+try {
+    document_listener()
+}catch (e){
 
-document_listener()
+}
 
 function document_change_listener(event) {
     let form = event.target.parentNode.parentNode
@@ -445,8 +462,11 @@ function phase_adder() {
     });
 }
 
+try {
+    phase_adder()
+}catch (e){
 
-phase_adder()
+}
 
 
 function delete_comment() {
@@ -476,7 +496,11 @@ function delete_comment() {
     })
 }
 
-delete_comment()
+try {
+    delete_comment()
+}catch (e){
+
+}
 
 function delete_problem() {
     let problem_id
@@ -505,7 +529,11 @@ function delete_problem() {
     })
 }
 
-delete_problem()
+try {
+    delete_problem()
+}catch (e){
+
+}
 
 function click_tr_handler(event) {
     const value = event.currentTarget;
@@ -557,7 +585,10 @@ function click_tr_handler(event) {
     })
 }
 
-initTaskManager()
+try {
+    initTaskManager()
+}catch (e){}
+
 
 function initPhaseActions() {
     let phaseId = null;
@@ -838,7 +869,10 @@ function phasesManager() {
     })
 }
 
-phasesManager()
+try {
+    phasesManager()
+}catch (e){}
+
 
 function action_manager() {
     document.querySelectorAll('.actions-btn').forEach(value => {
@@ -846,7 +880,9 @@ function action_manager() {
     })
 }
 
-action_manager()
+try {
+    action_manager()
+}catch (e){}
 
 function actions_btn(e) {
     let btn = e.target
@@ -1337,3 +1373,4 @@ function downloadFile(documentId) {
             console.error('There was a problem with the fetch operation:', error);
         });
 }
+
