@@ -71,6 +71,15 @@ class Project(models.Model):
         self.project_done_percentage = str(self.project_done_percentage)
         self.save()
 
+
+    def start_project(self):
+        self.project_status = 'Jarayonda'
+        self.save()
+
+    def finish(self):
+        self.project_status = 'Tugatilgan'
+        self.save()
+
     def __str__(self):
         return self.project_name
 
