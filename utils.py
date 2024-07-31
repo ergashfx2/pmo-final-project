@@ -1,8 +1,6 @@
-from loyihalar.models import Comments, Problems
-from loyihalar.forms import CommentEditForm, ProlemEditForm
-from requests import request
-from django.shortcuts import get_object_or_404
 
+from requests import request
+from hodimlar.models import User
 file_extensions = {
     'ai': 'adobe',
     'avi': 'film',
@@ -43,3 +41,38 @@ file_extensions = {
 
 
 currency_rate = request(url='http://cbu.uz/uz/arkhiv-kursov-valyut/json', method='GET').json()[0]['Rate']
+
+def isAdmin(user):
+    user = User.objects.get(pk=user.pk)
+    if user.role == 'Admin':
+        return True
+    else:
+        return False
+
+def isCurator(user):
+    user = User.objects.get(pk=user.pk)
+    if user.role == 'Loyiha kuratori':
+        return True
+    else:
+        return False
+
+def isManager(user):
+    user = User.objects.get(pk=user.pk)
+    if user.role == 'Loyiha menejeri':
+        return True
+    else:
+        return False
+
+def isProjectOwner(user):
+    user = User.objects.get(pk=user.pk)
+    if user.role == 'Loyiha egasi':
+        return True
+    else:
+        return False
+
+def isSimpleUser(user):
+    user = User.objects.get(pk=user.pk)
+    if user.role == 'Oddiy':
+        return True
+    else:
+        return False

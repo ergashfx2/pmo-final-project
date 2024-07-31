@@ -8,47 +8,52 @@
 <link href="{% static 'css/style.min.css' %}" rel="stylesheet">
         <div class="page-wrapper">
             <div class="container-fluid">
-                <div class="row justify-content-center">
-                    <div class="col-lg-4 col-md-12">
-                        <div class="white-box analytics-info">
-                            <h3 class="box-title">Loyihalar</h3>
-                            <ul class="list-inline two-part d-flex align-items-center mb-0">
-                                <li>
-                                    <div id="sparklinedash"><canvas width="67" height="30"
-                                            style="display: inline-block; width: 67px; height: 30px; vertical-align: top;"></canvas>
-                                    </div>
-                                </li>
-                                <li class="ms-auto"><span class="counter text-success">{{ projects | length }}</span></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-12">
-                        <div class="white-box analytics-info">
-                            <h3 class="box-title">Jarayondagi</h3>
-                            <ul class="list-inline two-part d-flex align-items-center mb-0">
-                                <li>
-                                    <div id="sparklinedash2"><canvas width="67" height="30"
-                                            style="display: inline-block; width: 67px; height: 30px; vertical-align: top;"></canvas>
-                                    </div>
-                                </li>
-                                <li class="ms-auto"><span class="counter text-purple">{{ projects_processing }}</span></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-12">
-                        <div class="white-box analytics-info">
-                            <h3 class="box-title">Tugatilgan</h3>
-                            <ul class="list-inline two-part d-flex align-items-center mb-0">
-                                <li>
-                                    <div id="sparklinedash3"><canvas width="67" height="30"
-                                            style="display: inline-block; width: 67px; height: 30px; vertical-align: top;"></canvas>
-                                    </div>
-                                </li>
-                                <li class="ms-auto"><span class="counter text-info">{{ projects_done  }}</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+               <div class="row">
+                                    <div class="col-lg-4 col-md-12 col-sm-12">
+                                <div class="small-box" style="background-color: #0066cc">
+              <div class="inner">
+                <h3>{{ projects_all }}<sup style="font-size: 20px"></sup></h3>
+
+                <p style="font-size: 20px">Loyihalar soni</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-stats-bars"></i>
+              </div>
+              <a href="{% url 'all-projects' %}" class="small-box-footer">
+                Batasil <i class="fas fa-arrow-circle-right"></i>
+              </a>
+            </div>
+                </div>
+                                    <div class="col-lg-4 col-md-12 col-sm-12">
+                     <div class="small-box" style="background-color: #ff6600">
+              <div class="inner">
+                <h3>{{ projects_processing }}<sup style="font-size: 20px"></sup></h3>
+
+                <p style="font-size: 20px">Jarayonda</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-stats-bars"></i>
+              </div>
+              <a href="{% url 'all-projects' %}" class="small-box-footer">
+                Batafsil <i class="fas fa-arrow-circle-right"></i>
+              </a>
+            </div>
+          </div>
+                                    <div class="col-lg-4 col-md-12 col-sm-12">
+              <div class="small-box" style="background-color: #339933">
+              <div class="inner">
+                <h3>{{ projects_done }}<sup style="font-size: 20px"></sup></h3>
+
+                <p style="font-size: 20px">Tugatilgan</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-stats-bars"></i>
+              </div>
+              <a href="{% url 'all-projects' %}" class="small-box-footer">
+                Batafsil <i class="fas fa-arrow-circle-right"></i>
+              </a>
+            </div>
+          </div>
                 </div>
                 <div class="row">
                     <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
@@ -89,6 +94,45 @@
                                     {% endfor %}
                                     </tbody>
                                 </table>
+                                            <div class="card-footer clearfix">
+                    <ul class="pagination pagination-sm m-0 float-right">
+                        {% if projects.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ projects.previous_page_number }}">&laquo; Oldingi</a>
+                            </li>
+                            {% if projects.number > 3 %}
+                                <li class="page-item"><a class="page-link" href="?page=1">1</a></li>
+                                {% if projects.number > 4 %}
+                                    <li class="page-item"><span class="page-link">...</span></li>
+                                {% endif %}
+                            {% endif %}
+                        {% endif %}
+
+                        {% for num in projects.paginator.page_range %}
+                            {% if projects.number == num %}
+                                <li class="page-item active">
+                                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                                </li>
+                            {% elif num > projects.number|add:'-3' and num < projects.number|add:'3' %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if projects.has_next %}
+                            {% if projects.number < projects.paginator.num_pages|add:'-2' %}
+                                {% if projects.number < projects.paginator.num_pages|add:'-3' %}
+                                    <li class="page-item"><span class="page-link">...</span></li>
+                                {% endif %}
+                                <li class="page-item"><a class="page-link" href="?page={{ projects.paginator.num_pages }}">{{ projects.paginator.num_pages }}</a></li>
+                            {% endif %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ projects.next_page_number }}">Keyingi &raquo;</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
                             </div>
                         </div>
                     </div>

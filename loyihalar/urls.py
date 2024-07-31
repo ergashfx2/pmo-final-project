@@ -1,8 +1,12 @@
 from django.urls import path
-from .views import get_project, all_projects, my_projects, DetailMyProjects, CreateProject, UpdateProject, DeleteProject, \
+from .views import get_project, all_projects, my_projects, DetailMyProjects, CreateProject, UpdateProject, \
+    DeleteProject, \
     add_phase, update_phase, delete_phase, update_task, delete_task, update_task_percentage, delete_files, \
-    owned_projects,create_archive,post_comment,post_problem,edit_comment,edit_problem,delete_comment,delete_problem,add_team_member,remove_team_member,filter_table,get_task,download_file,add_tasks
+    owned_projects, create_archive, post_comment, post_problem, edit_comment, edit_problem, delete_comment, \
+    delete_problem, add_team_member, remove_team_member, filter_table, get_task, download_file, add_tasks, finish_phase
+
 urlpatterns = [
+    path('finish-phase/', finish_phase, name='finish-phase'),
     path('all/', all_projects, name='all-projects'),
     path('all/filter/<str:status>', filter_table, name='filter-table'),
     path('add-team-member/<pk>', add_team_member, name='add-team-member'),

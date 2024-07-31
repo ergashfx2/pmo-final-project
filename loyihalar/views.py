@@ -13,13 +13,14 @@ from zipfile import ZipFile
 
 from actions.models import Action
 from config import settings
+from hodimlar.models import User
 from .forms import CreateProjectForm, EditProjectForm, AddFileForm, AddPhaseForm, AddTaskForm, PermittedProjectsForm, \
     CommentForm
 from .formsets import TaskFormSet
 from .models import Project, Phase, Task, Documents, Comments, Problems, PermittedProjects
 from django.http import HttpResponse, JsonResponse, Http404
 from django.core import serializers
-from utils import file_extensions
+from utils import file_extensions, isProjectOwner
 import shutil
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
@@ -537,3 +538,15 @@ def filter_table(request,status):
     return JsonResponse(status=200,data={'success':True,'projects':projects_serialized_modified})
 
 
+def finish_phase(request,pk):
+    if isProjectOwner(request.user):
+        phase = Phase.objects.get(pk=pk)
+        phase.finish()
+    # return redirect('my-projects-detail', phase.project.pk)
+
+
+def finish_project(request):
+    # phase = Phase.objects.get(pk=pk)
+    user = User.objects.get(pk=request.user.pk)
+    print(user.role)
+    # return redirect('my-projects-detail', phase.project.pk)

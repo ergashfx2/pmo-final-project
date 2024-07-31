@@ -1,19 +1,15 @@
 import json
 from loyihalar.views import get_user_projects
-from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.hashers import make_password
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.core import serializers
-from django.db.models import Q,Count
-from django.http import HttpResponse, JsonResponse
+from django.db.models import Q
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse_lazy, reverse
-from django.views.generic import UpdateView, ListView, CreateView, View
-
-from actions.models import Action
+from django.urls import reverse
+from django.views.generic import UpdateView, ListView
 from loyihalar.models import PermittedProjects, Project
 from .forms import UpdateUserForm, CreateUserForm
 
@@ -26,8 +22,7 @@ User = get_user_model()
 def profileView(request):
     if request.user.is_authenticated:
         user = User.objects.get(username=request.user.username)
-        permitted_projects = PermittedProjects.objects.filter(user=request.user)
-        projects_count = len(Project.objects.filter(Q(author=request.user.pk) | Q(project_curator=request.user.pk)))
+        permitted_projects,projects_count = get_permitted_projects(request)
         return render(request, 'profile.html', {'user': user,'permitted_projects':permitted_projects,'projects_count':projects_count})
 
 
@@ -35,13 +30,19 @@ def profileView(request):
 def profileView2(request,pk):
     if request.user.is_authenticated:
         user = User.objects.get(pk=pk)
-        permitted_projects = PermittedProjects.objects.filter(user=request.user)
-        projects_count = Project.objects.filter(
-            Q(author=pk) |
-            Q(project_curator=pk) |
-            Q(project_team=pk)
-        ).distinct()
-        return render(request, 'profile2.html', {'user': user,'permitted_projects':permitted_projects,'projects_count':len(projects_count)})
+        permitted_projects,projects_count = get_permitted_projects(request)
+        return render(request, 'profile2.html', {'user': user,'permitted_projects':permitted_projects,'projects_count':projects_count})
+
+
+def get_permitted_projects(request):
+    pk = request.user.pk
+    permitted_projects = PermittedProjects.objects.filter(user=request.user)
+    projects_count = Project.objects.filter(
+        Q(author=pk) |
+        Q(project_curator=pk) |
+        Q(project_team=pk)
+    ).distinct().count()
+    return permitted_projects, projects_count
 
 class UsersView(ListView):
     model = User

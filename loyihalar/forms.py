@@ -195,3 +195,5 @@ class PermittedProjectsForm(forms.ModelForm):
         widgets = {
             'user': forms.Select(attrs={'class': 'form-control'})
         }
+
+

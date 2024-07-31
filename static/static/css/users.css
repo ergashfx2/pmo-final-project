@@ -64,10 +64,14 @@ body {
     width: 12px;
     height: 12px;
     border-radius: 50%;
+    margin-left: 34%;
+    margin-right: 16%;
+    margin-top: 20%;
 }
 
 .status-indicator.active {
     background-color: green;
+
 }
 
 .status-indicator.inactive {
