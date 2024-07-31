@@ -90,6 +90,10 @@ class Phase(models.Model):
         self.phase_name = str(self.phase_name)
         self.save()
 
+    def start_phase(self):
+        self.status = 'Jarayonda'
+        self.save()
+
     def finish(self):
         self.status = 'Tugatilgan'
         self.save()
@@ -114,6 +118,10 @@ class Task(models.Model):
 
     def update_task_name(self):
         self.task_name = str(self.task_name)
+        self.save()
+
+    def start_task(self):
+        self.status = 'Jarayonda'
         self.save()
 
     def finish(self):
