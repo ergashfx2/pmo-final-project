@@ -56,6 +56,15 @@ body {
         right: 0;
     }
 
+p input {
+    margin-right: 10px;
+}
+
+.offcanvas-body table p {
+    font-family: 'Roboto', sans-serif;
+    font-size: 18px;
+}
+
     .table {
         width: 100%;
         margin-bottom: 1rem;
@@ -203,6 +212,10 @@ body {
 
 .pagination .page-item {
     margin: 0 2px;
+}
+
+nav i {
+    width: 30px;
 }
 
 .pagination .page-link {

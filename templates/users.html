@@ -11,9 +11,8 @@
                     <input id="search-users" type="text" placeholder="Qidirish..." class="form-control">
                     <div class="input-group-append">
                         <button class="btn btn-default"><i class="fa-solid fa-magnifying-glass"></i></button>
-                                            <a href="{% url 'hodimlar:create-user' %}" class="btn-sm btn-primary form-control ml-2">Yaratish</a>
-                    </div>
-                                        <div class="input-group-append">
+                        <a href="{% url 'hodimlar:create-user' %}" class="btn btn-default bg-primary ml-2">Yaratish</a>
+                        
                     </div>
                 </div>
             </div>
@@ -45,7 +44,7 @@
                         <td>{{ user.role }}</td>
                         <td>{{ user.phone }}</td>
                         <td class="text-center">
-                            <i user_id="{{ user.pk }}" class="btn user-tools fa-regular fa-trash-can" data-toggle="modal" data-target="#action" action="delete-user" title="O'chirish"></i>
+                            <i user_id="{{ user.pk }}" class="btn user-tools fa-regular fa-trash-can" style="color: grey" data-toggle="modal" data-target="#action" action="delete-user" title="O'chirish"></i>
                             {% if user.status == 'Active' %}
                                 <i user_id="{{ user.pk }}" class="btn user-tools fa-solid fa-unlock" style="color:orange;" data-toggle="modal" data-target="#action" action="block" title="Bloklash"></i>
                             {% else %}

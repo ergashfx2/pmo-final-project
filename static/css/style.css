@@ -9805,10 +9805,8 @@ File: scss
     stroke: #4fc3f7;
     stroke-width: 2px; }
   .campaign .ct-series-b .ct-area {
-    fill: #7460ee;
     fill-opacity: 0.1; }
   .campaign .ct-series-b .ct-line, .campaign .ct-series-b .ct-point {
-    stroke: #7460ee;
     stroke-width: 2px; }
   .campaign .ct-series-a .ct-point, .campaign .ct-series-b .ct-point {
     stroke-width: 6px; }

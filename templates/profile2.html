@@ -15,7 +15,7 @@
                                      alt="User profile picture">
                             </div>
 
-                            <h3 class="profile-username text-center">{{ user.first_name }}</h3>
+                            <h3 class="profile-username text-center">{{ user.get_full_name }}</h3>
 
                             <p class="text-muted text-center">{{ user.position }}</p>
 
@@ -27,9 +27,8 @@
                                     <b>Ro'li</b> <a class="float-right">{{ user.role }}</a>
                                 </li>
                             </ul>
-
-                            <a href="{% url 'hodimlar:update-user' user.pk %}" class="btn btn-primary btn-block"><b>Yangilash</b></a>
                         </div>
+                                                <a href="{% url 'hodimlar:update-user' user.pk %}" class="btn btn-primary btn-block"><b>Yangilash</b></a>
                     </div>
                     <div class="card card-primary">
                         <div class="card-header">
