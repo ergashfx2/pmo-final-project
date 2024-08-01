@@ -3,6 +3,7 @@ import json
 import os.path
 import uuid
 
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
@@ -15,12 +16,12 @@ from actions.models import Action
 from config import settings
 from hodimlar.models import User
 from .forms import CreateProjectForm, EditProjectForm, AddFileForm, AddPhaseForm, AddTaskForm, PermittedProjectsForm, \
-    CommentForm
+    CommentForm,ProjectFilesForm
 from .formsets import TaskFormSet
-from .models import Project, Phase, Task, Documents, Comments, Problems, PermittedProjects
+from .models import Project, Phase, Task, Documents, Comments, Problems, PermittedProjects, ProjectFiles
 from django.http import HttpResponse, JsonResponse, Http404
 from django.core import serializers
-from utils import file_extensions, isProjectOwner
+from utils import file_extensions, isProjectOwner, isAdmin
 import shutil
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
@@ -111,6 +112,7 @@ def get_project(request, pk):
             'phase': phase.phase_name,
             'phase_id': phase.pk,
             'phase_done_percentage': int(phase.phase_done_percentage),
+            'status': phase.status,
             'tasks': Task.objects.filter(phase=phase.id),
             'documents': Documents.objects.filter(phase=phase.id),
             'comments': Comments.objects.filter(phase=phase),
@@ -127,6 +129,7 @@ def DetailMyProjects(request, pk):
     form2 = AddPhaseForm()
     form3 = TaskFormSet()
     project = Project.objects.get(pk=pk)
+    add_file_projects_form = ProjectFilesForm()
     datas = []
     comments = Comments.objects.filter(project_id=project.id)
     problems = Problems.objects.filter(project_id=project.id)
@@ -138,6 +141,7 @@ def DetailMyProjects(request, pk):
             'phase': phase.phase_name,
             'phase_id': phase.pk,
             'phase_done_percentage': int(phase.phase_done_percentage),
+            'status': phase.status,
             'tasks': Task.objects.filter(phase=phase.id),
             'documents': Documents.objects.filter(phase=phase.id),
             'comments': Comments.objects.filter(phase=phase),
@@ -179,24 +183,38 @@ def DetailMyProjects(request, pk):
         redirect('my-projects-detail', pk=pk)
 
     documents = Documents.objects.filter(project=project.id).order_by('created_at')
+    p_files = ProjectFiles.objects.filter(project_id=project.id).order_by('created_at')
     return render(request, 'my-projects-detail.html',
                   context={'project': project, 'datas': datas, 'comments': comments, 'problems': problems,
                            'documents': documents, 'form': form, 'form2': form2,
-                           'form3': form3, 'project_id': pk})
+                           'form3': form3, 'project_id': pk,'add_projects_files_form':add_file_projects_form,'p_files':p_files})
 
 
 @login_required
 def download_file(request, pk):
-    document = get_object_or_404(Documents, id=pk)
-    file_path = document.document.path
-    print(document.document.name)
     try:
-        with open(file_path, 'rb') as f:
-            response = HttpResponse(f.read(), content_type="application/octet-stream")
-            response['Content-Disposition'] = f'attachment; filename="{document.document.name}"'
-            return response
-    except FileNotFoundError:
-        raise Http404("Dokument topilmadi")
+        document = get_object_or_404(Documents, id=pk)
+        file_path = document.document.path
+        print(document.document.name)
+        try:
+            with open(file_path, 'rb') as f:
+                response = HttpResponse(f.read(), content_type="application/octet-stream")
+                response['Content-Disposition'] = f'attachment; filename="{document.document.name}"'
+                return response
+        except FileNotFoundError:
+            raise Http404("Dokument topilmadi")
+    except:
+        document = get_object_or_404(ProjectFiles, id=pk)
+        file_path = document.file.path
+        print(document.file.name)
+        try:
+            with open(file_path, 'rb') as f:
+                response = HttpResponse(f.read(), content_type="application/octet-stream")
+                response['Content-Disposition'] = f'attachment; filename="{document.file.name}"'
+                return response
+        except FileNotFoundError:
+            raise Http404("Dokument topilmadi")
+
 
 
 @login_required
@@ -282,7 +300,7 @@ def delete_phase(request, pk):
     Action.objects.create(author_id=request.user.pk, project_id=project.pk,
                           action=f"{project.project_name} nomli loyihadagi <strong>{phase.phase_name}</strong> fazasini o'chirib yubordi")
     phase.delete()
-    return JsonResponse(status=200, data={'status': 'ok'})
+    return redirect('my-projects-detail',phase.project.pk)
 
 
 @login_required
@@ -327,10 +345,6 @@ def update_task_percentage(task, user, phase, percentage, data):
         project_done_percentage += int(phase.phase_done_percentage)
     final_project_percentage = project_done_percentage / len(phases)
     project_obj = Project.objects.get(pk=phase_obj.project.id)
-    if final_project_percentage == '100.0':
-        project_obj.project_status = 'Tugatilgan'
-    else:
-        project_obj.project_status = 'Jarayonda'
     project_obj.project_done_percentage = int(final_project_percentage)
     project_obj.save()
     task = Task.objects.get(pk=task.pk)
@@ -538,11 +552,42 @@ def filter_table(request,status):
     return JsonResponse(status=200,data={'success':True,'projects':projects_serialized_modified})
 
 
+
+def add_project_files(request, pk):
+    if request.method == 'POST':
+        form = ProjectFilesForm(request.POST, request.FILES)
+        if form.is_valid():
+            project = get_object_or_404(Project, pk=pk)
+            project_file = form.save(commit=False)
+            project_file.project = project
+            project_file.author = request.user
+            size = request.FILES.get('file').size * 0.000001
+            project_file.size = size
+            project_file.file_name = request.FILES.get('file')
+            project_file.save()
+            return JsonResponse(status=200, data={'success': True})
+        else:
+            return JsonResponse(status=400, data={'success': False, 'errors': form.errors})
+    return JsonResponse(status=405, data={'error': 'Ruxsat berilmagan'})
+
+
+def start_phase(request,pk):
+    phase = Phase.objects.get(pk=pk)
+    if isProjectOwner(request.user) or isAdmin(request.user):
+        phase.start()
+        return redirect('my-projects-detail', phase.project.pk)
+    else:
+        messages.add_message(request,messages.ERROR,'Sizda bunday ruxsat mavjud emas')
+        return redirect('my-projects-detail', phase.project.pk)
+
 def finish_phase(request,pk):
-    if isProjectOwner(request.user):
+    if isProjectOwner(request.user) or isAdmin(request.user):
         phase = Phase.objects.get(pk=pk)
         phase.finish()
-    # return redirect('my-projects-detail', phase.project.pk)
+        return redirect('my-projects-detail', phase.project.pk)
+    else:
+        messages.add_message(request,messages.ERROR,'Sizda bunday ruxsat mavjud emas')
+        return render(request, 'my-projects-detail.html',{'messages':messages})
 
 
 def finish_project(request):

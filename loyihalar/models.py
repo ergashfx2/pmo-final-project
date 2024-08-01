@@ -99,7 +99,7 @@ class Phase(models.Model):
         self.phase_name = str(self.phase_name)
         self.save()
 
-    def start_phase(self):
+    def start(self):
         self.status = 'Jarayonda'
         self.save()
 
@@ -196,9 +196,11 @@ class PermittedProjects(models.Model):
 
 
 class ProjectFiles(models.Model):
+    id = models.UUIDField(default=uuid.uuid4, editable=False,primary_key=True)
     author = models.ForeignKey(User, models.CASCADE)
     project = models.ForeignKey(Project, models.CASCADE)
     file = models.FileField(upload_to='files/')
+    file_name = models.CharField(max_length=300)
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateField(auto_now=True)
-    size = models.IntegerField(default=0)
+    size = models.FloatField(default=0)

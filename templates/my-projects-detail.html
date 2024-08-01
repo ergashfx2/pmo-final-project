@@ -21,13 +21,13 @@
                     <div class="col-lg-4 col-md-12 col-sm-12">
                         <div class="card bg-light text-center" style="box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;">
                             <div class="card-header"><h5 class="text-secondary">Loyiha budgeti</h5>
-                                <strong>{{ project.project_budget | format_number }}</strong></div>
+                                <strong>{{ project.project_budget | format_number }} UZS</strong></div>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-12 col-sm-12">
                         <div class="card bg-light " style="box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;">
                             <div class="card-header text-center"><h5 class="text-secondary">Sarflangan summa</h5>
-                                <strong>{{ project.project_spent_money | format_number }}</strong></div>
+                                <strong>{{ project.project_spent_money | format_number }} UZS</strong></div>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-12 col-sm-12">
@@ -39,6 +39,13 @@
                     </div>
                     <h4 class="text-secondary bg-light text-bold mt-4 border-top border-bottom p-2"
                         style="width: 100dvw">Ushbu loyihaga tegishli fazalar</h4>
+                                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-danger  alert-dismissible" role="alert">{{ message }}   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span style="color: white" aria-hidden="true">&times;</span>
+  </button></div>
+                        {% endfor %}
+                    {% endif %}
                     <div class="row" style="width: 100dvw;">
                         <div class="col-lg-4 col-md-12 col-sm-12 mt-3">
                             <div class="card">
@@ -46,7 +53,7 @@
                                         class="p-1 badge badge-info">Yangi</span></div>
                                 <div class="card-body">
                                     {% for data in datas %}
-                                        {% if data.phase_done_percentage == 0 %}
+                                        {% if data.status == 'Yangi' %}
                                             <div class="d-block phases-text border-bottom main-row row">
                                                 <h4 phase_id="{{ data.phase_id }}" type="button" data-toggle="modal"
                                                     data-target="#modal{{ data.phase_id }}" data-backdrop="static"
@@ -54,11 +61,39 @@
                                                 <span type="button" class="col-1 btn-group dropright"><i
                                                         class="fa-solid fa-bars" data-toggle="dropdown"
                                                         aria-haspopup="true" aria-expanded="false"></i>
-                                            <div class="dropdown-menu">
-                                                <a phase_id="{{ data.phase_id }}" class="dropdown-item edit-phase-btn" ><i class="fa-solid fa-pen-to-square"></i> O'zgartirish</a>
-                                                <a phase_id="{{ data.phase_id }}" data-toggle="modal" data-target="#phase{{ data.phase_id }}" class="dropdown-item delete-phase-btn"><i class="fa-solid fa-trash"></i> O'chirish</a>
+                                            <div class="dropdown-menu phase-manage-menu">
+                                                <a phase_id="{{ data.phase_id }}"
+                                                   class="dropdown-item edit-phase-btn"><i
+                                                        class="fa-solid fa-pen-to-square"></i> O'zgartirish</a>
+                                                <a phase_id="{{ data.phase_id }}" data-toggle="modal"
+                                                   data-target="#phase{{ data.phase_id }}"
+                                                   class="dropdown-item delete-phase-btn"><i
+                                                        class="fa-solid fa-trash"></i> O'chirish</a>
+                                                                                                <a phase_id="{{ data.phase_id }}" data-toggle="modal"
+                                                   data-target="#start_phase{{ data.phase_id }}"
+                                                   class="dropdown-item start-phase-btn"><i class="fa-solid fa-play"></i> Boshlash</a>
                                             </div>
-                                                                                                                      <div id="phase{{ data.phase_id }}" class="modal fade" role="dialog">
+                                                                                                        <div id="start_phase{{ data.phase_id }}"
+                                                                                                                           class="modal fade"
+                                                                                                                           role="dialog">
+                            <div class="modal-dialog modal-sm">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <i class="fa-solid fa-triangle-exclamation btn-lg" style="font-size: 5dvh"></i>
+                                                                                                    <h4>Chindan boshlasizmi ?</h4>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <a href="{% url 'start-phase' data.phase_id %}" class="btn btn-success">Boshlash</a>
+                                        <button data-dismiss="modal" class="btn btn-secondary">Bekor qilish</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                                                    <div id="phase{{ data.phase_id }}"
+                                                                                                                           class="modal fade"
+                                                                                                                           role="dialog">
                             <div class="modal-dialog modal-sm">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -66,7 +101,7 @@
                                                                                                     <h4>Chindan o'chirasizmi ?</h4>
                                     </div>
                                     <div class="modal-footer">
-                                        <button class="btn btn-danger">O'chirish</button>
+                                        <a href="{% url 'delete-phase' data.phase_id %}" class="btn btn-danger">O'chirish</a>
                                         <button data-dismiss="modal" class="btn btn-secondary">Bekor qilish</button>
                                     </div>
                                 </div>
@@ -315,7 +350,8 @@
                                                                                     style="margin: 0;padding: 0">{{ comment.author }}</b><div
                                                                                     class="d-inline mx-2"></div><p
                                                                                     class="text-secondary text-sm d-inline">{{ comment.created_at | format_date_and_time_difference }}</p></span>
-                                                                                    <small class="time-ago" style="margin: 0;padding:0">{{ comment.created_at | date:'d-m-Y' }}</small>
+                                                                                    <small class="time-ago"
+                                                                                           style="margin: 0;padding:0">{{ comment.created_at | date:'d-m-Y' }}</small>
                                                                                     <div style="margin-top: 1%">{{ comment.problem | safe }}</div>
                                                                                     <form method="post"
                                                                                           style="display: none"
@@ -333,7 +369,8 @@
                                                                                             id="delete_problem_{{ comment.pk }}"
                                                                                             type="button"
                                                                                             class="text-secondary delete-problem-btn mr-3">O'chirish</small>
-                                                                                        <small class="time-ago" id="edit_problem_{{ comment.pk }}"
+                                                                                        <small class="time-ago"
+                                                                                               id="edit_problem_{{ comment.pk }}"
                                                                                                type="button"
                                                                                                class="edit-problem text-secondary">Tahrirlash</small>
                                                                                     </div>
@@ -381,11 +418,42 @@
                                         class=" p-1 badge badge-warning">Jarayonda</span></div>
                                 <div class="card-body">
                                     {% for data in datas %}
-                                        {% if data.phase_done_percentage > 0 and data.phase_done_percentage < 100 %}
+                                        {% if data.status == 'Jarayonda' %}
                                             <div class="d-block phases-text border-bottom main-row">
-                                                <h4 type="button" data-toggle="modal"
+                                                <h4 phase_id="{{ data.phase_id }}" type="button" data-toggle="modal"
                                                     data-target="#modal{{ data.phase_id }}" data-backdrop="static"
-                                                    class="text-secondary d-inline phase_text">{{ data.phase }}</h4>
+                                                    class="text-secondary col-10 d-inline phase_text">{{ data.phase }}</h4>
+                                                                                            <span type="button" class="col-1 btn-group dropright"><i
+                                                        class="fa-solid fa-bars" data-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false"></i>
+                                            <div class="dropdown-menu phase-manage-menu">
+                                                <a phase_id="{{ data.phase_id }}"
+                                                   class="dropdown-item edit-phase-btn"><i
+                                                        class="fa-solid fa-pen-to-square"></i> O'zgartirish</a>
+                                                <a phase_id="{{ data.phase_id }}" data-toggle="modal"
+                                                   data-target="#phase{{ data.phase_id }}"
+                                                   class="dropdown-item delete-phase-btn"><i
+                                                        class="fa-solid fa-trash"></i> O'chirish</a>
+                                                                                                <a phase_id="{{ data.phase_id }}" data-toggle="modal"
+                                                   data-target="#finish_phase{{ data.phase_id }}"
+                                                   class="dropdown-item start-phase-btn"><i class="fa-solid fa-square-check"></i> Yakunlash</a>
+                                            </div>
+                                                                                                        <div id="finish_phase{{ data.phase_id }}"
+                                                                                                                           class="modal fade"
+                                                                                                                           role="dialog">
+                            <div class="modal-dialog modal-sm">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <i class="fa-solid fa-triangle-exclamation btn-lg" style="font-size: 5dvh"></i>
+                                                                                                    <h4>Chindan tugatildimi ?</h4>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <a href="{% url 'finish-phase' data.phase_id %}" class="btn btn-success">Tugatish</a>
+                                        <button data-dismiss="modal" class="btn btn-secondary">Bekor qilish</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                                             </div>
                                             <div id="modal{{ data.phase_id }}" class="modal fade modal-custom"
                                                  role="dialog">
@@ -528,14 +596,19 @@
                                                                     {% endfor %}
                                                                 </ul>
                                                             </div>
-                                                                                                                                                                                                                        <p class="text-secondary">Tugatilganlik darajasi</p>
-                                                        <div class="row mb-3">
-                                                            <div class="col-12">
-                                                                <div class="progress">
-                                                                    <div class="progress-bar" role="progressbar" style="width: {{ data.phase_done_percentage }}%;" aria-valuenow="{{ data.phase_done_percentage }}" aria-valuemin="0" aria-valuemax="100">{{ data.phase_done_percentage }}%</div>
+                                                            <p class="text-secondary">Tugatilganlik darajasi</p>
+                                                            <div class="row mb-3">
+                                                                <div class="col-12">
+                                                                    <div class="progress">
+                                                                        <div class="progress-bar" role="progressbar"
+                                                                             style="width: {{ data.phase_done_percentage }}%;"
+                                                                             aria-valuenow="{{ data.phase_done_percentage }}"
+                                                                             aria-valuemin="0"
+                                                                             aria-valuemax="100">{{ data.phase_done_percentage }}%
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
                                                             <p>Bajarilgan ishlar</p>
                                                             <div class="row mb-2">
                                                                 <div id="comments_{{ data.phase_id }}"
@@ -700,13 +773,14 @@
                                         class="p-1 badge badge-success">Yakunlangan</span></div>
                                 <div class="card-body">
                                     {% for data in datas %}
-                                        {% if data.phase_done_percentage == 100 %}
+                                        {% if data.status == 'Tugatilgan' %}
                                             <div class="d-block phases-text border-bottom main-row">
                                                 <h4 type="button" data-toggle="modal"
                                                     data-target="#modal{{ data.phase_id }}" data-backdrop="static"
                                                     class="text-secondary d-inline phase_text">{{ data.phase }}</h4>
                                             </div>
-                                            <div id="modal{{ data.phase_id }}" class="modal fade modal-custom"  role="dialog">
+                                            <div id="modal{{ data.phase_id }}" class="modal fade modal-custom"
+                                                 role="dialog">
                                                 <div class="modal-dialog modal-xl modal-dialog-scrollable  mx-2 mt-3">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
@@ -846,14 +920,19 @@
                                                                     {% endfor %}
                                                                 </ul>
                                                             </div>
-                                                                                                                                                                <p class="text-secondary">Tugatilganlik darajasi</p>
-                                                        <div class="row mb-3">
-                                                            <div class="col-12">
-                                                                <div class="progress">
-                                                                    <div class="progress-bar" role="progressbar" style="width: {{ data.phase_done_percentage }}%;" aria-valuenow="{{ data.phase_done_percentage }}" aria-valuemin="0" aria-valuemax="100">{{ data.phase_done_percentage }}%</div>
+                                                            <p class="text-secondary">Tugatilganlik darajasi</p>
+                                                            <div class="row mb-3">
+                                                                <div class="col-12">
+                                                                    <div class="progress">
+                                                                        <div class="progress-bar" role="progressbar"
+                                                                             style="width: {{ data.phase_done_percentage }}%;"
+                                                                             aria-valuenow="{{ data.phase_done_percentage }}"
+                                                                             aria-valuemin="0"
+                                                                             aria-valuemax="100">{{ data.phase_done_percentage }}%
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
                                                             <p>Bajarilgan ishlar</p>
                                                             <div class="row mb-2">
                                                                 <div id="comments_{{ data.phase_id }}"
@@ -1015,28 +1094,63 @@
 
 
                     </div>
-<div class="files-section">
-    <h2>Ushbu loyihaga tegishli fayllar</h2>
-    <table class="files-table">
-        <thead>
-            <tr>
-                <th>Fayl nomi</th>
-                <th>Hajmi</th>
-                <th>Yuklash</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Report.pdf</td>
-                <td>1.2 MB</td>
-                <td><a href="path/to/Report.pdf" class="download-btn">Yuklash</a></td>
-            </tr>
-        </tbody>
-    </table>
-    <div class="upload-section">
-        <button class="upload-btn">Fayl yuklash</button>
-    </div>
-</div>
+                    <div class="files-section">
+                        <h4 class="text-secondary bg-light text-bold mt-4 border-top border-bottom p-2"
+                            style="width: 100dvw">Ushbu loyihaga tegishli fayllar</h4>
+                        <div class="upload-section">
+                            <button data-toggle="modal" data-target="#add-file-projects"
+                                    class="btn-sm btn-primary float-left mb-3">Fayl yuklash
+                            </button>
+                            <div class="modal fade" id="add-file-projects" tabindex="-1"
+                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Kerakli faylni yuklang</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form project_id="{{ project.pk }}" id="add-file-projects-form"
+                                                  method="post" enctype="multipart/form-data">
+                                                {% csrf_token %}
+                                                {{ add_projects_files_form.as_p }}
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-primary">Yuklash</button>
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                                Yopish
+                                            </button>
+                                        </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <table class="files-table mt-4">
+                            <thead>
+                            <tr>
+                                <th>Fayl nomi</th>
+                                <th>Hajmi</th>
+                                <th>Yuklash</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                {% for file in p_files %}
+                                    <tr>
+                                    <td>{{ file.file_name }}</td>
+                                    <td>{{ file.size }} MB</td>
+                                    <td>
+                                        <button type="button" id="{{ file.pk }}" class="btn btn-success p-files">
+                                            Yuklash
+                                        </button>
+                                    </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
 
                 </div>
 
@@ -1121,7 +1235,7 @@
             </div>
         </div>
     </div>
-    
 
+    <script src="{% static 'static/js/detailed.js' %}"></script>
     <script src="{% static 'static/js/script.js' %}"></script>
 {% endblock content %}

@@ -1,9 +1,5 @@
 from django.urls import path
-from .views import get_project, all_projects, my_projects, DetailMyProjects, CreateProject, UpdateProject, \
-    DeleteProject, \
-    add_phase, update_phase, delete_phase, update_task, delete_task, update_task_percentage, delete_files, \
-    owned_projects, create_archive, post_comment, post_problem, edit_comment, edit_problem, delete_comment, \
-    delete_problem, add_team_member, remove_team_member, filter_table, get_task, download_file, add_tasks, finish_phase
+from .views import *
 
 urlpatterns = [
     path('finish-phase/', finish_phase, name='finish-phase'),
@@ -15,6 +11,7 @@ urlpatterns = [
     path('owner-projects/', owned_projects, name='owned-projects'),
     path('my-projects/edit/<pk>', UpdateProject.as_view(), name='update-project'),
     path('my-projects/filter/<str:status>', filter_table, name='filter_table'),
+    path('my-projects/detail/add-project-files/<pk>', add_project_files, name='add-project-files'),
     path('my-projects/detail/post-comment/<pk>', post_comment, name='post-comment'),
     path('my-projects/detail/edit-comment/<pk>', edit_comment, name='edit-comment'),
     path('my-projects/detail/delete-comment/<pk>', delete_comment, name='delete-comment'),
@@ -29,6 +26,8 @@ urlpatterns = [
     path('my-projects/detail/delete-phase/<pk>', delete_phase, name='delete-phase'),
     path('my-projects/detail/delete-task/<pk>', delete_task, name='delete-task'),
     path('my-projects/detail/add-phase/<pk>', add_phase, name='add-phase'),
+    path('my-projects/detail/start-phase/<pk>', start_phase, name='start-phase'),
+    path('my-projects/detail/finish-phase/<pk>', finish_phase, name='finish-phase'),
     path('my-projects/detail/get-task/<pk>', get_task, name='get-task'),
     path('my-projects/detail/<pk>', DetailMyProjects, name='my-projects-detail'),
     path('my-projects/detail/update-phase/<pk>', update_phase, name='update-phase'),

@@ -110,8 +110,8 @@
                       <th scope="col" class="col-2">Loyiha nomi</th>
                       <th scope="col" class="col-3">Loyiha haqida</th>
                       <th scope="col" class="col-3">Departamentlar</th>
-                      <th scope="col" class="col-1">Summasi</th>
-                      <th scope="col" class="col-2">Hodim</th>
+                      <th scope="col" class="col-2">Summasi</th>
+                      <th scope="col" class="col-1">Hodim</th>
                       <th scope="col" class="col-3">Holati</th>
                     </tr>
                   </thead>
@@ -140,7 +140,7 @@
 
                                                                                                          <td class="project-state">
                                 <p>                             <a href="{% url 'get-project' project.pk %}"
-                                                                   style="color: black">{{ project.project_budget | format_number}} </a></p>
+                                                                   style="color: black">{{ project.project_budget | format_number}}<span class="mx-2">UZS</span> </a></p>
                             </td>
 
                                                                                                                             <td class="text-start">

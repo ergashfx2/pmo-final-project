@@ -6,7 +6,7 @@ from django_summernote.widgets import SummernoteWidget, SummernoteInplaceWidget
 from hodimlar.models import Department, Blog
 from loyihalar.models import Project, status_choices, level_choices, size_choices, speed_choices, type_choices, \
     PermittedProjects, Comments, Problems
-from .models import Documents, Phase, Task
+from .models import Documents, Phase, Task,ProjectFiles
 from django import forms
 
 User = get_user_model()
@@ -157,7 +157,6 @@ class CommentForm(forms.ModelForm):
         exclude = ['project', 'phase']
 
 
-
 class CommentEditForm(forms.ModelForm):
     class Meta:
         model = Comments
@@ -197,3 +196,14 @@ class PermittedProjectsForm(forms.ModelForm):
         }
 
 
+class ProjectFilesForm(forms.ModelForm):
+    class Meta:
+        model = ProjectFiles
+        fields = ['file']
+        exclude = ['author','created_at','project','updated_at']
+        labels = {
+            'file': ""
+        }
+        widgets = {
+            'file': forms.FileInput(attrs={'class': 'form-control-file', 'id': 'file-input'}),
+        }

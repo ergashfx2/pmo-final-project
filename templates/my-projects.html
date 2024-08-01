@@ -32,10 +32,10 @@
                         <thead>
                             <tr>
                                 <th scope="col" class="col-0">№</th>
-                                <th scope="col" class="col-3">Loyiha nomi</th>
+                                <th scope="col" class="col-2">Loyiha nomi</th>
                                 <th scope="col" class="col-3">Loyiha haqida</th>
                                 <th scope="col" class="col-3">Departamentlar</th>
-                                <th scope="col" class="col-1">Summasi</th>
+                                <th scope="col" class="col-2">Summasi</th>
                                 <th scope="col" class="col-1">Hodim</th>
                                 <th scope="col" class="col-1">Holati</th>
                                 <th scope="col" class="col-1"></th>
@@ -59,7 +59,7 @@
                                         </a>
                                     </td>
                                     <td>
-                                        <p><a href="{% url 'my-projects-detail' project.pk %}" style="color: black">{{ project.project_budget | format_number }}</a></p>
+                                        <p><a href="{% url 'my-projects-detail' project.pk %}" style="color: black">{{ project.project_budget | format_number }}<span class="mx-2">UZS</span></a></p>
                                     </td>
                                     <td class="text-start">
                                         <a href="{% url 'my-projects-detail' project.pk %}" style="color: black">{{ project.project_curator.get_full_name }}</a>

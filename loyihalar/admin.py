@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Phase, Task, Project, Documents,Comments,Problems,PermittedProjects
+from .models import Phase, Task, Project, Documents, Comments, Problems, PermittedProjects, ProjectFiles
 
 admin.site.register(Documents)
 admin.site.register(Problems)
@@ -24,3 +24,6 @@ class PhaseAdmin(admin.ModelAdmin):
 class TaskAdmin(admin.ModelAdmin):
     list_display = ['id','phase', 'task_name']
 
+@admin.register(ProjectFiles)
+class ProjectFilesAdmin(admin.ModelAdmin):
+    list_display = ['pk','file']

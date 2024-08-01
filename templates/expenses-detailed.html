@@ -13,7 +13,7 @@
                         Loyiha budgeti
                     </div>
                     <div class="card-body">
-                        <h5 class="card-title">{{ project.project_budget | format_number }}</h5>
+                        <h5 class="card-title">{{ project.project_budget | format_number }} <span class="mx-2">UZS</span></h5>
                     </div>
                 </div>
             </div>
@@ -23,7 +23,7 @@
                         Jami xarajatlar
                     </div>
                     <div class="card-body">
-                        <h5 id="totalExpenses" class="card-title">{{ project.project_spent_money | format_number }}</h5>
+                        <h5 id="totalExpenses" class="card-title">{{ project.project_spent_money | format_number }} <span class="mx-2">UZS</span></h5>
                     </div>
                 </div>
             </div>
@@ -34,7 +34,7 @@
                     </div>
                     <div class="card-body">
                         <h5 id="budgetLeft"
-                            class="card-title">{% multiple_args_tag project.project_budget project.project_spent_money %}</h5>
+                            class="card-title">{% multiple_args_tag project.project_budget project.project_spent_money %} <span class="mx-2">UZS</span></h5>
                     </div>
                 </div>
             </div>
@@ -136,7 +136,7 @@
             {% for expense in expenses %}
                 <tr>
                     <td>{{ expense.description }}</td>
-                    <td>{{ expense.quantity | format_number }}</td>
+                    <td>{{ expense.quantity | format_number }}  UZS</td>
                     <td>{{ expense.date | date:"d-m-Y" }}</td>
                     <td class="text-center">
                         {% if expense.document %}

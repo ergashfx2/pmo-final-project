@@ -371,13 +371,31 @@ nav i {
     transition: background-color 0.3s ease;
 }
 
-.download-btn:hover {
-    background-color: #45a049;
-}
+
 
 .upload-section {
     margin-top: 20px;
-    text-align: right; /* Align to the right */
+    text-align: right;
+}
+
+.phase-manage-menu i {
+    width: 18px;
+
+}
+.phase-manage-menu a {
+    float: left;
+
+}
+
+.phase-manage-menu a:last-child {
+    margin-left: 1.5%;
+    width: 0;
+
+}
+
+.phase-manage-menu a:last-child i {
+    width: 16px;
+
 }
 
 .upload-btn {
@@ -389,6 +407,8 @@ nav i {
     border-radius: 4px;
     transition: background-color 0.3s ease;
     cursor: pointer;
+    float: left;
+    margin-bottom: 1%;
 }
 
 .upload-btn:hover {
