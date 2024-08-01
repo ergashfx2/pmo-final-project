@@ -11,7 +11,7 @@ from django.utils import timezone
 
 User = get_user_model()
 from hodimlar.models import *
-
+from hodimlar.forms import UserLoginForm
 
 def getExpensesAll(year, blog_id=None, dept_id=None):
     monthly_expense_totals = defaultdict(lambda: 0)
@@ -88,7 +88,8 @@ def home(request):
                       {'projects': projects[:5], 'projects_count': projects_count, 'project_done': projects_done,
                        'projects_process': projects_process, 'expenses': totalExpense})
     else:
-        return render(request, 'login.html')
+        form = UserLoginForm
+        return render(request, 'login.html',{'form':form})
 
 
 def blockedPage(request):
