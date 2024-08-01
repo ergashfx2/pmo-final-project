@@ -18,27 +18,46 @@
         <div class="row bg-white">
             <div class="col-lg-8 col-sm-12 col-md-12 col-lg-8 border">
                 <div class="row mt-3 p-3">
-                    <div class="col-lg-4 col-md-12 col-sm-12">
-                        <div class="card bg-light text-center" style="box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;">
-                            <div class="card-header"><h5 class="text-secondary">Loyiha budgeti</h5>
-                                <strong>{{ project.project_budget | format_number }}</strong></div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-12 col-sm-12">
-                        <div class="card bg-light " style="box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;">
-                            <div class="card-header text-center"><h5 class="text-secondary">Sarflangan summa</h5>
-                                <strong>{{ project.project_spent_money | format_number }}</strong></div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-12 col-sm-12">
-                        <div class="card bg-light" style="box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;">
-                            <div class="card-header text-center"><h5 class="text-secondary">Tugash sanasi</h5>
-                                <strong>{{ project.project_deadline | format_date }}</strong></div>
+<div class="col-lg-4 col-md-12 col-sm-12">
+                                <div class="small-box" style="background-color: #0066cc;padding: 6%">
+              <div class="inner">
+                <h3>{{ project.project_budget | format_number }}<sup style="font-size: 20px"></sup></h3>
 
-                        </div>
-                    </div>
-                    <h4 class="text-secondary bg-light text-bold mt-4 border-top border-bottom p-2"
-                        style="width: 100dvw">Ushbu loyihaga tegishli ma'lumotlar</h4>
+                <p style="font-size: 20px">Loyiha budjeti</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-stats-bars"></i>
+              </div>
+            </div>
+                </div>
+
+<div class="col-lg-4 col-md-12 col-sm-12">
+                                <div class="small-box" style="background-color: #ff6600;padding: 6%">
+              <div class="inner">
+                <h3>{{ project.project_spent_money | format_number }}<sup style="font-size: 20px"></sup></h3>
+
+                <p style="font-size: 20px">Sarflangan summa</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-stats-bars"></i>
+              </div>
+            </div>
+                </div>
+<div class="col-lg-4 col-md-12 col-sm-12">
+                                <div class="small-box" style="background-color: #339933;padding: 6%">
+              <div class="inner">
+                <h3>{{ project.project_deadline | format_date }}<sup style="font-size: 20px"></sup></h3>
+
+                <p style="font-size: 20px">Tugash sanasi</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-stats-bars"></i>
+              </div>
+            </div>
+                </div>
+
+                    <h3 class="text-secondary bg-light text-bold mt-4 border-top border-bottom p-2"
+                        style="width: 100dvw">Ushbu loyihaga tegishli ma'lumotlar</h3>
                     <div class="row" style="width: 100dvw;">
                         <div class="col-lg-4 col-md-12 col-sm-12 mt-3">
                             <div class="card">
@@ -969,8 +988,35 @@
                                 </div>
                             </div>
                         </div>
+                    <div class="files-section">
+                        <h3 class="text-secondary bg-light text-bold mt-4 border-top border-bottom p-2"
+                            style="width: 100%">Ushbu loyihaga tegishli fayllar</h3>
+                        <div class="upload-section">
+                        <table class="files-table mt-4">
+                            <thead>
+                            <tr>
+                                <th>Fayl nomi</th>
+                                <th>Hajmi</th>
+                                <th>Yuklash</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                {% for file in p_files %}
+                                    <tr>
+                                    <td>{{ file.file_name }}</td>
+                                    <td>{{ file.size }} MB</td>
+                                    <td>
+                                        <button type="button" id="{{ file.pk }}" class="btn btn-success p-files">
+                                            Yuklash
+                                        </button>
+                                    </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
 
-
+                    </div>
                     </div>
 
                 </div>

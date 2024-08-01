@@ -112,10 +112,9 @@ p input {
         background-color: #28a745;
     }
 
-    .card-header {
-        background-color: #f8f9fa;
-        border-bottom: 1px solid #dee2e6;
-    }
+.phase_text {
+    font-size: 1.7rem!important;
+}
 
     .card-title {
         font-size: 1.25rem;

@@ -48,7 +48,7 @@ def format_date(value):
 def format_number(value):
     try:
         float_value = float(value)
-        return f"{float_value:,.2f}".replace(",", " ").replace(".00", "")
+        return f"{float_value:,.2f}".replace(",", ",").replace(".00", "")
     except ValueError:
         return value
 

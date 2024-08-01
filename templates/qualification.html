@@ -9,7 +9,7 @@
     }
     </style>
     <link rel="stylesheet" href="{% static 'static/css/my_projects.css' %}">
-    <div class="bg-white h-100 w-100">
+    <div class="h-100 w-100">
         <div class="input-group mt-3" style="margin-left: 2.7%;width: 51.8%">
             <input id="search-spendings-projects" placeholder="Qidirish..." class="form-control">
         <div class="input-group-append ml-2">
@@ -25,13 +25,13 @@
                       <table class="table table-responsive table-bordered table-striped w-100 mb-0" id="departments-based">
                     <thead>
                       <tr>
-                        <th scope="col" class="col-0">#</th>
+                        <th scope="col" class="col-0">№</th>
                         <th scope="col">Deptartamentlar / Bloklar</th>
                         <th scope="col">Loyihalar</th>
                         <th scope="col">Yangi</th>
                         <th scope="col">Jarayondagi</th>
                         <th scope="col">Tugatilgan</th>
-                        <th scope="col">Budget</th>
+                        <th scope="col" class="text-left">Budget</th>
                         <th scope="col">Xarajatlar</th>
                       </tr>
                     </thead>
@@ -39,14 +39,14 @@
 
                     {% for data in dept_data %}
                       <tr class="d_datas datas" data-url="{% url 'department-detailed' data.department_id %}">
-                      <td>{{ forloop.counter }}</td>
+                      <td class="fc-direction-rtl text-right">{{ forloop.counter }}</td>
                         <td class="no-center col-4"><strong>{{ data.department_name }}</strong></td>
                         <td class="col-1">{{ data.projects_count }}</td>
                         <td class="col-1">{{ data.new_projects }}</td>
                         <td class="col-1">{{ data.projects_processing }}</td>
                         <td class="col-1">{{ data.projects_finished }}</td>
-                        <td class="col-2">{{ data.total_budget | format_number  }}</td>
-                        <td class="col-2">{{ data.total_spent | format_number }}</td>
+                        <td class="col-2 fc-direction-rtl text-right">{{ data.total_budget | format_number  }}</td>
+                        <td class="col-2 fc-direction-rtl text-right">{{ data.total_spent | format_number }}</td>
                       </tr>
                     {% endfor %}
                     {% for data in b_data %}

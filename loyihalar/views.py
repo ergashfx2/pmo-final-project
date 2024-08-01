@@ -31,20 +31,12 @@ def all_projects(request):
     projects = Project.objects.all().order_by('-project_start_date')
     phases = Phase.objects.all()
     tasks = Task.objects.all()
-    all_projects_serialized = serializers.serialize('json',projects)
-    p = Paginator(projects, 10)
-    page_number = request.GET.get('page')
-    try:
-        projects_page = p.get_page(page_number)
-    except PageNotAnInteger:
-        projects_page = p.page(1)
-    except EmptyPage:
-        projects_page = p.page(p.num_pages)
+    paged_projects = paginate_projects(request,projects)
 
     projects_serialized = serialize_projects(projects)
 
     return render(request, 'all_projects.html', context={
-        'projects': projects_page,
+        'projects': paged_projects,
         'phases': phases,
         'tasks': tasks,
         'projects_serialized': projects_serialized,
@@ -72,14 +64,14 @@ def get_user_projects(user):
     ).order_by('-project_start_date').distinct()
 
 
-def paginate_projects(request, projects, items_per_page=10):
+def paginate_projects(request, projects, items_per_page=9):
     paginator = Paginator(projects, items_per_page)
     page_number = request.GET.get('page')
 
     try:
         projects_page = paginator.get_page(page_number)
     except PageNotAnInteger:
-        projects_page = paginator.page(10)
+        projects_page = paginator.page(9)
     except EmptyPage:
         projects_page = paginator.page(paginator.num_pages)
 
@@ -107,6 +99,7 @@ def get_project(request, pk):
     project = Project.objects.get(pk=pk)
     datas = []
     phases = Phase.objects.filter(project_id=project.id)
+    p_files = ProjectFiles.objects.filter(project_id=project.id).order_by('created_at')
     for phase in phases:
         datas.append({
             'phase': phase.phase_name,
@@ -120,7 +113,7 @@ def get_project(request, pk):
             'actions': Action.objects.filter(project=project.pk).order_by('-date')[:10]
         })
     return render(request, 'project_detail.html',
-                  context={'project': project, 'datas': datas,})
+                  context={'project': project, 'datas': datas,'p_files':p_files})
 
 
 @login_required
