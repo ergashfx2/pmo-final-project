@@ -26,15 +26,26 @@ import shutil
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
+def get_status(filter):
+    status = {
+        'processing':'Jarayonda',
+        'finished':'Tugatilgan'
+    }
+    return status[filter]
+
+
 @login_required
 def all_projects(request):
-    projects = Project.objects.all().order_by('-project_start_date')
+    if request.GET.get('filter'):
+        status = get_status(request.GET.get('filter'))
+        projects = Project.objects.filter(project_status=status)
+    else:
+        projects = Project.objects.all().order_by('-project_start_date')
     phases = Phase.objects.all()
     tasks = Task.objects.all()
     paged_projects = paginate_projects(request,projects)
 
     projects_serialized = serialize_projects(projects)
-
     return render(request, 'all_projects.html', context={
         'projects': paged_projects,
         'phases': phases,
