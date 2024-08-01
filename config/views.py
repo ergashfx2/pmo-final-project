@@ -2,7 +2,7 @@ from collections import defaultdict
 
 from django.db.models import Count, Sum, F, IntegerField, Value, Q
 from django.db.models.functions import TruncMonth, Replace, Cast
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth import get_user_model
 
 from expenses.models import Expense
@@ -88,8 +88,7 @@ def home(request):
                       {'projects': projects[:5], 'projects_count': projects_count, 'project_done': projects_done,
                        'projects_process': projects_process, 'expenses': totalExpense})
     else:
-        form = UserLoginForm
-        return render(request, 'login.html',{'form':form})
+        return redirect('hodimlar:login')
 
 
 def blockedPage(request):
