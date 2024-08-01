@@ -51,30 +51,28 @@ class UsersView(ListView):
     page_kwarg = 'page'
 
 
-
 def login_view(request):
     if request.user.is_authenticated:
         return redirect('home')
+
     form = UserLoginForm(request.POST or None)
     if request.method == 'POST' and form.is_valid():
         username = form.cleaned_data.get('username')
         password = form.cleaned_data.get('password')
         user = authenticate(request, username=username, password=password)
-        if user is None:
-            try:
-                user = User.objects.filter(username=username)
-                username = user.values()[0]['username']
-                user = authenticate(request, username=username, password=password)
-            except User.DoesNotExist:
-                user = None
 
         if user is not None:
             login(request, user)
             return redirect('home')
         else:
-            return render(request, 'login.html', context={'form': form, 'error': 'Parol yoki username xato kiritlgan'})
-    else:
-        form = UserLoginForm()
+            try:
+                user_exists = User.objects.get(username=username)
+                # If user exists, the issue is with the password
+                form.add_error('password', 'Parolingiz xato kiritilgan')
+            except User.DoesNotExist:
+                # If user does not exist
+                form.add_error('username', 'Username mavjud emas')
+
     return render(request, 'login.html', {'form': form})
 
 

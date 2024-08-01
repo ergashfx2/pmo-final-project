@@ -49,7 +49,7 @@ level_choices = (
 class Project(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     author = models.ManyToManyField(User, related_name='author')
-    project_curator = models.ForeignKey(User, related_name='curator', on_delete=models.DO_NOTHING)
+    project_curator = models.ForeignKey(User, related_name='curator', on_delete=models.CASCADE)
     project_name = models.CharField(max_length=200)
     project_blog = models.ForeignKey(Blog, models.CASCADE, related_name='blog')
     project_departments = models.ManyToManyField(Department)
@@ -156,9 +156,9 @@ class Documents(models.Model):
 
 class Problems(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    author = models.ForeignKey(User, models.DO_NOTHING)
-    project = models.ForeignKey(Project, models.DO_NOTHING)
-    phase = models.ForeignKey(Phase, models.DO_NOTHING)
+    author = models.ForeignKey(User, models.CASCADE)
+    project = models.ForeignKey(Project, models.CASCADE)
+    phase = models.ForeignKey(Phase, models.CASCADE)
     problem = models.TextField()
     created_at = models.DateTimeField(auto_now=True, editable=False)
     update_at = models.DateTimeField(auto_now=True)
@@ -171,9 +171,9 @@ class Problems(models.Model):
 
 class Comments(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    author = models.ForeignKey(User, models.DO_NOTHING)
-    project = models.ForeignKey(Project, models.DO_NOTHING)
-    phase = models.ForeignKey(Phase, models.DO_NOTHING)
+    author = models.ForeignKey(User, models.CASCADE)
+    project = models.ForeignKey(Project, models.CASCADE)
+    phase = models.ForeignKey(Phase, models.CASCADE)
     comment = models.TextField()
     created_at = models.DateTimeField(auto_now=True, editable=False)
     update_at = models.DateTimeField(auto_now=True)
@@ -188,8 +188,17 @@ class Comments(models.Model):
 
 
 class PermittedProjects(models.Model):
-    user = models.ForeignKey(User, models.DO_NOTHING)
-    project = models.ForeignKey(Project, models.DO_NOTHING)
+    user = models.ForeignKey(User, models.CASCADE)
+    project = models.ForeignKey(Project, models.CASCADE)
 
     def __str__(self):
         return self.project.project_name
+
+
+class ProjectFiles(models.Model):
+    author = models.ForeignKey(User, models.CASCADE)
+    project = models.ForeignKey(Project, models.CASCADE)
+    file = models.FileField(upload_to='files/')
+    created_at = models.DateField(auto_now_add=True)
+    updated_at = models.DateField(auto_now=True)
+    size = models.IntegerField(default=0)

@@ -393,12 +393,13 @@ function search_project() {
                     new_cloned_tr.children.item(6).children.item(2).removeAttribute('class');
                     new_cloned_tr.children.item(6).children.item(2).classList.add('badge', bg[1]);
                     new_cloned_tr.children.item(6).children.item(2).innerText = `${project.project_status}`;
+                console.log(new_cloned_tr)
                 if (window.location.href.includes('my-projects')) {
                     console.log('working')
                     new_cloned_tr.children.item(7).children.item(0).children.item(0).href = `detail/${project.project_id}`;
                     new_cloned_tr.children.item(7).children.item(0).children.item(1).href = `edit/${project.project_id}`;
                     new_cloned_tr.removeAttribute('data-url')
-                    new_cloned_tr.setAttribute('data-url',`/detail/${project.project_id}`)
+                    new_cloned_tr.setAttribute('data-url',`detail/${project.project_id}`)
                 }
                                 redirecting()
                 tbody.appendChild(new_cloned_tr);
