@@ -3,15 +3,14 @@
 {% block content %}
     {% load filters %}
     <link rel="stylesheet" href="{% static 'static/css/my_projects.css' %}">
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">
+    <div class="row border-0">
+        <div class="col-12 border-0">
+                <div class="card-header bg-white">
                     <h3 class="card-title d-inline">Barcha loyihalar</h3>
 
-                    <div class="card-tools">
+                    <div class="card-tools" style="width: 59.5%">
                         <div class="input-group input-group-sm">
-                            <input type="text" id="search-project" name="table_search" class="form-control float-right search-projects" placeholder="Qidirish">
+                            <input type="text" id="search-project" style="width: 47%" name="table_search" class="form-control float-right search-projects" placeholder="Qidirish">
                             <select class="custom-select" id="filter-all-projects">
                                 <option value="all" selected>Barchasi</option>
                                 <option value="Yangi">Boshlanmagan</option>
@@ -32,10 +31,10 @@
                         <thead>
                             <tr>
                                 <th scope="col" class="col-0">№</th>
-                                <th scope="col" class="col-3">Loyiha nomi</th>
+                                <th scope="col" class="col-2">Loyiha nomi</th>
                                 <th scope="col" class="col-3">Loyiha haqida</th>
                                 <th scope="col" class="col-3">Departamentlar</th>
-                                <th scope="col" class="col-1">Summasi</th>
+                                <th scope="col" class="col-2">Summasi</th>
                                 <th scope="col" class="col-1">Hodim</th>
                                 <th scope="col" class="col-1">Holati</th>
                                 <th scope="col" class="col-1"></th>
@@ -59,7 +58,7 @@
                                         </a>
                                     </td>
                                     <td>
-                                        <p><a href="{% url 'my-projects-detail' project.pk %}" style="color: black">{{ project.project_budget | format_number }}</a></p>
+                                        <p><a href="{% url 'my-projects-detail' project.pk %}" style="color: black">{{ project.project_budget | format_number }}<span class="mx-2">UZS</span></a></p>
                                     </td>
                                     <td class="text-start">
                                         <a href="{% url 'my-projects-detail' project.pk %}" style="color: black">{{ project.project_curator.get_full_name }}</a>
@@ -76,7 +75,7 @@
                                             <p class="badge {% if project.project_status == 'Yangi' %}badge-info{% elif project.project_status == 'Jarayonda'  %}badge-warning {% else %}badge-success{% endif %}">{{ project.project_status }}</p>
                                         </p>
                                     </td>
-                                    <td class="project-actions text-end">
+                                    <td class="project-actions text-center">
                                         <div class="btn-group-vertical" style="padding: 10%;margin-left: 15%" role="group">
                                             <a href="{% url 'my-projects-detail' project.pk %}" type="button" class="btn-sm btn-primary"><i class="fa-regular fa-folder"></i></a>
                                             <a type="button" class="btn-sm btn-info mt-1" href="{% url 'update-project' project.pk %}"><i class="fa-solid fa-pen"></i></a>
@@ -127,7 +126,6 @@
                         {% endif %}
                     </ul>
                 </div>
-            </div>
         </div>
     </div>
     <script src="{% static 'static/js/expense.js' %}"></script>
