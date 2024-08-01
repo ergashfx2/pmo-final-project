@@ -88,7 +88,7 @@ def home(request):
                       {'projects': projects[:5], 'projects_count': projects_count, 'project_done': projects_done,
                        'projects_process': projects_process, 'expenses': totalExpense})
     else:
-        return render(request, 'index.html')
+        return render(request, 'login.html')
 
 
 def blockedPage(request):
