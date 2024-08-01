@@ -80,7 +80,7 @@ def multiple_args_tag(a, b):
         val1 = float(a.replace(" ", ""))
         val2 = float(b.replace(" ", ""))
         val3 = val1 - val2
-        return f"{val3:,.2f}".replace(",", " ").replace(".00", "")
+        return f"{val3:,.2f}".replace(",", ",").replace(".00", "")
     except ValueError:
         return "Invalid Input"
 
