@@ -168,15 +168,7 @@ function redirect(e) {
             window.location.href = e.target.parentNode.getAttribute('data-url');
         }
 
-
-
-
-
-try {
-    redirecting()
-} catch (e) {
-
-}
+        redirecting()
 
 
 function decreaseBudget() {
