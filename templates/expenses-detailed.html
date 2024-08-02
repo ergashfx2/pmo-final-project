@@ -140,7 +140,7 @@
                     <td>{{ expense.date | date:"d-m-Y" }}</td>
                     <td class="text-center">
                         {% if expense.document %}
-                            <i class="fa-solid fa-file-alt" style="font-size: 1.5rem;"></i>
+                            <i expense_id="{{ expense.pk }}" type="button" id="{{ expense.document.pk }}" class="fa-solid fa-file-alt expense_files" style="font-size: 1.5rem;"></i>
                         {% endif %}
                     </td>
                     <td class="text-center">

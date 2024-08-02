@@ -26,13 +26,13 @@
                     <thead>
                       <tr>
                         <th scope="col" class="col-0">№</th>
-                        <th scope="col">Deptartamentlar / Bloklar</th>
-                        <th scope="col">Loyihalar</th>
-                        <th scope="col">Yangi</th>
-                        <th scope="col">Jarayondagi</th>
-                        <th scope="col">Tugatilgan</th>
-                        <th scope="col" class="text-left">Budget</th>
-                        <th scope="col">Xarajatlar</th>
+                        <th scope="col" class="col-4">Deptartamentlar / Bloklar</th>
+                        <th scope="col" class="col-1">Loyihalar</th>
+                        <th scope="col" class="col-1">Yangi</th>
+                        <th scope="col" class="col-1">Jarayondagi</th>
+                        <th scope="col" class="col-1">Tugatilgan</th>
+                        <th class="fc-direction-rtl col-2"><div class="row"><div class="col-6 text-right">Budjet<div class="col-6"></div></div></div></th>
+                        <th class="fc-direction-rtl col-2"><div class="row"><div class="col-6 text-right">Xarajat<div class="col-6"></div></div></div></th>
                       </tr>
                     </thead>
                     <tbody id="spendings_table_body">
@@ -40,25 +40,26 @@
                     {% for data in dept_data %}
                       <tr class="d_datas datas" data-url="{% url 'department-detailed' data.department_id %}">
                       <td class="fc-direction-rtl text-right">{{ forloop.counter }}</td>
-                        <td class="no-center col-4"><strong>{{ data.department_name }}</strong></td>
-                        <td class="col-1">{{ data.projects_count }}</td>
-                        <td class="col-1">{{ data.new_projects }}</td>
-                        <td class="col-1">{{ data.projects_processing }}</td>
-                        <td class="col-1">{{ data.projects_finished }}</td>
-                        <td class="col-2 fc-direction-rtl text-right">{{ data.total_budget | format_number  }}</td>
-                        <td class="col-2 fc-direction-rtl text-right">{{ data.total_spent | format_number }}</td>
+                        <td><strong>{{ data.department_name }}</strong></td>
+                        <td>{{ data.projects_count }}</td>
+                        <td>{{ data.new_projects }}</td>
+                        <td>{{ data.projects_processing }}</td>
+                        <td>{{ data.projects_finished }}</td>
+                        <td class="fc-direction-rtl"><div class="row"><div class="col-6 text-right">{{ data.total_budget | format_number }}<div class="col-6"></div></div></div></td>
+                        <td class="fc-direction-rtl"><div class="row"><div class="col-6 text-right">{{ data.total_spent | format_number }}<div class="col-6"></div></div></div></td>
+
                       </tr>
                     {% endfor %}
                     {% for data in b_data %}
                       <tr class="b_datas datas" data-url="{% url 'blog-detailed' data.blog_id %}">
                        <td>{{ forloop.counter }}</td>
-                        <td class="no-center col-4" scope="row">{{ data.blog_name }}</td>
-                        <td class="col-1">{{ data.projects_count_blog }}</td>
-                        <td class="col-1">{{ data.new_projects_blog }}</td>
-                        <td class="col-1">{{ data.projects_processing_blog }}</td>
-                        <td class="col-1">{{ data.projects_finished_blog }}</td>
-                        <td class="col-2">{{ data.total_budget_blog | format_number }}</td>
-                        <td class="col-2">{{ data.total_spent_blog | format_number }}</td>
+                        <td>{{ data.blog_name }}</td>
+                        <td>{{ data.projects_count_blog }}</td>
+                        <td>{{ data.new_projects_blog }}</td>
+                        <td>{{ data.projects_processing_blog }}</td>
+                        <td>{{ data.projects_finished_blog }}</td>
+                        <td class="fc-direction-rtl"><div class="row"><div class="col-6 text-right">{{ data.total_budget_blog | format_number }}<div class="col-6"></div></div></div></td>
+                        <td class="fc-direction-rtl"><div class="row"><div class="col-6 text-right">{{ data.total_spent_blog | format_number }}<div class="col-6"></div></div></div></td>
                       </tr>
                     {% endfor %}
                     </tbody>

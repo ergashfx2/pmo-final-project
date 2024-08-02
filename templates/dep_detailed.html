@@ -34,7 +34,7 @@
               <div class="icon">
                 <i class="ion ion-stats-bars"></i>
               </div>
-              <a href="{% url 'all-projects' %}" class="small-box-footer">
+              <a href="{% url 'all-projects' %}?filter=processing&&dept={{blog_id }}" class="small-box-footer">
                 Batafsil <i class="fas fa-arrow-circle-right"></i>
               </a>
             </div>
@@ -49,7 +49,7 @@
               <div class="icon">
                 <i class="ion ion-stats-bars"></i>
               </div>
-              <a href="{% url 'all-projects' %}" class="small-box-footer">
+              <a href="{% url 'all-projects' %}?filter=finished&&dept={{blog_id }}" class="small-box-footer">
                 Batafsil <i class="fas fa-arrow-circle-right"></i>
               </a>
             </div>

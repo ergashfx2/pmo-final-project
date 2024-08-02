@@ -14,7 +14,7 @@ from zipfile import ZipFile
 
 from actions.models import Action
 from config import settings
-from hodimlar.models import User
+from hodimlar.models import User, Department, Blog
 from .forms import CreateProjectForm, EditProjectForm, AddFileForm, AddPhaseForm, AddTaskForm, PermittedProjectsForm, \
     CommentForm,ProjectFilesForm
 from .formsets import TaskFormSet
@@ -38,7 +38,16 @@ def get_status(filter):
 def all_projects(request):
     if request.GET.get('filter'):
         status = get_status(request.GET.get('filter'))
-        projects = Project.objects.filter(project_status=status)
+        if request.GET.get('dept'):
+                dept = Department.objects.get(pk=request.GET.get('dept'))
+                projects = Project.objects.filter(project_departments__department_name__contains=dept.department_name,project_status=status)
+        elif request.GET.get('blog'):
+                blog = Blog.objects.get(pk=request.GET.get('blog'))
+                projects = Project.objects.filter(project_blog_id=blog.pk,project_status=status)
+
+        else:
+            status = get_status(request.GET.get('filter'))
+            projects = Project.objects.filter(project_status=status)
     else:
         projects = Project.objects.all().order_by('-project_start_date')
     phases = Phase.objects.all()
