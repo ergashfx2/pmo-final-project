@@ -15,7 +15,7 @@ User = get_user_model()
 class CreateProjectForm(ModelForm):
     class Meta:
         model = Project
-        exclude = ['project_spent_money', 'project_status', 'project_done_percentage']
+        exclude = ['project_spent_money', 'project_status', 'project_done_percentage','project_number']
         labels = {
             'author': "Loyiha tashabbuskori(tashabbuskorlari)",
             'project_curator': 'Loyiha kuratori',
@@ -69,6 +69,9 @@ class CreateProjectForm(ModelForm):
     def clean(self):
         cleaned_data = super().clean()
         return cleaned_data
+
+    def disable_fields(self):
+        self.fields['project_deadline'].widget.update({'class': 'disabled'})
 
 
 class EditProjectForm(ModelForm):

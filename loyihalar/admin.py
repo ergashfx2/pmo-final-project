@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Phase, Task, Project, Documents, Comments, Problems, PermittedProjects, ProjectFiles
+from .models import *
 
 admin.site.register(Documents)
 admin.site.register(Problems)
@@ -27,3 +27,8 @@ class TaskAdmin(admin.ModelAdmin):
 @admin.register(ProjectFiles)
 class ProjectFilesAdmin(admin.ModelAdmin):
     list_display = ['pk','file']
+
+
+@admin.register(DailyRange)
+class DailyRangeAdmin(admin.ModelAdmin):
+    list_display = ['id','number','date']

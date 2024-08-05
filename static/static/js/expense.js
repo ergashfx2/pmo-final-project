@@ -152,21 +152,22 @@ function delete_expense(e) {
 }
 
 function redirecting() {
-    console.log('workinh redirect')
+    console.log('working redirect');
     const tbody = document.getElementById('projects-body');
-    const datas = document.querySelectorAll('.datas');
-    datas.forEach((value, index) => {
-        if (index === datas.length - 1) return;
-        for (let i = 0; i < value.children.length ; i++) {
-            if (i === value.children.length-1 ) return;
-                 value.children.item(i).addEventListener('click', redirect);
-        }
-    });
+    tbody.removeEventListener('click', handleRedirect);
+    tbody.addEventListener('click', handleRedirect);
 }
 
-function redirect(e) {
-            window.location.href = e.target.parentNode.getAttribute('data-url');
+function handleRedirect(e) {
+    const target = e.target.closest('.datas');
+    if (target) {
+        const url = target.getAttribute('data-url');
+        if (url) {
+            window.location.href = url;
         }
+    }
+}
+
 
         redirecting()
 
@@ -363,8 +364,8 @@ function search_project() {
         const projects_filtered = [];
         const initial_tbody = document.getElementById('projects-body').innerHTML;
         const table = document.getElementById('projects-body');
-        const cloned_tr = table.children.item(1).cloneNode(true);
-
+        const cloned_tr = table.children.item(2).cloneNode(true);
+        console.log(cloned_tr)
         const updateTable = () => {
             const tbody = document.getElementById('projects-body');
             tbody.innerHTML = '';
@@ -372,29 +373,32 @@ function search_project() {
             projects_filtered.forEach((project, index) => {
                 const new_cloned_tr = cloned_tr.cloneNode(true);
                 new_cloned_tr.children.item(0).innerText = index + 1;
-                new_cloned_tr.children.item(1).innerText = project.project_name;
-                new_cloned_tr.children.item(2).innerText = project.project_description;
-                new_cloned_tr.children.item(3).innerText = project.project_departments;
-                new_cloned_tr.children.item(4).innerText = project.project_budget;
-                new_cloned_tr.children.item(5).innerText = project.project_curator;
+                new_cloned_tr.children.item(1).innerText = project.project_number;
+                new_cloned_tr.children.item(2).innerText = project.project_name;
+                new_cloned_tr.children.item(3).innerText = project.project_description;
+                new_cloned_tr.children.item(4).innerText = project.project_departments;
+                new_cloned_tr.children.item(5).innerText = project.project_budget;
+                new_cloned_tr.children.item(6).innerText = project.project_curator;
                                     let bg = return_bg_color(project.project_status);
-                    new_cloned_tr.children.item(6).children.item(0).children.item(0).classList.add(bg[0]);
-                    new_cloned_tr.children.item(6).children.item(0).children.item(0).setAttribute('aria-valuenow', project.project_done_percentage);
-                    new_cloned_tr.children.item(6).children.item(0).children.item(0).style.width = project.project_done_percentage + '%';
-                    new_cloned_tr.children.item(6).children.item(1).innerText = project.project_done_percentage + '%';
-                    new_cloned_tr.children.item(6).children.item(2).removeAttribute('class');
-                    new_cloned_tr.children.item(6).children.item(2).classList.add('badge', bg[1]);
-                    new_cloned_tr.children.item(6).children.item(2).innerText = `${project.project_status}`;
-                console.log(new_cloned_tr)
+                    new_cloned_tr.children.item(7).children.item(0).children.item(0).classList.add(bg[0]);
+                    new_cloned_tr.children.item(7).children.item(0).children.item(0).setAttribute('aria-valuenow', project.project_done_percentage);
+                    new_cloned_tr.children.item(7).children.item(0).children.item(0).style.width = project.project_done_percentage + '%';
+                    new_cloned_tr.children.item(7).children.item(1).innerText = project.project_done_percentage + '%';
+                    new_cloned_tr.children.item(7).children.item(2).removeAttribute('class');
+                    new_cloned_tr.children.item(7).children.item(2).classList.add('badge', bg[1]);
+                    new_cloned_tr.children.item(7).children.item(2).innerText = `${project.project_status}`;
                 if (window.location.href.includes('my-projects')) {
                     console.log('working')
-                    new_cloned_tr.children.item(7).children.item(0).children.item(0).href = `detail/${project.project_id}`;
-                    new_cloned_tr.children.item(7).children.item(0).children.item(1).href = `edit/${project.project_id}`;
+                    new_cloned_tr.children.item(8).children.item(0).children.item(0).href = `detail/${project.project_id}`;
+                    new_cloned_tr.children.item(8).children.item(0).children.item(1).href = `edit/${project.project_id}`;
                     new_cloned_tr.removeAttribute('data-url')
                     new_cloned_tr.setAttribute('data-url',`detail/${project.project_id}`)
+                                    new_cloned_tr.classList.add('datas')
+                    redirecting()
                 }
-                                redirecting()
+                new_cloned_tr.classList.add('datas')
                 tbody.appendChild(new_cloned_tr);
+                                                redirecting()
             });
         };
 
@@ -416,7 +420,7 @@ function search_project() {
             } else {
                 projects_serialized.forEach(project => {
                     const projectData = project.fields;
-                    if (projectData.project_name.toLowerCase().includes(e.target.value.toLowerCase())) {
+                    if (projectData.project_name.toLowerCase().includes(e.target.value.toLowerCase()) || projectData.project_number.toLowerCase().includes(e.target.value.toLowerCase())) {
                         proxy.push(projectData);
                     }
                 });
@@ -509,12 +513,10 @@ function search_expense(){
                 return true;
             }
         };
-
         const proxy = new Proxy(expense_filtered, proxyHandler);
 
         value.addEventListener('input', (e) => {
             expense_filtered.length = 0;
-            console.log('searching')
             if (e.target.value.length === 0) {
                 document.getElementById('expenses-body').innerHTML = initial_tbody;
             } else {

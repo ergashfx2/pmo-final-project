@@ -31,8 +31,8 @@
                         <th scope="col" class="col-1">Yangi</th>
                         <th scope="col" class="col-1">Jarayondagi</th>
                         <th scope="col" class="col-1">Tugatilgan</th>
-                        <th class="fc-direction-rtl col-2"><div class="row"><div class="col-6 text-right">Budjet<div class="col-6"></div></div></div></th>
-                        <th class="fc-direction-rtl col-2"><div class="row"><div class="col-6 text-right">Xarajat<div class="col-6"></div></div></div></th>
+                        <th class="fc-direction-rtl col-2"><div class="row"><div class="col-6 text-right ml-4">Budjet<div class="col-6"></div></div></div></th>
+                        <th class="fc-direction-rtl col-2"><div class="row"><div class="col-6 text-right ml-4">Xarajat<div class="col-6"></div></div></div></th>
                       </tr>
                     </thead>
                     <tbody id="spendings_table_body">
@@ -45,8 +45,8 @@
                         <td>{{ data.new_projects }}</td>
                         <td>{{ data.projects_processing }}</td>
                         <td>{{ data.projects_finished }}</td>
-                        <td class="fc-direction-rtl"><div class="row"><div class="col-6 text-right">{{ data.total_budget | format_number }}<div class="col-6"></div></div></div></td>
-                        <td class="fc-direction-rtl"><div class="row"><div class="col-6 text-right">{{ data.total_spent | format_number }}<div class="col-6"></div></div></div></td>
+                        <td class="fc-direction-rtl"><div class="row"><div class="col-6 text-right ml-4">{{ data.total_budget | format_number }}<div class="col-6"></div></div></div></td>
+                        <td class="fc-direction-rtl"><div class="row"><div class="col-6 text-right ml-4">{{ data.total_spent | format_number }}<div class="col-6"></div></div></div></td>
 
                       </tr>
                     {% endfor %}

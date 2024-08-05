@@ -27,7 +27,7 @@
                 </thead>
                 <tbody id="users_list_body">
                     {% for user in object_list %}
-                    <tr>
+                    <tr class="datas" data-url="{% url 'hodimlar:profile2' user.id %}">
                         <td class="fc-direction-rtl text-right">{{ forloop.counter }}</td>
                         <td><a href="{% url 'hodimlar:profile2' user.id %}" class="user-link">{{ user.get_full_name }}</a></td>
                         <td>

@@ -31,6 +31,7 @@
                         <thead>
                             <tr>
                                 <th scope="col" class="col-0">№</th>
+                                <th scope="col" class="col-0">Raqami</th>
                                 <th scope="col" class="col-2">Loyiha nomi</th>
                                 <th scope="col" class="col-3">Loyiha haqida</th>
                                 <th scope="col" class="col-3">Departamentlar</th>
@@ -44,6 +45,7 @@
                             {% for project in projects %}
                                 <tr class="datas" data-url="{% url 'my-projects-detail' project.pk %}">
                                     <td>{{ forloop.counter }}</td>
+                                <td>{{ project.project_number }}</td>
                                     <td id="project-name">
                                         <a href="{% url 'my-projects-detail' project.pk %}" style="color: black">{{ project.project_name }}</a>
                                     </td>

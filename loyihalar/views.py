@@ -1,6 +1,8 @@
 import datetime
 import json
 import os.path
+import random
+import time
 import uuid
 
 from django.contrib import messages
@@ -16,9 +18,9 @@ from actions.models import Action
 from config import settings
 from hodimlar.models import User, Department, Blog
 from .forms import CreateProjectForm, EditProjectForm, AddFileForm, AddPhaseForm, AddTaskForm, PermittedProjectsForm, \
-    CommentForm,ProjectFilesForm
+    CommentForm, ProjectFilesForm
 from .formsets import TaskFormSet
-from .models import Project, Phase, Task, Documents, Comments, Problems, PermittedProjects, ProjectFiles
+from .models import Project, Phase, Task, Documents, Comments, Problems, PermittedProjects, ProjectFiles, DailyRange
 from django.http import HttpResponse, JsonResponse, Http404
 from django.core import serializers
 from utils import file_extensions, isProjectOwner, isAdmin
@@ -28,8 +30,8 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 def get_status(filter):
     status = {
-        'processing':'Jarayonda',
-        'finished':'Tugatilgan'
+        'processing': 'Jarayonda',
+        'finished': 'Tugatilgan'
     }
     return status[filter]
 
@@ -39,11 +41,12 @@ def all_projects(request):
     if request.GET.get('filter'):
         status = get_status(request.GET.get('filter'))
         if request.GET.get('dept'):
-                dept = Department.objects.get(pk=request.GET.get('dept'))
-                projects = Project.objects.filter(project_departments__department_name__contains=dept.department_name,project_status=status)
+            dept = Department.objects.get(pk=request.GET.get('dept'))
+            projects = Project.objects.filter(project_departments__department_name__contains=dept.department_name,
+                                              project_status=status)
         elif request.GET.get('blog'):
-                blog = Blog.objects.get(pk=request.GET.get('blog'))
-                projects = Project.objects.filter(project_blog_id=blog.pk,project_status=status)
+            blog = Blog.objects.get(pk=request.GET.get('blog'))
+            projects = Project.objects.filter(project_blog_id=blog.pk, project_status=status)
 
         else:
             status = get_status(request.GET.get('filter'))
@@ -52,7 +55,7 @@ def all_projects(request):
         projects = Project.objects.all().order_by('-project_start_date')
     phases = Phase.objects.all()
     tasks = Task.objects.all()
-    paged_projects = paginate_projects(request,projects)
+    paged_projects = paginate_projects(request, projects)
 
     projects_serialized = serialize_projects(projects)
     return render(request, 'all_projects.html', context={
@@ -60,7 +63,7 @@ def all_projects(request):
         'phases': phases,
         'tasks': tasks,
         'projects_serialized': projects_serialized,
-        'all_serialized':projects_serialized
+        'all_serialized': projects_serialized
     })
 
 
@@ -69,11 +72,19 @@ def my_projects(request):
     projects = get_user_projects(request.user)
     projects_page = paginate_projects(request, projects)
     projects_serialized = serialize_projects(projects)
-
-    return render(request, 'my-projects.html', context={
-        'projects': projects_page,
-        'my_projects_serialized': projects_serialized
-    })
+    if isAdmin(request.user):
+        projects = Project.objects.all()
+        projects_page = paginate_projects(request, projects)
+        projects_serialized = serialize_projects(projects)
+        return render(request, 'my-projects.html', context={
+            'projects': projects_page,
+            'my_projects_serialized': projects_serialized
+        })
+    else:
+        return render(request, 'my-projects.html', context={
+            'projects': projects_page,
+            'my_projects_serialized': projects_serialized
+        })
 
 
 def get_user_projects(user):
@@ -133,7 +144,7 @@ def get_project(request, pk):
             'actions': Action.objects.filter(project=project.pk).order_by('-date')[:10]
         })
     return render(request, 'project_detail.html',
-                  context={'project': project, 'datas': datas,'p_files':p_files})
+                  context={'project': project, 'datas': datas, 'p_files': p_files})
 
 
 @login_required
@@ -200,7 +211,8 @@ def DetailMyProjects(request, pk):
     return render(request, 'my-projects-detail.html',
                   context={'project': project, 'datas': datas, 'comments': comments, 'problems': problems,
                            'documents': documents, 'form': form, 'form2': form2,
-                           'form3': form3, 'project_id': pk,'add_projects_files_form':add_file_projects_form,'p_files':p_files})
+                           'form3': form3, 'project_id': pk, 'add_projects_files_form': add_file_projects_form,
+                           'p_files': p_files})
 
 
 @login_required
@@ -229,14 +241,24 @@ def download_file(request, pk):
             raise Http404("Dokument topilmadi")
 
 
-
 @login_required
 def CreateProject(request):
     form = CreateProjectForm()
     if request.method == 'POST':
         form = CreateProjectForm(request.POST)
+        dept_name = Department.objects.get(pk=form.data.get('project_departments')[0]).department_name
         if form.is_valid():
+            start_date = datetime.datetime.strptime(str(request.POST.get('project_start_date')), "%Y-%m-%d")
             project = form.save(commit=False)
+            try:
+                daily_range_number = DailyRange.objects.get(date=start_date)
+                daily_range_number.update_range()
+                project_number = f"{start_date.month}{start_date.day}{daily_range_number.number}{dept_name[0]}"
+            except:
+                DailyRange.objects.create(number=1,date=start_date)
+                daily_range_number = 1
+                project_number = f"{start_date.month}{start_date.day}{daily_range_number}{dept_name[0]}"
+            project.project_number = project_number
             form.save()
             form.save_m2m()
             Action.objects.create(author_id=request.user.pk, project_id=project.pk,
@@ -270,7 +292,7 @@ def add_phase(request, pk):
     project = get_object_or_404(Project, pk=pk)
     phase = Phase.objects.create(project=project, phase_name=data['phase_name'])
     action = Action.objects.create(author_id=request.user.pk, project_id=project.pk,
-                          action=f"{project.project_name} nomli loyihaga {data['phase_name']} nomli faza qo'shdi")
+                                   action=f"{project.project_name} nomli loyihaga {data['phase_name']} nomli faza qo'shdi")
     return JsonResponse(status=200, data={'phase': phase.phase_name, 'phase_id': phase.pk})
 
 
@@ -282,7 +304,8 @@ def add_tasks(request, pk):
             task = Task.objects.create(project_id=Phase.objects.get(pk=pk).project.pk, phase_id=pk,
                                        task_name=data[0]['task_name'], task_manager=data[1]['task_manager'],
                                        task_deadline=data[2]['task_deadline'])
-            Action.objects.create(author_id=request.user.pk, project_id=task.project.pk,action=f"{task.project.project_name} loyihasiga <br>{task.task_name}</br> nomli vazifa qo'shdi")
+            Action.objects.create(author_id=request.user.pk, project_id=task.project.pk,
+                                  action=f"{task.project.project_name} loyihasiga <br>{task.task_name}</br> nomli vazifa qo'shdi")
             return JsonResponse(status=200, data={'success': True, 'task_id': task.pk})
     return JsonResponse(status=500, data={'message': "Method must be POST"})
 
@@ -313,7 +336,7 @@ def delete_phase(request, pk):
     Action.objects.create(author_id=request.user.pk, project_id=project.pk,
                           action=f"{project.project_name} nomli loyihadagi <strong>{phase.phase_name}</strong> fazasini o'chirib yubordi")
     phase.delete()
-    return redirect('my-projects-detail',phase.project.pk)
+    return redirect('my-projects-detail', phase.project.pk)
 
 
 @login_required
@@ -391,7 +414,8 @@ def delete_files(request):
 def owned_projects(request):
     projects = Project.objects.filter(project_curator=request.user)
     projects_serialized = serialize_projects(projects)
-    return render(request, 'owned_projects.html', context={'projects': projects,'my_projects_serialized':projects_serialized})
+    return render(request, 'owned_projects.html',
+                  context={'projects': projects, 'my_projects_serialized': projects_serialized})
 
 
 @login_required
@@ -456,16 +480,19 @@ def delete_comment(request, pk):
                           action=f"{project.project_name} nomli loyihadagi izohni o'chirdi.Izoh matni :<strong> {comment.comment}</strong>")
     return redirect('my-projects-detail', prkey)
 
-from .forms import ProblemForm,ProlemEditForm
+
+from .forms import ProblemForm, ProlemEditForm
+
+
 @login_required
 def post_problem(request, pk):
-    form = ProblemForm(request.POST,request.FILES)
+    form = ProblemForm(request.POST, request.FILES)
     if request.method == 'POST' and form.is_valid():
         phase = Phase.objects.get(pk=pk)
         problem = form.save(commit=False)
         problem.project = Phase.objects.get(pk=pk).project
         problem.author = request.user
-        problem.phase =phase
+        problem.phase = phase
         form.save()
         project = Project.objects.get(pk=phase.project.pk)
         Action.objects.create(author_id=request.user.pk, project_id=project.pk,
@@ -532,7 +559,7 @@ def remove_team_member(request, pk):
 
 
 @login_required
-def filter_table(request,status):
+def filter_table(request, status):
     global projects
     global arr
 
@@ -552,7 +579,7 @@ def filter_table(request,status):
         projects = Project.objects.filter(project_deadline__range=(start_date, end_date))
     else:
         projects = Project.objects.filter(project_status=status)
-    arr = json.loads(serializers.serialize('json',projects))
+    arr = json.loads(serializers.serialize('json', projects))
     for a in arr:
         project = Project.objects.get(pk=dict(a)['pk'])
         fields = dict(a)['fields']
@@ -562,8 +589,7 @@ def filter_table(request,status):
         fields['project_blog'] = project.project_blog.blog_name
 
     projects_serialized_modified = json.dumps(arr)
-    return JsonResponse(status=200,data={'success':True,'projects':projects_serialized_modified})
-
+    return JsonResponse(status=200, data={'success': True, 'projects': projects_serialized_modified})
 
 
 def add_project_files(request, pk):
@@ -584,23 +610,24 @@ def add_project_files(request, pk):
     return JsonResponse(status=405, data={'error': 'Ruxsat berilmagan'})
 
 
-def start_phase(request,pk):
+def start_phase(request, pk):
     phase = Phase.objects.get(pk=pk)
     if isProjectOwner(request.user) or isAdmin(request.user):
         phase.start()
         return redirect('my-projects-detail', phase.project.pk)
     else:
-        messages.add_message(request,messages.ERROR,'Sizda bunday ruxsat mavjud emas')
+        messages.add_message(request, messages.ERROR, 'Sizda bunday ruxsat mavjud emas')
         return redirect('my-projects-detail', phase.project.pk)
 
-def finish_phase(request,pk):
+
+def finish_phase(request, pk):
     if isProjectOwner(request.user) or isAdmin(request.user):
         phase = Phase.objects.get(pk=pk)
         phase.finish()
         return redirect('my-projects-detail', phase.project.pk)
     else:
-        messages.add_message(request,messages.ERROR,'Sizda bunday ruxsat mavjud emas')
-        return render(request, 'my-projects-detail.html',{'messages':messages})
+        messages.add_message(request, messages.ERROR, 'Sizda bunday ruxsat mavjud emas')
+        return render(request, 'my-projects-detail.html', {'messages': messages})
 
 
 def finish_project(request):

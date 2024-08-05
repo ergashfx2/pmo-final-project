@@ -79,7 +79,9 @@ function updateUsersTable(users_table_body, copied_tr, users) {
         let action = get_user_action(user.status)
         new_tr.children[5].children.item(1).setAttribute('user_id',user.user_id)
         new_tr.children[5].children.item(1).setAttribute('action',action)
+        new_tr.setAttribute('data-url',`/users/profile/${user.user_id}`)
         users_table_body.appendChild(new_tr);
+        redirecting()
         toolsManager()
     });
 }
@@ -109,3 +111,24 @@ function get_user_status(status){
     actionsManager();
     toolsManager();
 });
+
+
+function redirecting() {
+    console.log('working redirect');
+    const tbody = document.getElementById('users_list_body');
+    tbody.removeEventListener('click', handleRedirect);
+    tbody.addEventListener('click', handleRedirect);
+}
+
+function handleRedirect(e) {
+    const target = e.target.closest('.datas');
+    if (target) {
+        const url = target.getAttribute('data-url');
+        if (url) {
+            window.location.href = url;
+        }
+    }
+}
+
+
+        redirecting()
