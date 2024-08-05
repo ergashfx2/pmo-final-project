@@ -89,6 +89,7 @@
                         </tbody>
                     </table>
                 </div>
+                            {% if projects.has_next %}
                 <div class="clearfix">
                     <ul class="pagination pagination-sm m-0 float-right">
                         {% if projects.has_previous %}
@@ -129,6 +130,7 @@
                     </ul>
                 </div>
         </div>
+    {% endif %}
     </div>
     <script src="{% static 'static/js/expense.js' %}"></script>
     <script>
