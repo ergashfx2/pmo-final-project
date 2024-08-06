@@ -3,6 +3,7 @@
 {% block content %}
     {% load filters %}
 
+    <link rel="preload" href="{% static 'static/css/my_projects.css' %}" as="style">
     <link rel="stylesheet" href="{% static 'static/css/my_projects.css' %}">
     <section class="bg-white mx-1">
         <div>
@@ -218,72 +219,9 @@
     <script type="text/javascript">
         var projects_s = {{ projects_serialized | safe }};
     </script>
-    <script>
-document.addEventListener('DOMContentLoaded', function () {
-        var toggleButton = document.querySelector('[data-toggle="offcanvas"]');
-        var offcanvasElement = document.querySelector(toggleButton.getAttribute('data-target'));
-        var closeButton = offcanvasElement.querySelector('.close_canvas');
-
-toggleButton.addEventListener('click', function (event) {
-    console.log('clicked');
-    offcanvasElement.classList.add('show');
-    event.stopPropagation();
-    setTimeout(() => {
-        document.addEventListener('click', function (e) {
-            let canvas = document.getElementById('offcanvasRight');
-            if (!canvas.contains(e.target)) {
-                offcanvasElement.classList.remove('show');
-            }
-        }, { once: true });
-    }, 0);
-});
-
-
-        closeButton.addEventListener('click', function () {
-            offcanvasElement.classList.remove('show');
-        });
-        var cols = []
-        var colNames = []
-        var thead = ''
-        var tbody = ''
-        filters = document.querySelectorAll('.cols');
-        filters.forEach(value => {
-            value.addEventListener('change', function (e) {
-                var checked = e.target.checked
-                if (checked) {
-                    console.log(value.parentNode.textContent.trim())
-                    cols.push(value.parentNode.textContent.trim())
-                    colNames.push(value.name)
-                } else {
-                    cols = cols.filter(item => item !== value.parentNode.textContent.trim());
-                    colNames = colNames.filter(item => item !== value.name);
-                }
-            })
-        })
-
-        document.getElementById('apply-changes').addEventListener('click', function () {
-             offcanvasElement.classList.remove('show');
-            thead = ''
-            tbody = ''
-            cols.forEach(col => {
-                thead += `<th>${col}</th>`
-
-            })
-            for (i = 0; i < projects_s.length; i++) {
-                var tds = ''
-                colNames.forEach(value => {
-                    tds += `<td><a href=${window.location.pathname.replace('all',projects_s[i].pk)} style="color:#000;">${projects_s[i].fields[value]}</a></td>`
-                })
-                tbody += `<tr>${tds}</tr>`
-            }
-            document.getElementById('table-projects').innerHTML = `<thead><tr>${thead}</tr></thead><tbody>${tbody}</tbody>`
-        })
-    });
+    <script src="{% static 'static/js/all_projects.js' %}">
     </script>
 <script src="{% static 'static/js/expense.js' %}"></script>
-        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script>
     var projects_serialized = {{ all_serialized | safe }}
     </script>
