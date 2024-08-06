@@ -24,7 +24,7 @@ def spending(request):
     for project in projects:
         total_budget += float(project.project_budget)
         spent_budget += float(project.project_spent_money)
-    return render(request, 'spendings.html',
+    return render(request, 'expenses.html',
                   {'projects': projects, 'total_budget': str(total_budget), 'spent_budget': str(spent_budget),
                    'expenses': totalExpense})
 

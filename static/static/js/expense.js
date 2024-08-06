@@ -152,7 +152,6 @@ function delete_expense(e) {
 }
 
 function redirecting() {
-    console.log('working redirect');
     const tbody = document.getElementById('projects-body');
     tbody.removeEventListener('click', handleRedirect);
     tbody.addEventListener('click', handleRedirect);
@@ -168,8 +167,9 @@ function handleRedirect(e) {
     }
 }
 
-
-        redirecting()
+try {
+    redirecting()
+}catch (e){}
 
 
 function decreaseBudget() {
@@ -456,19 +456,20 @@ function filter_all_projects() {
             projects_all.forEach((project,index)=>{
                 let new_cloned_tr = cloned_tr.cloneNode(true);
                 new_cloned_tr.children.item(0).innerText = index + 1;
-                new_cloned_tr.children.item(1).innerText = project.project_name;
-                new_cloned_tr.children.item(2).innerText = project.project_description;
-                new_cloned_tr.children.item(3).innerText = project.project_departments;
-                new_cloned_tr.children.item(4).innerText = project.project_budget;
-                new_cloned_tr.children.item(5).innerText = project.project_curator;
+                new_cloned_tr.children.item(1).innerText = project.project_number;
+                new_cloned_tr.children.item(2).innerText = project.project_name;
+                new_cloned_tr.children.item(3).innerText = project.project_description;
+                new_cloned_tr.children.item(4).innerText = project.project_departments;
+                new_cloned_tr.children.item(5).innerText = project.project_budget;
+                new_cloned_tr.children.item(6).innerText = project.project_curator;
                 let bg = return_bg_color(project.project_status);
-                new_cloned_tr.children.item(6).children.item(0).children.item(0).classList.add(bg[0]);
-                new_cloned_tr.children.item(6).children.item(0).children.item(0).setAttribute('aria-valuenow', project.project_done_percentage);
-                new_cloned_tr.children.item(6).children.item(0).children.item(0).style.width = project.project_done_percentage + '%';
-                new_cloned_tr.children.item(6).children.item(1).innerText = project.project_done_percentage + '%';
-                new_cloned_tr.children.item(6).children.item(2).removeAttribute('class');
-                new_cloned_tr.children.item(6).children.item(2).classList.add('badge', bg[1]);
-                new_cloned_tr.children.item(6).children.item(2).innerText = `${project.project_status}`;
+                new_cloned_tr.children.item(7).children.item(0).children.item(0).classList.add(bg[0]);
+                new_cloned_tr.children.item(7).children.item(0).children.item(0).setAttribute('aria-valuenow', project.project_done_percentage);
+                new_cloned_tr.children.item(7).children.item(0).children.item(0).style.width = project.project_done_percentage + '%';
+                new_cloned_tr.children.item(7).children.item(1).innerText = project.project_done_percentage + '%';
+                new_cloned_tr.children.item(7).children.item(2).removeAttribute('class');
+                new_cloned_tr.children.item(7).children.item(2).classList.add('badge', bg[1]);
+                new_cloned_tr.children.item(7).children.item(2).innerText = `${project.project_status}`;
             tbody.appendChild(new_cloned_tr)
             })
 

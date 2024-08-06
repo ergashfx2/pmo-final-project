@@ -3,14 +3,12 @@
 {% block content %}
     {% load filters %}
     <link rel="stylesheet" href="{% static 'static/css/my_projects.css' %}">
-    <div class="row border-0">
-        <div class="col-12 border-0">
                 <div class="card-header bg-white">
-                    <h3 class="card-title d-inline">Barcha loyihalar</h3>
-
-                    <div class="card-tools" style="width: 59.5%">
-                        <div class="input-group input-group-sm">
-                            <input type="text" id="search-project" style="width: 47%" name="table_search" class="form-control float-right search-projects" placeholder="Qidirish">
+                    <div class="card-tools row" style="width: 100%">
+                        <div class="col-lg-5 col-md-12 col-sm-12 ml-4 mr-1"><span class="h3">Barcha loyihalar</span></div>
+                        <div class="col-lg-6 col-md-12 col-sm-12 mt-2" >
+                            <div class="input-group input-group-sm">
+                            <input type="text" id="search-project" style="width: 63.5%" name="table_search" class="form-control float-right search-projects" placeholder="Qidirish">
                             <select class="custom-select" id="filter-all-projects">
                                 <option value="all" selected>Barchasi</option>
                                 <option value="Yangi">Boshlanmagan</option>
@@ -23,6 +21,7 @@
                             <div class="input-group-append">
                                 <a href="{% url 'create-project' %}" type="button" class="btn btn-default fa-solid fa-folder-plus"></a>
                             </div>
+                        </div>
                         </div>
                     </div>
                 </div>
@@ -129,9 +128,7 @@
                         {% endif %}
                     </ul>
                 </div>
-        </div>
     {% endif %}
-    </div>
     <script src="{% static 'static/js/expense.js' %}"></script>
     <script>
     var projects_serialized = {{ my_projects_serialized | safe }}

@@ -81,3 +81,7 @@ body {
     background-color: #dc3545;
     border-color: #dc3545;
 }
+
+#filter-all-projects option {
+    border: 1px solid grey;
+}

@@ -67,10 +67,8 @@ def login_view(request):
         else:
             try:
                 user_exists = User.objects.get(username=username)
-                # If user exists, the issue is with the password
                 form.add_error('password', 'Parolingiz xato kiritilgan')
             except User.DoesNotExist:
-                # If user does not exist
                 form.add_error('username', 'Username mavjud emas')
 
     return render(request, 'login.html', {'form': form})
