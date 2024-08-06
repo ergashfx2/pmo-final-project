@@ -56,17 +56,10 @@ document.addEventListener("DOMContentLoaded", function () {
         })
     })
     redirecting()
-    problemsManager();
     commentsManager();
     initTabs();
     initTaskManager();
-    initPhaseActions();
-    initTaskEdit();
-    initTaskDelete();
-    initTaskCompletion();
-    initCommentSystem();
     initFilterToggle();
-    initMultiSelect();
 });
 
 
@@ -264,19 +257,7 @@ try {
 }catch (e){
 
 }
-var delFiles = []
 
-function listen_del_files(e) {
-    let file = e.target
-    if (file.checked === true) {
-        delFiles.push(file.id);
-    } else {
-        delFiles = delFiles.filter(item => item !== file.id);
-    }
-    console.log(delFiles)
-
-
-}
 
 
 function initTabs() {
@@ -366,7 +347,6 @@ function document_change_listener(event) {
         .then(res => res.json())
         .then(res => {
             let phase_id = form.id.split('_')[3];
-            console.log(phase_id)
             let docs = document.getElementById('files' + phase_id);
             let newDoc = document.createElement('div');
             newDoc.innerHTML = `
@@ -580,7 +560,6 @@ function click_tr_handler(event) {
             });
             document.querySelectorAll('.delete-task-btn').forEach(value => {
                 value.addEventListener('click', function () {
-                    console.log(value.parentNode.parentNode)
                     value.parentNode.innerHTML = `<i id="confirm-delete-task" class="fa-solid btn btn-sm btn-default fa-check"></i><i id="cancel-changes" class="fa-solid btn btn-sm btn-default fa-xmark"></i>`
                     document.getElementById('confirm-delete-task').addEventListener('click', function () {
                         fetch(`delete-task/${task_id}`).then(res => {
@@ -594,7 +573,6 @@ function click_tr_handler(event) {
 
                 value.addEventListener('click', function () {
                     value.parentNode.parentNode.childNodes.forEach(element => {
-                        console.log(element.firstChild)
                         let el_name = element.firstChild.name
                         let el_value = element.firstChild.value
                         data2.push({[el_name]: el_value})
@@ -617,69 +595,7 @@ try {
 }catch (e){}
 
 
-function initPhaseActions() {
-    let phaseId = null;
-    document.querySelectorAll('.trash-icon').forEach(icon => {
-        icon.addEventListener('click', function () {
-            phaseId = icon.id;
-        });
-    });
 
-    document.getElementById('delete-icon-confirm').addEventListener('click', function () {
-        fetch(`/projects/my-projects/delete-phase/${phaseId}`).then(() => location.reload());
-    });
-
-    document.querySelectorAll('.icon-buttons').forEach(value => {
-        value.addEventListener('click', function () {
-            let phaseId = value.classList[3];
-            const el = document.getElementById(`phase${phaseId}`);
-            let element = el.textContent.trim();
-            document.getElementById(`phase${phaseId}`).innerHTML = `<input type="text" value="${element}"/>`;
-            document.getElementById(`icons-panel${phaseId}`).innerHTML = `<i id="icon-save" class="fa-solid fa-circle-check" style="color: green;cursor: pointer"></i>`;
-
-            document.getElementById('icon-save').addEventListener('click', function () {
-                const newInput = document.getElementById(`phase${phaseId}`).children.item(0).value;
-                sendPostRequest(`update-phase/${phaseId}`, {phase_name: newInput});
-                location.reload()
-            });
-        })
-    })
-
-
-}
-
-function problemsManager() {
-    let edit_problems = document.querySelectorAll('.edit-problem ');
-    let delete_problems = document.querySelectorAll('.delete-problem');
-    var problem
-    edit_problems.forEach(value => {
-        value.addEventListener('click', function () {
-            problem = document.getElementById(value.classList[4]);
-            problem.innerHTML = `<textarea type="text" id="area${problem.id}"> ${problem.textContent.trim()} </textarea>`;
-
-            document.addEventListener('keypress', function (e) {
-                if (e.key === 'Enter') {
-                    sendPostRequest(`edit-problem/${problem.id}`, {'problem': problem.firstChild.value})
-                    problem.innerHTML = `${problem.firstChild.value}`
-                    problem = null
-                }
-            })
-        })
-
-    })
-    delete_problems.forEach(value => {
-        value.addEventListener('click', function () {
-            var problem_id = value.classList[4]
-            console.log(problem_id)
-            document.getElementById('confirm-delete-problem').addEventListener('click', function () {
-                fetch(`delete-problem/${problem_id}`).then(res => {
-                    location.reload()
-                })
-            })
-
-        })
-    })
-}
 
 function formatDateAndTimeDifference(dateString) {
     const inputDate = new Date(dateString);
@@ -742,18 +658,13 @@ function commentsManager() {
 
 function post_comment(event) {
     event.preventDefault();
-
     const form = event.target;
     const formData = new FormData(form);
-
     const summernote = form.querySelector('iframe')
         .contentDocument.querySelector('body .note-editing-area').children[2];
     const phase = form.getAttribute('phase_id');
-
     formData.append('comment', summernote.innerHTML);
-
     const url = `post-comment/${phase}`;
-
     fetch(url, {
         method: 'POST',
         headers: {
@@ -767,8 +678,6 @@ function post_comment(event) {
 }
 
 function handleResponse(data, form) {
-    console.log(data);
-
     const commentId = data.comment_id;
     const newCommentElement = createCommentElement(data);
 
@@ -861,7 +770,6 @@ function comments_listener(e) {
     comment.style.display = 'none'
     let form = value.parentNode.parentNode.parentNode.querySelector('form')
     form.style.display = 'block'
-    console.log(form.children.item(1))
     let summernote = form.children.item(1).children.item(4).querySelector('iframe').contentDocument.querySelector('body').getElementsByClassName('note-editing-area').item(0).children.item(2)
     summernote.innerHTML = comment.innerHTML
     form.id = 'edit-comment-form'
@@ -877,7 +785,6 @@ function problems_listener(e) {
     let value = e.target
     let comment = value.parentNode.parentNode.children.item(2)
     comment.style.display = 'none'
-    console.log(value.parentNode.parentNode.parentNode.querySelector('form').children.item(5))
     let form = value.parentNode.parentNode.parentNode.querySelector('form')
     form.style.display = 'block'
     let summernote = form.children.item(1).children.item(4).querySelector('iframe').contentDocument.querySelector('body').getElementsByClassName('note-editing-area').item(0).children.item(2)
@@ -906,7 +813,6 @@ function submit_edit_comment(e) {
         },
         body: formData,
     }).then(res => res.json()).then(res => {
-        console.log(res)
         form.style.display = 'none'
         console.log(form.parentNode)
         form.parentNode.children.item(2).innerHTML = res.comment
@@ -917,9 +823,7 @@ function submit_edit_comment(e) {
 function submit_edit_problem(e) {
     e.preventDefault()
     let form = e.target
-    console.log(form)
     let summernote = form.children.item(1).children.item(4).querySelector('iframe').contentDocument.querySelector('body').getElementsByClassName('note-editing-area').item(0).children.item(2)
-    console.log(summernote.innerHTML)
     let c_id = form.getAttribute('problem_id')
     let formData = new FormData(form)
     formData.append('problem', summernote.innerHTML)
@@ -974,182 +878,119 @@ function actions_btn(e) {
     } else {
         form = btn.parentNode.parentNode.querySelector('.post-problem')
     }
-    if (data[0] === 'problems') {
-        form.classList.add('post-problem')
-        form.classList.remove('post-comment')
-        form.removeEventListener('submit', post_comment)
-        form.addEventListener('submit', handle_problem_submit)
-        let row = document.getElementById(`problems_row_${data[1]}`)
-        row.parentNode.querySelectorAll('.commments').forEach(value => value.style.display = 'none')
-        document.getElementById(`problems_row_${data[1]}`).style.display = 'block'
-        document.getElementById(`actions_row_${data[1]}`).style.display = 'none'
+        let row
+    switch (data[0]){
+        case 'problems':
+            form.classList.add('post-problem')
+            form.classList.remove('post-comment')
+            form.removeEventListener('submit', post_comment)
+            form.addEventListener('submit', handle_problem_submit)
+            row = document.getElementById(`problems_row_${data[1]}`)
+            row.parentNode.querySelectorAll('.commments').forEach(value => value.style.display = 'none')
+            document.getElementById(`problems_row_${data[1]}`).style.display = 'block'
+            document.getElementById(`actions_row_${data[1]}`).style.display = 'none'
+            break;
+        case 'comments':
+            row = document.getElementById(`problems_row_${data[1]}`)
+            row.parentNode.querySelectorAll('.commments').forEach(value => value.style.display = 'flex')
+            document.getElementById(`problems_row_${data[1]}`).style.display = 'none'
+            form.removeEventListener('submit', handle_problem_submit)
+            form.addEventListener('submit', post_comment)
+            document.getElementById(`actions_row_${data[1]}`).style.display = 'none'
+            break;
+        case 'actions':
+            document.getElementById(`problems_row_${data[1]}`).style.display = 'none'
+            row = document.getElementById(`actions_row_${data[1]}`)
+            row.parentNode.querySelectorAll('.commments').forEach(value => value.style.display = 'none')
+            document.getElementById(`actions_row_${data[1]}`).style.display = 'block'
+            break;
+
     }
-    if (data[0] === 'comments') {
-        let row = document.getElementById(`problems_row_${data[1]}`)
-        row.parentNode.querySelectorAll('.commments').forEach(value => value.style.display = 'flex')
-        document.getElementById(`problems_row_${data[1]}`).style.display = 'none'
-        form.removeEventListener('submit', handle_problem_submit)
-        form.addEventListener('submit', post_comment)
-        document.getElementById(`actions_row_${data[1]}`).style.display = 'none'
+}
+
+async function handle_problem_submit(e) {
+    e.preventDefault();
+    let form = e.target;
+    let formData = new FormData(form);
+    let summernote = form.querySelector('iframe').contentDocument.querySelector('.note-editing-area .note-editable');
+    let phase = form.getAttribute('phase_id');
+    formData.append('problem', summernote.innerHTML);
+
+    let url = `post-problem/${phase}`;
+    try {
+        let response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': form.csrfmiddlewaretoken.value
+            },
+            body: formData,
+        });
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        let res = await response.json();
+        let comment_id = res.comment_id;
+        let comments_list = form.closest('.comments-container').querySelector('.comments-list');
+
+        let commentDiv = createCommentElement(res);
+        comments_list.appendChild(commentDiv);
+        form.style.display = 'none';
+        form.reset();
+
+    } catch (error) {
+        console.error('There was a problem with the fetch operation:', error);
     }
-    if (data[0] === 'actions') {
-        document.getElementById(`problems_row_${data[1]}`).style.display = 'none'
-        let row = document.getElementById(`actions_row_${data[1]}`)
-        row.parentNode.querySelectorAll('.commments').forEach(value => value.style.display = 'none')
-        document.getElementById(`actions_row_${data[1]}`).style.display = 'block'
-    }
 }
 
-function initTaskEdit() {
-    const taskName = document.getElementById('task-edit-task-name');
-    const taskDeadline = document.getElementById('task-edit-deadline');
-    const taskManager = document.getElementById('task-edit-task-manager');
+function createCommentElement(res) {
+    let div = document.createElement('div');
+    div.classList.add('row');
 
-    document.querySelectorAll('.edit-task-icon').forEach(task => {
-        task.addEventListener('click', function () {
-            const taskId = task.classList[3];
-            fetch(`get-task/${taskId}`).then(res => res.json()).then(data => {
-                const taskData = JSON.parse(data)[0].fields;
-                taskName.value = taskData.task_name;
-                taskDeadline.value = taskData.task_deadline;
-                taskManager.value = taskData.task_manager;
-            });
+    let div1 = document.createElement('div');
+    div1.classList.add('col-0');
+    div1.innerHTML = `<span><img src="${res.author_avatar}" height="35" width="35" style="border-radius: 40%"></span>`;
 
-            document.getElementById('confirm-task-update').addEventListener('click', function () {
-                const updatedData = {
-                    task_name: taskName.value,
-                    task_deadline: taskDeadline.value,
-                    task_manager: taskManager.value
-                };
-                sendPostRequest(`update-task/${taskId}`, updatedData);
-                location.reload()
-            });
-        });
-    });
+    let div2 = document.createElement('div');
+    div2.classList.add('col-11');
+    let date = formatDateAndTimeDifference(res.comment_date).split('_');
+    div2.innerHTML = `
+        <div style="margin-top: 2%; display: flex; flex-direction: column;">
+            <span class="d-block"><b>${res.author_name}</b><div class="d-inline mx-2"></div><p class="text-sm text-secondary d-inline">${date[0]}</p></span>
+            <small>${date[1].split('T')[0].split('-').reverse().join('-')}</small>
+            <div style="margin-top: 1%">${res.comment}</div>
+            <div>
+                <small id="delete_problem_${res.comment_id}" type="button" class="text-secondary delete-comment-btn mr-3">O'chirish</small>
+                <small id="edit_problem_${res.comment_id}" type="button" class="text-secondary edit-comment">Tahrirlash</small>
+            </div>
+        </div>
+    `;
+
+    let form2 = createEditCommentForm(res);
+    div2.children.item(0).appendChild(form2);
+
+    div.appendChild(div1);
+    div.appendChild(div2);
+
+    return div;
 }
 
+function createEditCommentForm(res) {
+    let form2 = document.createElement('form');
+    form2.method = 'post';
+    form2.enctype = "multipart/form-data";
+    form2.classList.add('edit-comment-form');
+    form2.setAttribute('comment_id', res.comment_id);
+    form2.style.display = 'none';
+    form2.innerHTML = `
+        <input type="hidden" name="csrfmiddlewaretoken" value="${res.csrf_token}">
+        ${res.form.innerHTML}
+        <button type="submit" class="btn btn-md btn-secondary">Yuborish</button>
+    `;
 
-function initTaskDelete() {
-    let taskId = null;
-
-    document.querySelectorAll('.delete-task-icon').forEach(task => {
-        task.addEventListener('click', function () {
-            taskId = task.id;
-        });
-    });
-
-    document.getElementById('delete-task-confirm').addEventListener('click', function () {
-        fetch(`/projects/my-projects/delete-task/${taskId}`).then(() => location.reload());
-    });
+    form2.addEventListener('submit', submit_edit_comment);
+    return form2;
 }
 
-function initTaskCompletion() {
-    const rangeInput = document.getElementById('task-done');
-    const label = document.getElementById('task-done-percentage');
-    let taskId = null;
-    let newVal = 0;
-
-    const updateValue = (value) => {
-        label.textContent = `Completion Percentage: ${value}%`;
-        rangeInput.value = value;
-    };
-
-    document.querySelectorAll('.task-finish').forEach(button => {
-        button.addEventListener('click', function () {
-            taskId = this.classList[3];
-            const percentage = parseInt(document.getElementById(`task-percentage${taskId}`).textContent.trim());
-            updateValue(percentage);
-
-        });
-    });
-
-    rangeInput.addEventListener('change', function (e) {
-        newVal = Math.min(Math.round(e.target.value / 5) * 5, 100);
-        updateValue(newVal);
-    });
-
-    document.getElementById('finish-task-confirm').addEventListener('click', function () {
-        sendPostRequest(`update-task-percentage/${taskId}`, {task_done_percentage: newVal});
-        location.reload()
-    });
-}
-
-
-function initCommentSystem() {
-    document.getElementById('problem-btn').addEventListener('click', function () {
-        const problem = document.getElementById('problem');
-        const taskId = problem.classList[1];
-        sendPostRequest(`post-problem/${taskId}`, {'problem': problem.value});
-        location.reload()
-    });
-
-    document.getElementById('comment-btn').addEventListener('click', function () {
-        const comment = document.getElementById('comment');
-        const taskId = comment.classList[1];
-        sendPostRequest(`post-comment/${taskId}`, {'comment': comment.value});
-        location.reload()
-    });
-}
-
-function handle_problem_submit(e) {
-    let form = e.target
-    e.preventDefault()
-    let formData = new FormData(form)
-    let summernote = form.children.item(2).querySelector('iframe').contentDocument.querySelector('body').getElementsByClassName('note-editing-area').item(0).children.item(2)
-    let phase = e.target.getAttribute('phase_id')
-    formData.append('problem', summernote.innerHTML)
-    let url = `post-problem/${phase}`
-    fetch(`${url}`, {
-        method: 'POST',
-        headers: {
-            'X-CSRFToken': form.csrfmiddlewaretoken.value
-        },
-        body: formData,
-    })
-        .then(res => res.json().then(res => {
-            comment_id = res.comment_id
-            let div = document.createElement('div')
-            let div1 = document.createElement('div')
-            let div2 = document.createElement('div')
-            div.classList.add('row')
-            div1.classList.add('col-0')
-            div2.classList.add('col-11')
-            let date = formatDateAndTimeDifference(res.comment_date).split('_')
-            div1.innerHTML = `
-                                    <span><img src=${res.author_avatar} height="35" width="35" style="border-radius: 40%"></span>`
-            div2.innerHTML = `
-                                   <div style="margin-top: 2%; display: flex; flex-direction: column;">
-    <span class="d-block" style="margin: 0;padding: 0"><b style="margin: 0;padding: 0">${res.author_name}</b><div class="d-inline mx-2"></div><p class="text-sm text-secondary d-inline">${date[0]}</p></span>
-    <small style="margin: 0;padding:0">${date[1].split('T')[0].split('-').reverse().join('-')}</small>
-    <div style="margin-top: 1%">${res.comment}</div>
-    <div><small id="delete_problem_${res.comment_id}"  type="button" class="text-secondary delete-comment-btn  mr-3">O'chirish</small>        <small id="edit_problem_${res.comment_id}" type="button" class="text-secondary edit-comment">Tahrirlash</small></div>
-</div>
-`
-            let form2 = document.createElement('form')
-            form2.method = 'post'
-            form2.enctype = "multipart/form-data"
-            form2.classList.add('edit-comment-form')
-            form2.setAttribute('comment_id', comment_id)
-            form2.style.display = 'none'
-            let div3 = document.createElement('div')
-            div3.innerHTML = `${res.form.innerHTML}`
-            form2.innerHTML = `<input type="hidden" name="csrfmiddlewaretoken" value="eUlbeAMl7MACovcIOsvIKWuYHo3i77HNENX49HRtKTrLtrzOx1gyuJkzxeof9lLC">${res.form}<button type="submit" class="btn btn-md btn-secondary">
-                                                                                    Yuborish
-                                                                                </button>`
-            div2.children.item(0).appendChild(form2)
-            form2.addEventListener('submit', submit_edit_comment)
-            let children = div2.children.item(0).children.item(3)
-            children.children.item(0).addEventListener('click', delete_comment)
-            children.children.item(1).addEventListener('click', comments_listener)
-            let comments_list = form.parentNode.parentNode.parentNode.parentNode.parentNode.children.item(8)
-            div.appendChild(div1)
-            div.appendChild(div2)
-            comments_list.parentNode.appendChild(div)
-            form.parentNode.parentNode.children.item(0).style.display = 'block'
-            form.parentNode.parentNode.children.item(1).style.display = 'none'
-
-        }))
-}
 
 
 function initFilterToggle() {
@@ -1160,18 +1001,6 @@ function initFilterToggle() {
         } else {
             filterArea.style.display = 'none';
         }
-    });
-}
-
-
-function initMultiSelect() {
-    document.querySelectorAll('.multi-select').forEach(select => {
-        select.addEventListener('change', function () {
-            const selectedOptions = Array.from(this.selectedOptions).map(option => option.value);
-            const taskId = this.classList[1];
-            sendPostRequest(`update-multi/${taskId}`, {selected: selectedOptions});
-            location.reload()
-        });
     });
 }
 
@@ -1222,108 +1051,6 @@ function formatNumber(val) {
 
     return formatted;
 }
-
-function add_listeners() {
-    console.log('working listeners')
-    var delete_expense_modal = document.getElementById('delete-expense-btn');
-    var e_id
-    document.querySelectorAll('.delete-expense').forEach(value => {
-        value.addEventListener('click', function () {
-            e_id = value.id
-            console.log('working')
-
-        })
-    })
-    var delete_expense_btn = document.getElementById('confirm-delete-expense-btn');
-    delete_expense_btn.addEventListener('click', function () {
-        console.log('licked')
-        fetch(`delete-expense/${e_id}}`).then(res => {
-            var child = document.getElementById(e_id);
-            if (child) {
-                var parent = child.closest('tr');
-                if (parent) {
-                    parent.remove()
-                    res.json().then(response => {
-                        var total = response.spent_money
-                        var left = response.total_money.replaceAll(' ', '') - response.spent_money.replaceAll(' ', '')
-                        document.getElementById('totalExpenses').textContent = `${formatNumber(total)}`
-                        document.getElementById('budgetLeft').textContent = `${formatNumber(left)}`
-                        delete_expense_modal.classList.remove('show');
-                        delete_expense_modal.style.display = 'none';
-                        document.body.classList.remove('modal-open');
-                        document.querySelector('.modal-backdrop').remove();
-                    })
-                }
-            }
-        })
-    })
-}
-
-$(function () {
-  $('[data-toggle="tooltip"]').tooltip()
-})
-
-
-document.getElementById('add-expense').addEventListener('submit', function (e) {
-    e.preventDefault()
-    let expense = document.getElementById('expense').value
-    let amount = document.getElementById('amount').value
-    let date = document.getElementById('date').value
-    let p_id = e.target.classList[0];
-    let file = document.getElementById('file')
-    var input_file
-    if (file.files[0]) {
-        input_file = file.files[0]
-    }
-    let csrfToken = getCookie('csrftoken')
-    let formData = new FormData()
-    let data = {'expense': expense, 'amount': amount, 'date': date, 'file': file.files[0]}
-    formData.append('file', input_file)
-    formData.append('data', JSON.stringify(data))
-    if (expense) {
-        console.log(input_file)
-        fetch(`add-expense/${p_id}`, {
-            method: 'POST',
-            headers: {
-                'X-CSRFToken': csrfToken,
-            },
-            body: formData,
-        }).then(res => {
-            if (res.status === 200) {
-                res.json().then(response => {
-                    console.log(response)
-                    let tbody = document.getElementById('expenses-body')
-                    tbody.innerHTML = `${tbody.innerHTML} <tr class="text-center"><td class="text-center">${expense}</td><td class="text-center">${amount}</td><td class="text-center">${date}</td> <td class="text-center"><i style="color: red;cursor: pointer" id="${response.id}" data-toggle="modal" data-target="#delete-expense-btn" class="fa-regular delete-expense fa-trash-can text-center"></i></td></tr><div id="delete-expense-btn"
-                                                                                         class="modal fade"
-                                                                                         tabindex="-1" role="dialog"
-                                                                                         aria-hidden="true">
-                                                                                        <div class="modal-dialog modal-sm modal-dialog-centered"
-                                                                                             role="document">
-                                                                                            <div class="modal-content">
-                                                                                                <div class="modal-body text-center">
-                                                                                                    <i class="fa-solid fa-triangle-exclamation btn-lg" style="font-size: 5dvh"></i>
-                                                                                                    <h4>Chindan o'chirasizmi ?</h4></div>
-                                                                                                <div class="d-flex justify-content-center mb-2">
-                                                                                                    <button id="confirm-delete-expense-btn" class="btn btn-danger mr-2"><i class="fa-solid fa-trash-can"></i> O'chirish</button>
-                                                                                                    <button class="btn btn-secondary" data-dismiss="modal">Bekor qilish</button>
-                                                                                                    <br>
-                                                                                                </div>
-                                                                                            </div>
-
-                                                                                        </div>
-                                                                                    </div>`
-                    add_listeners()
-                    var total = response.spent_money
-                    var left = response.total_money.replaceAll(' ', '') - response.spent_money.replaceAll(' ', '')
-                    document.getElementById('totalExpenses').textContent = `${formatNumber(total)}`
-                    document.getElementById('budgetLeft').textContent = `${formatNumber(left)}`
-                })
-            } else {
-                alert("error occured")
-            }
-        })
-    }
-})
 
 
 function downloadArchive(pk) {

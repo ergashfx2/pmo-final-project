@@ -363,41 +363,10 @@ function search_project() {
         const initial_tbody = document.getElementById('projects-body').innerHTML;
         const table = document.getElementById('projects-body');
         const cloned_tr = table.children.item(2).cloneNode(true);
-        console.log(cloned_tr)
         const updateTable = () => {
-            const tbody = document.getElementById('projects-body');
+            let tbody = document.getElementById('projects-body');
             tbody.innerHTML = '';
-
-            projects_filtered.forEach((project, index) => {
-                const new_cloned_tr = cloned_tr.cloneNode(true);
-                new_cloned_tr.children.item(0).innerText = index + 1;
-                new_cloned_tr.children.item(1).innerText = project.project_number;
-                new_cloned_tr.children.item(2).innerText = project.project_name;
-                new_cloned_tr.children.item(3).innerText = project.project_blog;
-                new_cloned_tr.children.item(4).innerText = project.project_departments;
-                new_cloned_tr.children.item(5).innerText = project.project_budget;
-                new_cloned_tr.children.item(6).innerText = project.project_curator;
-                                    let bg = return_bg_color(project.project_status);
-                    new_cloned_tr.children.item(7).children.item(0).children.item(0).classList.add(bg[0]);
-                    new_cloned_tr.children.item(7).children.item(0).children.item(0).setAttribute('aria-valuenow', project.project_done_percentage);
-                    new_cloned_tr.children.item(7).children.item(0).children.item(0).style.width = project.project_done_percentage + '%';
-                    new_cloned_tr.children.item(7).children.item(1).innerText = project.project_done_percentage + '%';
-                    new_cloned_tr.children.item(7).children.item(2).removeAttribute('class');
-                    new_cloned_tr.children.item(7).children.item(2).classList.add('badge', bg[1]);
-                    new_cloned_tr.children.item(7).children.item(2).innerText = `${project.project_status}`;
-                if (window.location.href.includes('my-projects')) {
-                    console.log('working')
-                    new_cloned_tr.children.item(8).children.item(0).children.item(0).href = `detail/${project.project_id}`;
-                    new_cloned_tr.children.item(8).children.item(0).children.item(1).href = `edit/${project.project_id}`;
-                    new_cloned_tr.removeAttribute('data-url')
-                    new_cloned_tr.setAttribute('data-url',`detail/${project.project_id}`)
-                                    new_cloned_tr.classList.add('datas')
-                    redirecting()
-                }
-                new_cloned_tr.classList.add('datas')
-                tbody.appendChild(new_cloned_tr);
-                                                redirecting()
-            });
+            generate_results(projects_filtered,cloned_tr,tbody=tbody)
         };
 
         const proxyHandler = {
@@ -427,6 +396,38 @@ function search_project() {
     });
 }
 
+
+function generate_results(projects_filtered,cloned_tr,tbody){
+                projects_filtered.forEach((project, index) => {
+                const new_cloned_tr = cloned_tr.cloneNode(true);
+                new_cloned_tr.children.item(0).innerText = index + 1;
+                new_cloned_tr.children.item(1).innerText = project.project_number;
+                new_cloned_tr.children.item(2).innerText = project.project_name;
+                new_cloned_tr.children.item(3).innerText = project.project_blog;
+                new_cloned_tr.children.item(4).innerText = project.project_departments;
+                new_cloned_tr.children.item(5).innerText = formatNumber(project.project_budget);
+                new_cloned_tr.children.item(6).innerText = project.project_curator;
+                                    let bg = return_bg_color(project.project_status);
+                    new_cloned_tr.children.item(7).children.item(0).children.item(0).classList.add(bg[0]);
+                    new_cloned_tr.children.item(7).children.item(0).children.item(0).setAttribute('aria-valuenow', project.project_done_percentage);
+                    new_cloned_tr.children.item(7).children.item(0).children.item(0).style.width = project.project_done_percentage + '%';
+                    new_cloned_tr.children.item(7).children.item(1).innerText = project.project_done_percentage + '%';
+                    new_cloned_tr.children.item(7).children.item(2).removeAttribute('class');
+                    new_cloned_tr.children.item(7).children.item(2).classList.add('badge', bg[1]);
+                    new_cloned_tr.children.item(7).children.item(2).innerText = `${project.project_status}`;
+                if (window.location.href.includes('my-projects')) {
+                    new_cloned_tr.children.item(8).children.item(0).children.item(0).href = `detail/${project.project_id}`;
+                    new_cloned_tr.children.item(8).children.item(0).children.item(1).href = `edit/${project.project_id}`;
+                    new_cloned_tr.removeAttribute('data-url')
+                    new_cloned_tr.setAttribute('data-url',`detail/${project.project_id}`)
+                                    new_cloned_tr.classList.add('datas')
+                    redirecting()
+                }
+                new_cloned_tr.classList.add('datas')
+                tbody.appendChild(new_cloned_tr);
+                                                redirecting()
+                })
+}
 
 try {
     search_project()
