@@ -103,14 +103,14 @@
                   </div>
                 </div>
               </div>
-                <div class="table-responsive card-body p-0">
+                <div class="table-responsive card-body p-0" style="width: 86.2dvw">
                 <table id="table-projects" class="table table-striped table-bordered projects-table projects" style="margin-top: -0.1%">
                   <thead>
                     <tr>
                       <th scope="col" class="col-0">№</th>
                       <th scope="col" class="col-0">Raqami</th>
                       <th scope="col" class="col-2">Loyiha nomi</th>
-                      <th scope="col" class="col-3">Loyiha haqida</th>
+                      <th scope="col" class="col-3">Blog</th>
                       <th scope="col" class="col-3">Departamentlar</th>
                       <th scope="col" class="col-2">Summasi (UZS)</th>
                       <th scope="col" class="col-1">Hodim</th>
@@ -131,7 +131,7 @@
                             </td>
                             <td>
                                                            <a href="{% url 'get-project' project.pk %}"
-                                                              style="color: black"> {{ project.project_description }} </a>
+                                                              style="color: black"> {{ project.project_blog }} </a>
                             </td>
                             <td >
                                                         <a href="{% url 'get-project' project.pk %}"

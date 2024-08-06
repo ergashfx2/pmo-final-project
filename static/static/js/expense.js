@@ -111,7 +111,6 @@ var e_id
 
 
 function add_listeners() {
-    var delete_expense_modal = document.getElementById('delete-expense-btn');
     document.querySelectorAll('.delete-expense').forEach(value => {
 
         value.addEventListener('click', detect_eid)
@@ -240,7 +239,6 @@ function add_expense() {
             })
                 .then(res => res.json().then(response => {
                     let tbody = document.getElementById('expenses-body');
-                    console.log(response)
                     let tr = document.createElement('tr')
                     tr.innerHTML = `
                     <td>${expense}</td>
@@ -375,7 +373,7 @@ function search_project() {
                 new_cloned_tr.children.item(0).innerText = index + 1;
                 new_cloned_tr.children.item(1).innerText = project.project_number;
                 new_cloned_tr.children.item(2).innerText = project.project_name;
-                new_cloned_tr.children.item(3).innerText = project.project_description;
+                new_cloned_tr.children.item(3).innerText = project.project_blog;
                 new_cloned_tr.children.item(4).innerText = project.project_departments;
                 new_cloned_tr.children.item(5).innerText = project.project_budget;
                 new_cloned_tr.children.item(6).innerText = project.project_curator;
@@ -533,6 +531,10 @@ function search_expense(){
         })
     })
 }
+
+try {
+    search_expense()
+}catch (e){}
 
 try {
     search_project()

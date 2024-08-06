@@ -32,7 +32,7 @@
                                 <th scope="col" class="col-0">№</th>
                                 <th scope="col" class="col-0">Raqami</th>
                                 <th scope="col" class="col-2">Loyiha nomi</th>
-                                <th scope="col" class="col-3">Loyiha haqida</th>
+                                <th scope="col" class="col-3">Blog</th>
                                 <th scope="col" class="col-3">Departamentlar</th>
                                 <th scope="col" class="col-2">Summasi (UZS)</th>
                                 <th scope="col" class="col-1">Hodim</th>
@@ -49,7 +49,7 @@
                                         <a href="{% url 'my-projects-detail' project.pk %}" style="color: black">{{ project.project_name }}</a>
                                     </td>
                                     <td>
-                                        <a href="{% url 'my-projects-detail' project.pk %}" style="color: black">{{ project.project_description }}</a>
+                                        <a href="{% url 'my-projects-detail' project.pk %}" style="color: black">{{ project.project_blog }}</a>
                                     </td>
                                     <td>
                                         <a href="{% url 'my-projects-detail' project.pk %}" style="color: black">

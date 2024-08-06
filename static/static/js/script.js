@@ -159,81 +159,108 @@ try {
 
 }
 
-function delete_files() {
+function deleteFiles() {
+    const deleteButtons = document.querySelectorAll('.delete-files');
 
-    document.querySelectorAll('.delete-files').forEach(value => {
-        value.addEventListener('click', function () {
-            let phase_id = value.getAttribute('phase_id');
-            let files = document.getElementById(`files${phase_id}`);
-            let children = Array.from(files.children);
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            const phaseId = button.getAttribute('phase_id');
+            const files = document.getElementById(`files${phaseId}`);
 
-            children.forEach(child => {
-                let input = document.createElement('input');
-                input.classList.add('del-files');
-                input.type = 'checkbox';
-                input.id = child.id;
-                files.insertBefore(input, child);
+            if (!files) return;
+
+            addCheckboxes(files);
+            const { confirmButton, cancelButton } = addActionButtons(files);
+
+            const delFiles = [];
+
+            document.querySelectorAll('.del-files').forEach(checkbox => {
+                checkbox.addEventListener('change', () => listenDelFiles(checkbox, delFiles));
             });
 
-            let confirm_btn = document.createElement('button')
-            let cancel_btn = document.createElement('button')
-            confirm_btn.classList.add('btn', 'btn-danger', 'del-confirm')
-            cancel_btn.classList.add('btn', 'btn-secondary', 'cancel-delete-file')
-            confirm_btn.innerText = "O'chirish"
-            cancel_btn.innerText = "Bekor qilish"
-            confirm_btn.style.marginTop = '1%'
-            cancel_btn.style.marginTop = '1%'
-            confirm_btn.style.height = '20%'
-            cancel_btn.style.height = '20%'
-            files.parentNode.appendChild(confirm_btn)
-            files.parentNode.appendChild(cancel_btn)
-            document.querySelectorAll('.del-files').forEach(value => {
-                value.addEventListener('change', listen_del_files)
-            })
+            confirmButton.addEventListener('click', () => {
+                confirmButton.remove();
+                const confirmFinalButton = createButton('Tasdiqlayman', ['btn', 'btn-danger']);
+                files.parentNode.insertBefore(confirmFinalButton, cancelButton);
 
-            confirm_btn.addEventListener('click', function (e) {
-                confirm_btn.parentNode.removeChild(confirm_btn)
-                let conf_final_btn = document.createElement('button')
-                conf_final_btn.classList.add('btn', 'btn-danger')
-                conf_final_btn.innerText = 'Tasdiqlayman'
-                conf_final_btn.style.marginTop = '1%'
-                conf_final_btn.style.height = '20%'
-                files.parentNode.insertBefore(conf_final_btn, cancel_btn)
-                conf_final_btn.addEventListener('click', function () {
-                    sendPostRequest2('delete-files/', {'datas': delFiles}).then(res => {
-                        document.querySelectorAll('.del-files').forEach(value => value.parentNode.removeChild(value))
-                        delFiles.forEach(value => {
-                            document.getElementById(value).remove()
-                            conf_final_btn.remove()
-                            cancel_btn.remove()
-                        })
-                    })
-                })
-                cancel_btn.addEventListener('click', function () {
-                    delFiles = []
-                    document.querySelectorAll('.del-files').forEach(value => value.parentNode.removeChild(value))
-                    conf_final_btn.remove()
-                    cancel_btn.remove()
+                confirmFinalButton.addEventListener('click', () => {
+                    sendPostRequest2('delete-files/', { 'datas': delFiles }).then(res => {
+                        delFiles.forEach(id => {
+                            const element = document.getElementById(id);
+                            if (element) element.remove();
+                        });
+                        removeCheckboxes();
+                        confirmFinalButton.remove();
+                        cancelButton.remove();
+                    });
+                });
 
+                cancelButton.addEventListener('click', () => {
+                    cancelDelete(delFiles, confirmFinalButton, cancelButton);
+                });
+            });
 
-                })
-
-            })
-                            cancel_btn.addEventListener('click', function () {
-                    delFiles = []
-                    document.querySelectorAll('.del-files').forEach(value => value.parentNode.removeChild(value))
-                    confirm_btn.remove()
-                    cancel_btn.remove()
-
-
-                })
-
+            cancelButton.addEventListener('click', () => {
+                cancelDelete(delFiles, confirmButton, cancelButton);
+            });
         });
     });
 }
 
+function addCheckboxes(files) {
+    const children = Array.from(files.children);
+    children.forEach(child => {
+        const input = document.createElement('input');
+        input.classList.add('del-files');
+        input.type = 'checkbox';
+        input.id = child.id;
+        files.insertBefore(input, child);
+    });
+}
+
+function addActionButtons(files) {
+    const confirmButton = createButton("O'chirish", ['btn', 'btn-danger', 'del-confirm']);
+    const cancelButton = createButton('Bekor qilish', ['btn', 'btn-secondary', 'cancel-delete-file']);
+
+    files.parentNode.appendChild(confirmButton);
+    files.parentNode.appendChild(cancelButton);
+
+    return { confirmButton, cancelButton };
+}
+
+function createButton(text, classes) {
+    const button = document.createElement('button');
+    button.innerText = text;
+    button.classList.add(...classes);
+    Object.assign(button.style, { marginTop: '1%', height: '20%' });
+    return button;
+}
+
+function listenDelFiles(checkbox, delFiles) {
+    if (checkbox.checked) {
+        delFiles.push(checkbox.id);
+    } else {
+        const index = delFiles.indexOf(checkbox.id);
+        if (index > -1) delFiles.splice(index, 1);
+    }
+}
+
+function cancelDelete(delFiles, confirmButton, cancelButton) {
+    delFiles.length = 0;
+    removeCheckboxes();
+    confirmButton.remove();
+    cancelButton.remove();
+}
+
+function removeCheckboxes() {
+    document.querySelectorAll('.del-files').forEach(checkbox => {
+        checkbox.parentNode.removeChild(checkbox);
+    });
+}
+
+
 try {
-    delete_files()
+    deleteFiles()
 }catch (e){
 
 }
@@ -713,68 +740,120 @@ function commentsManager() {
 }
 
 
-function post_comment(e) {
-    let form = e.target
-    e.preventDefault()
-    let formData = new FormData(form)
-    let summernote = form.children.item(2).querySelector('iframe').contentDocument.querySelector('body').getElementsByClassName('note-editing-area').item(0).children.item(2)
-    let phase = e.target.getAttribute('phase_id')
-    formData.append('comment', summernote.innerHTML)
-    let url = `post-comment/${phase}`
-    console.log(url)
-    fetch(`${url}`, {
+function post_comment(event) {
+    event.preventDefault();
+
+    const form = event.target;
+    const formData = new FormData(form);
+
+    const summernote = form.querySelector('iframe')
+        .contentDocument.querySelector('body .note-editing-area').children[2];
+    const phase = form.getAttribute('phase_id');
+
+    formData.append('comment', summernote.innerHTML);
+
+    const url = `post-comment/${phase}`;
+
+    fetch(url, {
         method: 'POST',
         headers: {
             'X-CSRFToken': form.csrfmiddlewaretoken.value
         },
         body: formData,
     })
-        .then(res => res.json().then(res => {
-            console.log(res)
-            comment_id = res.comment_id
-            let div = document.createElement('div')
-            let div1 = document.createElement('div')
-            let div2 = document.createElement('div')
-            div.classList.add('row')
-            div1.classList.add('col-0')
-            div2.classList.add('col-11')
-            let date = formatDateAndTimeDifference(res.comment_date).split('_')
-            div1.innerHTML = `
-                                    <span><img src=${res.author_avatar} height="35" width="35" style="border-radius: 40%"></span>`
-            div2.innerHTML = `
-                                   <div style="margin-top: 2%; display: flex; flex-direction: column;">
-    <span class="d-block" style="margin: 0;padding: 0"><b style="margin: 0;padding: 0">${res.author_name}</b><div class="d-inline mx-2"></div><p class="text-sm text-secondary d-inline">${date[0]}</p></span>
-    <small style="margin: 0;padding:0">${date[1].split('T')[0].split('-').reverse().join('-')}</small>
-    <div style="margin-top: 1%">${res.comment}</div>
-    <div><small id="delete_comment_${res.comment_id}"  type="button" class="text-secondary delete-comment-btn  mr-3">O'chirish</small>        <small id="edit_comment_${res.comment_id}" type="button" class="text-secondary edit-comment">Tahrirlash</small></div>
-</div>
-`
-            let form2 = document.createElement('form')
-            form2.method = 'post'
-            form2.enctype = "multipart/form-data"
-            form2.classList.add('edit-comment-form')
-            form2.setAttribute('comment_id', comment_id)
-            form2.style.display = 'none'
-            let div3 = document.createElement('div')
-            div3.innerHTML = `${res.form.innerHTML}`
-            form2.innerHTML = `<input type="hidden" name="csrfmiddlewaretoken" value="eUlbeAMl7MACovcIOsvIKWuYHo3i77HNENX49HRtKTrLtrzOx1gyuJkzxeof9lLC">${res.form}<button type="submit" class="btn btn-md btn-secondary">
-                                                                                    Yuborish
-                                                                                </button>`
-            div2.children.item(0).appendChild(form2)
-            form2.addEventListener('submit', submit_edit_comment)
-            console.log(div2)
-            let children = div2.children.item(0).children.item(3)
-            children.children.item(0).addEventListener('click', delete_comment)
-            children.children.item(1).addEventListener('click', comments_listener)
-            let comments_list = form.parentNode.parentNode.parentNode.parentNode.parentNode.children.item(8)
-            div.appendChild(div1)
-            div.appendChild(div2)
-            comments_list.parentNode.appendChild(div)
-            form.parentNode.parentNode.children.item(0).style.display = 'block'
-            form.parentNode.parentNode.children.item(1).style.display = 'none'
-
-        }))
+    .then(response => response.json())
+    .then(data => handleResponse(data, form))
+    .catch(error => console.error('Error:', error));
 }
+
+function handleResponse(data, form) {
+    console.log(data);
+
+    const commentId = data.comment_id;
+    const newCommentElement = createCommentElement(data);
+
+    const commentsList = form.closest('.comments-section').querySelector('.comments-list');
+    commentsList.appendChild(newCommentElement);
+
+    toggleFormVisibility(form);
+}
+
+function createCommentElement(data) {
+    const commentWrapper = document.createElement('div');
+    commentWrapper.classList.add('row');
+
+    const authorDiv = document.createElement('div');
+    authorDiv.classList.add('col-0');
+    authorDiv.innerHTML = `<span><img src="${data.author_avatar}" height="35" width="35" style="border-radius: 40%"></span>`;
+
+    const contentDiv = document.createElement('div');
+    contentDiv.classList.add('col-11');
+    contentDiv.innerHTML = createCommentHTML(data);
+
+    const form = createEditCommentForm(data);
+    contentDiv.querySelector('.comment-content').appendChild(form);
+
+    addEventListeners(contentDiv, data.comment_id);
+
+    commentWrapper.appendChild(authorDiv);
+    commentWrapper.appendChild(contentDiv);
+
+    return commentWrapper;
+}
+
+function createCommentHTML(data) {
+    const date = formatDateAndTimeDifference(data.comment_date).split('_');
+    const formattedDate = date[1].split('T')[0].split('-').reverse().join('-');
+
+    return `
+        <div style="margin-top: 2%; display: flex; flex-direction: column;">
+            <span class="d-block" style="margin: 0;padding: 0">
+                <b style="margin: 0;padding: 0">${data.author_name}</b>
+                <div class="d-inline mx-2"></div>
+                <p class="text-sm text-secondary d-inline">${date[0]}</p>
+            </span>
+            <small style="margin: 0;padding:0">${formattedDate}</small>
+            <div class="comment-content" style="margin-top: 1%">${data.comment}</div>
+            <div>
+                <small id="delete_comment_${data.comment_id}" class="text-secondary delete-comment-btn mr-3" type="button">O'chirish</small>
+                <small id="edit_comment_${data.comment_id}" class="text-secondary edit-comment" type="button">Tahrirlash</small>
+            </div>
+        </div>
+    `;
+}
+
+function createEditCommentForm(data) {
+    const form = document.createElement('form');
+    form.method = 'post';
+    form.enctype = "multipart/form-data";
+    form.classList.add('edit-comment-form');
+    form.setAttribute('comment_id', data.comment_id);
+    form.style.display = 'none';
+
+    form.innerHTML = `
+        <input type="hidden" name="csrfmiddlewaretoken" value="eUlbeAMl7MACovcIOsvIKWuYHo3i77HNENX49HRtKTrLtrzOx1gyuJkzxeof9lLC">
+        ${data.form}
+        <button type="submit" class="btn btn-md btn-secondary">Yuborish</button>
+    `;
+
+    form.addEventListener('submit', submitEditComment);
+
+    return form;
+}
+
+function addEventListeners(contentDiv, commentId) {
+    const deleteButton = contentDiv.querySelector(`#delete_comment_${commentId}`);
+    const editButton = contentDiv.querySelector(`#edit_comment_${commentId}`);
+
+    deleteButton.addEventListener('click', deleteComment);
+    editButton.addEventListener('click', commentsListener);
+}
+
+function toggleFormVisibility(form) {
+    form.closest('.comment-input-section').querySelector('.new-comment').style.display = 'block';
+    form.style.display = 'none';
+}
+
 
 function comments_listener(e) {
     let value = e.target
@@ -896,7 +975,6 @@ function actions_btn(e) {
         form = btn.parentNode.parentNode.querySelector('.post-problem')
     }
     if (data[0] === 'problems') {
-        console.log(data[0])
         form.classList.add('post-problem')
         form.classList.remove('post-comment')
         form.removeEventListener('submit', post_comment)
@@ -907,8 +985,6 @@ function actions_btn(e) {
         document.getElementById(`actions_row_${data[1]}`).style.display = 'none'
     }
     if (data[0] === 'comments') {
-        console.log(data[0])
-        console.log(form)
         let row = document.getElementById(`problems_row_${data[1]}`)
         row.parentNode.querySelectorAll('.commments').forEach(value => value.style.display = 'flex')
         document.getElementById(`problems_row_${data[1]}`).style.display = 'none'
@@ -1023,7 +1099,6 @@ function handle_problem_submit(e) {
     let phase = e.target.getAttribute('phase_id')
     formData.append('problem', summernote.innerHTML)
     let url = `post-problem/${phase}`
-    console.log(url)
     fetch(`${url}`, {
         method: 'POST',
         headers: {
@@ -1032,7 +1107,6 @@ function handle_problem_submit(e) {
         body: formData,
     })
         .then(res => res.json().then(res => {
-            console.log(res)
             comment_id = res.comment_id
             let div = document.createElement('div')
             let div1 = document.createElement('div')
@@ -1064,7 +1138,6 @@ function handle_problem_submit(e) {
                                                                                 </button>`
             div2.children.item(0).appendChild(form2)
             form2.addEventListener('submit', submit_edit_comment)
-            console.log(div2)
             let children = div2.children.item(0).children.item(3)
             children.children.item(0).addEventListener('click', delete_comment)
             children.children.item(1).addEventListener('click', comments_listener)
@@ -1131,83 +1204,15 @@ function sendPostRequest2(url, data) {
         },
         body: JSON.stringify(data)
     }).then(res => {
-        if (!res.ok) {
-            throw new Error('Network response was not ok');
-        }
         return res.json();
     }).then(response => {
         return response;
     }).catch(error => {
-        console.error('Error fetching data:', error);
-        throw error;
     });
 }
 
 
-document.addEventListener('DOMContentLoaded', function () {
-    const csrfToken = getCookie('csrftoken');
 
-    function getCookie(name) {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            const cookies = document.cookie.split(';');
-            for (const cookie of cookies) {
-                const trimmedCookie = cookie.trim();
-                if (trimmedCookie.startsWith(name + '=')) {
-                    cookieValue = decodeURIComponent(trimmedCookie.substring(name.length + 1));
-                    break;
-                }
-            }
-        }
-        return cookieValue;
-    }
-
-    function handleBulkAction(action) {
-        const selectedIds = Array.from(document.querySelectorAll('.form-check-input:checked'))
-            .map(checkbox => checkbox.value);
-        if (selectedIds.length > 0) {
-            Promise.all(selectedIds.map(id => {
-                return fetch(`/${action}/${id}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': csrfToken,
-                    }
-                })
-                    .then(response => {
-                        if (!response.ok) {
-                            location.reload()
-                        }
-                    });
-            }))
-                .then(() => {
-                    location.reload();
-                })
-                .catch(error => console.error('Error:', error));
-        } else {
-            alert('No items selected.');
-        }
-    }
-
-    document.getElementById('do-button').addEventListener('click', function () {
-        const action = document.getElementById('input-select').value;
-        if (action === 'block') handleBulkAction('users/view/block');
-        else if (action === 'unblock') handleBulkAction('users/view/unblock');
-    });
-
-    document.getElementById('delete-button').addEventListener('click', function () {
-        if (confirm("Chindan ham bu foydalanuvchini o'chirasizmi ?")) {
-            handleBulkAction('users/view/delete-user');
-        }
-    });
-
-    document.getElementById('select-all').addEventListener('change', function () {
-        const checkboxes = document.querySelectorAll('.form-check-input');
-        checkboxes.forEach(checkbox => {
-            checkbox.checked = this.checked;
-        });
-    });
-});
 
 function formatNumber(val) {
     val = parseInt(val);

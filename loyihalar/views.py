@@ -366,7 +366,6 @@ def update_task_percentage(task, user, phase, percentage, data):
     task.task_deadline = data[2]['task_deadline']
     task.task_manager = data[1]['task_manager']
     task.save()
-    print(task.task_done_percentage)
     tasks = Task.objects.filter(phase_id=phase)
     phase_done_percentage = 0
     project_done_percentage = 0
@@ -424,7 +423,6 @@ def create_archive(request, pk):
     docs = documents.values_list('document', flat=True)
     temp_dir = os.path.join(settings.MEDIA_ROOT, 'temp')
     os.makedirs(temp_dir, exist_ok=True)
-
     zip_file_path = os.path.join(temp_dir, f'{pk}.zip')
     with ZipFile(zip_file_path, 'w') as zip:
         for doc_path in docs:
@@ -560,38 +558,45 @@ def remove_team_member(request, pk):
 
 @login_required
 def filter_table(request, status):
-    global projects
-    global arr
+    projects = get_projects_by_status(request,status)
+    projects_serialized = json.loads(serializers.serialize('json', projects))
+    modified_projects_serialized = change_projects_serialized(projects_serialized)
+    projects_serialized_modified = json.dumps(modified_projects_serialized)
+    return JsonResponse(status=200, data={'success': True, 'projects': projects_serialized_modified})
 
-    if status == 'all':
-        if 'my-projects' in request.path and not isAdmin(request.user):
-            projects = Project.objects.filter(
-                Q(project_manager__id=request.user.pk) |
-                Q(project_curator__id=request.user.pk) |
-                Q(project_team__username=request.user.username)
-            ).order_by('-project_start_date').distinct()
-        elif 'my-projects' in request.path and isAdmin(request.user):
-            projects = Project.objects.all()
-        else:
-            projects = Project.objects.all()
-    elif str(status).startswith('least'):
-        days = status.split('t')[-1]
-        start_date = timezone.now()
-        end_date = start_date + timezone.timedelta(days=int(days))
-        projects = Project.objects.filter(project_deadline__range=(start_date, end_date))
-    else:
-        projects = Project.objects.filter(project_status=status)
-    arr = json.loads(serializers.serialize('json', projects))
-    for a in arr:
-        project = Project.objects.get(pk=dict(a)['pk'])
-        fields = dict(a)['fields']
+
+
+
+def change_projects_serialized(projects_serialized):
+    for project_single in projects_serialized:
+        project = Project.objects.get(pk=project_single['pk'])
+        fields = dict(project_single)['fields']
         fields['project_departments'] = [department.department_name for department in project.project_departments.all()]
         fields['project_team'] = [man.get_full_name() for man in project.project_team.all()]
         fields['project_curator'] = project.project_curator.get_full_name()
         fields['project_blog'] = project.project_blog.blog_name
+    return projects_serialized
 
-    projects_serialized_modified = json.dumps(arr)
-    return JsonResponse(status=200, data={'success': True, 'projects': projects_serialized_modified})
+
+
+
+def get_projects_by_status(request,status):
+    if status == 'all':
+        if 'my-projects' in request.path and not isAdmin(request.user):
+            return get_user_projects(request.user)
+        elif 'my-projects' in request.path and isAdmin(request.user):
+            return Project.objects.all()
+        else:
+            return Project.objects.all()
+    elif str(status).startswith('least'):
+        days = status.split('t')[-1]
+        start_date = timezone.now()
+        end_date = start_date + timezone.timedelta(days=int(days))
+        return Project.objects.filter(project_deadline__range=(start_date, end_date))
+    else:
+        return Project.objects.filter(project_status=status)
+
+
 
 
 def add_project_files(request, pk):
