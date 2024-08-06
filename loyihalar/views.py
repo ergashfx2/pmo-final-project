@@ -564,12 +564,14 @@ def filter_table(request, status):
     global arr
 
     if status == 'all':
-        if 'my-projects' in request.path:
+        if 'my-projects' in request.path and not isAdmin(request.user):
             projects = Project.objects.filter(
                 Q(project_manager__id=request.user.pk) |
                 Q(project_curator__id=request.user.pk) |
                 Q(project_team__username=request.user.username)
             ).order_by('-project_start_date').distinct()
+        elif 'my-projects' in request.path and isAdmin(request.user):
+            projects = Project.objects.all()
         else:
             projects = Project.objects.all()
     elif str(status).startswith('least'):
