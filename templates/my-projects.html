@@ -2,6 +2,7 @@
 {% load static %}
 {% block content %}
     {% load filters %}
+    <link rel="preload" href="{% static 'static/css/my_projects.css' %}" as="style">
     <link rel="stylesheet" href="{% static 'static/css/my_projects.css' %}">
                 <div class="card-header bg-white">
                     <div class="card-tools row" style="width: 100%">
@@ -129,6 +130,7 @@
                     </ul>
                 </div>
     {% endif %}
+    <link rel="preload" src="{% static 'static/js/expense.js' %}" as="script">
     <script src="{% static 'static/js/expense.js' %}"></script>
     <script>
     var projects_serialized = {{ my_projects_serialized | safe }}
