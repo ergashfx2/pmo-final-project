@@ -436,52 +436,70 @@ try {
 }
 
 function filter_all_projects() {
-    let projects_all = []
-                        const table = document.getElementById('projects-body');
-        const cloned_tr = table.children.item(1).cloneNode(true);
-    document.getElementById('filter-all-projects').addEventListener('change', function (e) {
-        projects_all = []
-        console.log(cloned_tr)
-        console.log(projects_all)
-        fetch(`filter/${e.target.value}`).then(res => res.json().then(res => {
-            let projects = res.projects
-            projects = JSON.parse(projects)
-            for (const project in projects) {
-                projects[project]['fields']['project_id'] = projects[project]['pk']
-                projects_all.push(projects[project]['fields'])
+    let projects_all = [];
+    const table = document.getElementById('projects-body');
+    const clonedRow = table.children.item(1).cloneNode(true);
+
+    document.getElementById('filter-all-projects').addEventListener('change', async function (e) {
+        try {
+            projects_all = [];
+            const response = await fetch(`filter/${e.target.value}`);
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
             }
-            let tbody = document.getElementById('projects-body')
-            tbody.innerHTML = ``
-            projects_all.forEach((project,index)=>{
-                let new_cloned_tr = cloned_tr.cloneNode(true);
-                new_cloned_tr.children.item(0).innerText = index + 1;
-                new_cloned_tr.children.item(1).innerText = project.project_number;
-                new_cloned_tr.children.item(2).innerText = project.project_name;
-                new_cloned_tr.children.item(3).innerText = project.project_description;
-                new_cloned_tr.children.item(4).innerText = project.project_departments;
-                new_cloned_tr.children.item(5).innerText = project.project_budget;
-                new_cloned_tr.children.item(6).innerText = project.project_curator;
-                let bg = return_bg_color(project.project_status);
-                new_cloned_tr.children.item(7).children.item(0).children.item(0).classList.add(bg[0]);
-                new_cloned_tr.children.item(7).children.item(0).children.item(0).setAttribute('aria-valuenow', project.project_done_percentage);
-                new_cloned_tr.children.item(7).children.item(0).children.item(0).style.width = project.project_done_percentage + '%';
-                new_cloned_tr.children.item(7).children.item(1).innerText = project.project_done_percentage + '%';
-                new_cloned_tr.children.item(7).children.item(2).removeAttribute('class');
-                new_cloned_tr.children.item(7).children.item(2).classList.add('badge', bg[1]);
-                new_cloned_tr.children.item(7).children.item(2).innerText = `${project.project_status}`;
-            tbody.appendChild(new_cloned_tr)
-            })
 
+            const res = await response.json();
+            const projects = JSON.parse(res.projects);
 
-        }))
-    })
+            projects.forEach(project => {
+                project.fields.project_id = project.pk;
+                projects_all.push(project.fields);
+            });
+
+            updateProjectTable(projects_all, clonedRow);
+
+        } catch (error) {
+
+        }
+    });
+}
+
+function updateProjectTable(projects, clonedRow) {
+    const tbody = document.getElementById('projects-body');
+    tbody.innerHTML = '';
+
+    projects.forEach((project, index) => {
+        const newRow = clonedRow.cloneNode(true);
+        newRow.children.item(0).innerText = index + 1;
+        newRow.children.item(1).innerText = project.project_number;
+        newRow.children.item(2).innerText = project.project_name;
+        newRow.children.item(3).innerText = project.project_description;
+        newRow.children.item(4).innerText = project.project_departments;
+        newRow.children.item(5).innerText = project.project_budget;
+        newRow.children.item(6).innerText = project.project_curator;
+
+        const bg = return_bg_color(project.project_status);
+        const progressElement = newRow.children.item(7).children.item(0).children.item(0);
+        progressElement.classList.add(bg[0]);
+        progressElement.setAttribute('aria-valuenow', project.project_done_percentage);
+        progressElement.style.width = project.project_done_percentage + '%';
+
+        newRow.children.item(7).children.item(1).innerText = project.project_done_percentage + '%';
+
+        const statusElement = newRow.children.item(7).children.item(2);
+        statusElement.removeAttribute('class');
+        statusElement.classList.add('badge', bg[1]);
+        statusElement.innerText = `${project.project_status}`;
+
+        tbody.appendChild(newRow);
+    });
 }
 
 try {
-    filter_all_projects()
+    filter_all_projects();
 } catch (e) {
-
 }
+
 
 function search_expense(){
     document.querySelectorAll('.search-expense-input').forEach(value => {
