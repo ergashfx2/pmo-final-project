@@ -9,16 +9,16 @@ from expenses.models import Expense
 from loyihalar.models import Project
 from django.utils import timezone
 
+from loyihalar.views import get_user_projects
+
 User = get_user_model()
 from hodimlar.models import *
-from hodimlar.forms import UserLoginForm
 
 def getExpensesAll(year, blog_id=None, dept_id=None):
     monthly_expense_totals = defaultdict(lambda: 0)
     global expenses
 
     if blog_id is not None and dept_id is None:
-        print('blog working')
         expenses = (
             Expense.objects
             .filter(date__year=year, project__project_blog_id=blog_id)
@@ -76,11 +76,7 @@ def getExpensesAll(year, blog_id=None, dept_id=None):
 def home(request):
     if request.user.is_authenticated:
         totalExpense = getExpensesAll(year=timezone.now().year)
-        projects = Project.objects.filter(
-            Q(project_manager__id=request.user.pk) |
-            Q(project_curator__id=request.user.pk) |
-            Q(project_team__username=request.user.username)
-        ).distinct()
+        projects = get_user_projects(request.user)
         projects_count = Project.objects.all().count()
         projects_done = Project.objects.filter(project_status='Tugatilgan').count()
         projects_process = Project.objects.filter(project_status='Jarayonda').count()

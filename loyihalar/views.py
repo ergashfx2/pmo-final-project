@@ -481,7 +481,7 @@ def delete_comment(request, pk):
     return redirect('my-projects-detail', prkey)
 
 
-from .forms import ProblemForm, ProlemEditForm
+from .forms import ProblemForm
 
 
 @login_required
@@ -639,8 +639,4 @@ def finish_phase(request, pk):
         return render(request, 'my-projects-detail.html', {'messages': messages})
 
 
-def finish_project(request):
-    # phase = Phase.objects.get(pk=pk)
-    user = User.objects.get(pk=request.user.pk)
-    print(user.role)
-    # return redirect('my-projects-detail', phase.project.pk)
+

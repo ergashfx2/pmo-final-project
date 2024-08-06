@@ -1,7 +1,6 @@
 import json
 
 from django.contrib.auth.decorators import login_required
-from django.contrib.sites import requests
 from django.core import serializers
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import JsonResponse, HttpResponse, Http404
@@ -9,9 +8,8 @@ from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 from utils import currency_rate
 from actions.models import Action
-from loyihalar.models import Project, Documents, Phase
+from loyihalar.models import Project, Phase
 from .models import Expense
-from loyihalar.views import file_extensions
 from config.views import getExpensesAll
 
 

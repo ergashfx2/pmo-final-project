@@ -66,7 +66,7 @@ def login_view(request):
             return redirect('home')
         else:
             try:
-                user_exists = User.objects.get(username=username)
+                User.objects.get(username=username)
                 form.add_error('password', 'Parolingiz xato kiritilgan')
             except User.DoesNotExist:
                 form.add_error('username', 'Username mavjud emas')

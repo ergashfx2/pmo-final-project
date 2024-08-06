@@ -7,25 +7,38 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>PMO system</title>
-    <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-    <link rel="stylesheet" href="{% static 'plugins/fontawesome-free/css/all.min.css' %}">
-    <link href="{% static 'fontawesomefree/css/fontawesome.css' %}" rel="stylesheet">
-    <link href="{% static 'fontawesomefree/css/brands.css' %}" rel="stylesheet" type="text/css">
-    <link href="{% static 'fontawesomefree/css/solid.css' %}" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="{% static 'dist/css/adminlte.min.css' %}">
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro:400,600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'extra/fonts/icomoon/style.css' %}">
-    <link rel="stylesheet" href="{% static 'extra/css/select2.min.css' %}">
-    <link rel="stylesheet" href="{% static 'extra/css/style.css' %}">
-    <link rel="stylesheet" href="{% static 'static/css/style.css' %}">
-    <link rel="stylesheet" href="{% static 'plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' %}">
-    <link rel="stylesheet" href="{% static  'plugins/datatables-responsive/css/responsive.bootstrap4.min.css' %}">
-    <link rel="stylesheet" href="{% static 'plugins/datatables-buttons/css/buttons.bootstrap4.min.css' %}">
-    <link href="{% static 'plugins/bower_components/chartist/dist/chartist.min.css' %}" rel="stylesheet">
-<link rel="stylesheet" href="{% static 'plugins/bower_components/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.css' %}">
+<link rel="preload" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback" as="style">
+<link rel="preload" href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" as="style">
+<link rel="preload" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500&display=swap" as="style">
+<link rel="preload" href="https://fonts.googleapis.com/css?family=Source+Serif+Pro:400,600&display=swap" as="style">
+
+<link rel="preload" href="{% static 'plugins/fontawesome-free/css/all.min.css' %}" as="style">
+<link rel="preload" href="{% static 'fontawesomefree/css/fontawesome.css' %}" as="style">
+<link rel="preload" href="{% static 'fontawesomefree/css/brands.css' %}" as="style">
+<link rel="preload" href="{% static 'fontawesomefree/css/solid.css' %}" as="style">
+<link rel="preload" href="{% static 'dist/css/adminlte.min.css' %}" as="style">
+<link rel="preload" href="{% static 'extra/fonts/icomoon/style.css' %}" as="style">
+<link rel="preload" href="{% static 'extra/css/select2.min.css' %}" as="style">
+<link rel="preload" href="{% static 'extra/css/style.css' %}" as="style">
+<link rel="preload" href="{% static 'static/css/style.css' %}" as="style">
+<link rel="preload" href="{% static 'plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' %}" as="style">
+<link rel="preload" href="{% static 'plugins/datatables-responsive/css/responsive.bootstrap4.min.css' %}" as="style">
+<link rel="preload" href="{% static 'plugins/datatables-buttons/css/buttons.bootstrap4.min.css' %}" as="style">
+<link rel="preload" href="{% static 'plugins/bower_components/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.css' %}" as="style">
+    
+<link href="{% static 'plugins/fontawesome-free/css/all.min.css' %}" rel="stylesheet">
+<link href="{% static 'fontawesomefree/css/fontawesome.css' %}" rel="stylesheet">
+<link href="{% static 'fontawesomefree/css/brands.css' %}" rel="stylesheet">
+<link href="{% static 'fontawesomefree/css/solid.css' %}" rel="stylesheet">
+<link href="{% static 'dist/css/adminlte.min.css' %}" rel="stylesheet">
+<link href="{% static 'extra/fonts/icomoon/style.css' %}" rel="stylesheet">
+<link href="{% static 'extra/css/select2.min.css' %}" rel="stylesheet">
+<link href="{% static 'extra/css/style.css' %}" rel="stylesheet">
+<link href="{% static 'static/css/style.css' %}" rel="stylesheet">
+<link href="{% static 'plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
+<link href="{% static 'plugins/datatables-responsive/css/responsive.bootstrap4.min.css' %}" rel="stylesheet">
+<link href="{% static 'plugins/datatables-buttons/css/buttons.bootstrap4.min.css' %}" rel="stylesheet">
+<link href="{% static 'plugins/bower_components/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.css' %}" rel="stylesheet">
 
 </head>
 <body class="hold-transition sidebar-mini">
