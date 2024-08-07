@@ -11,6 +11,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views.generic import UpdateView, ListView
 from loyihalar.models import PermittedProjects, Project
+from utils import isAdmin
 from .forms import UpdateUserForm, CreateUserForm
 
 from .forms import UserLoginForm
@@ -22,16 +23,18 @@ User = get_user_model()
 def profileView(request):
     if request.user.is_authenticated:
         user = User.objects.get(username=request.user.username)
-        permitted_projects,projects_count = get_permitted_projects(request)
-        return render(request, 'profile.html', {'user': user,'permitted_projects':permitted_projects,'projects_count':projects_count})
+        permitted_projects, projects_count = get_permitted_projects(request)
+        return render(request, 'profile.html',
+                      {'user': user, 'permitted_projects': permitted_projects, 'projects_count': projects_count})
 
 
 @login_required
-def profileView2(request,pk):
+def profileView2(request, pk):
     if request.user.is_authenticated:
         user = User.objects.get(pk=pk)
-        permitted_projects,projects_count = get_permitted_projects(request)
-        return render(request, 'profile2.html', {'user': user,'permitted_projects':permitted_projects,'projects_count':projects_count})
+        permitted_projects, projects_count = get_permitted_projects(request)
+        return render(request, 'profile2.html',
+                      {'user': user, 'permitted_projects': permitted_projects, 'projects_count': projects_count})
 
 
 def get_permitted_projects(request):
@@ -43,6 +46,7 @@ def get_permitted_projects(request):
         Q(project_team=pk)
     ).distinct().count()
     return permitted_projects, projects_count
+
 
 class UsersView(ListView):
     model = User
@@ -87,6 +91,15 @@ class UserUpdateView(UpdateView, LoginRequiredMixin):
     def get_success_url(self):
         return reverse('hodimlar:profile')
 
+    def get_form(self, form_class=None):
+        form = super().get_form()
+
+        if not isAdmin(self.request.user):
+            form.fields.pop('role')
+            return form
+        else:
+            return form
+
 
 @login_required
 def create_user(request):
@@ -103,16 +116,16 @@ def create_user(request):
 
 @login_required
 def block_user(request, pk):
-        user = User.objects.get(pk=pk)
-        user.block()
-        return JsonResponse(status=200, data={'success': True})
+    user = User.objects.get(pk=pk)
+    user.block()
+    return JsonResponse(status=200, data={'success': True})
 
 
 @login_required
 def unblock_user(request, pk):
-        user = get_object_or_404(User, pk=pk)
-        user.unblock()
-        return JsonResponse(status=200, data={'success': True})
+    user = get_object_or_404(User, pk=pk)
+    user.unblock()
+    return JsonResponse(status=200, data={'success': True})
 
 
 @login_required
@@ -122,7 +135,8 @@ def delete_user(request, pk):
     for project in projects:
         project.delete()
     user.delete()
-    return JsonResponse(status=200,data={'success':True})
+    return JsonResponse(status=200, data={'success': True})
+
 
 @login_required
 def get_users_serialized(request):
@@ -134,4 +148,3 @@ def get_users_serialized(request):
 
     users = json.dumps(users_array)
     return JsonResponse(data=users, safe=False, status=200)
-
