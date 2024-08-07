@@ -1,8 +1,10 @@
 import json
+
+from config.decorators.decorators import admin_required
 from loyihalar.views import get_user_projects
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
 from django.core import serializers
 from django.db.models import Q
@@ -83,10 +85,15 @@ def logoutView(request):
     return redirect('hodimlar:login')
 
 
-class UserUpdateView(UpdateView, LoginRequiredMixin):
+class UserUpdateView(UpdateView, UserPassesTestMixin):
     model = User
     form_class = UpdateUserForm
     template_name = 'update_user.html'
+
+
+    def test_func(self):
+        obj = self.get_object()
+        return obj.username == self.request.user.username
 
     def get_success_url(self):
         return reverse('hodimlar:profile')
@@ -114,21 +121,21 @@ def create_user(request):
     return render(request, "createUser.html", {"form": form})
 
 
-@login_required
+@admin_required
 def block_user(request, pk):
     user = User.objects.get(pk=pk)
     user.block()
     return JsonResponse(status=200, data={'success': True})
 
 
-@login_required
+@admin_required
 def unblock_user(request, pk):
     user = get_object_or_404(User, pk=pk)
     user.unblock()
     return JsonResponse(status=200, data={'success': True})
 
 
-@login_required
+@admin_required
 def delete_user(request, pk):
     user = User.objects.get(pk=pk)
     projects = get_user_projects(user)
