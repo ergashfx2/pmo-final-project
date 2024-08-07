@@ -863,9 +863,14 @@ function action_manager() {
     })
 }
 
+
+
 try {
     action_manager()
 }catch (e){}
+
+
+
 
 function actions_btn(e) {
     let btn = e.target

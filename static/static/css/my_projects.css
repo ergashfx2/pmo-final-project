@@ -10,7 +10,7 @@ body {
 }
 
 .badge {
-    font-weight: 0!important;
+    font-weight: 0 !important;
 }
 
 .card-header {
@@ -46,7 +46,6 @@ body {
 }
 
 
-
 .table {
     width: 100%;
     border-collapse: collapse;
@@ -69,7 +68,6 @@ body {
     border-radius: 4px;
     font-size: 0.9rem;
 }
-
 
 
 .project-actions .btn-info {
