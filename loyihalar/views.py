@@ -278,6 +278,17 @@ class UpdateProject(UpdateView):
     def get_success_url(self):
         return reverse('my-projects')
 
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        if not isAdmin(self.request.user):
+            print(form.fields)
+            form.fields.pop('project_status')
+            form.fields.pop('project_done_percentage')
+            form.fields.pop('project_deadline')
+            return form
+        else:
+            return form
+
 
 @login_required
 def DeleteProject(request, pk):
