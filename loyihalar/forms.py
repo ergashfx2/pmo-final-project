@@ -77,7 +77,7 @@ class CreateProjectForm(ModelForm):
 class EditProjectForm(ModelForm):
     class Meta:
         model = Project
-        exclude = ['author', 'project_start_date']
+        exclude = ['author', 'project_start_date','project_spent_money','project_done_percentage','project_deadline','project_status']
         labels = {
             'project_curator': 'Loyiha kuratori',
             'project_manager': 'Loyiha menejeri(lari)',

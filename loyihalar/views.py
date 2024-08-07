@@ -281,7 +281,7 @@ class UpdateProject(UpdateView):
 
 @login_required
 def DeleteProject(request, pk):
-    project = Project.objects.get(pk=pk)
+    project = get_object_or_404(Project, pk=pk)
     Action.objects.create(author_id=request.user.pk, project_id=project.pk,
                           action=f"{project.project_name} nomli loyihani o'chirib yubordi")
     project.delete()
@@ -293,7 +293,7 @@ def add_phase(request, pk):
     data = json.loads(request.body)
     project = get_object_or_404(Project, pk=pk)
     phase = Phase.objects.create(project=project, phase_name=data['phase_name'])
-    action = Action.objects.create(author_id=request.user.pk, project_id=project.pk,
+    Action.objects.create(author_id=request.user.pk, project_id=project.pk,
                                    action=f"{project.project_name} nomli loyihaga {data['phase_name']} nomli faza qo'shdi")
     return JsonResponse(status=200, data={'phase': phase.phase_name, 'phase_id': phase.pk})
 

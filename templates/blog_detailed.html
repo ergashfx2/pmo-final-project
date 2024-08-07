@@ -83,7 +83,7 @@
                                             <th class="border-top-0">Tugatilganligi</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="projects-body">
                                     {% for project in projects %}
                                         <tr data-url="{% url 'get-project' project.pk %}" class="datas" style="cursor: pointer;">
                                             <td>{{ forloop.counter }}</td>
