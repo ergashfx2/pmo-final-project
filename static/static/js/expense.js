@@ -156,7 +156,9 @@ function redirecting() {
 
 function handleRedirect(e) {
     const target = e.target.closest('.datas');
-    if (target) {
+    const classes = e.target.classList;
+    console.log(classes)
+    if (target && !classes.contains('no-redirect')) {
         const url = target.getAttribute('data-url');
         if (url) {
             window.location.href = url;

@@ -83,14 +83,31 @@
                         <p class="badge {% if project.project_status == 'Yangi' %}badge-info{% elif project.project_status == 'Jarayonda' %}badge-warning {% else %}badge-success{% endif %}">{{ project.project_status }}</p>
                         </p>
                     </td>
-                    <td class="project-actions text-center">
+                    <td class="project-actions no-redirect text-center">
                         <div class="btn-group-vertical" style="padding: 10%;margin-left: 15%" role="group">
                             <a href="{% url 'my-projects-detail' project.pk %}" type="button"
                                class="btn-sm btn-primary"><i class="fa-regular fa-folder"></i></a>
                             <a type="button" class="btn-sm btn-info mt-1"
                                href="{% url 'update-project' project.pk %}"><i class="fa-solid fa-pen"></i></a>
-                            <a type="button" class="btn-sm btn-danger text-sm mt-1"><i
-                                    class="fa-regular fa-trash-can"></i></a>
+                            <a data-toggle="modal" data-target="#delete-project{{ project.pk }}" type="button" class="btn-sm no-redirect btn-danger text-sm mt-1"><i
+                                    class="fa-regular no-redirect fa-trash-can"></i></a>
+                        </div>
+                        <div id="delete-project{{ project.pk }}"
+                             class="modal fade"
+                             role="dialog">
+                            <div class="modal-dialog modal-sm">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <i class="fa-solid fa-triangle-exclamation btn-lg" style="font-size: 5dvh"></i>
+                                        <h4>Chindan o'chirasizmi ?</h4>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <a href="{% url 'delete-my-project' project.pk %}"
+                                           class="btn btn-danger">O'chirish</a>
+                                        <button data-dismiss="modal" class="btn btn-secondary">Bekor qilish</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </td>
                 </tr>
