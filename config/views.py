@@ -1,60 +1,40 @@
 from collections import defaultdict
 
+from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Sum, F, IntegerField, Value, Q
 from django.db.models.functions import TruncMonth, Replace, Cast
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import get_user_model
+from django.utils import timezone
 
 from expenses.models import Expense
 from loyihalar.models import Project
-from django.utils import timezone
-
 from loyihalar.views import get_user_projects
+from hodimlar.models import Department
 
 User = get_user_model()
-from hodimlar.models import *
 
-def getExpensesAll(year, blog_id=None, dept_id=None):
+def get_expenses_all(year, blog_id=None, dept_id=None):
     monthly_expense_totals = defaultdict(lambda: 0)
-    global expenses
 
-    if blog_id is not None and dept_id is None:
-        expenses = (
-            Expense.objects
-            .filter(date__year=year, project__project_blog_id=blog_id)
-            .annotate(month=TruncMonth('date'))
-            .annotate(
-                quantity_int=Cast(Replace('quantity', Value(' '), Value('')), IntegerField())
-            )
-            .values('month')
-            .annotate(total_quantity=Sum('quantity_int'))
-            .order_by('month')
+    filters = {'date__year': year}
+    if blog_id:
+        filters['project__project_blog_id'] = blog_id
+    elif dept_id:
+        department_name = get_object_or_404(Department, id=dept_id).department_name
+        filters['project__project_departments__department_name'] = department_name
+
+    expenses = (
+        Expense.objects
+        .filter(**filters)
+        .annotate(month=TruncMonth('date'))
+        .annotate(
+            quantity_int=Cast(Replace('quantity', Value(' '), Value('')), IntegerField())
         )
-    elif dept_id is not None:
-        department_name = Department.objects.get(id=dept_id).department_name
-        expenses = (
-            Expense.objects
-            .filter(date__year=year, project__project_departments__department_name=department_name)
-            .annotate(month=TruncMonth('date'))
-            .annotate(
-                quantity_int=Cast(Replace('quantity', Value(' '), Value('')), IntegerField())
-            )
-            .values('month')
-            .annotate(total_quantity=Sum('quantity_int'))
-            .order_by('month')
-        )
-    else:
-        expenses = (
-            Expense.objects
-            .filter(date__year=year)
-            .annotate(month=TruncMonth('date'))
-            .annotate(
-                quantity_int=Cast(Replace('quantity', Value(' '), Value('')), IntegerField())
-            )
-            .values('month')
-            .annotate(total_quantity=Sum('quantity_int'))
-            .order_by('month')
-        )
+        .values('month')
+        .annotate(total_quantity=Sum('quantity_int'))
+        .order_by('month')
+    )
 
     for expense in expenses:
         month_str = expense['month'].strftime('%Y-%m')
@@ -66,27 +46,28 @@ def getExpensesAll(year, blog_id=None, dept_id=None):
             monthly_expense_totals[month_str] = 0
 
     sorted_expenses = sorted(monthly_expense_totals.items())
-    context = {
-        'year': year,
-        'monthly_expenses': sorted_expenses
-    }
+    return {'year': year, 'monthly_expenses': sorted_expenses}
 
-    return context
-
+@login_required
 def home(request):
     if request.user.is_authenticated:
-        totalExpense = getExpensesAll(year=timezone.now().year)
+        current_year = timezone.now().year
+        total_expense = get_expenses_all(year=current_year)
         projects = get_user_projects(request.user)
-        projects_count = Project.objects.all().count()
+        projects_count = Project.objects.count()
         projects_done = Project.objects.filter(project_status='Tugatilgan').count()
         projects_process = Project.objects.filter(project_status='Jarayonda').count()
-        return render(request, 'index.html',
-                      {'projects': projects[:5], 'projects_count': projects_count, 'project_done': projects_done,
-                       'projects_process': projects_process, 'expenses': totalExpense})
+        context = {
+            'projects': projects[:5],
+            'projects_count': projects_count,
+            'project_done': projects_done,
+            'projects_process': projects_process,
+            'expenses': total_expense,
+        }
+        return render(request, 'index.html', context)
     else:
         return redirect('hodimlar:login')
 
-
-def blockedPage(request):
-    if request.user.is_authenticated:
-        return render(request, 'blocked_page.html')
+@login_required
+def blocked_page(request):
+    return render(request, 'blocked_page.html')

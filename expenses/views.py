@@ -10,7 +10,7 @@ from utils import currency_rate
 from actions.models import Action
 from loyihalar.models import Project, Phase
 from .models import Expense
-from config.views import getExpensesAll
+from config.views import get_expenses_all
 
 
 @login_required
@@ -18,7 +18,7 @@ def spending(request):
     projects = Project.objects.all()
     total_budget = 0
     spent_budget = 0
-    totalExpense = getExpensesAll(year=timezone.now().year)
+    totalExpense = get_expenses_all(year=timezone.now().year)
     for project in projects:
         total_budget += float(project.project_budget)
         spent_budget += float(project.project_spent_money)

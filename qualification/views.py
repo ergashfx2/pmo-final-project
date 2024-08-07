@@ -6,7 +6,7 @@ from django.utils import timezone
 from actions.models import Action
 from hodimlar.models import Blog, Department
 from loyihalar.models import Project
-from config.views import getExpensesAll
+from config.views import get_expenses_all
 from loyihalar.views import paginate_projects
 
 @login_required
@@ -25,7 +25,7 @@ def qualification(request):
 
 @login_required
 def blogDetailed(request, pk):
-    total = getExpensesAll(year=timezone.now().year, blog_id=pk)
+    total = get_expenses_all(year=timezone.now().year, blog_id=pk)
     projects = Project.objects.filter(project_blog_id=pk)
     paginated = paginate_projects(request, projects)
     projects_all = projects.all().count()
@@ -40,7 +40,7 @@ def blogDetailed(request, pk):
 @login_required
 def depDetailed(request, pk):
     dept = Department.objects.get(pk=pk)
-    total = getExpensesAll(year=timezone.now().year, dept_id=pk)
+    total = get_expenses_all(year=timezone.now().year, dept_id=pk)
     projects = Project.objects.filter(project_departments__department_name__contains=dept.department_name)
     paginated = paginate_projects(request, projects)
     project_all = projects.all().count()
