@@ -1,6 +1,6 @@
 import json
 
-from config.decorators.decorators import admin_required
+from config.decorators.decorators import admin_required,AdminUserMixin
 from loyihalar.views import get_user_projects
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib.auth.decorators import login_required
@@ -50,11 +50,14 @@ def get_permitted_projects(request):
     return permitted_projects, projects_count
 
 
-class UsersView(ListView):
+class UsersView(LoginRequiredMixin,UserPassesTestMixin,ListView):
     model = User
     template_name = 'users.html'
     paginate_by = 10
     page_kwarg = 'page'
+
+    def test_func(self):
+        return self.request.user.role == 'Admin'
 
 
 def login_view(request):
@@ -85,11 +88,10 @@ def logoutView(request):
     return redirect('hodimlar:login')
 
 
-class UserUpdateView(UpdateView, UserPassesTestMixin):
+class UserUpdateView(UpdateView):
     model = User
     form_class = UpdateUserForm
     template_name = 'update_user.html'
-
 
     def test_func(self):
         obj = self.get_object()

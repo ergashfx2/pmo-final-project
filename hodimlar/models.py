@@ -50,5 +50,8 @@ class User(AbstractUser):
         self.status = 'Active'
         self.save()
 
+    def get_user_role(self):
+        return self.role
+
     def __str__(self):
         return self.get_full_name()

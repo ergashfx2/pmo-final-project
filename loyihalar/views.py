@@ -7,6 +7,7 @@ import uuid
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
@@ -270,13 +271,19 @@ def CreateProject(request):
     return render(request, 'create_project.html', context={'form': form})
 
 
-class UpdateProject(UpdateView):
+class UpdateProject(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
     model = Project
     template_name = 'update_project.html'
     form_class = EditProjectForm
 
     def get_success_url(self):
         return reverse('my-projects')
+
+    def test_func(self):
+        obj = self.get_object()
+        user_projects = get_user_projects(self.request.user)
+        is_project_accessible = obj in user_projects or isAdmin(self.request.user)
+        return is_project_accessible
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
@@ -293,9 +300,11 @@ class UpdateProject(UpdateView):
 @login_required
 def DeleteProject(request, pk):
     project = get_object_or_404(Project, pk=pk)
-    Action.objects.create(author_id=request.user.pk, project_id=project.pk,
-                          action=f"{project.project_name} nomli loyihani o'chirib yubordi")
-    project.delete()
+    user_projects = get_user_projects(request.user)
+    if project in user_projects or isAdmin(request.user):
+        Action.objects.create(author_id=request.user.pk, project_id=project.pk,
+                              action=f"{project.project_name} nomli loyihani o'chirib yubordi")
+        project.delete()
     return redirect('my-projects')
 
 
