@@ -2,102 +2,106 @@
 {% load static %}
 {% load filters %}
 {% block content %}
-<link href="{% static 'plugins/bower_components/chartist/dist/chartist.min.css' %}" rel="stylesheet">
-<link rel="stylesheet" href="{% static 'plugins/bower_components/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.css' %}">
+    <link href="{% static 'plugins/bower_components/chartist/dist/chartist.min.css' %}" rel="stylesheet">
+    <link rel="stylesheet"
+          href="{% static 'plugins/bower_components/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.css' %}">
 
 
-<div class="container-fluid">
-<div class="row ml-3 mr-3">
-                                    <div class="col-lg-6 col-md-12 col-sm-12">
-                     <div class="small-box" style="background-color: #0066cc">
-              <div class="inner">
-                <h3>{{ total_budget | format_number }} <span class="mx-2">UZS</span><sup style="font-size: 20px"></sup></h3>
+    <div class="container-fluid">
+        <div class="row ml-3 mr-3">
+            <div class="col-lg-6 col-md-12 col-sm-12">
+                <div class="small-box" style="background-color: #0066cc">
+                    <div class="inner">
+                        <h3>{{ total_budget | format_number }} <span class="mx-2">UZS</span><sup
+                                style="font-size: 20px"></sup></h3>
 
-                <p style="font-size: 20px">Jami budget</p>
-              </div>
-              <div class="icon">
-                <i class="ion ion-stats-bars"></i>
-              </div>
-            </div>
-          </div>
-                                    <div class="col-lg-6 col-md-12 col-sm-12">
-              <div class="small-box" style="background-color: #28a745">
-              <div class="inner">
-                <h3>{{ spent_budget | format_number }} <span class="mx-2">UZS</span><sup style="font-size: 20px"></sup></h3>
-
-                <p style="font-size: 20px">Sarflangan budget</p>
-              </div>
-              <div class="icon">
-                <i class="ion ion-stats-bars"></i>
-              </div>
-            </div>
-          </div>
+                        <p style="font-size: 20px">Jami budget</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-stats-bars"></i>
+                    </div>
                 </div>
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="card ml-4 mr-4">
-                <div class="card-body">
-                    <h4 class="box-title">Xarajatlar diagrammasi</h4>
-                    <div id="ct-visits" style="height: 405px;">
-                        <div class="chartist-tooltip" style="top: -17px; left: -12px;">
-                            <span class="chartist-tooltip-value">6</span>
+            </div>
+            <div class="col-lg-6 col-md-12 col-sm-12">
+                <div class="small-box" style="background-color: #28a745">
+                    <div class="inner">
+                        <h3>{{ spent_budget | format_number }} <span class="mx-2">UZS</span><sup
+                                style="font-size: 20px"></sup></h3>
+
+                        <p style="font-size: 20px">Sarflangan budget</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-stats-bars"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card ml-4 mr-4">
+                    <div class="card-body">
+                        <h4 class="box-title">Xarajatlar diagrammasi</h4>
+                        <div id="ct-visits" style="height: 405px;">
+                            <div class="chartist-tooltip" style="top: -17px; left: -12px;">
+                                <span class="chartist-tooltip-value">6</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row mt-2 mr-3">
-        <div class="col-sm-12">
-            <div class="card-header bg-white mt-4 mb-2 overflow-auto" style="width: 100%; height: 600px;">
-                <div class="float-left" style="width: 100%">
-                    <div class="input-group input-group-sm" style="width: 35.3%;">
-                        <input id="search-spendings-projects" type="text" name="table_search" class="form-control float-right search-expense-input" placeholder="Qidirish">
-                        <div class="input-group-append">
-                            <i class="btn btn-default fa-solid fa-magnifying-glass"></i>
+        <div class="row mt-2 mr-3">
+            <div class="col-sm-12">
+                <div class="card-header bg-white mt-4 mb-2 overflow-auto" style="width: 100%; height: 600px;">
+                    <div class="float-left" style="width: 100%">
+                        <div class="input-group input-group-sm" style="width: 35.3%;">
+                            <input id="search-spendings-projects" type="text" name="table_search"
+                                   class="form-control float-right search-expense-input" placeholder="Qidirish">
+                            <div class="input-group-append">
+                                <i class="btn btn-default fa-solid fa-magnifying-glass"></i>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="table-responsive">
-                    <table class="table table-bordered table-striped border mt-3 border-top-1 expenses-table">
-                        <thead>
-                        <tr>
-                            <th scope="col" class="col-4">Loyiha nomi</th>
-                            <th scope="col" class="col-4">Loyiha egasi</th>
-                            <th scope="col" class="col-3">Jami xarajatlar</th>
-                        </tr>
-                        </thead>
-                        <tbody id="projects-body">
-                        {% for project in projects %}
-                            <tr class="datas" data-url="{% url 'detailed-expanses' project.pk %}">
-                            <td>{{ project.project_name }}</td>
-                            <td>
-                                                                {% for author in project.author.all %}
-                            {{ author.get_full_name }},
-                                    {% endfor %}
-                            </td>
-                            <td>{{ project.project_spent_money | format_number }}</td>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped border mt-3 border-top-1 expenses-table">
+                            <thead>
+                            <tr>
+                                <th scope="col" class="col-4">Loyiha nomi</th>
+                                <th scope="col" class="col-4">Loyiha egasi</th>
+                                <th scope="col" class="col-3">Jami xarajatlar</th>
                             </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody id="projects-body">
+                            {% for project in projects %}
+                                <tr class="datas" data-url="{% url 'detailed-expanses' project.pk %}">
+                                    <td>{{ project.project_name }}</td>
+                                    <td>
+                                        {% for author in project.author.all %}
+                                            {{ author.get_full_name }},
+                                        {% endfor %}
+                                    </td>
+                                    <td>{{ project.project_spent_money | format_number }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <script src="{% static 'static/js/expense.js' %}"></script>
-<script src="{% static 'plugins/bower_components/jquery/dist/jquery.min.js' %}"></script>
-<script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-<script src="{% static 'js/app-style-switcher.js' %}"></script>
-<script src="{% static 'plugins/bower_components/jquery-sparkline/jquery.sparkline.min.js' %}"></script>
-<script src="{% static 'js/waves.js' %}"></script>
-<script src="{% static 'js/sidebarmenu.js' %}"></script>
-<script src="{% static 'js/custom.js' %}"></script>
-<script>
-    var total = {{ expenses | safe }};
-</script>
-<script src="{% static 'plugins/bower_components/chartist/dist/chartist.min.js' %}"></script>
-<script src="{% static 'plugins/bower_components/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js' %}"></script>
-<script src="{% static 'js/pages/dashboards/dashboard1.js' %}"></script>
+    <script src="{% static 'plugins/bower_components/jquery/dist/jquery.min.js' %}"></script>
+    <script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/app-style-switcher.js' %}"></script>
+    <script src="{% static 'plugins/bower_components/jquery-sparkline/jquery.sparkline.min.js' %}"></script>
+    <script src="{% static 'js/waves.js' %}"></script>
+    <script src="{% static 'js/sidebarmenu.js' %}"></script>
+    <script src="{% static 'js/custom.js' %}"></script>
+    <script>
+        var total = {{ expenses | safe }};
+    </script>
+    <script src="{% static 'plugins/bower_components/chartist/dist/chartist.min.js' %}"></script>
+    <script src="{% static 'plugins/bower_components/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js' %}"></script>
+    <script src="{% static 'js/pages/dashboards/dashboard1.js' %}"></script>
 {% endblock content %}

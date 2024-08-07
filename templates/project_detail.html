@@ -18,43 +18,45 @@
         <div class="row bg-white">
             <div class="col-lg-8 col-sm-12 col-md-12 col-lg-8 border">
                 <div class="row mt-3 p-3">
-<div class="col-lg-4 col-md-12 col-sm-12">
-                                <div class="small-box" style="background-color: #0066cc;padding: 6%">
-              <div class="inner">
-                <h3>{{ project.project_budget | format_number }}<sup style="font-size: 20px"></sup></h3>
+                    <div class="col-lg-4 col-md-12 col-sm-12">
+                        <div class="small-box" style="background-color: #0066cc;padding: 6%">
+                            <div class="inner">
+                                <h3>{{ project.project_budget | format_number }}<sup style="font-size: 20px"></sup></h3>
 
-                <p style="font-size: 20px">Loyiha budjeti</p>
-              </div>
-              <div class="icon">
-                <i class="ion ion-stats-bars"></i>
-              </div>
-            </div>
-                </div>
+                                <p style="font-size: 20px">Loyiha budjeti</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-stats-bars"></i>
+                            </div>
+                        </div>
+                    </div>
 
-<div class="col-lg-4 col-md-12 col-sm-12">
-                                <div class="small-box" style="background-color: #ff6600;padding: 6%">
-              <div class="inner">
-                <h3>{{ project.project_spent_money | format_number }}<sup style="font-size: 20px"></sup></h3>
+                    <div class="col-lg-4 col-md-12 col-sm-12">
+                        <div class="small-box" style="background-color: #ff6600;padding: 6%">
+                            <div class="inner">
+                                <h3>{{ project.project_spent_money | format_number }}<sup style="font-size: 20px"></sup>
+                                </h3>
 
-                <p style="font-size: 20px">Sarflangan summa</p>
-              </div>
-              <div class="icon">
-                <i class="ion ion-stats-bars"></i>
-              </div>
-            </div>
-                </div>
-<div class="col-lg-4 col-md-12 col-sm-12">
-                                <div class="small-box" style="background-color: #339933;padding: 6%">
-              <div class="inner">
-                <h3>{{ project.project_deadline | date:"d-m-Y" }}<sup style="font-size: 20px"></sup></h3>
+                                <p style="font-size: 20px">Sarflangan summa</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-stats-bars"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-12 col-sm-12">
+                        <div class="small-box" style="background-color: #339933;padding: 6%">
+                            <div class="inner">
+                                <h3>{{ project.project_deadline | date:"d-m-Y" }}<sup style="font-size: 20px"></sup>
+                                </h3>
 
-                <p style="font-size: 20px">Tugash sanasi</p>
-              </div>
-              <div class="icon">
-                <i class="ion ion-stats-bars"></i>
-              </div>
-            </div>
-                </div>
+                                <p style="font-size: 20px">Tugash sanasi</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-stats-bars"></i>
+                            </div>
+                        </div>
+                    </div>
 
                     <h3 class="text-secondary bg-light text-bold mt-4 border-top border-bottom p-2"
                         style="width: 100dvw">Ushbu loyihaga tegishli ma'lumotlar</h3>
@@ -72,20 +74,25 @@
                                                     class="text-secondary col-10 d-inline phase_text">{{ data.phase }}</h4>
                                                 <span type="button" class="col-1 btn-group dropright">
                                             </span>
-                                                                                                        <div id="phase{{ data.phase_id }}" class="modal fade" role="dialog">
-                            <div class="modal-dialog modal-sm modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-body">
-                                        <i class="fa-solid fa-triangle-exclamation btn-lg" style="font-size: 5dvh"></i>
-                                                                                                    <h4>Chindan o'chirasizmi ?</h4>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button  class="btn btn-danger delete-phase-confirm">O'chirish</button>
-                                        <button data-dismiss="modal" class="btn btn-secondary">Bekor qilish</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                                                <div id="phase{{ data.phase_id }}" class="modal fade" role="dialog">
+                                                    <div class="modal-dialog modal-sm modal-dialog-centered">
+                                                        <div class="modal-content">
+                                                            <div class="modal-body">
+                                                                <i class="fa-solid fa-triangle-exclamation btn-lg"
+                                                                   style="font-size: 5dvh"></i>
+                                                                <h4>Chindan o'chirasizmi ?</h4>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button class="btn btn-danger delete-phase-confirm">
+                                                                    O'chirish
+                                                                </button>
+                                                                <button data-dismiss="modal" class="btn btn-secondary">
+                                                                    Bekor qilish
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div id="modal{{ data.phase_id }}" class="modal fade"
                                                  style="margin-left: 20%" role="dialog">
@@ -339,7 +346,7 @@
                                 </div>
                             </div>
                         </div>
-                    <div class="col-lg-4 col-md-12 col-sm-12 mt-3">
+                        <div class="col-lg-4 col-md-12 col-sm-12 mt-3">
                             <div class="card">
                                 <div class="card-header bg-light h5 p-3"><span
                                         class="text-secondary text-primary p-1 bg-warning">Jarayonda</span></div>
@@ -352,20 +359,25 @@
                                                     class="text-secondary col-10 d-inline phase_text">{{ data.phase }}</h4>
                                                 <span type="button" class="col-1 btn-group dropright">
                                             </span>
-                                                                                                        <div id="phase{{ data.phase_id }}" class="modal fade" role="dialog">
-                            <div class="modal-dialog modal-sm modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-body">
-                                        <i class="fa-solid fa-triangle-exclamation btn-lg" style="font-size: 5dvh"></i>
-                                                                                                    <h4>Chindan o'chirasizmi ?</h4>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button  class="btn btn-danger delete-phase-confirm">O'chirish</button>
-                                        <button data-dismiss="modal" class="btn btn-secondary">Bekor qilish</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                                                <div id="phase{{ data.phase_id }}" class="modal fade" role="dialog">
+                                                    <div class="modal-dialog modal-sm modal-dialog-centered">
+                                                        <div class="modal-content">
+                                                            <div class="modal-body">
+                                                                <i class="fa-solid fa-triangle-exclamation btn-lg"
+                                                                   style="font-size: 5dvh"></i>
+                                                                <h4>Chindan o'chirasizmi ?</h4>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button class="btn btn-danger delete-phase-confirm">
+                                                                    O'chirish
+                                                                </button>
+                                                                <button data-dismiss="modal" class="btn btn-secondary">
+                                                                    Bekor qilish
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div id="modal{{ data.phase_id }}" class="modal fade"
                                                  style="margin-left: 20%" role="dialog">
@@ -659,7 +671,7 @@
                                 </div>
                             </div>
                         </div>
-                    <div class="col-lg-4 col-md-12 col-sm-12 mt-3">
+                        <div class="col-lg-4 col-md-12 col-sm-12 mt-3">
                             <div class="card">
                                 <div class="card-header bg-light h5 p-3"><span
                                         class="text-secondary text-primary p-1 bg-success">Yakunlangan</span></div>
@@ -672,20 +684,25 @@
                                                     class="text-secondary col-10 d-inline phase_text">{{ data.phase }}</h4>
                                                 <span type="button" class="col-1 btn-group dropright">
                                             </span>
-                                                                                                        <div id="phase{{ data.phase_id }}" class="modal fade" role="dialog">
-                            <div class="modal-dialog modal-sm modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-body">
-                                        <i class="fa-solid fa-triangle-exclamation btn-lg" style="font-size: 5dvh"></i>
-                                                                                                    <h4>Chindan o'chirasizmi ?</h4>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button  class="btn btn-danger delete-phase-confirm">O'chirish</button>
-                                        <button data-dismiss="modal" class="btn btn-secondary">Bekor qilish</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                                                <div id="phase{{ data.phase_id }}" class="modal fade" role="dialog">
+                                                    <div class="modal-dialog modal-sm modal-dialog-centered">
+                                                        <div class="modal-content">
+                                                            <div class="modal-body">
+                                                                <i class="fa-solid fa-triangle-exclamation btn-lg"
+                                                                   style="font-size: 5dvh"></i>
+                                                                <h4>Chindan o'chirasizmi ?</h4>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button class="btn btn-danger delete-phase-confirm">
+                                                                    O'chirish
+                                                                </button>
+                                                                <button data-dismiss="modal" class="btn btn-secondary">
+                                                                    Bekor qilish
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div id="modal{{ data.phase_id }}" class="modal fade"
                                                  style="margin-left: 20%" role="dialog">
@@ -828,14 +845,19 @@
                                                                     {% endfor %}
                                                                 </ul>
                                                             </div>
-                                                                                                                                                                <p class="text-secondary">Tugatilganlik darajasi</p>
-                                                        <div class="row mb-3">
-                                                            <div class="col-12">
-                                                                <div class="progress">
-                                                                    <div class="progress-bar" role="progressbar" style="width: {{ data.phase_done_percentage }}%;" aria-valuenow="{{ data.phase_done_percentage }}" aria-valuemin="0" aria-valuemax="100">{{ data.phase_done_percentage }}%</div>
+                                                            <p class="text-secondary">Tugatilganlik darajasi</p>
+                                                            <div class="row mb-3">
+                                                                <div class="col-12">
+                                                                    <div class="progress">
+                                                                        <div class="progress-bar" role="progressbar"
+                                                                             style="width: {{ data.phase_done_percentage }}%;"
+                                                                             aria-valuenow="{{ data.phase_done_percentage }}"
+                                                                             aria-valuemin="0"
+                                                                             aria-valuemax="100">{{ data.phase_done_percentage }}%
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
                                                             <p>Bajarilgan ishlar</p>
                                                             <div class="row mb-2">
                                                                 <div id="comments_{{ data.phase_id }}"
@@ -988,35 +1010,36 @@
                                 </div>
                             </div>
                         </div>
-                    <div class="files-section">
-                        <h3 class="text-secondary bg-light text-bold mt-4 border-top border-bottom p-2"
-                            style="width: 100%">Ushbu loyihaga tegishli fayllar</h3>
-                        <div class="upload-section">
-                        <table class="files-table mt-4">
-                            <thead>
-                            <tr>
-                                <th>Fayl nomi</th>
-                                <th>Hajmi</th>
-                                <th>Yuklash</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                                {% for file in p_files %}
+                        <div class="files-section">
+                            <h3 class="text-secondary bg-light text-bold mt-4 border-top border-bottom p-2"
+                                style="width: 100%">Ushbu loyihaga tegishli fayllar</h3>
+                            <div class="upload-section">
+                                <table class="files-table mt-4">
+                                    <thead>
                                     <tr>
-                                    <td>{{ file.file_name }}</td>
-                                    <td>{{ file.size }} MB</td>
-                                    <td>
-                                        <button type="button" id="{{ file.pk }}" class="btn btn-success p-files">
-                                            Yuklash
-                                        </button>
-                                    </td>
+                                        <th>Fayl nomi</th>
+                                        <th>Hajmi</th>
+                                        <th>Yuklash</th>
                                     </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
+                                    </thead>
+                                    <tbody>
+                                    {% for file in p_files %}
+                                        <tr>
+                                            <td>{{ file.file_name }}</td>
+                                            <td>{{ file.size }} MB</td>
+                                            <td>
+                                                <button type="button" id="{{ file.pk }}"
+                                                        class="btn btn-success p-files">
+                                                    Yuklash
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
 
-                    </div>
+                        </div>
                     </div>
 
                 </div>

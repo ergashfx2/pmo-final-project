@@ -13,7 +13,8 @@
                         Loyiha budgeti
                     </div>
                     <div class="card-body">
-                        <h5 class="card-title">{{ project.project_budget | format_number }} <span class="mx-2">UZS</span></h5>
+                        <h5 class="card-title">{{ project.project_budget | format_number }} <span
+                                class="mx-2">UZS</span></h5>
                     </div>
                 </div>
             </div>
@@ -23,7 +24,8 @@
                         Jami xarajatlar
                     </div>
                     <div class="card-body">
-                        <h5 id="totalExpenses" class="card-title">{{ project.project_spent_money | format_number }} <span class="mx-2">UZS</span></h5>
+                        <h5 id="totalExpenses" class="card-title">{{ project.project_spent_money | format_number }}
+                            <span class="mx-2">UZS</span></h5>
                     </div>
                 </div>
             </div>
@@ -34,7 +36,8 @@
                     </div>
                     <div class="card-body">
                         <h5 id="budgetLeft"
-                            class="card-title">{% multiple_args_tag project.project_budget project.project_spent_money %} <span class="mx-2">UZS</span></h5>
+                            class="card-title">{% multiple_args_tag project.project_budget project.project_spent_money %}
+                            <span class="mx-2">UZS</span></h5>
                     </div>
                 </div>
             </div>
@@ -115,7 +118,8 @@
             <button id="expense-menu-toggle" class="btn btn-primary"><i class="fa-solid fa-receipt"></i> Yaratish
             </button>
             <div class="input-group w-50">
-                <input id="search-expense" type="text" class="form-control search-expense-input" placeholder="Qidirish.....">
+                <input id="search-expense" type="text" class="form-control search-expense-input"
+                       placeholder="Qidirish.....">
                 <div class="input-group-append">
                     <span class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></span>
                 </div>
@@ -136,11 +140,12 @@
             {% for expense in expenses %}
                 <tr>
                     <td>{{ expense.description }}</td>
-                    <td>{{ expense.quantity | format_number }}  UZS</td>
+                    <td>{{ expense.quantity | format_number }} UZS</td>
                     <td>{{ expense.date | date:"d-m-Y" }}</td>
                     <td class="text-center">
                         {% if expense.document %}
-                            <i expense_id="{{ expense.pk }}" type="button" id="{{ expense.document.pk }}" class="fa-solid fa-file-alt expense_files" style="font-size: 1.5rem;"></i>
+                            <i expense_id="{{ expense.pk }}" type="button" id="{{ expense.document.pk }}"
+                               class="fa-solid fa-file-alt expense_files" style="font-size: 1.5rem;"></i>
                         {% endif %}
                     </td>
                     <td class="text-center">
@@ -151,45 +156,47 @@
             {% endfor %}
             </tbody>
         </table>
-                    <div class="clearfix">
-                    <ul class="pagination pagination-sm m-0 float-right">
-                        {% if expenses.has_previous %}
-                            <li class="page-item">
-                                <a class="page-link" href="?page={{ expenses.previous_page_number }}">&laquo; Oldingi</a>
-                            </li>
-                            {% if expenses.number > 3 %}
-                                <li class="page-item"><a class="page-link" href="?page=1">1</a></li>
-                                {% if expenses.number > 4 %}
-                                    <li class="page-item"><span class="page-link">...</span></li>
-                                {% endif %}
-                            {% endif %}
+        <div class="clearfix">
+            <ul class="pagination pagination-sm m-0 float-right">
+                {% if expenses.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ expenses.previous_page_number }}">&laquo; Oldingi</a>
+                    </li>
+                    {% if expenses.number > 3 %}
+                        <li class="page-item"><a class="page-link" href="?page=1">1</a></li>
+                        {% if expenses.number > 4 %}
+                            <li class="page-item"><span class="page-link">...</span></li>
                         {% endif %}
+                    {% endif %}
+                {% endif %}
 
-                        {% for num in expenses.paginator.page_range %}
-                            {% if expenses.number == num %}
-                                <li class="page-item active">
-                                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
-                                </li>
-                            {% elif num > expenses.number|add:'-3' and num < expenses.number|add:'3' %}
-                                <li class="page-item">
-                                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
-                                </li>
-                            {% endif %}
-                        {% endfor %}
+                {% for num in expenses.paginator.page_range %}
+                    {% if expenses.number == num %}
+                        <li class="page-item active">
+                            <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                        </li>
+                    {% elif num > expenses.number|add:'-3' and num < expenses.number|add:'3' %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
 
-                        {% if expenses.has_next %}
-                            {% if expenses.number < expenses.paginator.num_pages|add:'-2' %}
-                                {% if expenses.number < expenses.paginator.num_pages|add:'-3' %}
-                                    <li class="page-item"><span class="page-link">...</span></li>
-                                {% endif %}
-                                <li class="page-item"><a class="page-link" href="?page={{ expenses.paginator.num_pages }}">{{ expenses.paginator.num_pages }}</a></li>
-                            {% endif %}
-                            <li class="page-item">
-                                <a class="page-link" href="?page={{ expenses.next_page_number }}">Keyingi &raquo;</a>
-                            </li>
+                {% if expenses.has_next %}
+                    {% if expenses.number < expenses.paginator.num_pages|add:'-2' %}
+                        {% if expenses.number < expenses.paginator.num_pages|add:'-3' %}
+                            <li class="page-item"><span class="page-link">...</span></li>
                         {% endif %}
-                    </ul>
-                </div>
+                        <li class="page-item"><a class="page-link"
+                                                 href="?page={{ expenses.paginator.num_pages }}">{{ expenses.paginator.num_pages }}</a>
+                        </li>
+                    {% endif %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ expenses.next_page_number }}">Keyingi &raquo;</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
     </div>
 
     <div class="modal fade" id="add-expense-btn" tabindex="-1" role="dialog" aria-hidden="true">

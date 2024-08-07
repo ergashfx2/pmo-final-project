@@ -28,7 +28,7 @@
                                 </li>
                             </ul>
                         </div>
-                                                    <a href="{% url 'hodimlar:update-user' user.pk %}" class="btn btn-primary btn-block"><b>Yangilash</b></a>
+                        <a href="{% url 'hodimlar:update-user' user.pk %}" class="btn btn-primary btn-block"><b>Yangilash</b></a>
                     </div>
                     <div class="card card-primary">
                         <div class="card-header">
@@ -72,7 +72,7 @@
                                 </div>
                                 <div class="col-3">
                                     <a href="{% url 'hodimlar:logout' %}" class="btn btn-primary mt-2">Chiqib ketish</a>
-                                    
+
                                 </div>
                             </div>
                         </div>
@@ -80,7 +80,8 @@
                             <div class="tab-content">
                                 <div class="active tab-pane" id="activity">
                                     {% for project in permitted_projects %}
-                                        <a href="{% url 'get-project' project.project.pk %}" class="form-control">{{ project.project.project_name }}</a>
+                                        <a href="{% url 'get-project' project.project.pk %}"
+                                           class="form-control">{{ project.project.project_name }}</a>
                                     {% endfor %}
                                 </div>
                             </div>

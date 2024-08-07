@@ -1,40 +1,43 @@
 {% extends 'base.html' %}
 {% load filters %}
 {% block content %}
-<div class="mb-8">
-                  <div class="card bg-gray-300 shadow-none mb-4">
-                    <div class="card-body">
-                      <div class="d-flex justify-content-between
+    <div class="mb-8">
+        <div class="card bg-gray-300 shadow-none mb-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-between
                         align-items-center">
-                        <div>
-                          <h5 class="mb-0">Barcha harakatlar</h5>
-                        </div>
-                      </div>
+                    <div>
+                        <h5 class="mb-0">Barcha harakatlar</h5>
                     </div>
-                  </div>
-                  <div class="card">
-                    <ul class="list-group list-group-flush">
-                        {% for action in actions %}
-                      <li class="list-group-item p-3">
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <ul class="list-group list-group-flush">
+                {% for action in actions %}
+                    <li class="list-group-item p-3">
                         <div class="d-flex justify-content-between
                           align-items-center">
-                          <div class="d-flex align-items-center">
-                            <div>
-                                {% if action.author.avatar.url %}
-                              <img src="{{ action.author.avatar.url }}"  alt="Image" class="avatar-sm rounded-circle mx-3">
-                                {% endif %}
-                            </div>
-                            <div class="ms-3">
-                              <p class="mb-0
-                                font-weight-medium"><a href="{% url 'hodimlar:profile2' action.author.pk  %}">{{ action.author.get_full_name }} </a>{{ action.action | safe }} <br> <small>{{ action.date | uzbek_format }}</small></p>
+                            <div class="d-flex align-items-center">
+                                <div>
+                                    {% if action.author.avatar.url %}
+                                        <img src="{{ action.author.avatar.url }}" alt="Image"
+                                             class="avatar-sm rounded-circle mx-3">
+                                    {% endif %}
+                                </div>
+                                <div class="ms-3">
+                                    <p class="mb-0
+                                font-weight-medium"><a
+                                            href="{% url 'hodimlar:profile2' action.author.pk %}">{{ action.author.get_full_name }} </a>{{ action.action | safe }}
+                                        <br> <small>{{ action.date | uzbek_format }}</small></p>
 
+                                </div>
                             </div>
-                          </div>
                         </div>
-                      </li>
-                        {% endfor %}
-                    </ul>
-                  </div>
-                </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
 
 {% endblock content %}

@@ -1,208 +1,219 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load filters %}
-    {% block content %}
-<link href="{% static 'plugins/bower_components/chartist/dist/chartist.min.css' %}" rel="stylesheet">
-<link rel="stylesheet" href="{% static 'plugins/bower_components/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.css' %}">
+{% block content %}
+    <link href="{% static 'plugins/bower_components/chartist/dist/chartist.min.css' %}" rel="stylesheet">
+    <link rel="stylesheet"
+          href="{% static 'plugins/bower_components/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.css' %}">
 
-<link href="{% static 'css/style.min.css' %}" rel="stylesheet">
-        <div class="page-wrapper">
-            <div class="container-fluid">
-               <div class="row">
-                                    <div class="col-lg-4 col-md-12 col-sm-12">
-                                <div class="small-box" style="background-color: #0066cc">
-              <div class="inner">
-                <h3>{{ projects_all }}<sup style="font-size: 20px"></sup></h3>
+    <link href="{% static 'css/style.min.css' %}" rel="stylesheet">
+    <div class="page-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-4 col-md-12 col-sm-12">
+                    <div class="small-box" style="background-color: #0066cc">
+                        <div class="inner">
+                            <h3>{{ projects_all }}<sup style="font-size: 20px"></sup></h3>
 
-                <p style="font-size: 20px">Loyihalar soni</p>
-              </div>
-              <div class="icon">
-                <i class="ion ion-stats-bars"></i>
-              </div>
-              <a href="{% url 'all-projects' %}" class="small-box-footer">
-                Batasil <i class="fas fa-arrow-circle-right"></i>
-              </a>
-            </div>
+                            <p style="font-size: 20px">Loyihalar soni</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-stats-bars"></i>
+                        </div>
+                        <a href="{% url 'all-projects' %}" class="small-box-footer">
+                            Batasil <i class="fas fa-arrow-circle-right"></i>
+                        </a>
+                    </div>
                 </div>
-                                    <div class="col-lg-4 col-md-12 col-sm-12">
-                     <div class="small-box" style="background-color: #ff6600">
-              <div class="inner">
-                <h3>{{ projects_processing }}<sup style="font-size: 20px"></sup></h3>
+                <div class="col-lg-4 col-md-12 col-sm-12">
+                    <div class="small-box" style="background-color: #ff6600">
+                        <div class="inner">
+                            <h3>{{ projects_processing }}<sup style="font-size: 20px"></sup></h3>
 
-                <p style="font-size: 20px">Jarayonda</p>
-              </div>
-              <div class="icon">
-                <i class="ion ion-stats-bars"></i>
-              </div>
-              <a href="{% url 'all-projects' %}?filter=processing&&blog={{blog_id }}" class="small-box-footer">
-                Batafsil <i class="fas fa-arrow-circle-right"></i>
-              </a>
-            </div>
-          </div>
-                                    <div class="col-lg-4 col-md-12 col-sm-12">
-              <div class="small-box" style="background-color: #339933">
-              <div class="inner">
-                <h3>{{ projects_done }}<sup style="font-size: 20px"></sup></h3>
-
-                <p style="font-size: 20px">Tugatilgan</p>
-              </div>
-              <div class="icon">
-                <i class="ion ion-stats-bars"></i>
-              </div>
-              <a href="{% url 'all-projects' %}?filter=finished&&blog={{blog_id }}" class="small-box-footer">
-                Batafsil <i class="fas fa-arrow-circle-right"></i>
-              </a>
-            </div>
-          </div>
+                            <p style="font-size: 20px">Jarayonda</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-stats-bars"></i>
+                        </div>
+                        <a href="{% url 'all-projects' %}?filter=processing&&blog={{ blog_id }}"
+                           class="small-box-footer">
+                            Batafsil <i class="fas fa-arrow-circle-right"></i>
+                        </a>
+                    </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
-                        <div class="white-box">
-                            <h3 class="box-title">Oylik xarajatlar</h3>
-                            <div id="ct-visits" style="height: 405px;">
-                                <div class="chartist-tooltip" style="top: -17px; left: -12px;"><span
-                                        class="chartist-tooltip-value">6</span>
-                                </div>
+                <div class="col-lg-4 col-md-12 col-sm-12">
+                    <div class="small-box" style="background-color: #339933">
+                        <div class="inner">
+                            <h3>{{ projects_done }}<sup style="font-size: 20px"></sup></h3>
+
+                            <p style="font-size: 20px">Tugatilgan</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-stats-bars"></i>
+                        </div>
+                        <a href="{% url 'all-projects' %}?filter=finished&&blog={{ blog_id }}" class="small-box-footer">
+                            Batafsil <i class="fas fa-arrow-circle-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <div class="white-box">
+                        <h3 class="box-title">Oylik xarajatlar</h3>
+                        <div id="ct-visits" style="height: 405px;">
+                            <div class="chartist-tooltip" style="top: -17px; left: -12px;"><span
+                                    class="chartist-tooltip-value">6</span>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-7 col-lg-7 col-sm-12">
-                        <div class="white-box h-100 card">
-                            <div class="d-md-flex mb-3">
-                                <h3 class="box-title mb-0">Barcha loyihalar</h3>
-                            </div>
-                            <div class="table-responsive">
-                                <table class="table no-wrap table-striped table-bordered border border-top">
-                                    <thead>
-                                        <tr>
-                                            <th class="border-top-0 ">#</th>
-                                            <th class="border-top-0">Nomi</th>
-                                            <th class="border-top-0">Holati</th>
-                                            <th class="border-top-0">Tugatilganligi</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="projects-body">
-                                    {% for project in projects %}
-                                        <tr data-url="{% url 'get-project' project.pk %}" class="datas" style="cursor: pointer;">
-                                            <td>{{ forloop.counter }}</td>
-                                            <td>{{ project.project_name }}</td>
-                                            <td>{{ project.project_status }}</td>
-                                            <td>{{ project.project_done_percentage }}%</td>
-                                        </tr>
+            </div>
+            <div class="row">
+                <div class="col-md-7 col-lg-7 col-sm-12">
+                    <div class="white-box h-100 card">
+                        <div class="d-md-flex mb-3">
+                            <h3 class="box-title mb-0">Barcha loyihalar</h3>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table no-wrap table-striped table-bordered border border-top">
+                                <thead>
+                                <tr>
+                                    <th class="border-top-0 ">#</th>
+                                    <th class="border-top-0">Nomi</th>
+                                    <th class="border-top-0">Holati</th>
+                                    <th class="border-top-0">Tugatilganligi</th>
+                                </tr>
+                                </thead>
+                                <tbody id="projects-body">
+                                {% for project in projects %}
+                                    <tr data-url="{% url 'get-project' project.pk %}" class="datas"
+                                        style="cursor: pointer;">
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ project.project_name }}</td>
+                                        <td>{{ project.project_status }}</td>
+                                        <td>{{ project.project_done_percentage }}%</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            <div class="clearfix">
+                                <ul class="pagination pagination-sm m-0 float-right">
+                                    {% if projects.has_previous %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page={{ projects.previous_page_number }}">&laquo;
+                                                Oldingi</a>
+                                        </li>
+                                        {% if projects.number > 3 %}
+                                            <li class="page-item"><a class="page-link" href="?page=1">1</a></li>
+                                            {% if projects.number > 4 %}
+                                                <li class="page-item"><span class="page-link">...</span></li>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endif %}
+
+                                    {% for num in projects.paginator.page_range %}
+                                        {% if projects.number == num %}
+                                            <li class="page-item active">
+                                                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                                            </li>
+                                        {% elif num > projects.number|add:'-3' and num < projects.number|add:'3' %}
+                                            <li class="page-item">
+                                                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                                            </li>
+                                        {% endif %}
                                     {% endfor %}
-                                    </tbody>
-                                </table>
-                                            <div class="clearfix">
-                    <ul class="pagination pagination-sm m-0 float-right">
-                        {% if projects.has_previous %}
-                            <li class="page-item">
-                                <a class="page-link" href="?page={{ projects.previous_page_number }}">&laquo; Oldingi</a>
-                            </li>
-                            {% if projects.number > 3 %}
-                                <li class="page-item"><a class="page-link" href="?page=1">1</a></li>
-                                {% if projects.number > 4 %}
-                                    <li class="page-item"><span class="page-link">...</span></li>
-                                {% endif %}
-                            {% endif %}
-                        {% endif %}
 
-                        {% for num in projects.paginator.page_range %}
-                            {% if projects.number == num %}
-                                <li class="page-item active">
-                                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
-                                </li>
-                            {% elif num > projects.number|add:'-3' and num < projects.number|add:'3' %}
-                                <li class="page-item">
-                                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
-                                </li>
-                            {% endif %}
-                        {% endfor %}
-
-                        {% if projects.has_next %}
-                            {% if projects.number < projects.paginator.num_pages|add:'-2' %}
-                                {% if projects.number < projects.paginator.num_pages|add:'-3' %}
-                                    <li class="page-item"><span class="page-link">...</span></li>
-                                {% endif %}
-                                <li class="page-item"><a class="page-link" href="?page={{ projects.paginator.num_pages }}">{{ projects.paginator.num_pages }}</a></li>
-                            {% endif %}
-                            <li class="page-item">
-                                <a class="page-link" href="?page={{ projects.next_page_number }}">Keyingi &raquo;</a>
-                            </li>
-                        {% endif %}
-                    </ul>
-                </div>
+                                    {% if projects.has_next %}
+                                        {% if projects.number < projects.paginator.num_pages|add:'-2' %}
+                                            {% if projects.number < projects.paginator.num_pages|add:'-3' %}
+                                                <li class="page-item"><span class="page-link">...</span></li>
+                                            {% endif %}
+                                            <li class="page-item"><a class="page-link"
+                                                                     href="?page={{ projects.paginator.num_pages }}">{{ projects.paginator.num_pages }}</a>
+                                            </li>
+                                        {% endif %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page={{ projects.next_page_number }}">Keyingi
+                                                &raquo;</a>
+                                        </li>
+                                    {% endif %}
+                                </ul>
                             </div>
                         </div>
                     </div>
+                </div>
                 <div class="col-md-5 col-lg-5 col-sm-12">
                     <div class="card h-100">
-                <div class="mb-8">
-                  <div class="card shadow-none mb-4" style="background-color: #dee2e6">
-                    <div class="card-body">
-                      <div class="d-flex justify-content-between
+                        <div class="mb-8">
+                            <div class="card shadow-none mb-4" style="background-color: #dee2e6">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between
                         align-items-center">
-                        <div>
-                          <h5 class="mb-0">Oxirgi harakatlar</h5>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="card">
-                    <ul class="list-group list-group-flush">
-                        {% for action in actions %}
-                      <li class="list-group-item p-3">
-                        <div class="d-flex justify-content-between
+                                        <div>
+                                            <h5 class="mb-0">Oxirgi harakatlar</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <ul class="list-group list-group-flush">
+                                    {% for action in actions %}
+                                        <li class="list-group-item p-3">
+                                            <div class="d-flex justify-content-between
                           align-items-center">
-                          <div class="d-flex align-items-center">
-                            <div>
-                                {% if action.author.avatar.url %}
-                              <img src="{{ action.author.avatar.url }}" alt="Image" class="avatar-sm rounded-circle">
-                                {% endif %}
-                            </div>
-                            <div class="ms-3">
-                              <p class="mb-0
-                                font-weight-medium"><a href="{% url 'hodimlar:profile2' action.author.pk  %}">{{ action.author.get_full_name }} </a>{{ action.action | safe }} <br> <small>{{ action.date | uzbek_format }}</small></p>
+                                                <div class="d-flex align-items-center">
+                                                    <div>
+                                                        {% if action.author.avatar.url %}
+                                                            <img src="{{ action.author.avatar.url }}" alt="Image"
+                                                                 class="avatar-sm rounded-circle">
+                                                        {% endif %}
+                                                    </div>
+                                                    <div class="ms-3">
+                                                        <p class="mb-0
+                                font-weight-medium">
+                                                            <a href="{% url 'hodimlar:profile2' action.author.pk %}">{{ action.author.get_full_name }} </a>{{ action.action | safe }}
+                                                            <br> <small>{{ action.date | uzbek_format }}</small></p>
 
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                                <a href="{% url 'blog-all-actions' blog_id %}" class="btn btn-primary d-block h-100">Barchasini
+                                    ko'rish</a>
                             </div>
-                          </div>
                         </div>
-                      </li>
-                        {% endfor %}
-                    </ul>
-                  <a href="{% url 'blog-all-actions' blog_id %}" class="btn btn-primary d-block h-100">Barchasini ko'rish</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
                     </div>
-<script src="{% static 'plugins/bower_components/jquery/dist/jquery.min.js' %}"></script>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'plugins/bower_components/jquery/dist/jquery.min.js' %}"></script>
 
-<script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-
-
-<script src="{% static 'js/app-style-switcher.js' %}"></script>
-
-
-<script src="{% static 'plugins/bower_components/jquery-sparkline/jquery.sparkline.min.js' %}"></script>
+    <script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 
 
-<script src="{% static 'js/waves.js' %}"></script>
+    <script src="{% static 'js/app-style-switcher.js' %}"></script>
 
 
-<script src="{% static 'js/sidebarmenu.js' %}"></script>
+    <script src="{% static 'plugins/bower_components/jquery-sparkline/jquery.sparkline.min.js' %}"></script>
 
-<script>
-    window.total_blog = {{ expenses | safe }};
 
-</script>
-<script src="{% static 'js/custom.js' %}"></script>
-<script src="{% static 'plugins/bower_components/chartist/dist/chartist.min.js' %}"></script>
-<script src="{% static 'plugins/bower_components/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js' %}"></script>
-<script src="{% static 'js/pages/dashboards/dashboard1.js' %}"></script>
-<script src="{% static 'static/js/expense.js' %}"></script>
-<script src="{% static 'static/js/script.js' %}"></script>
+    <script src="{% static 'js/waves.js' %}"></script>
+
+
+    <script src="{% static 'js/sidebarmenu.js' %}"></script>
+
+    <script>
+        window.total_blog = {{ expenses | safe }};
+
+    </script>
+    <script src="{% static 'js/custom.js' %}"></script>
+    <script src="{% static 'plugins/bower_components/chartist/dist/chartist.min.js' %}"></script>
+    <script src="{% static 'plugins/bower_components/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js' %}"></script>
+    <script src="{% static 'js/pages/dashboards/dashboard1.js' %}"></script>
+    <script src="{% static 'static/js/expense.js' %}"></script>
+    <script src="{% static 'static/js/script.js' %}"></script>
 {% endblock content %}
