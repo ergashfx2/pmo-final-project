@@ -10,7 +10,7 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('loyihalar', '0013_remove_project_author_project_author'),
+        ('projects', '0013_remove_project_author_project_author'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
@@ -22,7 +22,7 @@ class Migration(migrations.Migration):
                 ('action', models.CharField(max_length=100)),
                 ('date', models.DateTimeField(auto_now_add=True)),
                 ('author', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
-                ('project', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='loyihalar.project')),
+                ('project', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='projects.project')),
             ],
         ),
     ]

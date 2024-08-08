@@ -2,7 +2,7 @@ import uuid
 
 from django.db import models
 
-from loyihalar.models import Project
+from projects.models import Project
 from django.utils import timezone
 
 

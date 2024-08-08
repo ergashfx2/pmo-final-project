@@ -8,7 +8,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('expenses', '0004_alter_expense_date'),
-        ('loyihalar', '0031_remove_problems_status_remove_problems_title'),
+        ('projects', '0031_remove_problems_status_remove_problems_title'),
     ]
 
     operations = [
@@ -26,13 +26,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='expense',
             name='phase',
-            field=models.ForeignKey(default=None, on_delete=django.db.models.deletion.CASCADE, to='loyihalar.phase'),
+            field=models.ForeignKey(default=None, on_delete=django.db.models.deletion.CASCADE, to='projects.phase'),
             preserve_default=False,
         ),
         migrations.AddField(
             model_name='expense',
             name='task',
-            field=models.ForeignKey(default=None, on_delete=django.db.models.deletion.CASCADE, to='loyihalar.task'),
+            field=models.ForeignKey(default=None, on_delete=django.db.models.deletion.CASCADE, to='projects.task'),
             preserve_default=False,
         ),
     ]

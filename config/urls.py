@@ -2,15 +2,14 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
-from .views import home, blocked_page
+
 
 urlpatterns = [
+    path('api-auth/', include('rest_framework.urls')),
     path('summernote/', include('django_summernote.urls')),
     path('admin/', admin.site.urls),
-    path('users/', include('hodimlar.urls')),
-    path('', home, name='home'),
-    path('projects/', include('loyihalar.urls')),
-    path('accounts/', blocked_page, name='blocked-page'),
+    path('users/', include('users.urls')),
+    path('projects/', include('projects.urls')),
     path('expenses/', include('expenses.urls')),
     path('qualification/', include('qualification.urls'))
 ]

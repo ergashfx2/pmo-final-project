@@ -1,7 +1,7 @@
 from django.db import models
 
-from hodimlar.models import User
-from loyihalar.models import Project
+from users.models import User
+from projects.models import Project
 
 
 class Action(models.Model):

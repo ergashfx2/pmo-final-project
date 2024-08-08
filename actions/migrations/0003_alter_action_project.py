@@ -8,13 +8,13 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('actions', '0002_alter_action_action'),
-        ('loyihalar', '0013_remove_project_author_project_author'),
+        ('projects', '0013_remove_project_author_project_author'),
     ]
 
     operations = [
         migrations.AlterField(
             model_name='action',
             name='project',
-            field=models.ForeignKey(blank=True, on_delete=django.db.models.deletion.CASCADE, to='loyihalar.project'),
+            field=models.ForeignKey(blank=True, on_delete=django.db.models.deletion.CASCADE, to='projects.project'),
         ),
     ]

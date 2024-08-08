@@ -1,6 +1,6 @@
 
 from requests import request
-from hodimlar.models import User
+from users.models import User
 file_extensions = {
     'ai': 'adobe',
     'avi': 'film',
